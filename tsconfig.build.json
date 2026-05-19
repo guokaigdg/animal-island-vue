@@ -1,0 +1,8 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "noEmit": true
+    },
+    "include": ["src/**/*", "src/**/*.vue"],
+    "exclude": ["src/**/*.test.ts", "src/**/*.spec.ts", "docs", "node_modules", "dist"]
+}
