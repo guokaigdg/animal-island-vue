@@ -21,7 +21,7 @@ function handleScroll() {
 }
 
 function openGithub() {
-    window.open('https://github.com/guokaigdg/animal-island-ui', '_blank');
+    window.open('https://github.com/guokaigdg/animal-island-vue', '_blank');
 }
 
 const features = [
