@@ -18,7 +18,7 @@ description: >
 
 ## 概述
 
-animal-island-vue 是一套受《集合啦！动物森友会》启发的 Vue 3 + TypeScript UI 组件库，是 [animal-island-ui](https://github.com/guokaigdg/animal-island-ui) 的 Vue 移植版本。
+animal-island-vue 是一套受《集合啦！动物森友会》启发的 Vue 3 + TypeScript UI 组件库。
 设计语言核心：**温暖大地色系 + 大圆角 pill 形 + 游戏按键立体感 + 柔和动效 + 有机不规则形状**。
 
 - 源码：`src/components/<ComponentName>/`（每组件包含 `*.vue` + `index.ts` + 可选 `types.ts`）
@@ -56,7 +56,7 @@ animal-island-vue 是一套受《集合啦！动物森友会》启发的 Vue 3 +
 
 > Vue 端约定：
 > - 受控值统一通过 `v-model` / `v-model:open` / `v-model:expanded`（即 `modelValue` + `update:modelValue` 等事件）
-> - React 中的 `ReactNode` props 在 Vue 端改为**命名插槽**（`#title`、`#icon`、`#prefix`、`#suffix`、`#footer`、`#checked`、`#unchecked`、`#question`、`#answer`、以及 Tabs 按 `item.key` 命名的动态插槽等）
+> - React 中的 `ReactNode` props 在 Vue 端改为**命名插槽**（`#icon`、`#prefix`、`#suffix`、`#footer`、`#checked`、`#unchecked`、`#question`、`#empty`、Table 的 `#cell-{dataIndex}` / `#header-{dataIndex}`、Tabs 按 `item.key` 命名的动态插槽等）；其余可结构化的内容统一通过**默认插槽**承载（如 Card、Collapse 答案区、Modal 主体、Typewriter 等）
 
 ---
 
@@ -455,7 +455,7 @@ box-shadow: 0 4px 10px rgba(107, 92, 67, 0.42);
 transition: all 0.3s ease;
 /* hover */ transform: translateY(-4px);
 
-/* title 类型（通过 #title 插槽） */
+/* title 类型（通过默认插槽承载内容） */
 background: #fdfdf5;
 border-radius: 40px 35px 45px 38px / 38px 45px 35px 40px;
 padding: 12px 32px;
