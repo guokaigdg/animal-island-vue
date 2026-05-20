@@ -19,6 +19,6 @@
             "@/*": ["src/*"]
         }
     },
-    "include": ["src/**/*", "src/**/*.vue", "demo/**/*", "demo/**/*.vue", "docs/**/*", "docs/**/*.vue"],
+    "include": ["src/**/*", "src/**/*.vue", "demo/**/*", "demo/**/*.vue", "docs/**/*", "docs/**/*.vue", "vite.config.ts", "vite.config.docs.ts"],
     "exclude": ["node_modules", "dist", "docs-dist"]
 }

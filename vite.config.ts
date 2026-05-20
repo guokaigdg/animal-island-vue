@@ -34,10 +34,33 @@ function stripWoffFallbackPlugin(): Plugin {
     };
 }
 
+/**
+ * 为 `animal-island-vue/style` 子路径产出空的 .d.ts，
+ * 避免下游 TS 项目报 "找不到模块" 的类型错误。
+ */
+function emitStyleDtsPlugin(): Plugin {
+    let emitted = false;
+    return {
+        name: 'emit-style-dts',
+        apply: 'build',
+        generateBundle() {
+            if (emitted) return;
+            emitted = true;
+            this.emitFile({
+                type: 'asset',
+                fileName: 'style.d.ts',
+                source:
+                    '// Side-effect only stylesheet entry. No runtime exports.\nexport {};\n',
+            });
+        },
+    };
+}
+
 export default defineConfig({
     plugins: [
         vue(),
         stripWoffFallbackPlugin(),
+        emitStyleDtsPlugin(),
         libAssetsPlugin({
             outputPath: 'files',
             name: '[name].[contenthash:8].[ext]',

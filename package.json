@@ -12,7 +12,10 @@
             "import": "./dist/es/index.js",
             "require": "./dist/cjs/index.cjs"
         },
-        "./style": "./dist/index.css",
+        "./style": {
+            "types": "./dist/style.d.ts",
+            "default": "./dist/index.css"
+        },
         "./dist/index.css": "./dist/index.css"
     },
     "files": [
@@ -69,7 +72,7 @@
         "ui",
         "typescript",
         "less",
-        "animal-island-ui",
+        "animal-island-vue",
         "nature"
     ],
     "license": "MIT"
