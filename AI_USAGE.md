@@ -149,7 +149,8 @@ interface InputProps {
 type SwitchSize = 'small' | 'default';
 
 interface SwitchProps {
-    modelValue?: boolean;       // v-model
+    modelValue?: boolean;       // v-model — controlled value
+    defaultChecked?: boolean;   // initial value when uncontrolled (no v-model)
     size?: SwitchSize;          // default 'default'
     disabled?: boolean;         // default false
     loading?: boolean;          // default false
@@ -232,15 +233,12 @@ interface CardProps {
     type?: CardType;     // default 'default'
     color?: CardColor;   // default 'default'
 }
-// Slots: default, title (only used by type="title")
+// Slots: default
 ```
 
 ```vue
 <Card>Default parchment card</Card>
-<Card type="title">
-    <template #title>Chapter One</template>
-    Body text
-</Card>
+<Card type="title">Chapter One</Card>
 <Card type="dashed">Draft / empty-state container</Card>
 <Card color="app-yellow">Notification</Card>
 ```
@@ -258,14 +256,15 @@ interface CollapseProps {
     disabled?: boolean;           // default false
 }
 // Emits: update:expanded(value), change(value)
-// Slots: question, answer
+// Slots: question, default — `default` slot renders the answer body;
+//        if omitted, the `answer` prop is used as fallback text
 ```
 
 ```vue
 <Collapse question="What is Animal Island?" answer="A cozy Vue UI kit." />
 <Collapse default-expanded>
     <template #question>FAQ #1</template>
-    <template #answer><p>Long rich content…</p></template>
+    <p>Long rich content…</p>
 </Collapse>
 <!-- Controlled -->
 <Collapse v-model:expanded="open" question="Q" answer="A" />
@@ -399,6 +398,7 @@ interface TabItem {
 interface TabsProps {
     items: TabItem[];           // REQUIRED
     modelValue?: string;        // v-model — defaults to first tab when omitted
+    defaultActiveKey?: string;  // initial active key when uncontrolled (no v-model)
     leafAnimation?: boolean;    // default true — active-tab leaf wiggle
     shadow?: boolean;           // default true — outer card shadow
 }
@@ -419,7 +419,7 @@ interface TabsProps {
 </Tabs>
 ```
 
-> Vue note: tab content is rendered via **named slots keyed by `item.key`** (not `item.children` like React). `defaultActiveKey` (React) becomes the initial `v-model` value (or omit to fall back to the first tab).
+> Vue note: tab content is rendered via **named slots keyed by `item.key`** (not `item.children` like React). For uncontrolled usage, pass `defaultActiveKey`; for controlled usage, use `v-model`. Omit both to fall back to the first tab.
 
 ---
 
@@ -673,7 +673,7 @@ Follow these strictly; violations are bugs:
 5. **`Collapse`**: at least one of (`question` prop OR `#question` slot) and (`answer` prop OR `#answer` slot) must be provided.
 6. **Button `type`** values are `primary | default | dashed | text | link` — NOT `secondary`, `outline`, `ghost`. Use the `ghost` prop for ghost styling. Pass an icon via the `#icon` slot.
 7. **Switch `size`** is `'small' | 'default'` (NOT `'middle' | 'large'`). Diverges from Button/Input sizing.
-8. **Card `color`** must be one of the 13 listed `CardColor` values. Do not pass hex codes. `type` is `'default' | 'title' | 'dashed'`. The `title` type uses the `#title` slot.
+8. **Card `color`** must be one of the 13 listed `CardColor` values. Do not pass hex codes. `type` is `'default' | 'title' | 'dashed'`. The `title` type renders content via the **default slot** (no `#title` slot exists).
 9. **Divider / Footer / Phone / Time / Cursor** accept no style-modifying props beyond `type` (where listed). For custom color/size, override via CSS targeting your wrapper `class`.
 10. **Typewriter emits no wrapper element.** Do not rely on a DOM node to style it — style the children instead. Use `text` prop OR default slot, not both.
 11. **Icon `name` must be one of the 10 `IconName` values.** Do not pass arbitrary strings, URLs, or VNodes.
