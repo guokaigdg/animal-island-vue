@@ -6,6 +6,7 @@ export interface TabItem {
 export interface TabsProps {
     items: TabItem[];
     modelValue?: string;
+    defaultActiveKey?: string;
     leafAnimation?: boolean;
     shadow?: boolean;
 }
