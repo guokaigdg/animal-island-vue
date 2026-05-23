@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue';
-import Cursor from '../Cursor/Cursor.vue';
 
 const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -21,21 +20,19 @@ function pad(n: number) {
 </script>
 
 <template>
-    <Cursor>
-        <div class="animal-time">
-            <div class="animal-time__date">
-                <span class="animal-time__weekday">
-                    {{ weekdays[now.getDay()] }}
-                </span>
-                <span class="animal-time__month-day">
-                    {{ months[now.getMonth()] }} {{ now.getDate() }}
-                </span>
-            </div>
-            <div class="animal-time__clock">
-                {{ pad(now.getHours()) }}<span class="animal-time__colon">:</span>{{ pad(now.getMinutes()) }}
-            </div>
+    <div class="animal-time">
+        <div class="animal-time__date">
+            <span class="animal-time__weekday">
+                {{ weekdays[now.getDay()] }}
+            </span>
+            <span class="animal-time__month-day">
+                {{ months[now.getMonth()] }} {{ now.getDate() }}
+            </span>
         </div>
-    </Cursor>
+        <div class="animal-time__clock">
+            {{ pad(now.getHours()) }}<span class="animal-time__colon">:</span>{{ pad(now.getMinutes()) }}
+        </div>
+    </div>
 </template>
 
 <style lang="less" scoped>
@@ -43,6 +40,9 @@ function pad(n: number) {
     display: inline-flex;
     gap: 20px;
     align-items: center;
+    align-self: flex-start;
+    width: fit-content;
+    max-width: max-content;
     padding: 16px 36px;
     border: 3px solid #d4cfc3;
     border-radius: 18px;
