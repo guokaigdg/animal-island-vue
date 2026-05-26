@@ -12,7 +12,7 @@ import menuBgUrl from './img/menu_bg.svg';
 import homeBgUrl from './img/home_bg.webp';
 import guideLineUrl from './img/guide-bg-line.webp';
 
-interface MenuChild { key: string; label: string }
+interface MenuChild { key: string; label: string; isNew?: boolean }
 interface MenuItem { key: string; label: string; children?: MenuChild[] }
 
 const MENU_ITEMS: MenuItem[] = [
@@ -35,8 +35,8 @@ const MENU_ITEMS: MenuItem[] = [
             { key: 'tabs', label: 'Tabs 标签页' },
             { key: 'footer', label: 'Footer 页脚' },
             { key: 'codeblock', label: 'CodeBlock 代码高亮' },
-            { key: 'loading', label: 'Loading 加载' },
-            { key: 'table', label: 'Table 表格' },
+            { key: 'loading', label: 'Loading 加载', isNew: true },
+            { key: 'table', label: 'Table 表格', isNew: true },
         ],
     },
     {
@@ -45,6 +45,7 @@ const MENU_ITEMS: MenuItem[] = [
         children: [
             { key: 'time', label: 'Time 时间' },
             { key: 'phone', label: 'Phone 手机' },
+            { key: 'wedding-invitation', label: 'Wedding 婚礼请柬', isNew: true },
         ],
     },
 ];
@@ -117,6 +118,7 @@ const menuBgImage = `url("${menuBgUrl}")`;
                                 @click="handleNavigate(`/${child.key}`)"
                             >
                                 <span>{{ child.label }}</span>
+                                <span v-if="child.isNew" class="menu-badge">NEW</span>
                             </div>
                         </div>
                         <div
@@ -158,6 +160,7 @@ const menuBgImage = `url("${menuBgUrl}")`;
                                     @click="handleNavigate(`/${child.key}`)"
                                 >
                                     <span>{{ child.label }}</span>
+                                    <span v-if="child.isNew" class="menu-badge">NEW</span>
                                 </div>
                             </div>
                         </template>
@@ -256,9 +259,11 @@ const menuBgImage = `url("${menuBgUrl}")`;
 .menu-item {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    gap: 8px;
     margin: 1px 5px;
     height: 40px;
-    padding: 0 16px 0 26px;
+    padding: 0 12px 0 26px;
     font-weight: 600;
     font-size: 14px;
     color: #8a7b66;
@@ -270,6 +275,31 @@ const menuBgImage = `url("${menuBgUrl}")`;
 .menu-item:hover { background: #d6dff0; }
 .menu-item.active { background: #B7C6E5; color: #fff; }
 .menu-item.active span { color: #fff; }
+
+.menu-badge {
+    flex-shrink: 0;
+    padding: 1px 7px;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+    color: #fff;
+    background: linear-gradient(135deg, #fc736d, #f7825a);
+    border-radius: 8px;
+    line-height: 14px;
+    box-shadow: 0 1px 0 rgba(114, 93, 66, 0.25);
+    animation: badgePulse 1.8s ease-in-out infinite;
+}
+.menu-item.active .menu-badge {
+    background: #fff;
+    color: #fc736d;
+    box-shadow: 0 1px 0 rgba(114, 93, 66, 0.15);
+}
+.menu-item.active .menu-badge { color: #fc736d; }
+
+@keyframes badgePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+}
 
 .main {
     flex: 1;

@@ -91,4 +91,14 @@ export type { TableProps, TableColumn, TableRecord } from './components/Table';
 export { Phone } from './components/Phone';
 export type { PhoneProps } from './components/Phone';
 
+export {
+    WeddingInvitation,
+    WeddingInvitationExportButton,
+} from './components/WeddingInvitation';
+export type {
+    WeddingInvitationProps,
+    WeddingInvitationExpose,
+    WeddingInvitationExportButtonProps,
+} from './components/WeddingInvitation';
+
 // ...（后续阶段陆续启用）

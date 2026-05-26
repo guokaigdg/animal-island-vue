@@ -75,4 +75,8 @@ export const PAGE_INFO: Record<string, { title: string; desc: string }> = {
         title: 'Table 表格',
         desc: '表格组件 — 支持泛型、列定义、悬浮动画、加载、空态',
     },
+    'wedding-invitation': {
+        title: 'WeddingInvitation 婚礼请柬',
+        desc: '动森风婚礼请柬 — 设计 → 导出图片 → 分享/打印；支持双向编辑、PNG 导出，自带票根撕扯效果',
+    },
 };

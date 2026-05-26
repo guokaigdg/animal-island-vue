@@ -21,6 +21,7 @@ import LoadingDemo from './pages/LoadingDemo.vue';
 import TableDemo from './pages/TableDemo.vue';
 import TimeDemo from './pages/TimeDemo.vue';
 import PhoneDemo from './pages/PhoneDemo.vue';
+import WeddingInvitationDemo from './pages/WeddingInvitationDemo.vue';
 
 const props = defineProps<{ activeKey: string }>();
 
@@ -44,6 +45,7 @@ const PAGES: Record<string, unknown> = {
     table: TableDemo,
     time: TimeDemo,
     phone: PhoneDemo,
+    'wedding-invitation': WeddingInvitationDemo,
 };
 
 const info = computed(() => PAGE_INFO[props.activeKey]);
