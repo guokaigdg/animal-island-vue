@@ -11,13 +11,14 @@
         "resolveJsonModule": true,
         "isolatedModules": true,
         "useDefineForClassFields": true,
-        "verbatimModuleSyntax": true,
+        "verbatimModuleSyntax": false,
         "jsx": "preserve",
         "types": ["vite/client", "node"],
         "baseUrl": ".",
         "paths": {
             "@/*": ["src/*"]
-        }
+        },
+        "typeRoots": ["./node_modules/@types", "./src/types"]
     },
     "include": ["src/**/*", "src/**/*.vue", "demo/**/*", "demo/**/*.vue", "docs/**/*", "docs/**/*.vue", "vite.config.ts", "vite.config.docs.ts"],
     "exclude": ["node_modules", "dist", "docs-dist"]
