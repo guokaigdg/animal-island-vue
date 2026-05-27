@@ -32,13 +32,13 @@ const MENU_ITEMS: MenuItem[] = [
             { key: 'icon', label: 'Icon 图标' },
             { key: 'select', label: 'Select 选择器' },
             { key: 'checkbox', label: 'Checkbox 多选框' },
-            { key: 'radio', label: 'Radio 单选框', isNew: true },
-            { key: 'tooltip', label: 'Tooltip 气泡提示', isNew: true },
+            { key: 'radio', label: 'Radio 单选框' },
+            { key: 'tooltip', label: 'Tooltip 气泡提示' },
             { key: 'tabs', label: 'Tabs 标签页' },
             { key: 'footer', label: 'Footer 页脚' },
             { key: 'codeblock', label: 'CodeBlock 代码高亮' },
             { key: 'loading', label: 'Loading 加载', isNew: true },
-            { key: 'table', label: 'Table 表格', isNew: true },
+            { key: 'table', label: 'Table 表格' },
         ],
     },
     {
@@ -92,11 +92,7 @@ const menuBgImage = `url("${menuBgUrl}")`;
 <template>
     <Cursor>
         <!-- Home page — full screen, no sidebar -->
-        <div
-            v-if="isHomePage"
-            class="layout home-bg"
-            :style="{ justifyContent: 'center' }"
-        >
+        <div v-if="isHomePage" class="layout home-bg" :style="{ justifyContent: 'center' }">
             <HomePage @navigate="handleHomeNavigate" />
         </div>
 
@@ -112,23 +108,14 @@ const menuBgImage = `url("${menuBgUrl}")`;
                     <template v-for="item in MENU_ITEMS" :key="item.key">
                         <div v-if="item.children">
                             <div class="cat-label">{{ item.label }}</div>
-                            <div
-                                v-for="child in item.children"
-                                :key="child.key"
-                                class="menu-item"
-                                :class="{ active: activeKey === child.key }"
-                                @click="handleNavigate(`/${child.key}`)"
-                            >
+                            <div v-for="child in item.children" :key="child.key" class="menu-item"
+                                :class="{ active: activeKey === child.key }" @click="handleNavigate(`/${child.key}`)">
                                 <span>{{ child.label }}</span>
                                 <span v-if="child.isNew" class="menu-badge">NEW</span>
                             </div>
                         </div>
-                        <div
-                            v-else
-                            class="menu-item"
-                            :class="{ active: activeKey === item.key }"
-                            @click="handleNavigate(`/${item.key}`)"
-                        >
+                        <div v-else class="menu-item" :class="{ active: activeKey === item.key }"
+                            @click="handleNavigate(`/${item.key}`)">
                             <span>{{ item.label }}</span>
                         </div>
                     </template>
@@ -154,13 +141,9 @@ const menuBgImage = `url("${menuBgUrl}")`;
                         <template v-for="item in MENU_ITEMS" :key="item.key">
                             <div v-if="item.children">
                                 <div class="cat-label">{{ item.label }}</div>
-                                <div
-                                    v-for="child in item.children"
-                                    :key="child.key"
-                                    class="menu-item"
+                                <div v-for="child in item.children" :key="child.key" class="menu-item"
                                     :class="{ active: activeKey === child.key }"
-                                    @click="handleNavigate(`/${child.key}`)"
-                                >
+                                    @click="handleNavigate(`/${child.key}`)">
                                     <span>{{ child.label }}</span>
                                     <span v-if="child.isNew" class="menu-badge">NEW</span>
                                 </div>
@@ -170,33 +153,18 @@ const menuBgImage = `url("${menuBgUrl}")`;
                 </aside>
             </template>
 
-            <main
-                ref="mainRef"
-                class="main"
-                :style="{
-                    padding: isMobile ? '16px' : '32px 40px',
-                    paddingTop: isMobile ? '68px' : '32px',
-                }"
-            >
+            <main ref="mainRef" class="main" :style="{
+                padding: isMobile ? '16px' : '32px 40px',
+                paddingTop: isMobile ? '68px' : '32px',
+            }">
                 <ComponentPage :active-key="activeKey" />
             </main>
 
-            <img
-                v-if="!isMobile"
-                :src="guideLineUrl"
-                alt=""
-                loading="lazy"
-                decoding="async"
-                class="guide-line"
-            />
+            <img v-if="!isMobile" :src="guideLineUrl" alt="" loading="lazy" decoding="async" class="guide-line" />
         </div>
 
         <!-- Loading transition -->
-        <div
-            v-if="loadingMounted"
-            class="loading-overlay"
-            :style="{ pointerEvents: loadingActive ? 'auto' : 'none' }"
-        >
+        <div v-if="loadingMounted" class="loading-overlay" :style="{ pointerEvents: loadingActive ? 'auto' : 'none' }">
             <Loading :active="loadingActive" />
         </div>
     </Cursor>
@@ -204,8 +172,13 @@ const menuBgImage = `url("${menuBgUrl}")`;
 
 <style scoped>
 @keyframes bgScroll {
-    0% { background-position: 100% 0%; }
-    100% { background-position: 0% 100%; }
+    0% {
+        background-position: 100% 0%;
+    }
+
+    100% {
+        background-position: 0% 100%;
+    }
 }
 
 .layout {
@@ -218,6 +191,7 @@ const menuBgImage = `url("${menuBgUrl}")`;
     background-size: auto;
     background-repeat: repeat;
 }
+
 .home-bg {
     background-image: v-bind(homeBgImage);
     background-color: #7DC395;
@@ -238,6 +212,7 @@ const menuBgImage = `url("${menuBgUrl}")`;
     flex-direction: column;
     overflow: hidden;
 }
+
 .sidebar-header {
     padding: 20px 16px 12px;
     border-bottom: 1px solid #e8e2d6;
@@ -249,8 +224,19 @@ const menuBgImage = `url("${menuBgUrl}")`;
     align-items: center;
     cursor: pointer;
 }
-.sidebar-logo { width: 24px; height: 24px; margin-right: 8px; }
-.menu-list { flex: 1; overflow: auto; padding: 8px 0; }
+
+.sidebar-logo {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+}
+
+.menu-list {
+    flex: 1;
+    overflow: auto;
+    padding: 8px 0;
+}
+
 .cat-label {
     padding: 12px 16px 4px;
     font-size: 11px;
@@ -258,6 +244,7 @@ const menuBgImage = `url("${menuBgUrl}")`;
     font-weight: 600;
     letter-spacing: 0.5px;
 }
+
 .menu-item {
     display: flex;
     align-items: center;
@@ -274,9 +261,19 @@ const menuBgImage = `url("${menuBgUrl}")`;
     transition: all 0.15s;
     cursor: pointer;
 }
-.menu-item:hover { background: #d6dff0; }
-.menu-item.active { background: #B7C6E5; color: #fff; }
-.menu-item.active span { color: #fff; }
+
+.menu-item:hover {
+    background: #d6dff0;
+}
+
+.menu-item.active {
+    background: #B7C6E5;
+    color: #fff;
+}
+
+.menu-item.active span {
+    color: #fff;
+}
 
 .menu-badge {
     flex-shrink: 0;
@@ -291,16 +288,27 @@ const menuBgImage = `url("${menuBgUrl}")`;
     box-shadow: 0 1px 0 rgba(114, 93, 66, 0.25);
     animation: badgePulse 1.8s ease-in-out infinite;
 }
+
 .menu-item.active .menu-badge {
     background: #fff;
     color: #fc736d;
     box-shadow: 0 1px 0 rgba(114, 93, 66, 0.15);
 }
-.menu-item.active .menu-badge { color: #fc736d; }
+
+.menu-item.active .menu-badge {
+    color: #fc736d;
+}
 
 @keyframes badgePulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.08); }
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.08);
+    }
 }
 
 .main {
@@ -312,7 +320,9 @@ const menuBgImage = `url("${menuBgUrl}")`;
 
 .mobile-bar {
     position: fixed;
-    top: 0; left: 0; right: 0;
+    top: 0;
+    left: 0;
+    right: 0;
     height: 52px;
     display: flex;
     align-items: center;
@@ -323,6 +333,7 @@ const menuBgImage = `url("${menuBgUrl}")`;
     border-bottom: 1px solid #e8e2d6;
     z-index: 50;
 }
+
 .icon-btn {
     background: none;
     border: none;
@@ -333,16 +344,25 @@ const menuBgImage = `url("${menuBgUrl}")`;
     line-height: 1;
     cursor: pointer;
 }
-.mobile-title { font-weight: 700; font-size: 15px; color: #725d42; }
+
+.mobile-title {
+    font-weight: 700;
+    font-size: 15px;
+    color: #725d42;
+}
 
 .drawer-mask {
-    position: fixed; inset: 0;
+    position: fixed;
+    inset: 0;
     background: rgba(0, 0, 0, 0.35);
     z-index: 98;
 }
+
 .drawer {
     position: fixed;
-    left: 0; top: 0; bottom: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
     width: 240px;
     z-index: 99;
     box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
@@ -350,7 +370,9 @@ const menuBgImage = `url("${menuBgUrl}")`;
 
 .guide-line {
     position: fixed;
-    left: 220px; right: 0; bottom: 0;
+    left: 220px;
+    right: 0;
+    bottom: 0;
     width: calc(100% - 220px);
     pointer-events: none;
     z-index: 0;
