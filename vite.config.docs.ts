@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
+    base: '/animal-island-vue/',
     root: resolve(__dirname, 'demo'),
     publicDir: resolve(__dirname, 'demo/html'),
     plugins: [vue()],
