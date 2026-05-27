@@ -36,7 +36,7 @@
     "scripts": {
         "dev": "vite --config vite.config.docs.ts",
         "build": "vue-tsc --noEmit -p tsconfig.build.json && vite build",
-        "build:docs": "vite build --config vite.config.docs.ts",
+        "build:demo": "vite build --config vite.config.docs.ts",
         "preview:docs": "vite preview --config vite.config.docs.ts",
         "test": "vitest",
         "typecheck": "vue-tsc --noEmit",
@@ -57,6 +57,7 @@
         "@types/node": "^25.5.2",
         "@vitejs/plugin-vue": "^6.0.0",
         "@vue/test-utils": "^2.4.6",
+        "gh-pages": "^6.3.0",
         "jsdom": "^25.0.1",
         "less": "^4.6.4",
         "typescript": "^5.7.3",
