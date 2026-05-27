@@ -14,6 +14,8 @@ import DividerDemo from './pages/DividerDemo.vue';
 import IconDemo from './pages/IconDemo.vue';
 import SelectDemo from './pages/SelectDemo.vue';
 import CheckboxDemo from './pages/CheckboxDemo.vue';
+import RadioDemo from './pages/RadioDemo.vue';
+import TooltipDemo from './pages/TooltipDemo.vue';
 import TabsDemo from './pages/TabsDemo.vue';
 import FooterDemo from './pages/FooterDemo.vue';
 import CodeBlockDemo from './pages/CodeBlockDemo.vue';
@@ -38,6 +40,8 @@ const PAGES: Record<string, unknown> = {
     icon: IconDemo,
     select: SelectDemo,
     checkbox: CheckboxDemo,
+    radio: RadioDemo,
+    tooltip: TooltipDemo,
     tabs: TabsDemo,
     footer: FooterDemo,
     codeblock: CodeBlockDemo,
