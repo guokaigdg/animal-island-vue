@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { Typewriter } from '../src';
+import { Typewriter, Title } from '../src';
+import type { TitleColor } from '../src';
 import { PAGE_INFO } from './pageInfo';
 import ButtonDemo from './pages/ButtonDemo.vue';
+import TitleDemo from './pages/TitleDemo.vue';
 import InputDemo from './pages/InputDemo.vue';
 import SwitchDemo from './pages/SwitchDemo.vue';
 import CardDemo from './pages/CardDemo.vue';
@@ -29,6 +31,7 @@ const props = defineProps<{ activeKey: string }>();
 
 const PAGES: Record<string, unknown> = {
     button: ButtonDemo,
+    title: TitleDemo,
     input: InputDemo,
     switch: SwitchDemo,
     card: CardDemo,
@@ -52,13 +55,30 @@ const PAGES: Record<string, unknown> = {
     'wedding-invitation': WeddingInvitationDemo,
 };
 
+// 与 React 版同款：根据 activeKey 哈希固定映射颜色，同页面不抖动
+const TITLE_COLORS: TitleColor[] = [
+    'lime-green', 'default', 'app-pink', 'purple', 'app-blue', 'app-yellow',
+    'app-orange', 'app-red', 'yellow-green', 'brown', 'warm-peach-pink',
+];
+
+const titleColor = computed<TitleColor>(() => {
+    const sum = props.activeKey.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
+    return TITLE_COLORS[Math.abs(sum) % TITLE_COLORS.length];
+});
+
 const info = computed(() => PAGE_INFO[props.activeKey]);
 const PageComponent = computed(() => PAGES[props.activeKey] ?? null);
 </script>
 
 <template>
     <template v-if="info && PageComponent">
-        <div class="page-title">{{ info.title }}</div>
+        <Title
+            size="large"
+            :color="titleColor"
+            :style="{ marginBottom: '30px', marginLeft: '18px' }"
+        >
+            {{ info.title }}
+        </Title>
         <div class="page-desc">
             <Typewriter :key="activeKey" :trigger="activeKey" :speed="30">
                 {{ info.desc }}
@@ -73,13 +93,6 @@ const PageComponent = computed(() => PAGES[props.activeKey] ?? null);
 </template>
 
 <style scoped>
-.page-title {
-    font-size: 24px;
-    font-weight: 700;
-    color: #794f27;
-    margin-bottom: 12px;
-    line-height: 1.4;
-}
 .page-desc {
     font-size: 14px;
     color: #794f27;
@@ -92,4 +105,3 @@ const PageComponent = computed(() => PAGES[props.activeKey] ?? null);
     color: #7c5734;
 }
 </style>
-

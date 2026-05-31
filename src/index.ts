@@ -41,6 +41,9 @@ export type { CursorProps } from './components/Cursor';
 export { Loading } from './components/Loading';
 export type { LoadingProps } from './components/Loading';
 
+export { Title } from './components/Title';
+export type { TitleProps, TitleSize, TitleColor } from './components/Title';
+
 // Phase 2 — 表单组件
 export { Input } from './components/Input';
 export type { InputProps, InputSize } from './components/Input';
