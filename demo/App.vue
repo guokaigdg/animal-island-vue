@@ -20,6 +20,7 @@ const MENU_ITEMS: MenuItem[] = [
         key: 'cat-basic',
         label: '── 基础组件 ──',
         children: [
+            { key: 'title', label: 'Title 标题', isNew: true },
             { key: 'button', label: 'Button 按钮' },
             { key: 'input', label: 'Input 输入框' },
             { key: 'switch', label: 'Switch 开关' },

@@ -1,4 +1,8 @@
 export const PAGE_INFO: Record<string, { title: string; desc: string }> = {
+    title: {
+        title: 'Title 标题',
+        desc: '装饰性标题组件 — ribbon 飘带风格，三种尺寸，13 种配色，适用于游戏化页面、活动 Banner 与场景分组',
+    },
     button: {
         title: 'Button 按钮',
         desc: '按钮组件 — 支持 primary / dashed / text / link 等类型，danger / ghost / loading / disabled 状态，icon 图标，block 块级，三种尺寸',
