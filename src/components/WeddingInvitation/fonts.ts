@@ -6,7 +6,6 @@
 // 注意：仅引入项目实际会用到的字重（500/700/900），且只覆盖以下 subset：
 //   - Nunito       latin
 //   - Noto Sans SC latin + chinese-simplified
-//   - Zen Maru Gothic latin + japanese
 
 // ---------- Nunito (拉丁) ----------
 import nunito500 from '@fontsource/nunito/files/nunito-latin-500-normal.woff2?url';
@@ -20,14 +19,6 @@ import notoLatin700 from '@fontsource/noto-sans-sc/files/noto-sans-sc-latin-700-
 import notoCN400 from '@fontsource/noto-sans-sc/files/noto-sans-sc-chinese-simplified-400-normal.woff2?url';
 import notoCN500 from '@fontsource/noto-sans-sc/files/noto-sans-sc-chinese-simplified-500-normal.woff2?url';
 import notoCN700 from '@fontsource/noto-sans-sc/files/noto-sans-sc-chinese-simplified-700-normal.woff2?url';
-
-// ---------- Zen Maru Gothic ----------
-import zenLatin500 from '@fontsource/zen-maru-gothic/files/zen-maru-gothic-latin-500-normal.woff2?url';
-import zenLatin700 from '@fontsource/zen-maru-gothic/files/zen-maru-gothic-latin-700-normal.woff2?url';
-import zenLatin900 from '@fontsource/zen-maru-gothic/files/zen-maru-gothic-latin-900-normal.woff2?url';
-import zenJP500 from '@fontsource/zen-maru-gothic/files/zen-maru-gothic-japanese-500-normal.woff2?url';
-import zenJP700 from '@fontsource/zen-maru-gothic/files/zen-maru-gothic-japanese-700-normal.woff2?url';
-import zenJP900 from '@fontsource/zen-maru-gothic/files/zen-maru-gothic-japanese-900-normal.woff2?url';
 
 interface FontDef {
     family: string;
@@ -45,17 +36,11 @@ const WEDDING_FONTS: FontDef[] = [
     { family: 'Noto Sans SC', weight: 400, url: notoCN400 },
     { family: 'Noto Sans SC', weight: 500, url: notoCN500 },
     { family: 'Noto Sans SC', weight: 700, url: notoCN700 },
-    { family: 'Zen Maru Gothic', weight: 500, url: zenLatin500 },
-    { family: 'Zen Maru Gothic', weight: 700, url: zenLatin700 },
-    { family: 'Zen Maru Gothic', weight: 900, url: zenLatin900 },
-    { family: 'Zen Maru Gothic', weight: 500, url: zenJP500 },
-    { family: 'Zen Maru Gothic', weight: 700, url: zenJP700 },
-    { family: 'Zen Maru Gothic', weight: 900, url: zenJP900 },
 ];
 
 /** 组件统一字体栈 —— 所有 .envelope 内的 text 元素继承此值 */
 export const WEDDING_FONT_FAMILY =
-    "Nunito, 'Noto Sans SC', 'Zen Maru Gothic', 'HarmonyOS Sans SC', 'MiSans', -apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif";
+    "Nunito, 'Noto Sans SC', 'HarmonyOS Sans SC', 'MiSans', -apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif";
 
 const buildFontFaceCss = (urlResolver: (url: string) => string): string =>
     WEDDING_FONTS.map(

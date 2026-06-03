@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { computed, nextTick, ref, watch } from 'vue';
+import { computed, nextTick, ref, useAttrs, watch } from 'vue';
 import type { RadioOption, RadioSize, RadioValue } from './types';
+
+const attrs = useAttrs();
 
 interface Props {
     modelValue?: RadioValue;
@@ -125,6 +127,7 @@ function onClickItem(opt: RadioOption, idx: number) {
         ]"
         role="radiogroup"
         @keydown="onKeyDown"
+        v-bind="attrs"
     >
         <label
             v-for="(opt, idx) in options"

@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref, onMounted, onBeforeUnmount, useAttrs } from 'vue';
+
+const attrs = useAttrs();
 
 const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -20,7 +22,7 @@ function pad(n: number) {
 </script>
 
 <template>
-    <div class="animal-time">
+    <div class="animal-time" v-bind="attrs">
         <div class="animal-time__date">
             <span class="animal-time__weekday">
                 {{ weekdays[now.getDay()] }}

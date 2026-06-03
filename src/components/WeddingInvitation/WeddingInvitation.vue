@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref, useSlots } from 'vue';
+import { ref, useAttrs, useSlots } from 'vue';
 import { domToCanvas } from 'modern-screenshot';
 // @ts-ignore
-import weddingTitleImg from './wedding.PNG';
-import iconMap from '../../assets/img/icons/icon-map.svg';
+import weddingTitleImg from './img/wedding.PNG';
+import { Icon } from '../Icon';
 // @ts-ignore
 import brideAndGroomImg from './img/brideandgroom.PNG';
 import { injectWeddingFonts, prepareWeddingFontsForExport } from './fonts';
@@ -31,6 +31,7 @@ const props = withDefaults(defineProps<WeddingInvitationProps>(), {
 });
 
 const slots = useSlots();
+const attrs = useAttrs();
 
 // 与 LESS 中 --notch-r / --lottery-h 保持一致
 const NOTCH_RADIUS = 14;
@@ -116,6 +117,7 @@ defineExpose<WeddingInvitationExpose>({ exportAsImage, getElement });
         class="animal-wedding"
         :class="[{ 'animal-wedding--no-lottery': !props.showLotteryNumber }, props.class]"
         :style="props.style"
+        v-bind="attrs"
     >
         <!-- 边角装饰 -->
         <svg class="animal-wedding__corner-leaf animal-wedding__corner-leaf--tl" viewBox="0 0 64 64" width="56" height="56" aria-hidden="true">
@@ -222,7 +224,7 @@ defineExpose<WeddingInvitationExpose>({ exportAsImage, getElement });
 
         <div class="animal-wedding__venue-card">
             <span class="animal-wedding__venue-icon">
-                <img :src="iconMap" alt="venue" width="26" height="26" />
+                <Icon name="icon-map" :size="26" />
             </span>
             <div class="animal-wedding__venue-text">
                 <div class="animal-wedding__venue-name">{{ props.venue }}</div>

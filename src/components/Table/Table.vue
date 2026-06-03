@@ -1,6 +1,8 @@
 <script setup lang="ts" generic="T extends TableRecord">
-import { computed, type CSSProperties, type VNode } from 'vue';
+import { computed, useAttrs, type CSSProperties, type VNode } from 'vue';
 import type { TableColumn, TableRecord } from './types';
+
+const attrs = useAttrs();
 
 const props = withDefaults(
     defineProps<{
@@ -58,7 +60,7 @@ const wrapperStyle = computed<CSSProperties>(() => ({
 </script>
 
 <template>
-    <div class="animal-table-wrapper" :style="wrapperStyle">
+    <div class="animal-table-wrapper" :style="wrapperStyle" v-bind="attrs">
         <table
             class="animal-table"
             :class="{ 'animal-table--loading': loading }"

@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, useAttrs } from 'vue';
 
 interface Props {
     code: string;
 }
 
 const props = defineProps<Props>();
+const attrs = useAttrs();
 
 const COLORS = {
     comment: '#6b5e50',
@@ -84,7 +85,7 @@ const segments = computed<Segment[]>(() => {
 </script>
 
 <template>
-    <pre class="animal-code-block"><span
+    <pre class="animal-code-block" v-bind="attrs"><span
         v-for="(seg, i) in segments"
         :key="i"
         :style="{ color: seg.color }"

@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, ref, useAttrs, watch } from 'vue';
 import leafIcon from '../../assets/img/icons/icon-leaf.png';
 import type { TabItem } from './types';
+
+const attrs = useAttrs();
 
 interface Props {
     /** 标签页配置列表 */
@@ -56,7 +58,7 @@ function handleClick(key: string) {
 </script>
 
 <template>
-    <div class="animal-tabs">
+    <div class="animal-tabs" v-bind="attrs">
         <div class="animal-tabs__list">
             <button
                 v-for="item in items"

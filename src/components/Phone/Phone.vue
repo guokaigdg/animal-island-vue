@@ -1,24 +1,30 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, computed } from 'vue';
+import { ref, onMounted, onBeforeUnmount, computed, useAttrs } from 'vue';
+import type { CSSProperties } from 'vue';
+import { Icon } from '../Icon';
+import type { IconName } from '../Icon';
+
+const attrs = useAttrs();
 
 interface AppDef {
     id: string;
-    iconClass: string;
+    iconName: IconName;
     color: string;
     offset?: boolean;
     hasNewMessage?: boolean;
+    iconStyle?: CSSProperties;
 }
 
 const apps: AppDef[] = [
-    { id: 'camera', iconClass: 'icon-camera', color: '#B77DEE', hasNewMessage: true },
-    { id: 'app', iconClass: 'icon-miles', color: '#889DF0', offset: true },
-    { id: 'critterpedia', iconClass: 'icon-critterpedia', color: '#F7CD67' },
-    { id: 'diy', iconClass: 'icon-diy', color: '#E59266' },
-    { id: 'shopping', iconClass: 'icon-design', color: '#F8A6B2' },
-    { id: 'variant', iconClass: 'icon-map', color: '#82D5BB', hasNewMessage: true },
-    { id: 'design', iconClass: 'icon-variant', color: '#8AC68A' },
-    { id: 'map', iconClass: 'icon-helicopter', color: '#FC736D' },
-    { id: 'chat', iconClass: 'icon-chat', color: '#D1DA49' },
+    { id: 'camera', iconName: 'icon-camera', color: '#B77DEE', hasNewMessage: true },
+    { id: 'app', iconName: 'icon-miles', color: '#889DF0', offset: true },
+    { id: 'critterpedia', iconName: 'icon-critterpedia', color: '#F7CD67', iconStyle: { width: '105px' } },
+    { id: 'diy', iconName: 'icon-diy', color: '#E59266' },
+    { id: 'shopping', iconName: 'icon-design', color: '#F8A6B2' },
+    { id: 'variant', iconName: 'icon-map', color: '#82D5BB', hasNewMessage: true, iconStyle: { width: '90px' } },
+    { id: 'design', iconName: 'icon-variant', color: '#8AC68A', iconStyle: { width: '80px' } },
+    { id: 'map', iconName: 'icon-helicopter', color: '#FC736D' },
+    { id: 'chat', iconName: 'icon-chat', color: '#D1DA49' },
 ];
 
 const now = ref(new Date());
@@ -40,10 +46,15 @@ const display = computed(() => {
         ampm: h >= 12 ? 'PM' : 'AM',
     };
 });
+
+const iconStyleFor = (app: AppDef): CSSProperties => ({
+    backgroundSize: '70% auto',
+    ...(app.iconStyle || {}),
+});
 </script>
 
 <template>
-    <div class="animal-phone-wrap">
+    <div class="animal-phone-wrap" v-bind="attrs">
         <div class="animal-phone">
             <div class="animal-phone__inner">
                 <div class="animal-phone__home">
@@ -66,12 +77,12 @@ const display = computed(() => {
                             :style="{ backgroundColor: app.color }"
                         >
                             <span v-if="app.hasNewMessage" class="animal-phone__badge" />
-                            <span
+                            <Icon
+                                :name="app.iconName"
+                                size="100%"
                                 class="animal-phone__app-icon"
-                                :class="[
-                                    `animal-phone__app-icon--${app.iconClass}`,
-                                    { 'animal-phone__app-icon--offset': app.offset },
-                                ]"
+                                :class="{ 'animal-phone__app-icon--offset': app.offset }"
+                                :style="iconStyleFor(app)"
                             />
                         </div>
                     </div>
@@ -177,10 +188,10 @@ const display = computed(() => {
             overflow: hidden;
         }
 
-        &:hover .animal-phone__app-icon {
+        &:hover :deep(.animal-phone__app-icon) {
             animation: animal-phone-bounce 0.3s ease-in-out forwards;
         }
-        &:hover .animal-phone__app-icon--offset {
+        &:hover :deep(.animal-phone__app-icon--offset) {
             animation: animal-phone-bounce-offset 0.3s ease-in-out forwards;
         }
     }
@@ -194,38 +205,13 @@ const display = computed(() => {
         border-radius: 50%;
         background: #ff544a;
         border: 5px solid #f8f4e8;
+        z-index: 1;
     }
 
-    &__app-icon {
-        display: block;
-        width: 100%;
-        height: 100%;
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: 70% auto;
-
-        &--offset {
+    :deep(.animal-phone__app-icon) {
+        &.animal-phone__app-icon--offset {
             transform: translateY(15px);
         }
-
-        &--icon-camera { background-image: url('../../assets/img/icons/icon-camera.svg'); }
-        &--icon-miles { background-image: url('../../assets/img/icons/icon-miles.svg'); }
-        &--icon-critterpedia {
-            background-image: url('../../assets/img/icons/icon-critterpedia.svg');
-            width: 105px;
-        }
-        &--icon-diy { background-image: url('../../assets/img/icons/icon-diy.svg'); }
-        &--icon-design { background-image: url('../../assets/img/icons/icon-design.svg'); }
-        &--icon-map {
-            background-image: url('../../assets/img/icons/icon-map.svg');
-            width: 90px;
-        }
-        &--icon-variant {
-            background-image: url('../../assets/img/icons/icon-variant.svg');
-            width: 80px;
-        }
-        &--icon-helicopter { background-image: url('../../assets/img/icons/icon-helicopter.svg'); }
-        &--icon-chat { background-image: url('../../assets/img/icons/icon-chat.svg'); }
     }
 
     &__pageindicator {
