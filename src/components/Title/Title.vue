@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, useAttrs } from 'vue';
 import type { TitleColor, TitleSize } from './types';
+
+const attrs = useAttrs();
 
 interface Props {
     size?: TitleSize;
@@ -22,7 +24,7 @@ const fontSize = computed(() => `${SIZE_MAP[props.size]}px`);
 </script>
 
 <template>
-    <span class="animal-title">
+    <span class="animal-title" v-bind="attrs">
         <span
             class="animal-title__ribbon"
             :class="color !== 'default' ? `animal-title__ribbon--${color}` : ''"

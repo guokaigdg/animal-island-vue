@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, useAttrs } from 'vue';
 import type { CursorProps } from './types';
 
 const props = withDefaults(defineProps<CursorProps>(), {
     forceAll: true,
 });
+
+const attrs = useAttrs();
 
 defineSlots<{ default?: () => unknown }>();
 
@@ -12,7 +14,7 @@ const modeClass = computed(() => (props.forceAll ? 'animal-cursor--force' : 'ani
 </script>
 
 <template>
-    <div :class="['animal-cursor', modeClass]">
+    <div :class="['animal-cursor', modeClass]" v-bind="attrs">
         <slot />
     </div>
 </template>

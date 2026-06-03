@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, useAttrs } from 'vue';
 import type { SwitchSize } from './types';
+
+const attrs = useAttrs();
 
 interface Props {
     modelValue?: boolean;
@@ -55,6 +57,7 @@ function handleClick() {
             'animal-switch--loading': loading,
         }"
         @click="handleClick"
+        v-bind="attrs"
     >
         <span class="animal-switch__handle">
             <span v-if="loading" class="animal-switch__spinner" />

@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { computed, ref, watch, onBeforeUnmount, type CSSProperties } from 'vue';
+import { computed, ref, useAttrs, watch, onBeforeUnmount, type CSSProperties } from 'vue';
 import type { SelectOption } from './types';
+
+const attrs = useAttrs();
 
 interface Props {
     modelValue: string;
@@ -106,6 +108,7 @@ onBeforeUnmount(() => {
         ref="wrapperRef"
         class="animal-select"
         :class="{ 'animal-select--disabled': disabled }"
+        v-bind="attrs"
     >
         <div
             class="animal-select__trigger"

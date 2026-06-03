@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { useAttrs } from 'vue';
 import type { CheckboxOption, CheckboxSize, CheckboxValue } from './types';
+
+const attrs = useAttrs();
 
 interface Props {
     modelValue?: CheckboxValue[];
@@ -49,6 +52,7 @@ function onKeyDown(e: KeyboardEvent, option: CheckboxOption) {
             `animal-checkbox-group--${direction}`,
             { 'animal-checkbox-group--disabled': disabled },
         ]"
+        v-bind="attrs"
     >
         <label
             v-for="opt in options"

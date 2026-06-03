@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref } from 'vue';
+import { computed, onBeforeUnmount, ref, useAttrs } from 'vue';
 import type { TooltipPlacement, TooltipTrigger, TooltipVariant } from './types';
+
+const attrs = useAttrs();
 
 interface Props {
     title?: string;
@@ -62,7 +64,7 @@ const triggerHandlers = computed(() => {
 </script>
 
 <template>
-    <span class="animal-tooltip">
+    <span class="animal-tooltip" v-bind="attrs">
         <span class="animal-tooltip__trigger" v-bind="triggerHandlers">
             <slot />
         </span>
