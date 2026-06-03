@@ -14,14 +14,6 @@ import '@fontsource/noto-sans-sc/chinese-simplified-400.css';
 import '@fontsource/noto-sans-sc/chinese-simplified-500.css';
 import '@fontsource/noto-sans-sc/chinese-simplified-700.css';
 
-// Zen Maru Gothic
-import '@fontsource/zen-maru-gothic/latin-500.css';
-import '@fontsource/zen-maru-gothic/latin-700.css';
-import '@fontsource/zen-maru-gothic/latin-900.css';
-import '@fontsource/zen-maru-gothic/japanese-500.css';
-import '@fontsource/zen-maru-gothic/japanese-700.css';
-import '@fontsource/zen-maru-gothic/japanese-900.css';
-
 // ============================================
 // 组件导出（随迁移进度逐步追加）
 // ============================================
