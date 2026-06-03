@@ -1,0 +1,1 @@
+export const gsap: any;
