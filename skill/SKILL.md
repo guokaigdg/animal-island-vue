@@ -19,27 +19,30 @@ description: >
 ## 概述
 
 animal-island-vue 是一套受《集合啦！动物森友会》启发的 Vue 3 + TypeScript UI 组件库。
-设计语言核心：**温暖大地色系 + 大圆角 pill 形 + 游戏按键立体感 + 柔和动效 + 有机不规则形状**。
+设计语言核心：**温暖大地色系 + 大圆角 pill 形 + 游戏按键立体感 + 柔和动效 + 几何 / 有机形状并存**（几何代表：Title 飘带的 swallowtail clip-path；有机代表：Modal 的 SVG blob、WeddingInvitation 的不规则虚线边框）。
 
 - 源码：`src/components/<ComponentName>/`（每组件包含 `*.vue` + `index.ts` + 可选 `types.ts`）
 - Demo 站：`demo/pages/<ComponentName>Demo.vue`
-- 构建：Vite 7 (library mode) + `vite.config.ts`（库）/ `vite.config.docs.ts`（Demo）
-- 样式系统：**Less + CSS Custom Properties**（`src/styles/variables.less` 定义 Less 变量，`src/styles/themes/default.less` 暴露为 `:root` 上的 CSS 自定义属性）
+- 构建：Vite (library mode) + `vite.config.ts`（库）/ `vite.config.docs.ts`（Demo）
+- 样式系统：**scoped `<style lang="less" scoped>` + BEM** + `src/styles/variables.less` 设计 token（**不使用 CSS Modules**）
 
-### 全量组件清单（19 个）
+### 全量导出清单（24 个 named exports = 23 个组件 + 1 个伴生导出按钮）
 
 从 `src/index.ts` 导出：
 
 | 组件 | 职责 | 交互 | 装饰 / 纯展示 |
 |---|---|---|---|
 | `Button` | 按钮，5 种类型 × 3 种尺寸 | ✓ | |
-| `Input` | 输入框，3 种尺寸 + clear/prefix/suffix slots | ✓ | |
+| `Input` | 输入框，3 种尺寸 + clear/prefix/suffix | ✓ | |
 | `Switch` | 开关，默认/小号 | ✓ | |
 | `Modal` | SVG blob 裁切弹窗 | ✓ | |
-| `Card` | 容器，`default`/`title`/`dashed`，13 种 NookPhone 配色 | | ✓ |
-| `Collapse` | 手风琴（CSS Grid，无 JS 过渡） | ✓ | |
+| `Card` | 容器，`default`/`dashed`，13 种 NookPhone 实色 + 13 种 `pattern` 波点墙纸（CSS radial-gradient，非图片） | | ✓ |
+| `Title` | 章节标题，飘带横幅（swallowtail clip-path 燕尾 + 折角阴影 + 微透视正面），13 种配色（替代旧 `Card type="title"`） | | ✓ |
+| `Collapse` | 手风琴（动画用 CSS Grid 0fr↔1fr 实现，无 JS 动画） | ✓ | |
 | `Select` | 下拉选择器（受控） | ✓ | |
 | `Checkbox` | 多选框组，水平/垂直，3 种尺寸 | ✓ | |
+| `Radio` | 单选框组，3 种尺寸，键盘 roving tabindex | ✓ | |
+| `Tooltip` | 12 种 placement，`hover`/`focus`/`click` 触发，`default`/`island` 形态 | ✓ | |
 | `Icon` | SVG 图标库（10 个） | | ✓ |
 | `Time` | HUD 实时时钟 | | ✓ |
 | `Phone` | NookPhone 3×3 应用网格 | | ✓ |
@@ -49,10 +52,11 @@ animal-island-vue 是一套受《集合啦！动物森友会》启发的 Vue 3 +
 | `Typewriter` | 打字机效果，保留 VNode 结构 | | ✓ |
 | `Tabs` | 标签页切换，叶子摆动动画可选 | ✓ | |
 | `CodeBlock` | JSX/TS 语法高亮代码块 | | ✓ |
-| `Loading` | 轻量 loading 覆盖层（Vue 端新增） | | ✓ |
-| `Table` | 数据表格（Vue 端新增） | ✓ | |
+| `Loading` | 全屏遮罩 + SVG spinner（mint `#19c8b9`，`stroke-dasharray` 动画） | | ✓ |
+| `Table` | 数据表格，固定列、空状态、loading | ✓ | |
+| `WeddingInvitation` | 婚礼邀请函（含 `WeddingInvitationExportButton` 导出 PNG —— 这是清单里**唯一非组件的伴生导出按钮**） | | ✓ |
 
-类型导出：`ButtonProps/ButtonType/ButtonSize/ButtonHTMLType`、`InputProps/InputSize`、`SwitchProps/SwitchSize`、`ModalProps`、`CardProps/CardType/CardColor`、`FooterProps/FooterType`、`CollapseProps`、`CursorProps`、`TimeProps`、`PhoneProps`、`DividerProps`、`TypewriterProps`、`SelectProps/SelectOption`、`IconProps/IconName`、`TabsProps/TabItem`、`CheckboxProps/CheckboxOption/CheckboxSize/CheckboxValue`、`CodeBlockProps`、`LoadingProps`、`TableProps/TableColumn/TableRecord`。运行时值：`ICON_LIST`。
+类型导出：`ButtonProps/ButtonType/ButtonSize/ButtonHTMLType`、`InputProps/InputSize`、`SwitchProps/SwitchSize`、`ModalProps`、`CardProps/CardType/CardColor`、`TitleProps/TitleSize/TitleColor`、`FooterProps/FooterType`、`CollapseProps`、`CursorProps`、`TimeProps`、`PhoneProps`、`DividerProps/DividerType`、`TypewriterProps`、`SelectProps/SelectOption`、`IconProps/IconName`、`TabsProps/TabItem`、`CheckboxProps/CheckboxOption/CheckboxSize/CheckboxValue`、`RadioProps/RadioOption/RadioSize/RadioValue`、`TooltipProps/TooltipPlacement/TooltipTrigger/TooltipVariant`、`CodeBlockProps`、`LoadingProps`、`TableProps/TableColumn/TableRecord`、`WeddingInvitationProps/WeddingInvitationExpose/WeddingInvitationExportButtonProps`。运行时值：`ICON_LIST`。
 
 > Vue 端约定：
 > - 受控值统一通过 `v-model` / `v-model:open` / `v-model:expanded`（即 `modelValue` + `update:modelValue` 等事件）
@@ -64,71 +68,52 @@ animal-island-vue 是一套受《集合啦！动物森友会》启发的 Vue 3 +
 
 ### 色彩系统
 
-项目使用 Less + CSS Custom Properties，所有 token 同时维护两套：
-- `src/styles/variables.less` — Less 变量（编译期使用）：`@primary-color`、`@spacing-lg`、`@border-radius-base` 等。
-- `src/styles/themes/default.less` — 把 Less 变量映射为 `:root` 上的 CSS 自定义属性（运行期换肤），统一使用 `--animal-*` 命名空间。
-
 ```less
-// src/styles/variables.less
+// 主色（薄荷青绿）
 @primary-color:        #19c8b9;
 @primary-color-hover:  #3dd4c6;
-@primary-color-active: #50b9ab;
-// ...
+@primary-color-active: #11a89b;
+@primary-color-bg:     #e6f9f6;
+
+// 文字（温暖棕色系）
+@text-color:           #794f27;    // 主文字（header/sidebar）
+@text-color-body:      #725d42;    // 正文（组件内文字）
+@text-color-secondary: #9f927d;    // 次级文字
+@text-color-muted:     #8a7b66;    // 浅棕（modal body）
+@text-color-disabled:  #c4b89e;    // 禁用
+
+// 边框
+@border-color:         #9f927d;
+@border-color-light:   #c4b89e;    // 输入框边框
+@border-color-hover:   #a89878;    // 输入框 hover
+
+// 背景（奶油米白）
+@bg-color:             #f8f8f0;    // 主背景
+@bg-color-content:     rgb(247, 243, 223);  // 内容区（Modal、Card）
+@bg-color-secondary:   #f0e8d8;
+@bg-color-disabled:    #f0ece2;
+@bg-color-input:       rgb(247, 243, 223);  // 输入框背景
+@bg-color-input-dis:   #ece8dc;    // 输入框禁用
+
+// 状态色
+@success-color:        #6fba2c;
+@success-color-active: #5a9e1e;
+@warning-color:        #f5c31c;
+@warning-color-active: #dba90e;
+@error-color:          #e05a5a;
+@error-color-active:   #c94444;
+
+// 游戏特殊色
+@focus-yellow:         #ffcc00;    // 焦点高亮（非蓝色）
+@focus-yellow-dark:    #e0b800;    // 焦点阴影
+@sidebar-active-bg:    #B7C6E5;    // 侧边栏选中背景
+@sidebar-hover-bg:     #d6dff0;    // 侧边栏 hover 背景
+
+// 3D 阴影色
+@shadow-btn:           #bdaea0;    // 按钮 3D 阴影
+@shadow-input:         #d4c9b4;    // 输入框 3D 阴影
+@shadow-switch-on:     #5a9e1e;    // Switch 开启 3D 阴影
 ```
-
-```css
-/* src/styles/themes/default.less 编译输出片段 */
-:root {
-    /* ---------- 主色（薄荷青绿） ---------- */
-    --animal-primary-color:        #19c8b9;
-    --animal-primary-color-hover:  #3dd4c6;
-    --animal-primary-color-active: #50b9ab;
-    --animal-primary-color-bg:     #e6f9f6;
-
-    /* ---------- 状态色 ---------- */
-    --animal-success-color:        #6fba2c;
-    --animal-success-color-hover:  #85cc45;
-    --animal-success-color-active: #5a9e1e;
-
-    --animal-warning-color:        #f5c31c;
-    --animal-warning-color-hover:  #f7d04a;
-    --animal-warning-color-active: #dba90e;
-
-    --animal-error-color:          #e05a5a;
-    --animal-error-color-hover:    #e87878;
-    --animal-error-color-active:   #c94444;
-
-    /* ---------- 文字（温暖棕色系） ---------- */
-    --animal-text-color:           #794f27;
-    --animal-text-color-secondary: #9f927d;
-    --animal-text-color-disabled:  #c4b89e;
-    --animal-warm-color:           #794f27;
-    --animal-warm-color-soft:      #725d42;
-
-    /* ---------- 边框 ---------- */
-    --animal-border-color:         #aaa69d;
-    --animal-border-color-hover:   #827157;
-    --animal-border-color-light:   #e8e2d6;
-
-    /* ---------- 背景 ---------- */
-    --animal-bg-color:             #f8f8f0;
-    --animal-bg-color-secondary:   #f0e8d8;
-    --animal-bg-color-disabled:    #f0ece2;
-    --animal-bg-color-input:       #f7f3df;
-    --animal-cream-color:          #f8f8f0;
-
-    /* ---------- 3D 阴影色 ---------- */
-    --animal-shadow-warm:        #bdaea0;
-    --animal-shadow-soft:        #d4c9b4;
-    --animal-shadow-soft-hover:  #c4b89e;
-    --animal-shadow-soft-strong: #a89878;
-}
-```
-
-> **游戏特殊色**（不在 token 命名空间，组件内任意调用即可）：
-> - 焦点黄 `#ffcc00` / 焦点黄深 `#e0b800`
-> - 侧边栏选中 `#B7C6E5` / hover `#d6dff0`
-> - Switch ON 绿 `#86d67a`（border `#6fba2c`，3D 阴影 `#5a9e1e`）
 
 **NookPhone 应用调色板**（Card `color` prop 可选值）：
 
@@ -152,26 +137,35 @@ animal-island-vue 是一套受《集合啦！动物森友会》启发的 Vue 3 +
 
 ### 字体
 
-项目通过 `@fontsource/*` 在 `src/index.ts` 中按需引入；本地未安装时也可通过 Google Fonts 在线加载：
+项目使用两款 Google Fonts 圆体字，**必须**按以下方式引入，本地未安装时通过在线地址加载：
 
-```css
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700&family=Zen+Maru+Gothic:wght@400;500;700&display=swap');
+```html
+<!-- 在 index.html <head> 中引入 -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700&display=swap"
+  rel="stylesheet"
+/>
 ```
 
-`src/styles/themes/default.less` 编译输出中：
+或在 CSS / Less 入口文件顶部：
 
 ```css
---font-animal: Nunito, 'Noto Sans SC', 'Zen Maru Gothic',
-    'HarmonyOS Sans SC', 'MiSans',
-    -apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
-    sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700&display=swap');
+```
+
+```css
+font-family: Nunito, 'Noto Sans SC',
+  -apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
 ```
 
 | 字体 | 用途 | Google Fonts key |
 |---|---|---|
 | **Nunito** | 主字体，拉丁字符 | `family=Nunito` |
 | **Noto Sans SC** | 中文字体，简体覆盖 | `family=Noto+Sans+SC` |
-| **Zen Maru Gothic** | 日文字体 | `family=Zen+Maru+Gothic` |
+
+> Vue 版本同时通过 `@fontsource/*` 在 `src/index.ts` 直接 import 字体子集（`nunito` / `noto-sans-sc` / `zen-maru-gothic`），库消费者无需手动 `<link>`；如果你脱离组件库自实现，按上文 `<link>` 引入即可。如需扩展日文字符，自行 `@import` `Zen Maru Gothic` 或类似字体并追加到 `font-family` 末尾。
 
 字重分级：
 - 正文内容：**500**
@@ -181,7 +175,7 @@ animal-island-vue 是一套受《集合啦！动物森友会》启发的 Vue 3 +
 
 字间距：`letter-spacing: 0.01em`（正文）/ `0.02em`（按钮/标题）/ `1.5px`（星期大写）
 
-禁止使用细体（weight < 400）或等宽字体（CodeBlock 除外）。
+禁止使用细体（weight < 400）或等宽字体。
 
 ---
 
@@ -189,11 +183,9 @@ animal-island-vue 是一套受《集合啦！动物森友会》启发的 Vue 3 +
 
 ```
 间距：xs=4px  sm=8px  md=12px  lg=16px  xl=24px
-圆角：sm=16px  base=18px  lg=24px  pill=50px（按钮/输入框，arbitrary 值）
+圆角：sm=12px  base=18px  lg=24px  pill=50px（按钮/输入框）
 边框：默认 2px solid，输入框 2.5px，大尺寸输入框 3px
 ```
-
-Less 端通过变量引用：`padding: @spacing-lg;` / `gap: @spacing-sm;` / `border-radius: @border-radius-base;`；50px 胶囊形按钮直接写 `border-radius: 50px;`。
 
 ---
 
@@ -201,22 +193,27 @@ Less 端通过变量引用：`padding: @spacing-lg;` / `gap: @spacing-sm;` / `bo
 
 ```css
 /* 卡片/容器阴影（暖色调，非冷黑）*/
-box-shadow: 0 3px 10px 0 rgba(61, 52, 40, 0.10);   /* base */
-box-shadow: 0 8px 24px 0 rgba(61, 52, 40, 0.14);   /* lg */
-box-shadow: 0 4px 10px rgba(107, 92, 67, 0.42);    /* Card */
+box-shadow: 0 3px 10px 0 rgba(61, 52, 40, 0.10);   /* 基础 */
+box-shadow: 0 8px 24px 0 rgba(61, 52, 40, 0.14);   /* 较大 */
+/* Card 默认无 box-shadow（依赖 border / pattern 营造层次，不靠悬浮阴影）*/
 
-/* 游戏按键立体阴影（最重要特征）*/
-box-shadow: 0 5px 0 0 #bdaea0;   /* 按钮默认 */
-box-shadow: 0 6px 0 0 #bdaea0;   /* 按钮 hover */
-box-shadow: 0 1px 0 0 #bdaea0;   /* 按钮 active */
-box-shadow: 0 3px 0 0 #d4c9b4;   /* 输入框 */
-box-shadow: 0 2px 0 0 #d4c9b4;   /* 小号输入框 */
-box-shadow: 0 4px 0 0 #d4c9b4;   /* 大号输入框 */
-box-shadow: 0 3px 0 0 #5a9e1e;   /* Switch 开启态 */
-box-shadow: 0 2px 0 0 #5a9e1e;   /* Switch 小号开启态 */
+/* 默认/虚线/文字/链接按钮阴影（柔和 elevation —— 非 3D 厚阴影）*/
+box-shadow: 0 2px 4px 0 rgba(61, 52, 40, 0.06);    /* btn-default 静止：--animal-shadow-sm */
+box-shadow: 0 3px 10px 0 rgba(61, 52, 40, 0.10);   /* btn-default hover：--animal-shadow-base */
+/* active 回落到 --animal-shadow-sm，translateY(0) */
+
+/* 游戏按键 3D 立体阴影（仅 primary / danger-primary 按钮；Input 仅 shadow={true} 时启用；Switch 仅 track inset 阴影，handle 无 box-shadow）*/
+box-shadow: 0 5px 0 0 #bdaea0;   /* primary 按钮默认 */
+box-shadow: 0 6px 0 0 #bdaea0;   /* primary 按钮 hover */
+box-shadow: 0 1px 0 0 #bdaea0;   /* primary 按钮 active */
+box-shadow: 0 5px 0 0 #c94444;   /* danger-primary 按钮默认（hover 6 / active 1） */
+box-shadow: 0 3px 0 0 #d4c9b4;   /* 输入框 shadow={true} 中号 */
+box-shadow: 0 2px 0 0 #d4c9b4;   /* 输入框 shadow={true} 小号 */
+box-shadow: 0 4px 0 0 #d4c9b4;   /* 输入框 shadow={true} 大号 */
+/* Switch 仅 track 有 inset 阴影：inset 0 2px 4px rgba(114,93,66,0.15) (OFF) / inset 0 2px 4px rgba(90,158,30,0.20) (ON)；handle 无 outer box-shadow */
 ```
 
-Less 端直接写：`box-shadow: 0 5px 0 0 @shadow-warm;`。
+> **重要**：只有 primary 风格按钮（含 danger primary）才使用 `0 5px 0 0` 这种像素级 3D 厚阴影；`default` / `dashed` / `text` / `link` 用上面的柔和 elevation 阴影。把 3D 阴影套到所有按钮上会让界面变得过重过游戏化。
 
 ---
 
@@ -230,8 +227,8 @@ transition: grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1);  /* 手风琴 
 
 /* Hover：上浮 */
 transform: translateY(-1px);   /* 按钮 / 输入框 */
-transform: translateY(-2px);   /* Switch handle */
-transform: translateY(-4px);   /* 卡片 */
+transform: translateY(-2px);   /* 卡片 */
+/* Switch handle: 始终 translateY(-50%) 垂直居中，无 hover 上浮 */
 
 /* Active：下压（游戏按键反馈）*/
 transform: translateY(2px);    /* 按钮 active */
@@ -251,8 +248,6 @@ transform: translateY(2px);    /* 按钮 active */
 }
 ```
 
-> Less 端直接写 `transition: all @motion-duration-base @motion-ease;`，时长 token：`@motion-duration-fast` (0.15s) / `@motion-duration-base` (0.25s) / `@motion-duration-slow` (0.35s)，缓动统一用 `@motion-ease`（`cubic-bezier(0.4, 0, 0.2, 1)`）。
-
 ---
 
 ## 2. 组件精确样式规范
@@ -267,7 +262,7 @@ transform: translateY(2px);    /* 按钮 active */
 | border-radius | 12px | **50px** | 24px |
 | border-width | 2px | 2px | 2px |
 
-**primary 按钮精确值：**
+**primary 按钮精确值（**仅 primary / danger-primary 用 3D 厚阴影**）：**
 ```css
 color: #794f27;
 background: #f8f8f0;
@@ -292,6 +287,25 @@ outline-offset: 2px;
 /* disabled */
 opacity: 0.5;
 ```
+
+**default / dashed / text / link 按钮（柔和 elevation）：**
+```css
+/* 静止 */
+box-shadow: var(--animal-shadow-sm);     /* 0 2px 4px 0 rgba(61,52,40,0.06) */
+
+/* hover */
+color: #19c8b9;
+border-color: #19c8b9;
+box-shadow: var(--animal-shadow-base);   /* 0 3px 10px 0 rgba(61,52,40,0.10) */
+transform: translateY(-1px);
+
+/* active */
+color: #11a89b;
+border-color: #11a89b;
+transform: translateY(0);
+box-shadow: var(--animal-shadow-sm);     /* 回落到静止态 */
+```
+> 不要把 primary 那套 `0 5px / 6px / 1px #bdaea0` 套到 default / dashed 上 —— 整体会显得过重过 cartoon。
 
 **loading 斜纹动画（精确值）：**
 ```css
@@ -318,11 +332,11 @@ color: #fff;
 box-shadow: 0 5px 0 0 #c94444;  /* error-active */
 ```
 
-> **Vue 实现陷阱**：在 BEM 基础类（如 `.animal-btn`）里写默认阴影时，确保后续 type 修饰符（如 `&--primary`）声明顺序在后，否则会被基类晚出的样式覆盖。建议把每个 type 特有的阴影 / 边框直接写在该 type 修饰符块里。
-
 ---
 
 ### Input
+
+> ⚠️ **`shadow` prop 默认 `false`**：默认无阴影，下表的 `box-shadow` 仅在 `<Input shadow />` 显式开启时生效。status (error/warning) 阴影与 focus 黄色光晕不受此 prop 控制。
 
 | 属性 | small | middle | large |
 |---|---|---|---|
@@ -331,14 +345,15 @@ box-shadow: 0 5px 0 0 #c94444;  /* error-active */
 | font-size | 12px | 14px | 16px |
 | border-radius | 40px | 50px | 50px |
 | border-width | 2.5px | 2.5px | **3px** |
-| box-shadow | `0 2px 0 0 #d4c9b4` | `0 3px 0 0 #d4c9b4` | `0 4px 0 0 #d4c9b4` |
+| box-shadow（仅 `shadow={true}`） | `0 2px 0 0 #d4c9b4` | `0 3px 0 0 #d4c9b4` | `0 4px 0 0 #d4c9b4` |
 
 **精确颜色值：**
 ```css
 background: rgb(247, 243, 223);
 border: 2.5px solid #c4b89e;
-box-shadow: 0 3px 0 0 #d4c9b4;
+/* 默认无 box-shadow；shadow={true} 时按上表中号取 0 3px 0 0 #d4c9b4 */
 
+/* 文字 */
 color: #725d42;
 font-weight: 500;
 letter-spacing: 0.01em;
@@ -347,10 +362,14 @@ letter-spacing: 0.01em;
 color: #c4b89e;
 font-weight: 400;
 
-/* prefix/suffix（Vue 端为 #prefix / #suffix 插槽） */
+/* prefix/suffix */
 color: #a0936e;
-margin-right: 6px;   /* prefix */
-margin-left: 6px;    /* suffix */
+
+/* prefix margin-right */
+margin-right: 6px;
+
+/* suffix margin-left */
+margin-left: 6px;
 
 /* hover */
 border-color: #a89878;
@@ -367,15 +386,21 @@ box-shadow: none;
 opacity: 0.6;
 color: #c4b89e;
 
-/* error */ box-shadow: 0 3px 0 0 #c94444;
-/* warning */ box-shadow: 0 3px 0 0 #dba90e;
+/* error */
+box-shadow: 0 3px 0 0 #c94444;
+
+/* warning */
+box-shadow: 0 3px 0 0 #dba90e;
 ```
 
 **clear 按钮：**
 ```css
-width: 20px; height: 20px; margin-left: 4px;
-color: #c4b89e; font-size: 13px; font-weight: 700;
-border-radius: 50%; transition: all 0.15s;
+width: 20px; height: 20px;
+margin-left: 4px;
+color: #c4b89e;
+font-size: 13px; font-weight: 700;
+border-radius: 50%;
+transition: all 0.15s;
 /* hover */ color: #725d42; background: rgba(114, 93, 66, 0.1);
 ```
 
@@ -385,27 +410,36 @@ border-radius: 50%; transition: all 0.15s;
 
 **默认尺寸：**
 ```css
-min-width: 52px; height: 28px;
-border: 2.5px solid #c4b89e; border-radius: 50px;
+min-width: 52px;
+height: 28px;
+border: 2.5px solid #c4b89e;
+border-radius: 50px;
 background: #d4c9b4;
 box-shadow: inset 0 2px 4px rgba(114, 93, 66, 0.15);
 
 /* handle */
-width: 21px; height: 21px; top: 2px; left: 2px;
+width: 21px; height: 21px;
+top: 50%; left: 2px;
+transform: translateY(-50%);   /* 垂直居中 */
 background: rgb(247, 243, 223);
-border: 2px solid #c4b89e; border-radius: 50%;
-box-shadow: 0 3px 0 0 #bdaea0;
-transform: translateY(-2px);  /* 悬浮效果 */
+border: 2.5px solid #bdaea0;
+border-radius: 50%;
+/* handle 无 outer box-shadow，仅靠 border 与 track inset 阴影分层 */
 
 /* 开启态 */
-background: #86d67a; border-color: #6fba2c;
+background: #86d67a;
+border-color: #6fba2c;
 box-shadow: inset 0 2px 4px rgba(90, 158, 30, 0.2);
 /* handle 开启后 left */
 left: calc(100% - 24px);
-border-color: #6fba2c; box-shadow: 0 3px 0 0 #5a9e1e;
+border-color: #5a9e1e;
 
-/* focus-visible */ outline: 2px solid #ffcc00; outline-offset: 2px;
-/* disabled */ opacity: 0.5;
+/* focus-visible */
+outline: 2px solid #ffcc00;
+outline-offset: 2px;
+
+/* disabled */
+opacity: 0.5;
 ```
 
 **small 尺寸：**
@@ -424,10 +458,8 @@ line-height: 1; letter-spacing: 0.02em;
 text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 padding: 0 8px 0 28px;   /* 未开启 */
 padding: 0 28px 0 8px;   /* 开启 */
-/* small 版 */ padding: 0 6px 0 20px (未开启) / 0 20px 0 6px (开启); font-size: 9px;
+/* small 版 */ padding: 0 6px 0 20px; font-size: 9px;
 ```
-
-> **Vue 实现陷阱**：small + checked 状态必须把 padding 翻转为 `pl-1.5 pr-5`，与 unchecked 的 `pl-5 pr-1.5` 区别开，否则文字不会随状态左右切换。
 
 **loading spinner：**
 ```css
@@ -451,15 +483,83 @@ background: rgb(247, 243, 223);
 padding: 16px 24px;
 color: #725d42;
 font-weight: 500;
-box-shadow: 0 4px 10px rgba(107, 92, 67, 0.42);
+/* 默认 NO box-shadow（依赖 border / pattern 分层，不靠悬浮阴影）*/
 transition: all 0.3s ease;
-/* hover */ transform: translateY(-4px);
+/* hover */ transform: translateY(-2px);
 
-/* title 类型（通过默认插槽承载内容） */
-background: #fdfdf5;
-border-radius: 40px 35px 45px 38px / 38px 45px 35px 40px;
-padding: 12px 32px;
-font-weight: 600;
+/* dashed 类型 */
+border: 2px dashed #e8dcc8;
+background: rgb(250, 248, 242);
+box-shadow: none;
+
+/* pattern 叠加（pattern !== 'none' 时，纯 CSS 实现，**无 png/svg**） */
+/* 双层 radial-gradient 点阵 + 同色调 1.5px solid 边框 + pastel 浅底，
+   13 种命名（default / app-pink / purple / app-blue / app-yellow / app-orange /
+   app-teal / app-green / app-red / lime-green / yellow-green / brown / warm-peach-pink）
+   与 Card.color 同名，但呈现为浅底波点"墙纸"而非实色块。 */
+/* 例：pattern="app-pink" */
+background:
+  radial-gradient(circle, rgba(248,166,178,0.18) 1.5px, transparent 1.5px) 0 0/28px 28px,
+  radial-gradient(circle, rgba(255,200,210,0.12) 1px, transparent 1px) 7px 7px/14px 14px,
+  #fde4e8;
+border: 1.5px solid #f8a6b2;
+color: #a85565;
+/* 当 color 与 pattern 同时设置时，pattern 视觉上覆盖 color */
+```
+
+> 旧版 `Card type="title"` 在 v0.9.x 移除，章节标题请使用独立的 `<Title>` 组件（见下文）。
+
+---
+
+### Title（飘带 Ribbon 章节标题）
+
+替代旧 `Card type="title"`，渲染游戏风飘带横幅：燕尾两端 + 折角阴影 + 微透视正面主体。
+源码：`src/components/Title/Title.vue`（scoped Less，BEM 类名 `animal-title__*`）。
+
+```css
+/* 默认（绿色配色，可被 .animal-title--color-* 覆盖） */
+--rf: #27d039;   /* front 正面 */
+--rb: #20992a;   /* back  燕尾 */
+--rk: #115017;   /* fold  折角阴影 */
+--rt: #fff;      /* text  文字色 */
+
+font-family: Nunito, 'Noto Sans SC', sans-serif;
+font-weight: 800;             /* 外层 wrapper */
+/* .animal-title__text 内层文字 font-weight 900；padding-top 0.11em CJK 光学居中 */
+
+/* 飘带主体 */
+display: inline-flex;
+height: 2em; padding: 0 1.6em;
+letter-spacing: 0.04em;
+filter: drop-shadow(0 0.08em 0.12em rgba(0, 0, 0, 0.05));
+
+/* 燕尾（左/右）—— clip-path 鱼尾形 */
+.animal-title__back--left  { clip-path: polygon(100% 0%, 100% 100%, 0% 100%, 30% 50%, 0% 0%); }
+.animal-title__back--right { clip-path: polygon(0% 0%,   100% 0%, 70% 50%, 100% 100%, 0% 100%); }
+width: 1.7em; height: 1.7em; bottom: -0.4em;
+
+/* 折角阴影 —— CSS border 三角 */
+.animal-title__fold--left  { border-width: 0 0.95em 0.45em 0; border-color: transparent var(--rk) transparent transparent; }
+.animal-title__fold--right { border-width: 0 0 0.45em 0.95em; border-color: transparent transparent transparent var(--rk); }
+
+/* 正面主体 */
+.animal-title__front { inset: 0 0.1em; border-radius: 0.2em; transform: perspective(11.5em) rotateX(3deg); }
+```
+
+尺寸（`SIZE_MAP` 通过 inline `font-size` 注入；所有内部 `em` 自动缩放）：
+
+| size   | font-size |
+|--------|-----------|
+| small  | 14px      |
+| middle | 20px      |
+| large  | 28px      |
+
+13 种颜色覆盖：在 wrapper 上叠加 `.animal-title--color-app-pink` / `.animal-title--color-purple` / `.animal-title--color-app-blue` / `.animal-title--color-app-yellow` / `.animal-title--color-app-orange` / `.animal-title--color-app-teal` / `.animal-title--color-app-green` / `.animal-title--color-app-red` / `.animal-title--color-lime-green` / `.animal-title--color-yellow-green` / `.animal-title--color-brown` / `.animal-title--color-warm-peach-pink` 之一；每个类同时覆盖 `--rf / --rb / --rk / --rt` 四个变量。详见 `Title.vue` `<style scoped>` 末尾的 13 行 `.animal-title--color-*` 定义。
+
+例：
+```less
+.animal-title--color-app-yellow    { --rf: #f7cd67; --rb: #d4a030; --rk: #8a6010; --rt: #725d42; }
+.animal-title--color-purple        { --rf: #b77dee; --rb: #9050d0; --rk: #5a1a9a; --rt: #fff; }
 ```
 
 ---
@@ -474,11 +574,13 @@ margin-bottom: 12px;
 /* disabled */ opacity: 0.6;
 
 /* 问题栏 */
-padding: 16px 24px; gap: 12px;
+padding: 16px 24px;
+gap: 12px;
 
 /* 图标圆圈 */
 width: 28px; height: 28px;
-background: #19c8b9; color: #fff;
+background: #19c8b9;
+color: #fff;
 border-radius: 50%;
 font-size: 18px; font-weight: 700;
 box-shadow: 0 2px 4px rgba(25, 200, 185, 0.3);
@@ -488,7 +590,8 @@ box-shadow: 0 2px 4px rgba(25, 200, 185, 0.3);
 opacity: 0.5;
 /* 展开时 */ opacity: 1; transform: rotate(45deg);
 
-/* 问题文字 */ font-size: 16px; font-weight: 600; line-height: 1.4;
+/* 问题文字 */
+font-size: 16px; font-weight: 600; line-height: 1.4;
 
 /* 答案展开（CSS Grid trick，无 JS）*/
 display: grid;
@@ -507,9 +610,11 @@ font-size: 14px; line-height: 1.7;
 
 ### Tabs
 
+scoped Less + BEM；类名根 `.animal-tabs`，内部使用 `__list` / `__item` / `__icon` / `__leaf` / `__content` 等子元素。
+
 ```css
 /* 外层容器 */
-.tabs {
+.animal-tabs {
     background: rgb(247, 243, 223);
     border-radius: 20px;
     border: 2px solid #9f927d;
@@ -517,43 +622,62 @@ font-size: 14px; line-height: 1.7;
 }
 
 /* 标签列表 */
-.tabList {
-    display: flex; gap: 4px; padding: 12px;
+.animal-tabs__list {
+    display: flex;
+    gap: 4px;
+    padding: 12px;
     background: rgba(255, 255, 255, 0.6);
     border-bottom: 2px solid #c4b89e;
 }
 
 /* 标签项 */
-.tabItem {
-    display: flex; align-items: center; gap: 6px;
+.animal-tabs__item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
     padding: 6px 14px;
-    background: transparent; border: none;
+    background: transparent;
+    border: none;
     border-radius: 50px;
     cursor: pointer;
-    font-size: 14px; font-weight: 500;
+    font-size: 14px;
+    font-weight: 500;
     color: #8a7b66;
     transition: all 0.2s ease;
 }
-.tabItem:hover { background: rgba(25, 200, 185, 0.1); color: #725d42; }
-.tabItem.active {
-    background: rgba(25, 200, 185, 0.15);
-    color: #19c8b9; font-weight: 600;
-    box-shadow: 0 3px 0 0 #d4c9b4;
+/* hover */
+.animal-tabs__item:hover {
+    background: rgba(25, 200, 185, 0.1);
+    color: #725d42;
+}
+/* 激活状态 — 实心 teal 胶囊 + 奶油色字 */
+.animal-tabs__item.animal-tabs__item--active {
+    background: #0CC0B5;
+    color: #FFF9E3;
+    font-weight: 600;
+}
+.animal-tabs__item--active.animal-tabs__item--shadow {
+    box-shadow: 0 3px 0 0 #d4c9b4;   /* 仅 shadow opt-in 时启用 */
 }
 
 /* 标签图标 */
-.tabIcon { font-size: 10px; }
-/* 激活时图标放大（注意：1.2，不是 1.25） */
-.tabItem.active .tabIcon { transform: scale(1.2); }
-/* Less 端直接写 transform: scale(1.2)，注意是 1.2 不是 1.25 */
+.animal-tabs__icon {
+    font-size: 10px;
+}
+/* 激活时图标放大 */
+.animal-tabs__item--active .animal-tabs__icon {
+    transform: scale(1.2);
+}
 
 /* 叶子装饰动画 */
-.tabLeaf {
-    position: absolute; right: -6px; top: -3px;
+.animal-tabs__leaf {
+    position: absolute;
+    right: -6px;
+    top: -3px;
     font-size: 12px;
     animation: leafWiggle 2s ease-in-out infinite;
 }
-/* leafAnimation={false} 时追加 tabLeafStatic 类去除 animation */
+/* leafAnimation={false} 时追加 .animal-tabs__leaf--static 修饰符去除 animation */
 
 @keyframes leafWiggle {
     0%, 100% { transform: rotate(0deg); }
@@ -562,7 +686,10 @@ font-size: 14px; line-height: 1.7;
 }
 
 /* 内容区 */
-.tabContent { padding: 24px; animation: fadeIn 0.25s ease; }
+.animal-tabs__content {
+    padding: 24px;
+    animation: fadeIn 0.25s ease;
+}
 
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(4px); }
@@ -570,43 +697,43 @@ font-size: 14px; line-height: 1.7;
 }
 ```
 
-> Vue 端 Tabs 内容**通过按 `item.key` 命名的动态插槽**渲染（不像 React 那样 `item.children`）。
-
 ---
 
 ### Modal
 
 **SVG clip-path 完整 path d 值（精确还原 blob 轮廓）：**
 ```vue
-<svg style="position:absolute;width:0;height:0" aria-hidden>
-  <defs>
-    <clipPath id="animal-modal-clip" clipPathUnits="objectBoundingBox">
-      <path d="M0.501,0.005 L0.501,0.005 L0.523,0.005 L0.549,0.006
-        C0.704,0.01,0.796,0.017,0.825,0.027
-        L0.827,0.028
-        C0.872,0.045,0.939,0.044,0.978,0.17
-        C1,0.254,1,0.365,0.99,0.505
-        L0.988,0.513
-        C0.979,0.558,0.971,0.598,0.965,0.633
-        C0.956,0.689,0.979,0.77,0.964,0.865
-        C0.953,0.928,0.921,0.966,0.869,0.979
-        C0.821,0.986,0.773,0.992,0.726,0.995
-        L0.712,0.996 L0.694,0.997
-        C0.648,1,0.586,1,0.507,1
-        L0.501,1 L0.464,1
-        C0.385,1,0.325,0.998,0.283,0.995
-        C0.234,0.992,0.184,0.987,0.133,0.979
-        C0.081,0.966,0.05,0.928,0.039,0.865
-        C0.023,0.77,0.047,0.689,0.037,0.633
-        C0.031,0.595,0.023,0.552,0.013,0.505
-        C-0.006,0.365,-0.002,0.254,0.024,0.17
-        C0.064,0.045,0.13,0.045,0.174,0.028
-        L0.175,0.028
-        C0.204,0.017,0.303,0.009,0.474,0.005
-        L0.501,0.005" />
-    </clipPath>
-  </defs>
-</svg>
+<template>
+  <svg style="position: absolute; width: 0; height: 0" aria-hidden="true">
+    <defs>
+      <clipPath id="animal-modal-clip" clipPathUnits="objectBoundingBox">
+        <path d="M0.501,0.005 L0.501,0.005 L0.523,0.005 L0.549,0.006
+          C0.704,0.01,0.796,0.017,0.825,0.027
+          L0.827,0.028
+          C0.872,0.045,0.939,0.044,0.978,0.17
+          C1,0.254,1,0.365,0.99,0.505
+          L0.988,0.513
+          C0.979,0.558,0.971,0.598,0.965,0.633
+          C0.956,0.689,0.979,0.77,0.964,0.865
+          C0.953,0.928,0.921,0.966,0.869,0.979
+          C0.821,0.986,0.773,0.992,0.726,0.995
+          L0.712,0.996 L0.694,0.997
+          C0.648,1,0.586,1,0.507,1
+          L0.501,1 L0.464,1
+          C0.385,1,0.325,0.998,0.283,0.995
+          C0.234,0.992,0.184,0.987,0.133,0.979
+          C0.081,0.966,0.05,0.928,0.039,0.865
+          C0.023,0.77,0.047,0.689,0.037,0.633
+          C0.031,0.595,0.023,0.552,0.013,0.505
+          C-0.006,0.365,-0.002,0.254,0.024,0.17
+          C0.064,0.045,0.13,0.045,0.174,0.028
+          L0.175,0.028
+          C0.204,0.017,0.303,0.009,0.474,0.005
+          L0.501,0.005" />
+      </clipPath>
+    </defs>
+  </svg>
+</template>
 ```
 
 **Modal 精确样式：**
@@ -634,8 +761,10 @@ padding-bottom: 15px;
 
 /* 关闭按钮 */
 width: 32px; height: 32px;
-font-size: 22px; color: rgba(114, 93, 66, 0.6);
-border-radius: 50%; transition: all 0.2s;
+font-size: 22px;
+color: rgba(114, 93, 66, 0.6);
+border-radius: 50%;
+transition: all 0.2s;
 /* hover */ background: rgba(114, 93, 66, 0.1); color: rgba(114, 93, 66, 1);
 
 /* body */
@@ -643,7 +772,8 @@ font-size: 20px; font-weight: 600; line-height: 1.6;
 color: #8a7b66;
 padding-bottom: 20px;
 
-/* footer */ gap: 12px;
+/* footer */
+gap: 12px;
 
 /* 普通按钮 */
 height: 40px; padding: 0 24px;
@@ -660,15 +790,14 @@ border-color: rgba(255, 204, 0, 1);
 /* hover */ background: rgba(255,204,0,0.85); border-color: rgba(255,204,0,0.85);
 ```
 
-> Vue 端：Modal 用 `v-model:open`；自定义 footer 通过 `#footer` 插槽；隐藏 footer 用 `:show-footer="false"`。
-
 ---
 
 ### Time
 
 ```css
 /* 容器 */
-display: flex; align-items: center; gap: 20px;
+display: flex; align-items: center;
+gap: 20px;
 padding: 16px 36px;
 background: linear-gradient(180deg, #fff 0%, #f8f8f0 100%);
 border: 3px solid #d4cfc3;
@@ -680,13 +809,18 @@ padding-right: 24px;
 border-right: 3px solid rgba(159, 146, 125, 0.35);
 
 /* 星期 */
-color: #6fba2c; font-weight: 900; font-size: 14px; letter-spacing: 1.5px;
+color: #6fba2c;
+font-weight: 900; font-size: 14px;
+letter-spacing: 1.5px;
 
 /* 月日 */
-color: #8b7355; font-weight: 800; font-size: 22px;
+color: #8b7355;
+font-weight: 800; font-size: 22px;
 
 /* 时间数字 */
-color: #8b7355; font-weight: 900; font-size: 48px; letter-spacing: 2px;
+color: #8b7355;
+font-weight: 900; font-size: 48px;
+letter-spacing: 2px;
 
 /* 冒号（闪烁）*/
 font-size: 48px; color: #8b7355;
@@ -698,9 +832,9 @@ animation: blink 1s step-end infinite;
 
 /* 响应式 768px */
 padding: 12px 20px; gap: 12px;
-.acWeekday → font-size: 11px;
-.acMonthday → font-size: 16px;
-.acTime / .acColon → font-size: 32px;
+.animal-time__weekday  → font-size: 11px;
+.animal-time__monthday → font-size: 16px;
+.animal-time__time / .animal-time__colon → font-size: 32px;
 ```
 
 ---
@@ -709,14 +843,15 @@ padding: 12px 20px; gap: 12px;
 
 **外壳（固定尺寸，不响应式）：**
 ```css
-.phone {
+.animal-phone {
   width: 527px; height: 788px;
-  background: #F8F4E8;
-  border-radius: 136px;
+  background: #F8F4E8;           /* 奶油米 */
+  border-radius: 136px;           /* 超大圆角，近似胶囊 */
   overflow: hidden;
 }
-.homeScreen {
-  height: 100%; padding-top: 40px;
+.animal-phone__home-screen {
+  height: 100%;
+  padding-top: 40px;
   background: #F8F4E8;
   background-size: 100% 200%;
   animation: grasswave 8s ease-in-out infinite;
@@ -730,31 +865,31 @@ padding: 12px 20px; gap: 12px;
 
 **顶部时间栏：**
 ```css
-.dateDisplay        { padding: 0 70px 31px 70px; text-align: center; }
-.dateDisplayHeader  { display:flex; justify-content:space-between; align-items:center;
-                      font-size: 32px; font-weight: 800; letter-spacing: 2px; color: #DDDBCC; }
-.blink              { font-size: 32px; font-weight: 800; color: #DDDBCC;
-                      animation: blink 1s steps(1) infinite; vertical-align: text-bottom; }
-@keyframes blink    { 0%,50% { opacity: 1; } 51%,100% { opacity: 0; } }
-.dayText            { font-size: 48px; font-weight: 800; color: #725C4E;
-                      letter-spacing: 2px; height: 56px; margin-top: 20px; }
+.animal-phone__date              { padding: 0 70px 31px 70px; text-align: center; }
+.animal-phone__date-header       { display:flex; justify-content:space-between; align-items:center;
+                                    font-size: 32px; font-weight: 800; letter-spacing: 2px; color: #DDDBCC; }
+.animal-phone__blink             { font-size: 32px; font-weight: 800; color: #DDDBCC;
+                                    animation: blink 1s steps(1) infinite; vertical-align: text-bottom; }
+@keyframes blink                 { 0%,50% { opacity: 1; } 51%,100% { opacity: 0; } }
+.animal-phone__day-text          { font-size: 48px; font-weight: 800; color: #725C4E;
+                                    letter-spacing: 2px; height: 56px; margin-top: 20px; }
 ```
 
 **3×3 应用网格：**
 ```css
-.appsGrid   { display: grid; grid-template-columns: repeat(3, 1fr);
-              gap: 32px; padding: 8px; flex: 1;
-              align-content: center; justify-content: center; }
-.appItem    { width: 123px; height: 123px;
-              border-radius: 45px;
-              position: relative;
-              display: flex; justify-content: center; align-items: center; }
-.appItem:hover .appIcon { animation: iconBounce 0.3s ease-in-out forwards; }
-.appIcon    { width: 100%; height: 100%;
-              background-repeat: no-repeat; background-position: center;
-              background-size: 70% auto; }
-.appItemOffset { overflow: hidden; }
-.appIconOffset { transform: translateY(10px); }
+.animal-phone__apps-grid    { display: grid; grid-template-columns: repeat(3, 1fr);
+                               gap: 32px; padding: 8px; flex: 1;
+                               align-content: center; justify-content: center; }
+.animal-phone__app-item     { width: 123px; height: 123px;
+                               border-radius: 45px;        /* 圆角正方形 */
+                               position: relative;
+                               display: flex; justify-content: center; align-items: center; }
+.animal-phone__app-item:hover .animal-phone__app-icon { animation: iconBounce 0.3s ease-in-out forwards; }
+.animal-phone__app-icon     { width: 100%; height: 100%;
+                               background-repeat: no-repeat; background-position: center;
+                               background-size: 70% auto; }
+.animal-phone__app-item--offset { overflow: hidden; }
+.animal-phone__app-icon--offset { transform: translateY(10px); }
 
 @keyframes iconBounce {
   0%   { transform: scale(1) rotate(0deg); }
@@ -781,40 +916,43 @@ padding: 12px 20px; gap: 12px;
 
 **小红点（新消息）：**
 ```css
-.badge {
+.animal-phone__badge {
   position: absolute; top: 0; left: 0;
   width: 28px; height: 28px; border-radius: 50%;
   background: #FF544A;
-  border: 5px solid #F8F4E8;
+  border: 5px solid #F8F4E8;       /* 奶油米描边，形成游戏风徽章 */
 }
 ```
 
 **底部状态图标：**
 ```css
-.iconWifi     { width: 79px; height: 29px;  background: url('./img/wifi.svg') center/contain no-repeat; }
-.iconLocation { width: 36px; height: 36px;  background: url('./img/location.svg') center/contain no-repeat; }
-.iconPage     { width: 65px; height: 32px;  background: url('./img/page.svg') center/contain no-repeat; }
-.pageIndicator{ display: flex; justify-content: center; align-items: center; margin-top: 74px; }
+.animal-phone__icon-wifi     { width: 79px; height: 29px;  background: url('./img/wifi.svg') center/contain no-repeat; }
+.animal-phone__icon-location { width: 36px; height: 36px;  background: url('./img/location.svg') center/contain no-repeat; }
+.animal-phone__icon-page     { width: 65px; height: 32px;  background: url('./img/page.svg') center/contain no-repeat; }
+.animal-phone__page-indicator{ display: flex; justify-content: center; align-items: center;
+                                margin-top: 74px; }
 ```
 
-**行为：** 内部 `setInterval(1000)` 更新时间，`12 小时制 + AM/PM + 零填充分钟`，冒号闪烁 1s 一个周期。组件无业务回调，纯展示。
+**行为：** 内部 `onMounted + setInterval(1000)` 更新时间（`onUnmounted` 清理），`12 小时制 + AM/PM + 零填充分钟`，冒号闪烁 1s 一个周期。组件无业务回调，纯展示。
 
 ---
 
 ### Footer
 
 ```vue
-<Footer />              <!-- 默认：森林（tree，高 60px） -->
-<Footer type="sea" />   <!-- 海浪（高 80px） -->
+<template>
+  <Footer />              <!-- 默认：森林（tree，高 60px） -->
+  <Footer type="sea" />   <!-- 海浪（高 80px） -->
+</template>
 ```
 
-```css
-.footer       { width: 100%; height: 80px;
-                background: url('./img/footer-sea.svg') center/contain no-repeat; }
-.tree         { background-image: url('./img/footer-tree.webp');
-                height: 60px;
-                background-size: cover;
-                background-position: bottom center; }
+```less
+.animal-footer       { width: 100%; height: 80px;
+                        background: url('./img/footer-sea.svg') center/contain no-repeat; }
+.animal-footer--tree { background-image: url('./img/footer-tree.webp');
+                        height: 60px;
+                        background-size: cover;
+                        background-position: bottom center; }
 ```
 
 - `sea`：SVG 海浪插画，`viewBox="0 0 1440 186"`，多色（珊瑚 `#EC7175`、海蓝 `#327A93`、浅蓝 `#98D2E3`、深青 `#008077` 等）。
@@ -825,20 +963,22 @@ padding: 12px 20px; gap: 12px;
 ### Divider
 
 ```vue
-<Divider type="line-brown" />   <!-- 默认 -->
-<Divider type="line-teal" />
-<Divider type="line-white" />
-<Divider type="line-yellow" />
-<Divider type="wave-yellow" />
+<template>
+  <Divider type="line-brown" />  <!-- 默认 -->
+  <Divider type="line-teal" />
+  <Divider type="line-white" />
+  <Divider type="line-yellow" />
+  <Divider type="wave-yellow" />
+</template>
 ```
 
-```css
-.divider { width: 100%; height: 12px;
-           background: url('./img/divider-line-brown.svg') center/contain no-repeat; }
-.line-teal   { background-image: url('./img/divider-line-teal.svg'); }
-.line-white  { background-image: url('./img/divider-line-white.png'); }
-.line-yellow { background-image: url('./img/divider-line-yellow.svg'); }
-.wave-yellow { background-image: url('./img/wave-yellow.svg'); }
+```less
+.animal-divider { width: 100%; height: 12px;
+                   background: url('./img/divider-line-brown.svg') center/contain no-repeat; }
+.animal-divider--line-teal   { background-image: url('./img/divider-line-teal.svg'); }
+.animal-divider--line-white  { background-image: url('./img/divider-line-white.png'); }
+.animal-divider--line-yellow { background-image: url('./img/divider-line-yellow.svg'); }
+.animal-divider--wave-yellow { background-image: url('./img/wave-yellow.svg'); }
 ```
 
 默认 SVG 色值参考：`#D8D0C3`（米褐），`viewBox="0 0 297 14"`。
@@ -848,11 +988,14 @@ padding: 12px 20px; gap: 12px;
 ### Cursor
 
 ```vue
-<Cursor>
-  <App />   <!-- 此范围内所有元素变为游戏手指光标 -->
-</Cursor>
+<template>
+  <Cursor>
+    <App />   <!-- 此范围内所有元素变为游戏手指光标 -->
+  </Cursor>
+</template>
 ```
 
+样式文件为 **普通全局 CSS**（非 scoped；类名固定为 `animal-cursor`，挂在根 `<div>` 上）：
 ```css
 .animal-cursor,
 .animal-cursor * {
@@ -861,38 +1004,37 @@ padding: 12px 20px; gap: 12px;
 ```
 
 - `cursor-icon.png` 热点坐标 `(4, 0)`
-- 使用 `!important` 覆盖默认光标；类名固定为 `animal-cursor`
+- 使用 `!important` 覆盖默认光标
+- ⚠️ 此组件**不能用 `scoped`**：scoped 选择器无法穿透 slot 内容；必须以全局 CSS 形式注册（`<style>` 不带 `scoped`，或全局样式入口引入）
 
 ---
 
 ### Typewriter
 
 ```vue
-<Typewriter :speed="90" :trigger="openCount" auto-play @done="...">
-  <p>第一行 <strong>加粗</strong></p>
-  <p>第二行</p>
-</Typewriter>
-
-<!-- 或纯文本 -->
-<Typewriter text="第一行 第二行" />
+<template>
+  <Typewriter :speed="90" :trigger="openCount" auto-play @done="handleDone">
+    <p>第一行 <strong>加粗</strong></p>
+    <p>第二行</p>
+  </Typewriter>
+</template>
 ```
 
 Props：
 
 | name | type | default | 说明 |
 |---|---|---|---|
-| 默认插槽 | VNode tree | — | 要逐字打出的内容，**保留原有元素结构 / 换行 / 样式** |
-| `text` | `string` | — | 简便写法：纯文本快捷传入；与默认插槽二选一 |
+| 默认插槽 | `Slot` | — | 要逐字打出的内容，**保留原有元素结构 / 换行 / 样式** |
 | `speed` | `number (ms)` | `90` | 每字间隔 |
-| `trigger` | `unknown` | — | 值变化即重新播放 |
+| `trigger` | `unknown` | — | 值变化即重新播放（通常传递弹窗 open 次数或递增 key） |
 | `autoPlay` | `boolean` | `true` | `false` 直接全量显示 |
-| 事件 `done` | — | — | 播放完成回调 |
+| `@done` | `() => void` | — | 播放完成事件 |
 
 **实现要点：**
-- `countText(node)`：递归统计 VNode 的纯文本长度
-- `clip(node, state)`：按剩余字符数递归裁剪，`h(v.type, v.props, children)` 保留原节点与 props
-- `watch([speed, trigger, autoPlay, text])` 触发重置；内部 `setInterval` 按步递增 `count`
-- **不包裹任何额外 DOM**（直接返回裁剪后的 VNode 列表），对布局零影响
+- `countText(vnode)`：递归统计 VNode 树（含 children / `el?.textContent` / 字符串子节点）的纯文本长度
+- `renderTruncated(vnode, state)`：按剩余字符数递归裁剪，使用 `cloneVNode` 保留原节点与样式
+- `watch([() => total.value, () => props.speed, () => props.trigger, () => props.autoPlay])`，内部 `setInterval` 按步递增 `count`
+- **无样式文件**，不包裹任何额外 DOM（默认插槽直接 render），对布局零影响
 
 ---
 
@@ -903,11 +1045,13 @@ Props：
 | name | type | default | 说明 |
 |---|---|---|---|
 | `options` | `CheckboxOption[]` | — | **必填**；每项 `{ label, value, disabled? }` |
-| `modelValue` | `Array<string \| number>` | `[]` | v-model 绑定 |
+| `modelValue` | `Array<string \| number>` | — | 受控选中值（配合 `v-model`） |
+| `defaultValue` | `Array<string \| number>` | `[]` | 非受控默认值 |
 | `size` | `'small' \| 'middle' \| 'large'` | `'middle'` | 尺寸 |
 | `disabled` | `boolean` | `false` | 禁用全部项 |
 | `direction` | `'horizontal' \| 'vertical'` | `'horizontal'` | 排列方向 |
-| 事件 | `update:modelValue` / `change` | — | 选中值变化 |
+| `@update:modelValue` | `(values) => void` | — | 选中值变化（`v-model`） |
+| `@change` | `(values) => void` | — | 同上，业务回调 |
 
 **尺寸表（box 方框）：**
 
@@ -926,7 +1070,8 @@ gap: 12px;                                 /* horizontal */
 /* vertical */ flex-direction: column; gap: 8px;
 
 /* item */
-display: inline-flex; align-items: center; gap: 8px;
+display: inline-flex; align-items: center;
+gap: 8px;
 cursor: pointer;
 transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
 
@@ -936,11 +1081,16 @@ border: 2.5px solid #c4b89e;
 border-radius: 8px;
 display: inline-flex; align-items: center; justify-content: center;
 
-/* box hover */ border-color: #19c8b9; transform: translateY(-1px);
-/* box focus-visible */ outline: 2px solid #ffcc00; outline-offset: 2px;
+/* box hover */
+border-color: #19c8b9;
+transform: translateY(-1px);
+
+/* box focus-visible */
+outline: 2px solid #ffcc00; outline-offset: 2px;
 
 /* 选中 */
-background: #19c8b9; border-color: #11a89b;
+background: #19c8b9;
+border-color: #11a89b;
 /* 选中 hover */ background: #3dd4c6; border-color: #19c8b9;
 
 /* 对勾 ✓ */
@@ -954,11 +1104,13 @@ animation: animal-checkbox-pop 0.15s cubic-bezier(0.4,0,0.2,1);
 }
 
 /* label */
-color: #725d42; font-weight: 500; letter-spacing: 0.01em;
+color: #725d42; font-weight: 500;
+letter-spacing: 0.01em;
 /* item hover */ label color: #794f27;
 
 /* 禁用（单项或整组）*/
-cursor: not-allowed; opacity: 0.55;
+cursor: not-allowed;
+opacity: 0.55;
 /* box */ background: #f0ece2; border-color: #d4c9b4; transform: none !important;
 /* label */ color: #c4b89e;
 ```
@@ -972,8 +1124,10 @@ Props：
 | name | type | default | 说明 |
 |---|---|---|---|
 | `code` | `string` | — | **必填**；原始源码字符串，内部自动按 JSX/TS 分词高亮 |
+| `style` | `CSSProperties` | — | 会合并覆盖默认深色主题 |
+| `class` | `string` | — | 自定义类名 |
 
-**默认主题（写死在组件 `<style lang="less">` 中，不走全局 token）：**
+**默认主题（写死在组件，不走 Less）：**
 
 ```css
 padding: 20px 24px;
@@ -997,50 +1151,280 @@ tab-size: 4;
 | comment  | `#6b5e50` | `/* */`、`//` |
 | string   | `#a8d4a0` | 反引号 / 单双引号、数字 |
 | keyword  | `#d4a0e0` | `import/export/const/return/async/...`、`true/false/null/undefined` |
-| vue      | `#41b883` | `Vue/ref/reactive/computed/watch/defineProps/defineEmits/defineSlots/withDefaults/...` |
-| component| `#80c0e0` | 大写驼峰标识符（SFC 组件名、类型名） |
+| react    | `#e06c75` | `Vue/ref/computed/onMounted/defineProps/defineEmits/PropType/...`（保留 React 名字以兼容跨框架代码片段） |
+| component| `#80c0e0` | 大写驼峰标识符（组件名、类型名） |
 | func     | `#61afef` | 小写标识符后跟 `(` |
-| prop     | `#e8c87a` | 标识符后跟 `=`（JSX/SFC props / 赋值） |
+| prop     | `#e8c87a` | 标识符后跟 `=`（template props / 赋值） |
 | jsx      | `#f0a870` | `<Tag`、`</Tag`、`/>` |
-| operator | `#d4b896` | `{}[]();,` 和 `+-*/=<>&\|^~?:` 等 |
+| operator | `#d4b896` | `{}[]();,` 和 `+-*/=<>&|^~?:` 等 |
 | default  | `#e8d5bc` | 其余文本 |
 
 > 不支持 `language` prop；非 JS/TS 代码（Python/Shell/SQL）会按通用规则着色，显示可能不准确。不带 copy 按钮、行号或折行。
 
 ---
 
-### Loading
+### Radio
 
-Vue 端新增组件：
+源码：`src/components/Radio/Radio.vue`（scoped Less + BEM 类名 `animal-radio__*`）。
 
-```ts
-interface LoadingProps {
-    active?: boolean;       // default false
+| 属性 | small | middle | large |
+|---|---|---|---|
+| 外盒尺寸 | 18×18px | 22×22px | 28×28px |
+| 圆角 | 12px | 14px | 16px（**重圆方形，非正圆**） |
+| 边框宽 | 2px | 2px | 2px |
+| 内勾尺寸 | 10×10px | 12×12px | 16px font-size |
+| label font-size | 12px | 14px | 16px |
+
+```css
+/* 默认（未选） */
+background: rgb(247, 243, 223);
+border: 2px solid #c4b89e;
+
+/* hover */
+border-color: #19c8b9;
+transform: translateY(-1px);
+
+/* checked */
+background: #19c8b9;        /* @primary-color */
+border-color: #11a89b;      /* @primary-color-active */
+/* 内白色勾 pop 动画 */
+@keyframes radio-pop {
+  0%   { transform: scale(0.4); opacity: 0; }
+  60%  { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
+/* 时长 0.15s ease（@motion-duration-fast） */
+
+/* label */
+color: #725d42; font-weight: 500; letter-spacing: 0.01em;
+/* checked label */ color: #794f27;
+
+/* focus-visible */
+outline: 2px solid #f5c31c;   /* 注意：Radio 用 @focus-yellow=#f5c31c，而非 Checkbox/Input 的 #ffcc00 */
+outline-offset: 2px;
+
+/* disabled */
+opacity: 0.55; cursor: not-allowed;
+background: #f0ece2; border-color: #d4c9b4;
+/* label */ color: #c4b89e;
+
+/* group 布局 */
+/* horizontal */ display: flex; gap: 12px;
+/* vertical */   display: flex; flex-direction: column; gap: 8px;
+```
+
+---
+
+### Tooltip
+
+源码：`src/components/Tooltip/Tooltip.vue`（scoped Less + BEM）。`default` 与 `island` 是两套**完全不同**的视觉，不要混淆。
+
+**default 变体（标准温色 bubble）：**
+
+```css
+background: rgb(247, 243, 223);   /* @tooltip-bg */
+border: 2px solid #c4b89e;         /* @tooltip-border */
+border-radius: 16px;               /* @border-radius-sm */
+padding: 6px 12px;
+max-width: 240px;
+
+font-size: 12px; font-weight: 500; line-height: 1.5; letter-spacing: 0.01em;
+color: #725d42;
+
+box-shadow: 0 3px 10px rgba(61, 52, 40, 0.10);   /* @shadow-base */
+z-index: 100;
+
+/* 距 trigger 间距 */ gap: 10px;
+/* 入场动画：translateY 4px → 0，平滑显隐 */
+
+/* 三角箭头 */
+size: 8px; border-radius: 2px;     /* 8px 菱形，圆角 2px —— 不是 6px */
+```
+
+**island 变体（透明有机气泡）：**
+
+```css
+background: transparent;           /* 容器透明，无 border 无 shadow */
+border: none;
+box-shadow: none;
+/* 注意：island **不是** Modal blob clip-path —— 它是 transparent 容器 + 内部内容自带气泡 */
+
+/* 内容区 */
+padding: 12px 20px;
+max-width: 280px;
+font-weight: 600; line-height: 1.55; text-align: center;
+
+/* 箭头：14px 圆点（borderless）或 10px 菱形（bordered） */
+.animal-tooltip__island-arrow {
+  width: 14px; height: 14px; border-radius: 50%;
+  filter: drop-shadow(0 4px 14px rgba(121, 79, 39, 0.14));
 }
 ```
 
-轻量覆盖层 / spinner，用于异步等待场景。具体实现见 `src/components/Loading/Loading.vue`。
+placement 12 种：`top` / `top_start` / `top_end` / `bottom` / `bottom_start` / `bottom_end` / `left` / `left_start` / `left_end` / `right` / `right_start` / `right_end`。
+
+---
+
+### Loading（全屏遮罩）
+
+源码：`src/components/Loading/Loading.vue`（scoped Less + BEM）。**项目无 GSAP / MotionPath**，全部用原生 CSS + SVG `stroke-dasharray` 实现。
+
+```css
+/* 容器 */
+position: absolute;       /* 不是 fixed —— 受最近的 positioned 父级约束 */
+inset: 0;
+background: black;        /* 不是 #f8f8f0 */
+overflow: hidden;
+
+/* 揭示遮罩（消失时 mask 半径渐变） */
+--mask-r: 0;
+mask: radial-gradient(circle at center, transparent var(--mask-r), black calc(var(--mask-r) + 1px));
+/* active=false 时把 --mask-r 过渡到大值，得到圆形渐隐效果 */
+
+/* SVG spinner */
+color: #19c8b9;           /* @primary-color mint teal */
+animation: spin 1s linear infinite;
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* 内圈 circle 的 dash 动画 */
+animation: dash 1.5s ease-in-out infinite;
+@keyframes dash {
+  0%   { stroke-dasharray: 1, 150;  stroke-dashoffset: 0;    }
+  50%  { stroke-dasharray: 90, 150; stroke-dashoffset: -35;  }
+  100% { stroke-dasharray: 90, 150; stroke-dashoffset: -124; }
+}
+```
+
+> 按钮 inline 的 loading 斜纹（`-45deg` mint 条纹 28.28px）属于 Button 组件，不要与 `<Loading>` 全屏遮罩混为一谈。
 
 ---
 
 ### Table
 
-Vue 端新增组件，Props：
+源码：`src/components/Table/Table.vue`（scoped Less + BEM）。**外壳无实线 border**；行分隔靠 `::after` 的 dashed 横线实现；hover 行是对角青色条纹。
 
-```ts
-interface TableProps<T extends TableRecord = TableRecord> {
-    columns?: TableColumn<T>[];
-    dataSource?: T[];
-    rowKey?: string | ((record: T) => string);    // default 'key'
-    striped?: boolean;                            // default true
-    showHeader?: boolean;                         // default true
-    loading?: boolean;
-    emptyText?: string;                           // default '暂无数据'
-    scroll?: { x?: number | string; y?: number | string };
+```css
+/* 外壳 wrapper */
+background: rgb(247, 243, 223);
+border-radius: 20px;
+padding: 6px;                /* 仅 6px 内边距，无 border */
+box-sizing: border-box;
+
+/* 表头 cell */
+padding: 16px 20px;
+font-size: 14px;
+font-weight: 700;
+color: #725d42;              /* 不是 #794f27 */
+letter-spacing: 0.02em;
+/* 表头底部分隔（::after dashed） */
+border-image: none;
+&::after {
+  content: '';
+  border-bottom: 1px dashed rgb(240, 232, 216);
+  /* dash pattern: 6px on / 6px off */
+}
+
+/* body cell */
+padding: 14px 20px;          /* 无固定行高 48px —— 由 padding 撑起 */
+font-size: 14px;
+font-weight: 500;
+color: #725d42;
+line-height: 1.6;
+/* 行底分隔线同样是 1px dashed (6/6) rgb(240,232,216) */
+
+/* striped 偶数行 */
+background: rgba(248, 248, 240, 0.6);   /* 不是 rgba(247,243,223,0.5) */
+
+/* row hover —— 对角青色条纹 + 内圆角剪切 */
+background: repeating-linear-gradient(
+  -45deg,
+  rgba(25, 200, 185, 0.6) 0 10px,
+  rgba(14, 196, 182, 0.6) 10px 20px
+);
+background-size: 28.28px 28.28px;
+clip-path: inset(0 0 0 0 round 30px);
+color: #3d2e1e;
+
+/* 空状态 */
+padding: 60px 20px;
+text-align: center;
+color: #9f927d;
+/* icon */ opacity: 0.5;
+
+/* loading 遮罩 */
+background: rgba(247, 243, 223, 0.8);
+backdrop-filter: blur(2px);
+/* spinner */ color: #19c8b9;
+```
+
+---
+
+### WeddingInvitation
+
+源码：`src/components/WeddingInvitation/WeddingInvitation.vue` + `weddingInvitation.less`（外置 Less，便于共享给导出按钮）。这是**特种卡**：信封外壳 + 底部可撕抽奖券 + 浮动叶子动画，整体通过 `defineExpose({ exportAsImage(filename?) })` 暴露给父组件，导出走 `modern-screenshot`。
+
+```css
+/* 信封外壳 */
+max-width: 420px;             /* 不是 600px */
+padding: 56px 36px var(--lottery-h, 160px);   /* 顶/侧 56px+36px；底部预留抽奖券高度 */
+border-radius: 16px;
+
+/* 多层背景：径向渐变 + 图片，不是单色 #FAF6E8 */
+background:
+  radial-gradient(...)         /* 多层 spotlight */,
+  url(envelope-texture.png);
+
+/* 阴影通过 filter 实现（drop-shadow），便于配合不规则裁切 */
+filter: drop-shadow(0 10px 24px rgba(61, 52, 40, 0.18));
+/* 内描边 */
+box-shadow: inset 0 0 0 2px rgba(114, 93, 66, 0.12);
+
+/* 顶层细点纹理 */
+&::before {
+  background: radial-gradient(circle, ... 14px 14px);
+  opacity: 0.55;
+}
+
+/* 内虚线边框（有机不规则圆角） */
+&::after {
+  border: 1.5px dashed rgba(114, 93, 66, 0.35);
+  border-radius: 22px 20px 24px 22px / 20px 24px 22px 20px;
+}
+
+/* 底部抽奖券（160px 撕条）*/
+.animal-wedding__lottery {
+  height: 160px;               /* --lottery-h */
+  padding: 38px 36px 18px;
+  background: rgb(247, 243, 223);
+  /* 1.6px 棕色点阵 10×5px */
+  background-image: radial-gradient(circle, rgba(114, 93, 66, 0.7) 1.6px, transparent 1.6px);
+  background-size: 10px 5px;
+  /* 撕痕阴影 */
+  box-shadow: inset 0 4px 6px -3px rgba(61, 52, 40, 0.18);
+  /* 圆形冲孔（信封与撕条接缝处） */
+  --notch: 14px;
+}
+
+/* 4 角叶子：drop-shadow + ±25° / ±115° rotation */
+.animal-wedding__corner-leaf { filter: drop-shadow(0 2px 3px rgba(61, 52, 40, 0.15)); }
+
+/* 浮动小装饰 */
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-6px) rotate(8deg); }
+}
+animation: float 4.5s ease-in-out infinite;
+/* 多个装饰用错位 delay：0s / 0.6s / 1.2s / 0.3s / 1s */
+
+/* banner 分隔线 */
+.animal-wedding__banner-line {
+  width: 64px; height: 2px;
+  background: linear-gradient(to right, #725d42, transparent);
+  background: linear-gradient(to right, transparent, #725d42, transparent);
 }
 ```
 
-支持的插槽：`cell-{dataIndex}`（自定义单元格）、`header-{dataIndex}`（自定义表头）、`empty`（空状态）。视觉上沿用整体大圆角 / 暖棕色调，详细 CSS 见 `src/components/Table/Table.vue`。
+> 导出 PNG 时 Chromium 不读 `document.fonts`，需要把 `@font-face` 作为 `<style>` 子节点塞进截图根节点 —— 见 `src/components/WeddingInvitation/WeddingInvitation.vue` 中 `exportAsImage` 的 `embedFontStyles` 逻辑（通过 `defineExpose` 暴露给父组件 ref 调用）。
 
 ---
 
@@ -1069,9 +1453,11 @@ border-bottom: 1px solid #e8e2d6;
 font-weight: 700; font-size: 15px;
 color: #725d42; letter-spacing: -0.3px;
 
-/* Logo 图片 */ width: 24px; height: 24px; margin-right: 8px;
+/* Logo 图片 */
+width: 24px; height: 24px; margin-right: 8px;
 
-/* 菜单列表 */ padding: 8px 0;
+/* 菜单列表 */
+padding: 8px 0;
 
 /* 分类标题 */
 padding: 12px 16px 4px;
@@ -1081,7 +1467,8 @@ text-transform: uppercase;
 
 /* 菜单项 */
 margin: 1px 5px;
-height: 40px; padding: 0 16px; padding-left: 26px;
+height: 40px; padding: 0 16px;
+padding-left: 26px;
 font-weight: 600; font-size: 14px;
 border-radius: 12px;
 transition: all 0.15s;
@@ -1148,12 +1535,17 @@ margin-left: 8px;
 font-size: 17px; color: #7c5734; line-height: 1.7;
 margin: 0 0 28px; max-width: 520px;
 
-/* Logo 图片 */ width: 172px; height: 172px;
+/* Logo 图片 */
+width: 172px; height: 172px;
 
-/* Section */ padding: 48px 40px; max-width: 960px; margin: 0 auto;
+/* Section */
+padding: 48px 40px; max-width: 960px; margin: 0 auto;
 
-/* Section 标题 */ font-size: 24px; font-weight: 700; color: #725d42; margin: 0 0 8px;
-/* Section 描述 */ font-size: 14px; color: #7c5734; margin-bottom: 32px;
+/* Section 标题 */
+font-size: 24px; font-weight: 700; color: #725d42; margin: 0 0 8px;
+
+/* Section 描述 */
+font-size: 14px; color: #7c5734; margin-bottom: 32px;
 
 /* Feature 网格 */
 grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -1163,7 +1555,8 @@ gap: 16px;
 transform: translateY(-4px);
 box-shadow: 0 8px 24px rgba(114, 93, 66, 0.15);
 
-/* Feature 图标 hover */ transform: scale(1.1) rotate(-4deg);
+/* Feature 图标 hover */
+transform: scale(1.1) rotate(-4deg);
 
 /* 代码块 */
 max-width: 600px; margin: 0 auto;
@@ -1181,7 +1574,7 @@ color: #e8d5bc; line-height: 1.8;
 |---|---|
 | 注释 | `#6b5e50`（italic, weight 400）|
 | 字符串 | `#a8d4a0` |
-| JSX 标签 | `#f0a870` |
+| Vue 模板标签 | `#f0a870` |
 | 关键字 / npm/pnpm | `#f0a870` |
 | 命令动词（install/add）| `#a8d4a0` |
 | 括号 `{}` | `#d4b896` |
@@ -1194,63 +1587,46 @@ color: #e8d5bc; line-height: 1.8;
 
 ## 5. 自实现 CSS 变量完整模板
 
-不依赖组件库时，在你自己的全局 CSS（或 Less 入口）中加入与本库等价的 token：
+不依赖组件库时，在 `:root` 中声明以下变量：
 
 ```css
 :root {
   /* 字体 */
-  --animal-font-family: Nunito, 'Noto Sans SC', 'Zen Maru Gothic',
+  --animal-font: Nunito, 'Noto Sans SC',
     -apple-system, 'PingFang SC', 'Hiragino Sans GB', sans-serif;
 
   /* 主色 */
-  --animal-primary-color:        #19c8b9;
-  --animal-primary-color-hover:  #3dd4c6;
-  --animal-primary-color-active: #50b9ab;
-  --animal-primary-color-bg:     #e6f9f6;
+  --animal-primary:        #19c8b9;
+  --animal-primary-hover:  #3dd4c6;
+  --animal-primary-active: #11a89b;
+  --animal-primary-bg:     #e6f9f6;
 
   /* 文字 */
-  --animal-text-color:           #794f27;
-  --animal-warm-color-soft:      #725d42;
-  --animal-text-color-secondary: #9f927d;
-  --animal-text-color-disabled:  #c4b89e;
+  --animal-text:           #794f27;
+  --animal-text-body:      #725d42;
+  --animal-text-secondary: #9f927d;
+  --animal-text-muted:     #8a7b66;
+  --animal-text-disabled:  #c4b89e;
 
   /* 背景 */
-  --animal-bg-color:             #f8f8f0;
-  --animal-bg-color-input:       #f7f3df;
-  --animal-bg-color-disabled:    #f0ece2;
+  --animal-bg:             #f8f8f0;
+  --animal-bg-content:     rgb(247, 243, 223);
+  --animal-bg-disabled:    #f0ece2;
 
   /* 边框 */
-  --animal-border-color:         #aaa69d;
-  --animal-border-color-hover:   #827157;
-  --animal-border-color-light:   #e8e2d6;
-
-  /* 间距 */
-  --animal-spacing-xs: 4px;
-  --animal-spacing-sm: 8px;
-  --animal-spacing-md: 12px;
-  --animal-spacing-lg: 16px;
-  --animal-spacing-xl: 24px;
+  --animal-border:         #c4b89e;
+  --animal-border-hover:   #a89878;
 
   /* 圆角 */
-  --animal-border-radius-sm:   16px;
-  --animal-border-radius-base: 18px;
-  --animal-border-radius-lg:   24px;
-  /* 50px pill 直接写 border-radius: 50px; */
+  --animal-radius-sm:      12px;
+  --animal-radius:         18px;
+  --animal-radius-lg:      24px;
+  --animal-radius-pill:    50px;
 
-  /* 3D 阴影色 */
-  --animal-shadow-warm:        #bdaea0;  /* 按钮 */
-  --animal-shadow-soft:        #d4c9b4;  /* 输入框 */
-  --animal-shadow-soft-hover:  #c4b89e;
-  --animal-shadow-soft-strong: #a89878;
-
-  /* 状态 */
-  --animal-success-color:        #6fba2c;
-  --animal-success-color-active: #5a9e1e;
-  --animal-warning-color:        #f5c31c;
-  --animal-error-color:          #e05a5a;
-
-  /* 动效 */
-  --animal-motion-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  /* 3D 阴影 */
+  --animal-shadow-btn:     #bdaea0;
+  --animal-shadow-input:   #d4c9b4;
+  --animal-shadow-switch:  #5a9e1e;
 
   /* 游戏特殊色 */
   --animal-focus-yellow:   #ffcc00;
@@ -1258,10 +1634,16 @@ color: #e8d5bc; line-height: 1.8;
   --animal-sidebar-active: #B7C6E5;
   --animal-sidebar-hover:  #d6dff0;
 
-  /* 时长 */
-  --animal-motion-duration-fast: 0.15s;
-  --animal-motion-duration-base: 0.25s;
-  --animal-motion-duration-slow: 0.35s;
+  /* 状态 */
+  --animal-success:        #6fba2c;
+  --animal-warning:        #f5c31c;
+  --animal-error:          #e05a5a;
+
+  /* 动效 */
+  --animal-ease:           cubic-bezier(0.4, 0, 0.2, 1);
+  --animal-duration-fast:  0.15s;
+  --animal-duration:       0.25s;
+  --animal-duration-slow:  0.35s;
 }
 ```
 
@@ -1271,7 +1653,7 @@ color: #e8d5bc; line-height: 1.8;
 
 1. **颜色**：大地棕色系文字 + 薄荷青绿主色 + 奶油米白背景，禁止纯黑 / 冷灰
 2. **圆角**：最小 12px；按钮、输入框必须 50px pill 形
-3. **立体感**：所有可点击元素加底部厚阴影 `0 Npx 0 0 [暗色]`，hover 上浮，active 下压
+3. **立体感**：3D 厚阴影（`0 Npx 0 0 [暗色]` + hover 上浮 / active 下压）**仅用于 primary 按钮 / danger-primary 按钮 / Input / Switch**；default / dashed / text / link 按钮用柔和 elevation 阴影（`0 2px 4px / 0 3px 10px rgba(61,52,40,...)`）即可
 4. **字体**：Nunito（Google Fonts）圆体，按钮/标题 weight 600+，从不使用细体
 5. **动效**：过渡 0.15~0.35s，缓动 `cubic-bezier(0.4, 0, 0.2, 1)`，平滑不生硬
 6. **焦点**：输入框用黄色 `#ffcc00`，按钮用青绿 `#19c8b9`，绝不用蓝色
@@ -1283,7 +1665,7 @@ color: #e8d5bc; line-height: 1.8;
 
 ```
 src/components/MyComponent/
-├── MyComponent.vue          # SFC：<script setup lang="ts"> + <template> + 可选 <style scoped>
+├── MyComponent.vue          # SFC：<script setup lang="ts"> + <template> + <style lang="less" scoped>
 ├── types.ts                 # （可选）独立类型文件，跨文件复用泛型时必需
 └── index.ts                 # 统一导出
 ```
@@ -1300,82 +1682,137 @@ export { MyComponent } from './components/MyComponent';
 export type { MyComponentProps } from './components/MyComponent';
 ```
 
-`src/components/MyComponent/MyComponent.vue` 模板（Less + BEM + 设计 token）：
+> 仓库内所有组件均使用 `<script setup lang="ts">` + scoped Less + BEM；禁止使用 CSS Modules（`*.module.less`）。
+
+Less / BEM 模板（直接使用设计 token）：
+
+```less
+@import '@/styles/variables.less';
+
+.animal-mycomp {
+  background: @bg-color-content;      // rgb(247,243,223)
+  color: @text-color-body;            // #725d42
+  border: @border-width solid @border-color-light;  // 2px solid #c4b89e
+  border-radius: @border-radius-base; // 18px
+  font-family: @font-family;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  transition: all @motion-duration-base @motion-ease;
+  box-shadow: 0 3px 0 0 @shadow-input; // #d4c9b4
+
+  &:hover:not(.animal-mycomp--disabled) {
+    border-color: @border-color-hover; // #a89878
+    transform: translateY(-1px);
+    box-shadow: 0 4px 0 0 @shadow-input;
+  }
+
+  &:focus-within {
+    border-color: @focus-yellow;       // #ffcc00
+    box-shadow: 0 3px 0 0 @focus-yellow-dark,
+                0 0 0 3px rgba(255, 204, 0, 0.15);
+  }
+
+  &--disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: @bg-color-disabled;
+    color: @text-color-disabled;
+    border-color: @shadow-input;
+    box-shadow: none;
+  }
+
+  &__icon {
+    display: inline-flex;
+    align-items: center;
+  }
+}
+```
+
+Vue SFC 模板：
 
 ```vue
 <script setup lang="ts">
+import type { MyComponentSize } from './types';
+
 interface Props {
-    /** 尺寸 */
-    size?: 'small' | 'middle' | 'large';
-    /** 禁用 */
-    disabled?: boolean;
+  /** 尺寸 */
+  size?: MyComponentSize;
+  /** 禁用 */
+  disabled?: boolean;
 }
 
 withDefaults(defineProps<Props>(), {
-    size: 'middle',
-    disabled: false,
+  size: 'middle',
+  disabled: false,
 });
 
 defineEmits<{ (e: 'click', event: MouseEvent): void }>();
-defineSlots<{ default?: () => unknown }>();
+defineSlots<{ default?: () => unknown; icon?: () => unknown }>();
 </script>
 
 <template>
-    <div
-        class="animal-mycomp"
-        :class="[
-            `animal-mycomp--${size}`,
-            { 'animal-mycomp--disabled': disabled },
-        ]"
-    >
-        <slot />
-    </div>
+  <div
+    class="animal-mycomp"
+    :class="[
+      `animal-mycomp--${size}`,
+      { 'animal-mycomp--disabled': disabled },
+    ]"
+    @click="$emit('click', $event)"
+  >
+    <span v-if="$slots.icon" class="animal-mycomp__icon">
+      <slot name="icon" />
+    </span>
+    <slot />
+  </div>
 </template>
 
 <style lang="less" scoped>
 @import '@/styles/variables.less';
 
 .animal-mycomp {
-    font-family: @font-family;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    line-height: 1;
-    background: @bg-color-input;
-    color: @warm-color-soft;
-    border: 2px solid @border-color-light;
-    border-radius: 50px;
-    box-shadow: 0 3px 0 0 @shadow-soft;
-    transition: all @motion-duration-base @motion-ease;
+  font-family: @font-family;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  background: @bg-color-input;
+  color: @warm-color-soft;
+  border: 2px solid @border-color-light;
+  border-radius: 50px;
+  box-shadow: 0 3px 0 0 @shadow-soft;
+  transition: all @motion-duration-base @motion-ease;
 
-    &:hover:not(.animal-mycomp--disabled) {
-        border-color: @border-color-hover;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 0 0 @shadow-soft-hover;
-    }
+  &:hover:not(.animal-mycomp--disabled) {
+    border-color: @border-color-hover;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 0 0 @shadow-soft-hover;
+  }
 
-    &:focus-within {
-        border-color: #ffcc00;
-        box-shadow: 0 3px 0 0 #e0b800, 0 0 0 3px rgba(255, 204, 0, 0.15);
-    }
+  &:focus-within {
+    border-color: #ffcc00;
+    box-shadow: 0 3px 0 0 #e0b800, 0 0 0 3px rgba(255, 204, 0, 0.15);
+  }
 
-    &--disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-        background: @bg-color-disabled;
-        color: @text-color-disabled;
-        box-shadow: none;
-    }
+  &--disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: @bg-color-disabled;
+    color: @text-color-disabled;
+    box-shadow: none;
+  }
 
-    &--small  { height: 32px;  padding: 0 16px; font-size: @font-size-sm; }
-    &--middle { height: 45px;  padding: 0 20px; font-size: @font-size-base; }
-    &--large  { height: 48px;  padding: 0 32px; font-size: @font-size-lg; }
+  &--small  { height: 32px; padding: 0 16px; font-size: @font-size-sm; }
+  &--middle { height: 45px; padding: 0 20px; font-size: @font-size-base; }
+  &--large  { height: 48px; padding: 0 32px; font-size: @font-size-lg; }
+
+  &__icon { display: inline-flex; align-items: center; }
 }
 </style>
 ```
 
-> Less 模板提示：
+> Less / BEM 提示：
 > - 顶部 `@import '@/styles/variables.less';` 引入全局 token，组件内统一用 `@xxx` 语法。
 > - 状态样式用 BEM 修饰符（`&--disabled`、`&--checked`）而非堆叠工具类，便于阅读和覆盖。
+> - 子元素一律用 `&__name`，避免出现孤立的 `.foo .bar` 选择器，scoped 编译后 BEM 命名足以隔离。
 > - 时长 token：`@motion-duration-fast` (0.15s) / `@motion-duration-base` (0.25s) / `@motion-duration-slow` (0.35s)，缓动统一用 `@motion-ease`。
 
 ---
@@ -1386,48 +1823,52 @@ defineSlots<{ default?: () => unknown }>();
 
 ```vue
 <script setup lang="ts">
-import { ref } from 'vue';
 import { MyComponent } from '../../src';
 import { CodeBlock, ApiTable } from '../tools';
 
 const props = [
-    { name: 'size', type: "'small' | 'middle' | 'large'", default: "'middle'", description: '尺寸' },
+  { name: 'size', type: "'small' | 'middle' | 'large'", default: "'middle'", description: '尺寸' },
 ];
 </script>
 
 <template>
-    <div>
-        <h2>MyComponent</h2>
-        <MyComponent size="large">内容</MyComponent>
-        <CodeBlock :code="`<MyComponent size=&quot;large&quot;>内容</MyComponent>`" />
-        <ApiTable :data="props" />
-    </div>
+  <div>
+    <h2>MyComponent</h2>
+    <MyComponent size="large">内容</MyComponent>
+    <CodeBlock :code="`<MyComponent size=&quot;large&quot;>内容</MyComponent>`" />
+    <ApiTable :data="props" />
+  </div>
 </template>
 ```
 
-并在 `demo/ComponentPage.vue` 中注册路由（或 `demo/router.ts` 追加 route），同时把 `title / desc` 写入 `demo/pageInfo.ts`：
+并在 `demo/ComponentPage.vue`（或 `demo/router.ts`）注册路由，同时把 `title / desc` 写入 `demo/pageInfo.ts`：
 
 ```ts
-// demo/pageInfo.ts
+// demo/pageInfo.ts — 供 App 静态导入的轻量元信息
 export const PAGE_INFO: Record<string, { title: string; desc: string }> = {
-    button:         { title: 'Button 按钮',       desc: '...' },
-    input:          { title: 'Input 输入框',      desc: '...' },
-    switch:         { title: 'Switch 开关',       desc: '...' },
-    card:           { title: 'Card 卡片',         desc: '...' },
-    collapse:       { title: 'Collapse 折叠面板', desc: '...' },
-    cursor:         { title: 'Cursor 光标',       desc: '...' },
-    time:           { title: 'Time 时间',         desc: '...' },
-    phone:          { title: 'Phone 手机',        desc: '...' },
-    footer:         { title: 'Footer 底部装饰',   desc: '...' },
-    modal:          { title: 'Modal 弹窗',        desc: '...' },
-    typewriter:     { title: 'Typewriter 打字机', desc: '...' },
-    'divider-comp': { title: 'Divider 分割线',    desc: '...' },
-    icon:           { title: 'Icon 图标',         desc: '...' },
-    select:         { title: 'Select 选择器',     desc: '...' },
-    checkbox:       { title: 'Checkbox 多选框',   desc: '...' },
-    codeblock:      { title: 'CodeBlock 代码高亮', desc: '...' },
-    loading:        { title: 'Loading 加载',      desc: '...' },
-    table:          { title: 'Table 表格',        desc: '...' },
+  button:         { title: 'Button 按钮',       desc: '...' },
+  input:          { title: 'Input 输入框',      desc: '...' },
+  switch:         { title: 'Switch 开关',       desc: '...' },
+  card:           { title: 'Card 卡片',         desc: '...' },
+  collapse:       { title: 'Collapse 折叠面板', desc: '...' },
+  cursor:         { title: 'Cursor 光标',       desc: '...' },
+  time:           { title: 'Time 时间',         desc: '...' },
+  phone:          { title: 'Phone 手机',        desc: '...' },
+  footer:         { title: 'Footer 底部装饰',   desc: '...' },
+  modal:               { title: 'Modal 弹窗',         desc: '...' },
+  typewriter:          { title: 'Typewriter 打字机',   desc: '...' },
+  'divider-comp':      { title: 'Divider 分割线',      desc: '...' },
+  icon:                { title: 'Icon 图标',           desc: '...' },
+  select:              { title: 'Select 选择器',       desc: '...' },
+  checkbox:            { title: 'Checkbox 多选框',     desc: '...' },
+  radio:               { title: 'Radio 单选框',        desc: '...' },
+  tooltip:             { title: 'Tooltip 文字提示',    desc: '...' },
+  tabs:                { title: 'Tabs 标签页',         desc: '...' },
+  title:               { title: 'Title 章节标题',      desc: '...' },
+  loading:             { title: 'Loading 加载',        desc: '...' },
+  table:               { title: 'Table 表格',          desc: '...' },
+  'wedding-invitation':{ title: 'WeddingInvitation 邀请函', desc: '...' },
+  codeblock:           { title: 'CodeBlock 代码高亮',  desc: '...' },
 };
 ```
 
@@ -1437,20 +1878,23 @@ export const PAGE_INFO: Record<string, { title: string; desc: string }> = {
 
 ## 9. 新增组件 Checklist
 
+- [ ] 新建文件夹 `src/components/<Name>/`，含 `<Name>.vue` + `index.ts` + 可选 `types.ts`
+- [ ] SFC 使用 `<script setup lang="ts">`，样式块用 `<style lang="less" scoped>`，类名遵循 BEM（`.animal-foo` / `.animal-foo--modifier` / `.animal-foo__elem`），**禁止 CSS Modules**
 - [ ] Google Fonts 已通过 `@fontsource/*` 在 `src/index.ts` 引入（Nunito + Noto Sans SC + Zen Maru Gothic）
 - [ ] Props interface 从组件文件或 `types.ts` 导出（**SFC 中带泛型时，必须使用 inline `defineProps<{...}>()`，不要再额外定义命名 `interface Props`**，否则 vite-plugin-dts 会触发 TS4082 错误）
 - [ ] 所有 props 有 JSDoc 注释（中文 OK）
-- [ ] 受控值使用 `v-model` / `v-model:open` / `v-model:expanded` 习惯（`modelValue` + `update:modelValue`）
-- [ ] React 端的 `ReactNode` 入参 → Vue 端改为命名插槽
+- [ ] 受控值使用 `v-model` / `v-model:open` / `v-model:expanded` 习惯（`modelValue` + `update:modelValue`），同时支持 `defaultValue` 非受控初值
+- [ ] React 端的 `ReactNode` 入参 → Vue 端改为命名插槽（`#icon` / `#prefix` / `#suffix` / `#footer` 等），可结构化的内容用默认插槽
 - [ ] `disabled` 状态：cursor: not-allowed + opacity 0.5~0.6 + 移除阴影
-- [ ] 颜色优先引用 `var(--color-animal-*)` CSS 变量或 `@color-animal-*` Less 变量，避免硬编码 hex
+- [ ] 颜色优先引用 `variables.less` token（`@xxx`）或 `:root` 上的 `var(--animal-*)` CSS 变量，避免硬编码 hex
 - [ ] 阴影使用暖色调（`#bdaea0` / `#d4c9b4` / `rgba(61,52,40,...)`），非冷黑
 - [ ] hover 时 `translateY(-1px 或 -4px)` + 阴影加深
 - [ ] active 时 `translateY(2px)` + 阴影减小
 - [ ] 焦点：输入类用 `#ffcc00`，按钮类用 `#19c8b9`
-- [ ] 动画使用 `transition: ... 250ms var(--ease-animal)` / `150ms` 等时长，缓动统一引用 `var(--ease-animal)`
+- [ ] 动画使用 `@motion-duration-*` 和 `@motion-ease` token
 - [ ] 组件从 `src/index.ts` 导出
 - [ ] Demo 页创建于 `demo/pages/<Name>Demo.vue`
 - [ ] Demo 在 `demo/ComponentPage.vue` 或 `demo/router.ts` 中注册
 - [ ] `demo/pageInfo.ts` 追加 `{ title, desc }` 元信息
+- [ ] 同步更新 `PROMPT.md`、`AI_USAGE.md`、`DESIGN_PROMPT.md`、`skill/SKILL.md` 四个文档
 - [ ] `npm run build` 通过 `vue-tsc --noEmit` 类型检查 + `vite build` + `vite-plugin-dts` 声明文件生成
