@@ -5,7 +5,7 @@
     <img src="img/readme-home.png" alt="animal-island-vue" style="border-radius: 12px; width: 40%; display: block; margin: 0 auto;" />
 </div>
 <div align="center">
-    A Vue 3 UI component library inspired by Animal Crossing: New Horizons
+A Vue 3 UI component library inspired by Animal Crossing: New Horizons
 </div>
 <br/>
 <div align="center">
@@ -14,10 +14,14 @@
     <a href="LICENSE"><img src="https://img.shields.io/npm/dm/animal-island-vue.svg?style=flat-square" alt=""></a>
     <a href="https://github.com/guokaigdg/animal-island-vue/releases"><img src="https://img.shields.io/github/v/tag/guokaigdg/animal-island-vue?label=version&style=flat-square" alt="Version"></a>
 </div>
+<br/>
+<div align="center">
+    <a href="https://hellogithub.com/repository/guokaigdg/animal-island-vue" target="_blank"><img src="https://api.hellogithub.com/v1/widgets/recommend.svg?rid=98ecff41d142466d8d72694a6fadf9e9&claim_uid=pyGqTPIRMdo7fBS&theme=neutral" alt="Featured｜HelloGitHub" style="width: 250px; height: 54px;" width="250" height="54" /></a>
+</div>
 
 <br/>
 <p align="center">
-    <a href="../README.md">中文</a> | English
+    <a href="../README.md">简体中文</a> | English
 </p>
 
 
@@ -27,11 +31,25 @@ This project is a lightweight UI component library built with Vue 3 + TypeScript
 
 All visual elements, layouts, icons, and animations are independently designed and implemented, without directly using any official Nintendo art materials, code, or resource files.
 
+## 🎉 React Version
+
+- [animal-island-ui](https://github.com/guokaigdg/animal-island-ui)
 
 ## Preview
 
 - Online Preview (PC) [animal-island-vue-pc](https://guokaigdg.github.io/animal-island-vue/#/)
 - Online Preview (Mobile) [animal-island-vue-mobile](https://guokaigdg.github.io/animal-island-vue/#/)
+
+## 🚀 Use AI to Generate animal-island-vue Pages (No Coding Needed)
+
+Non-developer and don't want to write code yourself? Use [`PROMPT.md`](../PROMPT.md) — no npm, no build step.
+
+**4 steps:**
+
+1. Copy [`PROMPT.md`](../PROMPT.md) in full.
+2. Paste into any AI tool (Cursor / Claude / ChatGPT / Gemini / DeepSeek) and send.
+3. The AI asks what page you want — reply in one phrase (e.g. "personal blog", "product list", "FAQ").
+4. Save the `index.html` it returns and double-click to preview.
 
 ## Installation
 
@@ -47,17 +65,22 @@ npm install animal-island-vue
 
 ```vue
 <script setup lang="ts">
-import { Button, Card } from 'animal-island-vue';
+import { ref } from 'vue';
+import { Button, Card, Modal } from 'animal-island-vue';
 import 'animal-island-vue/style';
+
+const open = ref(false);
 </script>
 
 <template>
-    <div>
-        <Button type="primary">Start Adventure</Button>
-        <Card color="app-blue">
-            Welcome to the deserted island!
-        </Card>
-    </div>
+    <Card type="title" color="green">
+        <template #title>Welcome to the Deserted Island</template>
+        <Button type="primary" @click="open = true">Start Adventure</Button>
+    </Card>
+
+    <Modal v-model:open="open" title="Welcome">
+        Welcome to animal-island-vue.
+    </Modal>
 </template>
 ```
 
@@ -67,9 +90,11 @@ Complete reference for different scenarios:
 
 | Document | Purpose |
 |---|---|
+| [`PROMPT.md`](../PROMPT.md) | 🚀 One-click prompt for non-developers — paste into Cursor / Claude / ChatGPT / v0 / Bolt / Lovable / Windsurf to generate animal-island-vue-styled Vue pages. |
 | [`AI_USAGE.md`](../AI_USAGE.md) | AI code assistant handbook - all component props, types and defaults word-for-word, hard rules and copy-paste boilerplate, no invented APIs. |
-| [`DESIGN_PROMPT.md`](../DESIGN_PROMPT.md) | One-click reproduction prompts for v0 / Figma AI / Midjourney / DALL-E, including color palette, fonts, size tables, Modal clip-path and prohibition list. |
+| [`DESIGN_PROMPT.md`](../DESIGN_PROMPT.md) | Visual-style prompts for v0 / Figma AI / Midjourney / DALL-E, including color palette, fonts, size tables, Modal clip-path and prohibition list. |
 | [`skill/SKILL.md`](../skill/SKILL.md) | Pixel-perfect style specification Skill - design tokens, all component CSS, Demo layout values, Less variable templates and new component development checklist. |
+| [`CHANGELOG.md`](../CHANGELOG.md) | Release notes. |
 | [`CONTRIBUTING.md`](../CONTRIBUTING.md) | Contributing Guide |
 
 
@@ -96,11 +121,59 @@ npm run build:docs
 
 ## Usage Cases
 
-|<a href="https://github.com/yunxinz/ac-site-template">ac-site-template</a> (Animal Crossing themed personal website template)  |  <a href="https://github.com/xiaochong/hi-kid">HiKid</a> (English learning app for children) |
-| --- | --- |
-|  <img src="img/ac-site-template.png" alt="ac-site-template" style="border-radius: 8px; width: 90%; display: block; margin: 0 auto;" /> | <img src="img/hi-kid.png" alt="HiKid" style="border-radius: 8px; width: 90%; display: block; margin: 0 auto;" />|
-|<a href="https://github.com/guokaigdg/animal-island-blog">animal-island-blog</a>（animal-island blog）  |   |
-|  <img src="img/case-animal-blog.png" alt="ac-site-template" style="border-radius: 8px; width: 90%; display: block; margin: 0 auto;" /> | |
+<table>
+<tr valign="top">
+  <td align="center" width="33%">
+    <br/>
+    <img src="img/animal-island-new-tab.png" alt="animal-island-new-tab" style="border-radius: 8px; width: 90%; display: block; margin: 8px auto 0;" />
+    <br/><a href="https://ashleycry.github.io/AnimalIslandNewTab/">Animal Island New Tab</a><br/><sub>Animal Crossing style new tab page</sub>
+  </td>
+  <td align="center" width="33%">
+    <br/>
+    <img src="img/ac-site-template.png" alt="ac-site-template" style="border-radius: 8px; width: 90%; display: block; margin: 8px auto 0;" />
+    <br/><a href="https://github.com/yunxinz/ac-site-template">ac-site-template</a><br/><sub>Animal Crossing themed personal website template</sub>
+  </td>
+  <td align="center" width="33%">
+    <br/>
+    <img src="img/hi-kid.png" alt="HiKid" style="border-radius: 8px; width: 90%; display: block; margin: 8px auto 0;" />
+    <br/><a href="https://github.com/xiaochong/hi-kid">HiKid</a><br/><sub>English learning app for children</sub>
+  </td>
+</tr>
+<tr valign="top">
+  <td align="center" width="33%">
+    <br/>
+    <img src="img/android-ui.png" alt="android-ui" style="border-radius: 8px; width: 90%; display: block; margin: 8px auto 0;" />
+    <br/><a href="https://github.com/liuyuhong0324/AnimalIslandUI">AnimalIslandUI</a><br/><sub>Animal Crossing style Android UI library</sub>
+  </td>
+  <td align="center" width="33%">
+    <br/>
+    <img src="img/itbug-shop.png" alt="ItbugShop" style="border-radius: 8px; width: 90%; display: block; margin: 8px auto 0;" />
+    <br/><a href="https://itbug.shop/">ItbugShop</a><br/><sub>Liang Diandian's Blog</sub>
+  </td>
+  <td align="center" width="33%">
+    <br/>
+    <img src="img/KidsMathQuest.jpeg" alt="KidsMathQuest" style="border-radius: 8px; width: 90%; display: block; margin: 8px auto 0;" />
+    <br/><a href="https://github.com/bk4ice/KidsMathQuest">KidsMathQuest</a><br/><sub>Math practice for elementary school</sub>
+  </td>
+</tr>
+<tr valign="top">
+  <td align="center" width="33%">
+    <br/>
+    <img src="img/flutter-ui.jpeg" alt="animal_island_flutter" style="border-radius: 8px; width: 90%; display: block; margin: 8px auto 0;" />
+    <br/><a href="https://github.com/ohmangocat/animal_island_flutter">animal_island_flutter</a><br/><sub>Animal Crossing style Flutter UI library</sub>
+  </td>
+  <td align="center" width="33%">
+    <br/>
+    <img src="img/case-animal-blog.png" alt="animal-island-blog" style="border-radius: 8px; width: 90%; display: block; margin: 8px auto 0;" />
+    <br/><a href="https://github.com/guokaigdg/animal-island-blog">animal-island-blog</a><br/><sub>Animal Crossing style blog</sub>
+  </td>
+  <td align="center" width="33%">
+    <br/>
+    <img src="img/island-life-journal.png" alt="island-life-journal" style="border-radius: 8px; width: 90%; display: block; margin: 8px auto 0;" />
+    <br/><a href="https://github.com/TIUCSIB/animal-island-blog">Island Life Journal</a><br/><sub>Island Life Photo Journal</sub>
+  </td>
+</tr>
+</table>
 
 
 
@@ -124,5 +197,4 @@ For any questions or copyright-related communications, please contact via Issue 
 ## License
 
 MIT
-For learning purposes only.
 This project is released under the MIT open-source license, for learning use only. The author is not responsible for any legal issues or losses caused by the use of this library.

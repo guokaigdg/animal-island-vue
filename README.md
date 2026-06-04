@@ -25,15 +25,29 @@
 
 ## 介绍
 
-本项目是基于 Vue 3 + TypeScript + Less 实现的轻量 UI 组件库，是 [animal-island-ui](../animal-island-ui)（React 版）的 Vue 移植版本，设计风格灵感来源于任天堂《集合啦！动物森友会》游戏界面，用于个人前端技术练习与组件化开发学习。
+本项目是基于 Vue 3 + TypeScript + Less 实现的轻量 UI 组件库，是 [animal-island-ui](https://github.com/guokaigdg/animal-island-ui)（React 版）的 Vue 移植版本，设计风格灵感来源于任天堂《集合啦！动物森友会》游戏界面，用于个人前端技术练习与组件化开发学习。
 
 所有视觉元素、布局、图标、动画均为独立设计实现，未直接使用任何任天堂官方美术素材、代码或资源文件。
 
+## 🎉 React 版本
+
+- [animal-island-ui](https://github.com/guokaigdg/animal-island-ui)
 
 ## 预览
 
 - 在线预览 (PC 端) [animal-island-vue-pc](https://guokaigdg.github.io/animal-island-vue/#/)
 - 在线预览（移动端）[animal-island-vue-mobile](https://guokaigdg.github.io/animal-island-vue/#/)
+
+## 🚀 用 AI 工具一键生成 animal-island-vue 风格页面（无需写代码）
+
+非研发人员，不想自己写代码？用 [`PROMPT.md`](./PROMPT.md) 即可，不需要 npm，不需要打包工具。
+
+**4 步使用：**
+
+1. 复制 [`PROMPT.md`](./PROMPT.md) 全文。
+2. 粘贴到任意 AI 工具（Cursor / Claude / ChatGPT / Gemini / DeepSeek）发送。
+3. AI 会反问做什么页面，用一句话回答即可（如「个人博客」「商品列表」「FAQ」）。
+4. 保存 AI 输出的 `index.html`，双击即可预览。
 
 ## 安装
 
@@ -69,11 +83,15 @@ const open = ref(false);
 ```
 
 ## 文档
+
 面向不同场景的完整参考：
 
 | 文档 | 用途 |
 |---|---|
+| [`PROMPT.md`](./PROMPT.md) | 🚀 给普通用户的一键提示词，复制到 Cursor / Claude / ChatGPT / v0 / Bolt / Lovable / Windsurf 即可生成 animal-island-vue 风格 Vue 页面。 |
 | [`AI_USAGE.md`](./AI_USAGE.md) | 面向 AI 代码助手的使用手册，逐字收录全部组件 props、类型与默认值，附硬性规则与可复制样板，杜绝臆造 API。 |
+| [`DESIGN_PROMPT.md`](./DESIGN_PROMPT.md) | 视觉风格提示词，适配 v0 / Figma AI / Midjourney / DALL-E，含色板、字体、尺寸表、Modal clip-path 与禁用清单。 |
+| [`skill/SKILL.md`](./skill/SKILL.md) | 像素级样式规范 Skill，覆盖设计 token、全部组件精确 CSS、Demo 布局数值、Less 变量模板与新组件开发 Checklist。 |
 | [`CHANGELOG.md`](./CHANGELOG.md) | 版本更新日志。 |
 | [`CONTRIBUTING.md`](./CONTRIBUTING.md) | 贡献指南。 |
 
@@ -101,11 +119,59 @@ npm run build:docs
 
 ## 案例
 
-|<a href="https://github.com/yunxinz/ac-site-template">ac-site-template</a>（动森主题个人网站模板）  |  <a href="https://github.com/xiaochong/hi-kid">HiKid</a>（儿童教育练习英语口语和听力） |
-| --- | --- |
-|  <img src="docs/img/ac-site-template.png" alt="ac-site-template" style="border-radius: 8px; width: 90%; display: block; margin: 0 auto;" /> | <img src="docs/img/hi-kid.png" alt="HiKid" style="border-radius: 8px; width: 90%; display: block; margin: 0 auto;" />| 
-|<a href="https://github.com/guokaigdg/animal-island-blog">animal-island-blog</a>（动森风格博客）  |   |
-|  <img src="docs/img/case-animal-blog.png" alt="ac-site-template" style="border-radius: 8px; width: 90%; display: block; margin: 0 auto;" /> | | 
+<table>
+<tr valign="top">
+  <td align="center" width="33%">
+    <br/>
+    <img src="docs/img/animal-island-new-tab.png" alt="animal-island-new-tab" style="border-radius: 8px; width: 90%; display: block; margin: 8px auto 0;" />
+    <br/><a href="https://ashleycry.github.io/AnimalIslandNewTab/">Animal Island New Tab</a><br/><sub>动森新标签页</sub>
+  </td>
+  <td align="center" width="33%">
+    <br/>
+    <img src="docs/img/ac-site-template.png" alt="ac-site-template" style="border-radius: 8px; width: 90%; display: block; margin: 8px auto 0;" />
+    <br/><a href="https://github.com/yunxinz/ac-site-template">ac-site-template</a><br/><sub>动森主题个人网站模板</sub>
+  </td>
+  <td align="center" width="33%">
+    <br/>
+    <img src="docs/img/hi-kid.png" alt="HiKid" style="border-radius: 8px; width: 90%; display: block; margin: 8px auto 0;" />
+    <br/><a href="https://github.com/xiaochong/hi-kid">HiKid</a><br/><sub>儿童教育练习英语口语和听力</sub>
+  </td>
+</tr>
+<tr valign="top">
+  <td align="center" width="33%">
+    <br/>
+    <img src="docs/img/android-ui.png" alt="android-ui" style="border-radius: 8px; width: 90%; display: block; margin: 8px auto 0;" />
+    <br/><a href="https://github.com/liuyuhong0324/AnimalIslandUI">AnimalIslandUI</a><br/><sub>动森风格安卓 UI 库</sub>
+  </td>
+  <td align="center" width="33%">
+    <br/>
+    <img src="docs/img/itbug-shop.png" alt="ItbugShop" style="border-radius: 8px; width: 90%; display: block; margin: 8px auto 0;" />
+    <br/><a href="https://itbug.shop/">ItbugShop</a><br/><sub>梁典典的博客</sub>
+  </td>
+  <td align="center" width="33%">
+    <br/>
+    <img src="docs/img/KidsMathQuest.jpeg" alt="KidsMathQuest" style="border-radius: 8px; width: 90%; display: block; margin: 8px auto 0;" />
+    <br/><a href="https://github.com/bk4ice/KidsMathQuest">KidsMathQuest</a><br/><sub>小学生练习加减乘除</sub>
+  </td>
+</tr>
+<tr valign="top">
+  <td align="center" width="33%">
+    <br/>
+    <img src="docs/img/flutter-ui.jpeg" alt="animal_island_flutter" style="border-radius: 8px; width: 90%; display: block; margin: 8px auto 0;" />
+    <br/><a href="https://github.com/ohmangocat/animal_island_flutter">animal_island_flutter</a><br/><sub>动森风格 Flutter UI 库</sub>
+  </td>
+  <td align="center" width="33%">
+    <br/>
+    <img src="docs/img/case-animal-blog.png" alt="animal-island-blog" style="border-radius: 8px; width: 90%; display: block; margin: 8px auto 0;" />
+    <br/><a href="https://github.com/guokaigdg/animal-island-blog">animal-island-blog</a><br/><sub>动森风格博客</sub>
+  </td>
+  <td align="center" width="33%">
+    <br/>
+    <img src="docs/img/island-life-journal.png" alt="island-life-journal" style="border-radius: 8px; width: 90%; display: block; margin: 8px auto 0;" />
+    <br/><a href="https://github.com/TIUCSIB/animal-island-blog">Island Life Journal</a><br/><sub>小岛生活图片志</sub>
+  </td>
+</tr>
+</table>
 
 
 
