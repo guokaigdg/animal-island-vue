@@ -73,8 +73,8 @@ const open = ref(false);
 </script>
 
 <template>
-    <Card type="title" color="green">
-        <template #title>Welcome to the Deserted Island</template>
+    <Title color="green">Welcome to the Deserted Island</Title>
+    <Card>
         <Button type="primary" @click="open = true">Start Adventure</Button>
     </Card>
 

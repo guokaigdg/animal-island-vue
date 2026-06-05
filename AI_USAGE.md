@@ -50,7 +50,7 @@ import type {
   InputProps, InputSize,
   SwitchProps, SwitchSize,
   ModalProps,
-  CardProps, CardType, CardColor,
+  CardProps, CardType, CardColor, CardPattern,
   TitleProps, TitleSize, TitleColor,
   CollapseProps,
   CursorProps,
@@ -220,7 +220,7 @@ Notes:
 ### 1.5 Card
 
 ```ts
-type CardType  = 'default' | 'title' | 'dashed';
+type CardType  = 'default' | 'dashed';
 
 type CardColor =
   | 'default'          // rgb(247,243,223) / #725d42 text
@@ -237,9 +237,17 @@ type CardColor =
   | 'brown'            // #9a835a / #fff
   | 'warm-peach-pink'; // #e18c6f / #fff
 
+// Decorative pattern overlay — 'none' or any of the 13 CardColor values.
+type CardPattern =
+  | 'none'
+  | 'default' | 'app-pink' | 'purple' | 'app-blue' | 'app-yellow'
+  | 'app-orange' | 'app-teal' | 'app-green' | 'app-red'
+  | 'lime-green' | 'yellow-green' | 'brown' | 'warm-peach-pink';
+
 interface CardProps {
   type?: CardType;        // default 'default'
   color?: CardColor;      // default 'default'
+  pattern?: CardPattern;  // default 'none'
 }
 // Slots: default
 ```
@@ -247,11 +255,11 @@ interface CardProps {
 ```vue
 <Card>Default parchment card</Card>
 <Card type="dashed">Draft / empty-state container</Card>
-<Card type="title">Section heading inside a card</Card>
 <Card color="app-yellow">Notification</Card>
+<Card color="app-blue" pattern="app-pink">With decorative pattern overlay</Card>
 ```
 
-> The Vue version still keeps `type="title"` for backwards compatibility, but for chapter/section ribbons prefer the dedicated `<Title>` component (§ 1.6) — it renders the swallowtail Animal-Crossing banner and has its own size/color palette. There is no `pattern` prop in the Vue version.
+> The Vue version still keeps `type="title"` for backwards compatibility, but for chapter/section ribbons prefer the dedicated `<Title>` component (§ 1.6) — it renders the swallowtail Animal-Crossing banner and has its own size/color palette.
 
 ---
 
@@ -972,7 +980,7 @@ Follow these strictly; violations are bugs:
 4. **`Collapse.question` / `answer` defaults are empty strings** — supply either the props OR the matching slots (`#question` / default), never neither.
 5. **Button `type`** values are `primary | default | dashed | text | link` — NOT `secondary`, `outline`, `ghost`. Use the `ghost` prop for ghost styling.
 6. **Switch `size`** is `'small' | 'default'` (NOT `'middle' | 'large'`). Diverges from Button/Input sizing.
-7. **Card `color`** must be one of the 13 listed `CardColor` values. Do not pass hex codes. `type` is `'default' | 'title' | 'dashed'` — but for ribbon/banner section headings prefer `<Title>` (§ 1.6). The Vue version has NO `pattern` prop — do not pass it.
+7. **Card `color`** must be one of the 13 listed `CardColor` values. Do not pass hex codes. `type` is `'default' | 'dashed'`. `pattern` is `'none'` (default) or any `CardColor` value (13 dot-overlay variants).
 8. **Divider / Footer / Phone / Time / Cursor have no design-token props** beyond what's listed in §§ 1.8–1.12 (`Cursor` only adds `forceAll`). `class` and `:style` are accepted only for layout adjustments (margin, position, opacity); never use them to override colors / radii / shadows — recolor via CSS targeting the class instead.
 9. **Typewriter emits no wrapper element.** Do not rely on a DOM node to style it — style the children instead.
 10. **Icon `name` must be one of the 10 `IconName` values.** Do not pass arbitrary strings, URLs, or VNodes — only the built-in catalogue is supported.
@@ -988,7 +996,7 @@ Follow these strictly; violations are bugs:
 20. **Tooltip's default slot must be a single element** that accepts event/ref props — never a bare string, fragment, or array. Wrap raw text in `<span>` if you need to tooltip text.
 21. **Radio is single-select; values are `string | number`.** Mirrors `Checkbox` API (options, size, direction) but `modelValue` is a scalar, not an array.
 22. **Loading takes no content** — it's a self-contained scene. Use `:active` to fade in/out, do not put children inside it.
-23. **Title is a dedicated component** for chapter/section ribbons (swallowtail clip-path). For inline section headings inside cards, `Card type="title"` still works in the Vue version, but the ribbon banner is `<Title>`.
+23. **Title is the dedicated component** for chapter/section ribbons (swallowtail clip-path). For inline section headings use `<Title>` — there is no longer a `Card type="title"` variant.
 24. **Watch the `title` prop collision.** `<Modal title=…>`, `<Tooltip title=…>` and `<WeddingInvitation title=…>` all take a *string* for their internal heading slot — this is NOT the `<Title>` component (§ 1.6). For rich content use the `#title` slot. Do not pass a `<Title>` element to those props.
 25. **Vue-only bans:**
     - **No JSX** (`tsx`/`jsx`) in this codebase — every example is a `<script setup lang="ts">` SFC with a `<template>`.
