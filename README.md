@@ -71,8 +71,8 @@ const open = ref(false);
 </script>
 
 <template>
-    <Card type="title" color="green">
-        <template #title>欢迎来到无人岛</template>
+    <Title color="green">欢迎来到无人岛</Title>
+    <Card>
         <Button type="primary" @click="open = true">开始冒险</Button>
     </Card>
 

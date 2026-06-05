@@ -214,7 +214,7 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
   color: #a85565;
   ```
   Wallpaper values for the other 12 colors follow the same formula: lighten the palette hue ~70% for bg, use the pure palette hue at 0.18 alpha for the 1.5px dots and a paler tint at 0.12 alpha for the 1px dots, set border to the pure palette hue, choose darker readable text (#3d2e1e, #6a3a9a, etc.).
-- Vue API: `<Card type="default" color="app-pink">...</Card>`. Default slot for body. Real lib props: `type` (`'default' | 'title' | 'dashed'`) + `color` (13 names). Note: `type="title"` is deprecated — use `<Title>` instead.
+- Vue API: `<Card type="default" color="app-pink">...</Card>`. Default slot for body. Real lib props: `type` (`'default' | 'dashed'`) + `color` (13 names) + `pattern` (`'none'` or any `CardColor` value, 13 dot-overlay variants).
 
 ### Title (ribbon banner — REPLACES old `Card type="title"`)
 - Layered structure: back-tail (swallowtail clip-path) → fold-shadow triangle → 3deg-tilted front face → top text.
@@ -404,7 +404,7 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 5. Never apply the 3D pixel-stack shadow `0 5px 0 0 #bdaea0` to non-primary buttons. Use the soft elevation shadow on default/dashed/text/link.
 6. Never replace Modal's blob clip-path with a rounded rectangle. The organic blob is non-negotiable.
 7. Never render Title as a blob, pill, or rectangular block. It is a flat heraldic ribbon with swallowtail ends + fold triangles + 3deg perspective.
-8. Never use `<Card type="title">` — that variant is deprecated in v0.9. Use `<Title>` instead.
+8. Never use `<Card type="title">` — that variant is removed. Use `<Title>` instead.
 9. Never use system fonts. Always include the Nunito + Noto Sans SC Google Fonts link.
 10. Never use weight < 400 anywhere. Body 500, headings 600–900.
 11. Never animate with hard cubic transitions; always use `cubic-bezier(0.4, 0, 0.2, 1)` over 0.15–0.35s.
