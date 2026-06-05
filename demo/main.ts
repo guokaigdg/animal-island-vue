@@ -1,6 +1,6 @@
 import { createApp } from 'vue';
 import App from './App.vue';
-import '../src/index.ts';
+import '../src/styles/index.less';
 
 document.body.style.margin = '0';
 
