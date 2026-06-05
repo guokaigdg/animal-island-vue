@@ -119,7 +119,7 @@ function highlight(code: string): Seg[][] {
                     </h1>
                     <Typewriter :speed="60">
                         <p class="hero-subtitle" :style="{ fontSize: isMobile ? '14px' : '17px' }">
-                            Animal风格的 Vue 3 组件库，基于 TypeScript + Vite + Less 构建，让 Web 应用充满温暖质感
+                            Animal 风格的 Vue 3 组件库，基于 TypeScript + Vite + Less 构建，让 Web 应用充满温暖质感
                         </p>
                     </Typewriter>
                     <div class="hero-actions" :style="{ justifyContent: isMobile ? 'center' : 'flex-start' }">
