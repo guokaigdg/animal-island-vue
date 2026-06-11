@@ -56,60 +56,93 @@ function emitStyleDtsPlugin(): Plugin {
     };
 }
 
-export default defineConfig({
-    plugins: [
-        vue(),
-        stripWoffFallbackPlugin(),
-        emitStyleDtsPlugin(),
-        libAssetsPlugin({
-            outputPath: 'files',
-            name: '[name].[contenthash:8].[ext]',
-            limit: 0,
-        }),
-        dts({
-            entryRoot: 'src',
-            outDir: 'dist/types',
-            include: ['src/**/*.ts', 'src/**/*.vue'],
-            exclude: ['src/**/*.test.ts', 'src/**/*.spec.ts'],
-            tsconfigPath: 'tsconfig.build.json',
-            staticImport: true,
-        }),
-    ],
-    resolve: {
-        alias: {
-            '@': resolve(__dirname, 'src'),
-        },
-    },
-    build: {
-        lib: {
-            entry: resolve(__dirname, 'src/index.ts'),
-            formats: ['es', 'cjs'],
-            fileName: (format) =>
-                `${format === 'es' ? 'es' : 'cjs'}/index.${format === 'es' ? 'js' : 'cjs'}`,
-        },
-        rollupOptions: {
-            external: ['vue'],
-            // lib 模式同时输出 es + cjs，libAssetsPlugin 会在两个输出里 emit
-            // 同名同内容的共享资源，触发 "overwrites a previously emitted file"
-            // 警告。该警告无害（contenthash 一致即内容一致），这里直接过滤。
-            onwarn(warning, defaultHandler) {
-                if (
-                    warning.message?.includes(
-                        'overwrites a previously emitted file',
-                    )
-                ) {
-                    return;
-                }
-                defaultHandler(warning);
+// ============================================================
+// 双 build 配置：
+//   - 默认 (mode=es)  : ES 产物 + preserveModules，每个 .vue/.css 独立
+//                       chunk，配合 package.json 的 sideEffects 实现下游
+//                       JS + CSS 的真正按需加载。
+//   - mode=cjs        : 单 bundle CJS 产物，并把所有样式聚合为
+//                       dist/index.css，保留向后兼容的
+//                       `import 'animal-island-vue/style'` 用法。
+// ============================================================
+export default defineConfig(({ mode }) => {
+    const isCjs = mode === 'cjs';
+
+    return {
+        plugins: [
+            vue(),
+            stripWoffFallbackPlugin(),
+            // 仅在 ES 一次构建里产出 d.ts 与 style.d.ts，避免重复
+            ...(isCjs
+                ? []
+                : [
+                      emitStyleDtsPlugin(),
+                      dts({
+                          entryRoot: 'src',
+                          outDir: 'dist/types',
+                          include: ['src/**/*.ts', 'src/**/*.vue'],
+                          exclude: ['src/**/*.test.ts', 'src/**/*.spec.ts'],
+                          tsconfigPath: 'tsconfig.build.json',
+                          staticImport: true,
+                      }),
+                  ]),
+            libAssetsPlugin({
+                outputPath: 'files',
+                name: '[name].[contenthash:8].[ext]',
+                limit: 0,
+            }),
+        ],
+        resolve: {
+            alias: {
+                '@': resolve(__dirname, 'src'),
             },
-            output: {
-                globals: { vue: 'Vue' },
-                assetFileNames: (assetInfo) => {
-                    if (assetInfo.name?.endsWith('.css')) return 'index.css';
-                    return assetInfo.name!;
+        },
+        build: {
+            // 第一次（ES）清空 dist，第二次（CJS）保留 ES 产物
+            emptyOutDir: !isCjs,
+            cssCodeSplit: !isCjs,
+            lib: {
+                entry: resolve(__dirname, 'src/index.ts'),
+                formats: isCjs ? ['cjs'] : ['es'],
+                fileName: () => (isCjs ? 'cjs/index.cjs' : 'es/index.js'),
+            },
+            rollupOptions: {
+                external: ['vue'],
+                onwarn(warning, defaultHandler) {
+                    if (
+                        warning.message?.includes(
+                            'overwrites a previously emitted file',
+                        )
+                    ) {
+                        return;
+                    }
+                    defaultHandler(warning);
                 },
+                output: isCjs
+                    ? {
+                          globals: { vue: 'Vue' },
+                          // CJS 走聚合：所有样式合到 dist/index.css
+                          assetFileNames: (assetInfo) => {
+                              if (assetInfo.name?.endsWith('.css'))
+                                  return 'index.css';
+                              return assetInfo.name!;
+                          },
+                      }
+                    : {
+                          globals: { vue: 'Vue' },
+                          // 关键：保留源码模块结构，让每个 .vue 独立产出
+                          // .js + 同名 .css，下游就能只装 Button.css。
+                          preserveModules: true,
+                          preserveModulesRoot: 'src',
+                          entryFileNames: 'es/[name].js',
+                          // CSS / 字体等资源沿用 [name] 默认文件名以避免哈希漂移
+                          assetFileNames: (assetInfo) => {
+                              if (assetInfo.name?.endsWith('.css'))
+                                  return 'es/[name][extname]';
+                              return 'files/[name][extname]';
+                          },
+                      },
             },
         },
-        cssCodeSplit: false,
-    },
+    };
 });
