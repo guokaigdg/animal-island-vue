@@ -1,0 +1,211 @@
+# animal-island-vue — Cursor Project Rules
+
+A Vue 3 + TypeScript + Less component library inspired by Animal Crossing. Warm earth-tone palette + mint teal primary, big rounded pill shapes, game-button 3D shadows, gentle animations.
+
+## 1. Tech Stack
+
+- **Framework**: Vue 3.5+ (Composition API, `<script setup lang="ts">`)
+- **Language**: TypeScript 5.7 (strict)
+- **Build**: Vite 7 (library mode for the package, docs mode for the demo site)
+- **Styles**: Less + CSS variables (NO CSS Modules, NO Tailwind)
+- **Type check**: `vue-tsc --noEmit`
+- **Demo**: separate `vite.config.docs.ts`; demos live in `demo/pages/`
+- **Package entry**: `src/index.ts` (named exports of components + types)
+- **Testing**: Vitest + `@vue/test-utils`
+
+## 2. File Structure (MUST follow)
+
+```
+src/components/<Name>/
+├── <Name>.vue          # SFC: <script setup lang="ts"> + <template> + <style lang="less" scoped>
+├── types.ts            # optional, when types are shared across files or generic
+└── index.ts            # re-exports the component + types
+```
+
+- New components MUST live under `src/components/<Name>/`. Never put components at `src/` root.
+- `src/index.ts` MUST export the component **and** its prop types:
+  ```ts
+  export { default as Foo } from './components/Foo';
+  export type { FooProps } from './components/Foo';
+  ```
+- Demo for every component MUST be created at `demo/pages/<Name>Demo.vue`, registered in `demo/router.ts` (or `ComponentPage.vue`), and listed in `demo/pageInfo.ts` with `{ title, desc }`.
+
+## 3. Coding Style
+
+- All SFCs use `<script setup lang="ts">`. Do NOT use Options API.
+- Props with generics MUST be declared inline via `defineProps<{...}>()`. Do NOT also declare a named `interface Props` (triggers `TS4082` in `vite-plugin-dts`).
+- Non-generic props can live in a separate `types.ts`.
+- All props MUST have JSDoc comments (Chinese OK).
+- Controlled values use `v-model` / `v-model:open` / `v-model:expanded` (`modelValue` + `update:modelValue`). Also support `defaultValue` for uncontrolled initial value.
+- React's `ReactNode` props → Vue named slots (`#icon`, `#prefix`, `#suffix`, `#footer`, `#checked`, `#unchecked`, `#title`, `#empty`, Tabs/Table dynamic slots, etc.). Use the default slot for content that is just structured body.
+- Use `v-for` + `:key` for list rendering. Never use `.map()` in a template.
+- Use `defineEmits<{ (e: 'name', payload: T): void }>()` with typed payloads.
+- Use `defineSlots<{ default?: () => unknown; icon?: () => unknown }>()` when slots matter.
+- For Timer / one-shot intervals: use `onMounted` + `setInterval`, clean up in `onUnmounted`.
+
+## 4. Styling Rules (CRITICAL)
+
+- Every SFC uses `<style lang="less" scoped>` with **BEM** class names. **No CSS Modules (`*.module.less`). No Tailwind.**
+- Block class: `.animal-<name>` (kebab-case). Modifier: `.animal-<name>--<mod>`. Element: `.animal-<name>__<elem>`.
+- Import global tokens at the top of the `<style>` block:
+  ```less
+  @import '@/styles/variables.less';
+  ```
+  and reference them as `@bg-color-content`, `@text-color-body`, `@border-radius-base`, `@motion-ease`, etc.
+- Never hardcode hex values that already exist as Less tokens. Hardcoded hex is only acceptable for one-off palette entries (e.g. Card `color` variants) defined in `variables.less`.
+- **Shadow system is asymmetric — do not over-apply:**
+  - `Button` `type="primary"` / `danger + primary` → 3D pixel-stack shadow `0 5px 0 0 #bdaea0` (hover +1, active -1).
+  - `Button` `default` / `dashed` / `text` / `link` → soft elevation only (`0 2px 4px / 0 3px 10px rgba(61,52,40,...)`), no pixel stack.
+  - `Input` → no shadow by default; only when `shadow={true}` opt-in, then `0 Npx 0 0 #d4c9b4`. Status (error/warning) shadows render regardless.
+  - `Switch` → no outer box-shadow anywhere; only INSET shadow on the track. The handle has only a 2.5px border, NO `box-shadow`.
+  - `Card` → NO `box-shadow`. Floats on hover via `transform: translateY(-2px)` only.
+  - `Modal` → uses an SVG `clip-path: url(#animal-modal-clip)` blob, NOT a rounded rectangle. Never replace it.
+  - `Title` (ribbon) → swallowtail clip-path + CSS triangle folds + 3deg perspective. Never render it as a plain pill/rect.
+- **Cursor component** (`src/components/Cursor/Cursor.vue`) MUST use a non-scoped `<style>` block (or a global CSS file) because `scoped` selectors cannot pierce slot content. Use `:global(.animal-cursor)` or a top-level `<style>` without `scoped`.
+- **Loading component** uses `position: absolute`, NOT `fixed` — it inherits the nearest positioned ancestor.
+
+## 5. Design Tokens (cheat sheet)
+
+| Token | Value | Use |
+|---|---|---|
+| `@primary-color` | `#19c8b9` | mint teal — brand primary, focus for buttons |
+| `@primary-color-hover` | `#3dd4c6` | |
+| `@primary-color-active` | `#11a89b` | |
+| `@bg-color` | `#f8f8f0` | page background |
+| `@bg-color-content` | `rgb(247, 243, 223)` | inside Card/Modal/Table |
+| `@bg-color-input` | `rgb(247, 243, 223)` | |
+| `@text-color` | `#794f27` | heading / sidebar text |
+| `@text-color-body` | `#725d42` | in-component body text |
+| `@text-color-muted` | `#8a7b66` | modal body / description |
+| `@text-color-disabled` | `#c4b89e` | |
+| `@border-color-light` | `#c4b89e` | input / box border |
+| `@border-color` | `#9f927d` | strong border |
+| `@border-color-hover` | `#a89878` | hover border |
+| `@focus-yellow` | `#ffcc00` | focus ring for Input / Switch / Checkbox |
+| `@focus-yellow-radio` | `#f5c31c` | warmer yellow for Radio focus |
+| `@shadow-btn` | `#bdaea0` | primary button 3D stack |
+| `@shadow-input` | `#d4c9b4` | input 3D stack |
+| `@border-radius-sm` | `12px` | |
+| `@border-radius-base` | `18px` | |
+| `@border-radius-lg` | `24px` | |
+| `@border-radius-pill` | `50px` | buttons, inputs |
+| `@motion-ease` | `cubic-bezier(0.4, 0, 0.2, 1)` | |
+| `@motion-duration-fast` | `0.15s` | |
+| `@motion-duration-base` | `0.25s` | |
+| `@motion-duration-slow` | `0.35s` | |
+
+**Card `color` palette (13 names)**: `default`, `app-pink`, `purple`, `app-blue`, `app-yellow`, `app-orange`, `app-teal`, `app-green`, `app-red`, `lime-green`, `yellow-green`, `brown`, `warm-peach-pink`.
+
+**Title `color` palette (13 names)**: same 13. Drives 4 CSS vars `--rf` (front) / `--rb` (back) / `--rk` (fold) / `--rt` (text).
+
+**Font**: Nunito (Latin) + Noto Sans SC (Chinese). Loaded via `@fontsource/*` in `src/index.ts`. `font-family: Nunito, 'Noto Sans SC', -apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;`. Body weight 500, button/heading 600–700, time digits 900. **Never weight < 400.**
+
+## 6. Focus & Disabled Conventions
+
+- Focus ring: yellow `#ffcc00` for Input / Switch / Checkbox / Radio; mint `#19c8b9` for Buttons; warm yellow `#f5c31c` for Radio (matches existing source).
+- Disabled: `opacity: 0.5` (or 0.55 for checkbox/radio), `cursor: not-allowed`, remove all shadows, lighten border + text to disabled tokens.
+- Hover micro-interaction: `transform: translateY(-1px)` (inputs/buttons) / `-2px` (cards). Active: `translateY(2px)`.
+
+## 7. Animations
+
+- Transitions: `all @motion-duration-base @motion-ease` for general; `@motion-duration-fast` for quick toggles (clear button, etc.).
+- For expand/collapse height animation, use the **CSS Grid `0fr ↔ 1fr` trick** (no JS height measurement). Example:
+  ```css
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s @motion-ease;
+  &.is-open { grid-template-rows: 1fr; }
+  > .inner { overflow: hidden; }
+  ```
+- Loading uses **pure CSS + SVG `stroke-dasharray`**. Do NOT add GSAP / MotionPath — they were removed. (`src/components/Loading/island/*.js` is legacy; ignore it for new work.)
+- Common keyframes: `animal-zoom-in` (opacity 0→1, scale 0.92→1), `animal-fade-in`, `ac-fade-up`, `animal-checkbox-pop`, `animal-spin`, `leafWiggle`, `blink`, `iconBounce`, `grasswave`, `float`.
+
+## 8. Naming & Imports
+
+- Path alias `@/` → `src/`. Use `@/styles/variables.less` in every Less file.
+- Local imports use relative paths: `import type { FooProps } from './types';` (not `@/...`).
+- Demo imports the published lib via `import { Foo } from '../../src';` so the demo mirrors a real consumer.
+- Type exports: re-export every public prop type from the component's `index.ts`.
+
+## 9. Component Authoring Checklist
+
+When adding a new component, complete ALL of these:
+
+- [ ] Create `src/components/<Name>/` with `<Name>.vue` + `index.ts` (+ optional `types.ts`).
+- [ ] SFC uses `<script setup lang="ts">` + `<style lang="less" scoped>` + BEM class names.
+- [ ] All props have JSDoc comments. Generic props use inline `defineProps<{...}>()`.
+- [ ] Controlled values use `v-model` convention; also support `defaultValue` if applicable.
+- [ ] Use named slots instead of `ReactNode`-style children.
+- [ ] Reference `@xxx` tokens from `variables.less`; no hardcoded hex for shared colors.
+- [ ] `disabled` state: `cursor: not-allowed` + opacity 0.5~0.6 + remove shadows.
+- [ ] Hover: `translateY(-1px or -2px)`. Active: `translateY(2px)`. Focus: yellow or teal per section 6.
+- [ ] If the component shadows 3D-pixel-stack, apply only to primary-class variants.
+- [ ] Export the component **and** its types from `src/components/<Name>/index.ts` AND `src/index.ts`.
+- [ ] Create `demo/pages/<Name>Demo.vue` using `<CodeBlock>` + `<ApiTable>` from `demo/tools/`.
+- [ ] Register the demo route in `demo/router.ts` (or `ComponentPage.vue`) and add `{ title, desc }` in `demo/pageInfo.ts`.
+- [ ] Run `npm run typecheck` (vue-tsc) and `npm run build` (vue-tsc + vite build + dts) before considering the work done.
+- [ ] Update `AI_USAGE.md` (API), `skill/SKILL.md` (pixel spec), `PROMPT.md` (self-contained prompt), and `DESIGN_PROMPT.md` if those docs are relevant.
+
+## 10. Demo Authoring
+
+```vue
+<script setup lang="ts">
+import { Foo } from '../../src';
+import { CodeBlock, ApiTable } from '../tools';
+
+const props = [
+  { name: 'size', type: "'small' | 'middle' | 'large'", default: "'middle'", description: '尺寸' },
+];
+</script>
+
+<template>
+  <div>
+    <h2>Foo</h2>
+    <Foo size="large">内容</Foo>
+    <CodeBlock :code="`<Foo size=&quot;large&quot;>内容</Foo>`" />
+    <ApiTable :data="props" />
+  </div>
+</template>
+```
+
+- Demos are mounted via `demo/router.ts` (Vue Router); the pageInfo lookup is keyed by the route name.
+- Sidebar background uses `menu_bg.svg`; main content area uses `content_bg_pc.jpg` (`background-attachment: fixed`).
+- Home page uses `home_bg.webp` + `#7DC395` fallback color.
+
+## 11. Hard Rules (violation = wrong output)
+
+1. No pure black / near-black text. Use `#794f27` / `#725d42` / `#8a7b66`.
+2. No cold-blue focus rings. Yellow `#ffcc00` or mint `#19c8b9` only.
+3. No 0px corners on interactive elements. Minimum 12px.
+4. No cold-gray backgrounds (`#fafafa`, `#f5f5f5`). Use `#f8f8f0` or `rgb(247, 243, 223)`.
+5. The 3D pixel-stack `0 5px 0 0 #bdaea0` shadow applies ONLY to primary-class buttons / `Input shadow={true}` / `Switch` (Switch only uses INSET, no outer).
+6. Never replace `Modal`'s blob `clip-path` with a rounded rectangle. The organic blob is the signature.
+7. Never render `Title` as a pill / rectangle / blob. It is a flat heraldic ribbon with swallowtail ends.
+8. Never use `<Card type="title">` — removed in v0.9.x. Use the `<Title>` component.
+9. Always include Nunito + Noto Sans SC fonts (via `@fontsource/*` in the lib, via Google Fonts `<link>` in standalone HTML).
+10. Never use font-weight < 400.
+11. Never use hard `cubic-bezier(0,0,1,1)` — always `cubic-bezier(0.4, 0, 0.2, 1)`.
+12. No CSS Modules. No Tailwind. No styled-components. No Emotion.
+13. The `<Loading>` overlay is `position: absolute`, not `fixed`.
+14. The `<Cursor>` component's CSS is global (no `scoped`), otherwise slot content's cursor won't be overridden.
+
+## 12. Commands
+
+- `npm run dev` — start demo site (Vite docs mode)
+- `npm run build` — type-check + library build + dts generation
+- `npm run build:demo` — build the demo site
+- `npm run typecheck` — `vue-tsc --noEmit`
+- `npm run test` — Vitest
+- `npm run preview:docs` — preview the built demo
+- `npm run prepublishOnly` — runs `npm run build` before publish
+
+## 13. Reference Docs (in priority order)
+
+1. `AI_USAGE.md` — prop API of every component. Consult first when writing callsites.
+2. `skill/SKILL.md` — pixel-level design tokens + per-component CSS + new-component template. Consult when implementing or extending styles.
+3. `PROMPT.md` — self-contained prompt for non-technical users generating standalone HTML pages.
+4. `DESIGN_PROMPT.md` — prompt pack for v0 / Figma AI / Midjourney / DALL-E.
+5. `CHANGELOG.md` — breaking changes per version.
+6. `CONTRIBUTING.md` — contribution guidelines.
+
+If docs and source conflict, the source is the source of truth. Update the docs in the same PR.
