@@ -3,7 +3,7 @@ import { ref, useAttrs, useSlots } from 'vue';
 import { domToCanvas } from 'modern-screenshot';
 // @ts-ignore
 import weddingTitleImg from './img/wedding.PNG';
-import { Icon } from '../Icon';
+import { Icon } from '@/components/Icon';
 // @ts-ignore
 import brideAndGroomImg from './img/brideandgroom.PNG';
 import { injectWeddingFonts, prepareWeddingFontsForExport } from './fonts';
