@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { ref, useTemplateRef } from 'vue';
+import { Input, Switch } from '../../src';
 import {
     WeddingInvitation,
     WeddingInvitationExportButton,
-    Input,
-    Switch,
-} from '../../src';
-import type { WeddingInvitationExpose } from '../../src';
+    type WeddingInvitationExpose,
+} from '../components/WeddingInvitation';
 import { sectionStyle, sectionTitleStyle, tagStyle, labelStyle, demoBodyStyle, ApiTable, CodeBlock } from '../tools';
 import type { ApiRow } from '../tools';
 
