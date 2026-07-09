@@ -73,6 +73,30 @@ export type { SelectProps, SelectOption } from './components/Select';
 export { Tabs } from './components/Tabs';
 export type { TabsProps, TabItem } from './components/Tabs';
 
+export { Form, FormItem, useForm } from './components/Form';
+export type {
+    ColProps,
+    FieldData,
+    FormInstance,
+    FormItemLayout,
+    FormItemProps,
+    FormLabelAlign,
+    FormLayout,
+    FormProps,
+    FormSize,
+    NamePath,
+    RequiredMark,
+    RuleObject,
+    RuleRender,
+    RuleType,
+    Rules,
+    ScrollOptions,
+    StoreValue,
+    ValidateError,
+    ValidateInfo,
+    ValidateStatus,
+} from './components/Form';
+
 // Phase 3 — 容器/反馈组件
 export { Card } from './components/Card';
 export type { CardProps, CardType, CardColor } from './components/Card';
