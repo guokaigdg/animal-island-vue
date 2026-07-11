@@ -1,75 +1,110 @@
 <script setup lang="ts">
-import { inject, computed, watch, ref, onMounted, onUnmounted, h, useSlots } from 'vue';
+import { inject, computed, watch, ref, onUnmounted, useSlots, cloneVNode, isVNode } from 'vue';
+import type { VNode } from 'vue';
 import { FormContextKey } from './context';
 import { stringifyNamePath, defaultGetValueFromEvent } from './types';
-import type { FormItemProps, NamePath, Rules, FormContextValue } from './types';
+import type { FormItemProps, NamePath, Rules } from './types';
 
 const props = withDefaults(defineProps<FormItemProps>(), {
     rules: () => [],
     required: false,
-    valuePropName: 'value',
-    trigger: 'onChange',
+    // Vue 约定：受控 prop 名为 modelValue，change 事件为 update:modelValue。
+    // 与 React 端的 'value' / 'onChange' 保持等价语义但贴合 Vue 习惯。
+    valuePropName: 'modelValue',
+    trigger: 'onUpdate:modelValue',
     getValueFromEvent: defaultGetValueFromEvent,
     hidden: false,
     hasFeedback: false,
     noStyle: false,
 });
 
-const ctx = inject<FormContextValue | null>(FormContextKey, null);
+const ctx = inject(FormContextKey, null);
 if (!ctx) {
-    throw new Error('Form.Item must be used inside <Form>');
+    throw new Error('Form.Item must be used inside <Form> or <Form.Provider>');
 }
 
 const { form, layout: ctxLayout, labelAlign, labelCol: ctxLabelCol, wrapperCol: ctxWrapperCol, size, disabled: ctxDisabled, colon: ctxColon, requiredMark: ctxRequiredMark } = ctx;
 
 const fieldKey = computed(() => (props.name !== undefined ? stringifyNamePath(props.name) : null));
 
+// 订阅触发器：每次 form 状态变化时让 FormItem 重新渲染
 const tick = ref(0);
-const notify = () => tick.value++;
-
-onMounted(() => {
-    if (!fieldKey.value) return;
-    const formAny = form as unknown as {
-        __store?: {
-            registerField: (n: NamePath, rules: Rules, initialValue: unknown, notify: () => void) => void;
-            unregisterField: (n: NamePath) => void;
-        };
-    };
-    const store = formAny.__store;
-    if (!store) return;
-    store.registerField(props.name!, props.rules, props.initialValue, notify);
-});
+const notify = () => {
+    tick.value++;
+};
 
 onUnmounted(() => {
     if (!fieldKey.value) return;
     const formAny = form as unknown as {
-        __store?: {
-            unregisterField: (n: NamePath) => void;
-        };
+        __store?: { unregisterField: (n: NamePath) => void };
     };
     formAny.__store?.unregisterField?.(fieldKey.value);
 });
 
+// 注册字段：在 name/rules/initialValue 变化时同步到 store
+watch(
+    () => [fieldKey.value, props.rules, props.initialValue] as const,
+    (curr, prev) => {
+        const [key, rules, initialValue] = curr;
+        const prevKey = prev?.[0];
+        const formAny = form as unknown as {
+            __store?: {
+                registerField: (n: NamePath, rules: Rules, initialValue: unknown, notify: () => void) => void;
+                unregisterField: (n: NamePath) => void;
+            };
+        };
+        const store = formAny.__store;
+        if (!store) return;
+        // 字段名变了：注销旧的
+        if (prevKey && prevKey !== key) {
+            store.unregisterField(prevKey);
+        }
+        if (key) {
+            store.registerField(props.name!, rules, initialValue, notify);
+        }
+    },
+    { immediate: true, flush: 'post' }
+);
+
+// 单独同步 rules（避免每次重注册）
 watch(
     () => props.rules,
     (newRules) => {
         if (!fieldKey.value) return;
         const formAny = form as unknown as {
-            __store?: {
-                updateRules: (n: NamePath, rules: Rules) => void;
-            };
+            __store?: { updateRules: (n: NamePath, rules: Rules) => void };
         };
         formAny.__store?.updateRules?.(fieldKey.value, newRules);
     }
 );
 
-const value = computed(() => (fieldKey.value ? form.getFieldValue(props.name!) : undefined));
-const errors = computed(() => (fieldKey.value ? form.getFieldError(props.name!) : undefined));
-const isValidating = computed(() => (fieldKey.value ? form.isFieldValidating(props.name!) : false));
-const touched = computed(() => (fieldKey.value ? form.isFieldTouched(props.name!) : false));
+// 让所有读取 form 状态的 computed 依赖 tick，
+// 这样 form 内部状态变化时通过 notify 触发 re-render。
+// 返回 tick 值本身（而非常量），确保 Vue 3 的 computed 缓存能检测到变化并传播。
+const _readTick = computed(() => tick.value);
+
+const value = computed(() => {
+    _readTick.value;
+    return fieldKey.value ? form.getFieldValue(props.name!) : undefined;
+});
+const errors = computed(() => {
+    _readTick.value;
+    return fieldKey.value ? form.getFieldError(props.name!) : undefined;
+});
+const isValidating = computed(() => {
+    _readTick.value;
+    return fieldKey.value ? form.isFieldValidating(props.name!) : false;
+});
+const touched = computed(() => {
+    _readTick.value;
+    return fieldKey.value ? form.isFieldTouched(props.name!) : false;
+});
 
 const computedStatus = computed(() => props.validateStatus ?? (isValidating.value ? 'validating' : errors.value?.[0] ? 'error' : ''));
-const displayError = computed(() => (touched.value && errors.value?.[0] ? errors.value[0] : undefined));
+const displayError = computed(() => {
+    const e = touched.value && errors.value?.[0] ? errors.value[0] : undefined;
+    return e;
+});
 const showHelp = computed(() => displayError.value ?? props.help);
 
 const mergedRequiredMark = computed(() => props.requiredMark ?? ctxRequiredMark);
@@ -95,37 +130,31 @@ const labelEndCol = computed(() => (mergedLabelCol.value?.span ?? 0) + (mergedLa
 const labelColStyle = computed(() => buildGridStyle(mergedLabelCol.value, 1));
 const wrapperColStyle = computed(() => buildGridStyle(mergedWrapperCol.value, labelEndCol.value + 1));
 
-function handleTrigger(event: unknown) {
-    if (!fieldKey.value) return;
-    const rawValue = props.getValueFromEvent(event);
-    const prevValue = form.getFieldValue(props.name!);
-    const finalValue = props.normalize ? props.normalize(rawValue, prevValue, form.getFieldsValue(true)) : rawValue;
-    form.setFieldValue(props.name!, finalValue);
-}
+// 透传处理 children：克隆首个子 vnode 注入 value / trigger / size / status / disabled
+const slots = useSlots();
 
-function renderChildren() {
-    const slots = useSlots();
-    if (!slots.default) return null;
-
-    const children = slots.default();
-    if (!children || children.length === 0) return null;
-
-    const child = children[0];
-    if (!child) return children;
-
-    const isComponent = typeof child.type === 'object' || typeof child.type === 'function';
-    if (!isComponent) return children;
-
-    const childProps: Record<string, unknown> = { ...child.props };
+function buildChildProps(originalProps: Record<string, unknown> | null): Record<string, unknown> {
+    const childProps: Record<string, unknown> = {};
 
     if (fieldKey.value) {
         childProps[props.valuePropName] = value.value;
-        const userTrigger = childProps[props.trigger];
+        // 保留用户原 trigger（如 @onChange / @update:modelValue）——与 React 版语义一致
+        const userTrigger = originalProps?.[props.trigger];
+        const userTriggerFn = typeof userTrigger === 'function' ? (userTrigger as (e: unknown) => void) : null;
         childProps[props.trigger] = (event: unknown) => {
-            if (typeof userTrigger === 'function') {
-                userTrigger(event);
+            // 先调用用户原 trigger（链式回调）
+            if (userTriggerFn) {
+                try {
+                    userTriggerFn(event);
+                } catch {
+                    // 用户回调异常不影响 Form 数据流
+                }
             }
-            handleTrigger(event);
+            if (!fieldKey.value) return;
+            const rawValue = props.getValueFromEvent(event);
+            const prevValue = form.getFieldValue(props.name!);
+            const finalValue = props.normalize ? props.normalize(rawValue, prevValue, form.getFieldsValue(true)) : rawValue;
+            form.setFieldValue(props.name!, finalValue);
         };
     }
 
@@ -139,7 +168,44 @@ function renderChildren() {
         childProps.status = 'error';
     }
 
-    return h(child.type as never, childProps, child.children ?? undefined);
+    return childProps;
+}
+
+function getFirstChild(): VNode | null {
+    const children = slots.default?.() ?? null;
+    if (!children || (Array.isArray(children) && children.length === 0)) return null;
+    const first = Array.isArray(children) ? children[0] : children;
+    if (!first || !isVNode(first)) return null;
+    return first;
+}
+
+const renderedFirstChild = computed<VNode | null>(() => {
+    // 触发响应式依赖
+    _readTick.value;
+    const first = getFirstChild();
+    if (!first) return null;
+    const originalProps = (first.props as Record<string, unknown> | null) ?? null;
+    // 保留原 props，再注入受控 props（链式回调：用户原 trigger 会被新 trigger 包裹后调用）
+    const merged: Record<string, unknown> = {
+        ...originalProps,
+        ...buildChildProps(originalProps),
+    };
+    return cloneVNode(first, merged, false);
+});
+
+function renderChildren(): VNode | VNode[] | null {
+    const children = slots.default?.() ?? null;
+    if (!children || (Array.isArray(children) && children.length === 0)) return null;
+    const first = Array.isArray(children) ? children[0] : children;
+    if (!first || !isVNode(first)) {
+        return Array.isArray(children) ? children : [first as VNode].filter(Boolean);
+    }
+    // 首个子 vnode 由 renderedFirstChild 提供
+    const rest = Array.isArray(children) ? children.slice(1) : [];
+    if (!renderedFirstChild.value) {
+        return rest.length > 0 ? rest : null;
+    }
+    return rest.length > 0 ? [renderedFirstChild.value, ...rest] : renderedFirstChild.value;
 }
 </script>
 
@@ -149,17 +215,15 @@ function renderChildren() {
     </template>
 
     <template v-else-if="noStyle">
-        <template v-for="(_, index) in 1" :key="index">
-            <slot></slot>
-            <div
-                v-if="showHelp !== undefined"
-                class="island-form-item__explain"
-                :class="{ 'island-form-item__explain--error': computedStatus === 'error' }"
-            >
-                <span v-if="hasFeedback && computedStatus === 'error'" class="island-form-item__feedback-icon">✕</span>
-                {{ showHelp }}
-            </div>
-        </template>
+        <component :is="renderChildren()" />
+        <div
+            v-if="showHelp !== undefined"
+            class="island-form-item__explain"
+            :class="{ 'island-form-item__explain--error': computedStatus === 'error' }"
+        >
+            <span v-if="hasFeedback && computedStatus === 'error'" class="island-form-item__feedback-icon">✕</span>
+            {{ showHelp }}
+        </div>
     </template>
 
     <div
@@ -193,7 +257,7 @@ function renderChildren() {
 
         <div class="island-form-item__control" :style="wrapperColStyle">
             <div class="island-form-item__control-input">
-                <slot></slot>
+                <component :is="renderChildren()" />
             </div>
             <div
                 v-if="showHelp !== undefined"

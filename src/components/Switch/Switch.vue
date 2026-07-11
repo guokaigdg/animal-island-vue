@@ -41,6 +41,14 @@ function handleClick() {
     emit('update:modelValue', next);
     emit('change', next);
 }
+
+function handleKeyDown(e: KeyboardEvent) {
+    if (props.disabled || props.loading) return;
+    if (e.key === ' ' || e.key === 'Enter') {
+        e.preventDefault();
+        handleClick();
+    }
+}
 </script>
 
 <template>
@@ -48,6 +56,7 @@ function handleClick() {
         type="button"
         role="switch"
         :aria-checked="isChecked"
+        :aria-busy="loading || undefined"
         :disabled="disabled"
         class="animal-switch"
         :class="{
@@ -57,6 +66,7 @@ function handleClick() {
             'animal-switch--loading': loading,
         }"
         @click="handleClick"
+        @keydown="handleKeyDown"
         v-bind="attrs"
     >
         <span class="animal-switch__handle">

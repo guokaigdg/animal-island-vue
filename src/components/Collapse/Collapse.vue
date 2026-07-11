@@ -31,6 +31,10 @@ const expandedState = computed(() =>
     isControlled.value ? !!props.expanded : innerExpanded.value,
 );
 
+const idBase = `animal-collapse-${Math.random().toString(36).slice(2, 10)}`;
+const headerId = `${idBase}-header`;
+const panelId = `${idBase}-panel`;
+
 watch(
     () => props.expanded,
     (v) => {
@@ -57,8 +61,10 @@ function toggle() {
     >
         <button
             class="animal-collapse__header"
+            :id="headerId"
             :disabled="disabled"
             :aria-expanded="expandedState"
+            :aria-controls="panelId"
             @click="toggle"
         >
             <span class="animal-collapse__icon">{{ expandedState ? '−' : '+' }}</span>
@@ -76,6 +82,9 @@ function toggle() {
         </button>
         <div
             class="animal-collapse__panel"
+            :id="panelId"
+            role="region"
+            :aria-labelledby="headerId"
             :style="{ gridTemplateRows: expandedState ? '1fr' : '0fr' }"
         >
             <div class="animal-collapse__content">

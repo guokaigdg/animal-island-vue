@@ -12,6 +12,7 @@ const MODAL_API: ApiRow[] = [
     { prop: 'showFooter', desc: '是否显示底部按钮', type: 'boolean', defaultVal: 'true' },
     { prop: 'typewriter', desc: '是否启用打字机效果', type: 'boolean', defaultVal: 'true' },
     { prop: 'typeSpeed', desc: '打字机每字间隔(ms)', type: 'number', defaultVal: '80' },
+    { prop: 'maskStyle', desc: '遮罩层自定义样式', type: 'CSSProperties', defaultVal: '-' },
     { prop: 'onClose / @close', desc: '关闭回调', type: '() => void', defaultVal: '-' },
     { prop: 'onOk / @ok', desc: '确认回调', type: '() => void', defaultVal: '-' },
     { prop: 'default', desc: '内容（默认 slot）', type: 'slot', defaultVal: '-' },
@@ -22,6 +23,8 @@ const modalOpen = ref(false);
 const titleModalOpen = ref(false);
 const customFooterOpen = ref(false);
 const noTypewriterOpen = ref(false);
+const lightMaskOpen = ref(false);
+const darkMaskOpen = ref(false);
 
 const rowStyle = { display: 'flex', gap: '16px', flexWrap: 'wrap' as const };
 
@@ -53,6 +56,11 @@ const open = ref(false);
 
     <!-- 关闭打字机 -->
     <Modal v-model:open="open" :typewriter="false">直接显示全部内容</Modal>
+
+    <!-- 自定义遮罩样式 -->
+    <Modal v-model:open="open" :mask-style="{ background: 'rgba(0, 0, 0, 0.08)' }">
+        浅色遮罩
+    </Modal>
 </template>`;
 </script>
 
@@ -72,6 +80,11 @@ const open = ref(false);
             <div :style="labelStyle">关闭打字机效果</div>
             <div :style="rowStyle">
                 <Button type="primary" @click="noTypewriterOpen = true">关闭打字机效果</Button>
+            </div>
+            <div :style="labelStyle">自定义遮罩样式</div>
+            <div :style="rowStyle">
+                <Button type="primary" @click="lightMaskOpen = true">浅色遮罩</Button>
+                <Button type="primary" @click="darkMaskOpen = true">深色遮罩</Button>
             </div>
         </div>
 
@@ -96,6 +109,24 @@ const open = ref(false);
 
         <Modal v-model:open="noTypewriterOpen" title="天气预报" :typewriter="false" @ok="noTypewriterOpen = false">
             明天天气晴朗，气温 20-28°C，适合外出活动！
+        </Modal>
+
+        <Modal
+            v-model:open="lightMaskOpen"
+            title="浅色遮罩"
+            :mask-style="{ background: 'rgba(0, 0, 0, 0.08)' }"
+            @ok="lightMaskOpen = false"
+        >
+            这是一个浅色遮罩的弹窗，遮罩几乎透明。
+        </Modal>
+
+        <Modal
+            v-model:open="darkMaskOpen"
+            title="深色遮罩"
+            :mask-style="{ background: 'rgba(0, 0, 0, 0.75)' }"
+            @ok="darkMaskOpen = false"
+        >
+            这是一个深色遮罩的弹窗，背景更暗、聚焦感更强。
         </Modal>
 
         <CodeBlock :code="code" />

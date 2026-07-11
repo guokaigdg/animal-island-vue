@@ -36,13 +36,6 @@ function toggle(option: CheckboxOption) {
     emit('update:modelValue', next);
     emit('change', next);
 }
-
-function onKeyDown(e: KeyboardEvent, option: CheckboxOption) {
-    if (e.key === ' ' || e.key === 'Enter') {
-        e.preventDefault();
-        toggle(option);
-    }
-}
 </script>
 
 <template>
@@ -52,6 +45,7 @@ function onKeyDown(e: KeyboardEvent, option: CheckboxOption) {
             `animal-checkbox-group--${direction}`,
             { 'animal-checkbox-group--disabled': disabled },
         ]"
+        role="group"
         v-bind="attrs"
     >
         <label
@@ -65,26 +59,18 @@ function onKeyDown(e: KeyboardEvent, option: CheckboxOption) {
                     'animal-checkbox--disabled': disabled || opt.disabled,
                 },
             ]"
-            @click="toggle(opt)"
         >
-            <span
-                role="checkbox"
-                :aria-checked="isChecked(opt.value)"
-                :tabindex="(disabled || opt.disabled) ? -1 : 0"
-                class="animal-checkbox__box"
-                @keydown="onKeyDown($event, opt)"
-            >
-                <span v-if="isChecked(opt.value)" class="animal-checkbox__mark">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                        <path
-                            d="M2 8L6 12L14 4"
-                            stroke="currentColor"
-                            stroke-width="2.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        />
-                    </svg>
-                </span>
+            <span class="animal-checkbox__cbx">
+                <input
+                    type="checkbox"
+                    :checked="isChecked(opt.value)"
+                    :disabled="disabled || opt.disabled"
+                    @change="toggle(opt)"
+                />
+                <span class="animal-checkbox__splash" aria-hidden="true" />
+                <svg class="animal-checkbox__check" fill="none" viewBox="0 0 15 14" :width="14" :height="14">
+                    <path d="M2 8.36364L6.23077 12L13 2" />
+                </svg>
             </span>
             <span class="animal-checkbox__label">{{ opt.label }}</span>
         </label>
@@ -94,98 +80,206 @@ function onKeyDown(e: KeyboardEvent, option: CheckboxOption) {
 <style lang="less" scoped>
 @import '@/styles/variables.less';
 
+@splash-color: @primary-color;
+
 .animal-checkbox-group {
     display: flex;
     flex-wrap: wrap;
+    gap: @spacing-lg;
     font-family: @font-family;
 
-    &--horizontal { flex-direction: row; gap: @spacing-md; }
-    &--vertical { flex-direction: column; gap: @spacing-sm; }
-    &--disabled { cursor: not-allowed; }
+    &--horizontal {
+        flex-direction: row;
+    }
+
+    &--vertical {
+        flex-direction: column;
+        gap: @spacing-md;
+    }
+
+    &--disabled .animal-checkbox {
+        cursor: not-allowed;
+    }
 }
 
 .animal-checkbox {
     display: inline-flex;
     align-items: center;
     gap: @spacing-sm;
-    user-select: none;
     cursor: pointer;
-    transition: all @motion-duration-base @motion-ease;
+    user-select: none;
+    position: relative;
 
-    &__box {
-        position: relative;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-        border: 2px solid @shadow-soft-hover;
-        background: rgb(247, 243, 223);
-        outline: none;
-        transition: all @motion-duration-base @motion-ease;
-
-        &:focus-visible {
-            outline: 2px solid @warning-color;
-            outline-offset: 2px;
+    // ---------- Sizes ----------
+    &--small {
+        --cbx-size: 18px;
+        --cbx-check-w: 10px;
+        --cbx-check-h: 9px;
+        .animal-checkbox__label {
+            font-size: @font-size-sm;
         }
     }
 
-    &__mark {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #fff;
-        line-height: 1;
-        animation: animal-checkbox-pop @motion-duration-fast @motion-ease;
-    }
-
-    &__label {
-        color: @warm-color-soft;
-        font-weight: 500;
-        letter-spacing: 0.01em;
-        transition: color @motion-duration-base @motion-ease;
-    }
-
-    // Sizes
-    &--small {
-        .animal-checkbox__box { width: 18px; height: 18px; border-radius: 12px; }
-        .animal-checkbox__mark { width: 10px; height: 10px; }
-        .animal-checkbox__label { font-size: 12px; }
-    }
     &--middle {
-        .animal-checkbox__box { width: 22px; height: 22px; border-radius: 14px; }
-        .animal-checkbox__mark { width: 12px; height: 12px; }
-        .animal-checkbox__label { font-size: 14px; }
-    }
-    &--large {
-        .animal-checkbox__box { width: 28px; height: 28px; border-radius: 16px; }
-        .animal-checkbox__mark { font-size: 16px; }
-        .animal-checkbox__label { font-size: 16px; }
+        --cbx-size: 22px;
+        --cbx-check-w: 12px;
+        --cbx-check-h: 11px;
+        .animal-checkbox__label {
+            font-size: @font-size-base;
+        }
     }
 
-    // Checked
-    &--checked:not(.animal-checkbox--disabled) {
-        .animal-checkbox__box {
-            background: @primary-color;
+    &--large {
+        --cbx-size: 28px;
+        --cbx-check-w: 15px;
+        --cbx-check-h: 14px;
+        .animal-checkbox__label {
+            font-size: @font-size-lg;
+        }
+    }
+
+    // ---------- Box (圆形) ----------
+    &__cbx {
+        position: relative;
+        width: var(--cbx-size);
+        height: var(--cbx-size);
+        flex-shrink: 0;
+        box-sizing: border-box;
+
+        input[type='checkbox'] {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            -webkit-tap-highlight-color: transparent;
+            cursor: pointer;
+            margin: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: var(--cbx-size);
+            height: var(--cbx-size);
+            border: 2px solid #c4b89e;
+            border-radius: 50%;
+            background: rgb(247, 243, 223);
+            transition: border-color @motion-duration-base @motion-ease;
+
+            &:focus-visible {
+                outline: 2px solid @focus-yellow;
+                outline-offset: 2px;
+            }
+        }
+
+        .animal-checkbox__splash {
+            display: block;
+            width: var(--cbx-size);
+            height: var(--cbx-size);
+            background: none;
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: translate3d(0, 0, 0);
+            pointer-events: none;
+        }
+
+        .animal-checkbox__check {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: var(--cbx-check-w);
+            height: var(--cbx-check-h);
+            transform: translate(-50%, -54%);
+            z-index: 1;
+            pointer-events: none;
+
+            path {
+                stroke: #fff;
+                stroke-width: 3;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+                stroke-dasharray: 19;
+                stroke-dashoffset: 19;
+                transition: stroke-dashoffset 0.3s ease;
+                transition-delay: 0.2s;
+            }
+        }
+
+        input:checked {
             border-color: @primary-color-active;
         }
+
+        input:checked ~ .animal-checkbox__splash {
+            animation: animal-cbx-splash 0.6s ease forwards;
+        }
+
+        input:checked ~ .animal-checkbox__check path {
+            stroke-dashoffset: 0;
+        }
     }
 
-    // Disabled
+    // ---------- Label ----------
+    &__label {
+        color: #725d42;
+        font-weight: 500;
+        letter-spacing: 0.01em;
+        transition: color @motion-duration-fast;
+    }
+
+    // ---------- Checked ----------
+    &--checked {
+        .animal-checkbox__cbx input {
+            background: @primary-color;
+        }
+        .animal-checkbox__label {
+            color: #794f27;
+        }
+    }
+
+    // ---------- Disabled ----------
     &--disabled {
         cursor: not-allowed;
         opacity: 0.55;
 
-        .animal-checkbox__box {
+        .animal-checkbox__cbx input {
             background: #f0ece2;
-            border-color: @border-color-light;
+            border-color: #d4c9b4;
         }
-        .animal-checkbox__label { color: @text-color-disabled; }
+
+        .animal-checkbox__cbx input:checked ~ .animal-checkbox__splash {
+            animation: none;
+        }
+
+        .animal-checkbox__cbx .animal-checkbox__check path {
+            stroke: #c4b89e;
+        }
+
+        .animal-checkbox__label {
+            color: #c4b89e;
+        }
     }
 }
 
-@keyframes animal-checkbox-pop {
-    0% { transform: scale(0.4); opacity: 0; }
-    60% { transform: scale(1.2); }
-    100% { transform: scale(1); opacity: 1; }
+@keyframes animal-cbx-splash {
+    40% {
+        background: @splash-color;
+        box-shadow:
+            0 -18px 0 -8px @splash-color,
+            16px -8px 0 -8px @splash-color,
+            16px 8px 0 -8px @splash-color,
+            0 18px 0 -8px @splash-color,
+            -16px 8px 0 -8px @splash-color,
+            -16px -8px 0 -8px @splash-color;
+    }
+
+    100% {
+        background: @splash-color;
+        box-shadow:
+            0 -36px 0 -10px transparent,
+            32px -16px 0 -10px transparent,
+            32px 16px 0 -10px transparent,
+            0 36px 0 -10px transparent,
+            -32px 16px 0 -10px transparent,
+            -32px -16px 0 -10px transparent;
+    }
 }
 </style>

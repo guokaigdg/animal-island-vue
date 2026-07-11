@@ -1,8 +1,27 @@
 <script setup lang="ts">
-import { computed, ref, watch, onBeforeUnmount } from 'vue';
+import { computed, nextTick, ref, watch, onBeforeUnmount, type CSSProperties } from 'vue';
 import Cursor from '../Cursor/Cursor.vue';
 import Button from '../Button/Button.vue';
 import Typewriter from '../Typewriter/Typewriter.vue';
+
+const FOCUSABLE_SELECTOR = [
+    'a[href]',
+    'area[href]',
+    'button:not([disabled])',
+    'input:not([disabled]):not([type="hidden"])',
+    'select:not([disabled])',
+    'textarea:not([disabled])',
+    '[tabindex]:not([tabindex="-1"])',
+    'audio[controls]',
+    'video[controls]',
+    '[contenteditable]:not([contenteditable="false"])',
+].join(',');
+
+function getFocusable(root: HTMLElement): HTMLElement[] {
+    return Array.from(root.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)).filter(
+        (el) => !el.hasAttribute('disabled') && el.getAttribute('aria-hidden') !== 'true',
+    );
+}
 
 interface Props {
     open: boolean;
@@ -12,6 +31,7 @@ interface Props {
     showFooter?: boolean;
     typewriter?: boolean;
     typeSpeed?: number;
+    maskStyle?: CSSProperties;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -39,6 +59,12 @@ const widthStyle = computed(() => ({
 }));
 
 const playKey = ref(0);
+const dialogRef = ref<HTMLDivElement | null>(null);
+let previouslyFocused: HTMLElement | null = null;
+
+const idBase = `animal-modal-${Math.random().toString(36).slice(2, 10)}`;
+const titleId = `${idBase}-title`;
+const bodyId = `${idBase}-body`;
 
 function handleClose() {
     emit('update:open', false);
@@ -53,8 +79,34 @@ function handleMask() {
     if (props.maskClosable) handleClose();
 }
 
-function handleEsc(e: KeyboardEvent) {
-    if (e.key === 'Escape') handleClose();
+function handleKeyDown(e: KeyboardEvent) {
+    if (e.key === 'Escape') {
+        handleClose();
+        return;
+    }
+    if (e.key !== 'Tab') return;
+    const dialog = dialogRef.value;
+    if (!dialog) return;
+    const focusables = getFocusable(dialog);
+    if (focusables.length === 0) {
+        e.preventDefault();
+        dialog.focus();
+        return;
+    }
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    const active = document.activeElement as HTMLElement | null;
+    if (e.shiftKey) {
+        if (active === first || !dialog.contains(active)) {
+            e.preventDefault();
+            last.focus();
+        }
+    } else {
+        if (active === last || !dialog.contains(active)) {
+            e.preventDefault();
+            first.focus();
+        }
+    }
 }
 
 watch(
@@ -63,11 +115,19 @@ watch(
         if (typeof document === 'undefined') return;
         if (v) {
             document.body.style.overflow = 'hidden';
-            document.addEventListener('keydown', handleEsc);
+            document.addEventListener('keydown', handleKeyDown);
             playKey.value += 1;
+            previouslyFocused = (document.activeElement as HTMLElement) ?? null;
+            nextTick(() => {
+                const dialog = dialogRef.value;
+                if (!dialog) return;
+                const focusables = getFocusable(dialog);
+                (focusables[0] ?? dialog).focus();
+            });
         } else {
             document.body.style.overflow = '';
-            document.removeEventListener('keydown', handleEsc);
+            document.removeEventListener('keydown', handleKeyDown);
+            previouslyFocused?.focus?.();
         }
     },
     { immediate: true },
@@ -76,7 +136,7 @@ watch(
 onBeforeUnmount(() => {
     if (typeof document !== 'undefined') {
         document.body.style.overflow = '';
-        document.removeEventListener('keydown', handleEsc);
+        document.removeEventListener('keydown', handleKeyDown);
     }
 });
 </script>
@@ -84,12 +144,16 @@ onBeforeUnmount(() => {
 <template>
     <Teleport to="body">
         <Cursor v-if="open">
-            <div class="animal-modal__mask" @click="handleMask">
+            <div class="animal-modal__mask" :style="maskStyle" @click="handleMask">
                 <div
+                    ref="dialogRef"
                     class="animal-modal"
                     :style="widthStyle"
                     role="dialog"
                     aria-modal="true"
+                    :aria-labelledby="title ? titleId : undefined"
+                    :aria-describedby="bodyId"
+                    tabindex="-1"
                     @click.stop
                 >
                     <svg class="animal-modal__svg-defs" aria-hidden="true">
@@ -99,11 +163,11 @@ onBeforeUnmount(() => {
                     </svg>
                     <div class="animal-modal__body">
                         <div v-if="$slots.title || title" class="animal-modal__header">
-                            <div class="animal-modal__title">
+                            <div class="animal-modal__title" :id="titleId">
                                 <slot name="title">{{ title }}</slot>
                             </div>
                         </div>
-                        <div class="animal-modal__content">
+                        <div class="animal-modal__content" :id="bodyId">
                             <Typewriter
                                 v-if="typewriter"
                                 :speed="typeSpeed"

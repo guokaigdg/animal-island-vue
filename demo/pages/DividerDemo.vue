@@ -10,6 +10,8 @@ const DIVIDER_API: ApiRow[] = [
         type: `'line-brown' | 'line-teal' | 'line-white' | 'line-yellow' | 'wave-yellow' | 'dashed-brown' | 'dashed-teal' | 'dashed-white' | 'dashed-yellow'`,
         defaultVal: "'line-brown'",
     },
+    { prop: 'class', desc: '自定义类名', type: 'string', defaultVal: '-' },
+    { prop: 'style', desc: '自定义样式', type: 'string | object', defaultVal: '-' },
 ];
 
 const code = `<script setup lang="ts">

@@ -5,6 +5,8 @@ import type { InputSize } from './types';
 interface Props {
     modelValue?: string;
     size?: InputSize;
+    prefix?: string;
+    suffix?: string;
     allowClear?: boolean;
     status?: 'error' | 'warning';
     shadow?: boolean;
@@ -13,16 +15,20 @@ interface Props {
     type?: string;
     readonly?: boolean;
     maxlength?: number;
+    clearAriaLabel?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
     modelValue: '',
     size: 'middle',
+    prefix: undefined,
+    suffix: undefined,
     allowClear: false,
     shadow: false,
     disabled: false,
     type: 'text',
     readonly: false,
+    clearAriaLabel: '清除',
 });
 
 const emit = defineEmits<{
@@ -61,7 +67,9 @@ function handleClear() {
             { 'animal-input--shadow': shadow && !disabled, 'animal-input--disabled': disabled },
         ]"
     >
-        <span v-if="$slots.prefix" class="animal-input__prefix"><slot name="prefix" /></span>
+        <span v-if="prefix || $slots.prefix" class="animal-input__prefix">
+            <slot name="prefix">{{ prefix }}</slot>
+        </span>
         <input
             class="animal-input__inner"
             :type="type"
@@ -72,14 +80,16 @@ function handleClear() {
             :maxlength="maxlength"
             @input="handleInput"
         />
-        <span
+        <button
             v-if="showClear"
+            type="button"
             class="animal-input__clear"
-            role="button"
-            tabindex="-1"
+            :aria-label="clearAriaLabel"
             @click="handleClear"
-        >×</span>
-        <span v-if="$slots.suffix" class="animal-input__suffix"><slot name="suffix" /></span>
+        >×</button>
+        <span v-if="suffix || $slots.suffix" class="animal-input__suffix">
+            <slot name="suffix">{{ suffix }}</slot>
+        </span>
     </span>
 </template>
 
@@ -139,6 +149,8 @@ function handleClear() {
         width: 20px;
         height: 20px;
         margin-left: 4px;
+        padding: 0;
+        border: none;
         color: @text-color-disabled;
         font-size: 13px;
         font-weight: 700;

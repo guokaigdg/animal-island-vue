@@ -91,4 +91,28 @@ export const PAGE_INFO: Record<string, { title: string; desc: string }> = {
         title: 'WeddingInvitation 婚礼请柬',
         desc: '动森风婚礼请柬 — 设计 → 导出图片 → 分享/打印；支持双向编辑、PNG 导出，自带票根撕扯效果',
     },
+    form: {
+        title: 'Form 表单',
+        desc: '表单组件 — 支持完整校验（required/min/max/pattern/type/自定义）、三种布局、命令式 API、事件回调',
+    },
+    tag: {
+        title: 'Tag 标签',
+        desc: '标签组件 — 支持 solid/outlined/dashed 三种风格，13 种颜色，可关闭、可点击',
+    },
+    progress: {
+        title: 'Progress 进度条',
+        desc: '进度条组件 — 斜纹动画填充，三种尺寸，百分比文字可放在内部/右侧/上方',
+    },
+    drawer: {
+        title: 'Drawer 抽屉',
+        desc: '抽屉组件 — 支持四个方向弹出、背景下沉景深、焦点陷阱、ESC 关闭',
+    },
+    notification: {
+        title: 'Notification 通知',
+        desc: '命令式通知组件 — 4 种类型、6 个位置、自动关闭、可点击关闭',
+    },
+    wallet: {
+        title: 'Wallet 钱包',
+        desc: '钱包组件 — 动森风格钱袋 + 胶囊数字显示，三种尺寸，千分位格式化',
+    },
 };

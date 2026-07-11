@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { computed, watch, ref, provide } from 'vue';
+import { computed, watch, ref, provide, useAttrs } from 'vue';
 import { FormContextKey } from './context';
 import { useForm } from './useForm';
-import FormItemComponent from './FormItem.vue';
 import type { FormInstance, FormProps, ValidateError, FormContextValue } from './types';
 
 const props = withDefaults(defineProps<FormProps>(), {
@@ -19,10 +18,15 @@ const emit = defineEmits<{
     (e: 'reset', event: Event): void;
 }>();
 
+const attrs = useAttrs();
+
+// 是否用户传入 form 实例
 const isControlledForm = props.form !== undefined;
+// 总是用 useForm 兜底创建，传入则复用
 const [defaultForm] = useForm();
 const formInstance = (isControlledForm ? props.form : defaultForm) as FormInstance;
 
+// 用 ref 锁定最新回调，避免 form 实例重新创建
 const callbacksRef = ref({
     onFinish: props.onFinish,
     onFinishFailed: props.onFinishFailed,
@@ -44,9 +48,11 @@ watch(
             formAny.__bindCallbacks(callbacksRef.value);
         }
     },
-    { immediate: true }
+    { immediate: true, deep: true }
 );
 
+// 注入初始值：仅当 initialValues 内容（深比较）真正变化时同步给 form，
+// 避免父组件因其它状态 re-render 时用新引用、同内容对象把用户输入清空。
 const lastInitialKeyRef = ref<string | undefined>(undefined);
 watch(
     () => props.initialValues,
@@ -55,7 +61,7 @@ watch(
         const key = JSON.stringify(initialValues);
         if (key === lastInitialKeyRef.value) return;
         lastInitialKeyRef.value = key;
-        formInstance.setFieldsValue(initialValues);
+        formInstance.setFieldsValue(initialValues as Record<string, unknown>);
     },
     { immediate: true, deep: true }
 );
@@ -78,10 +84,11 @@ provide(FormContextKey, ctxValue.value);
 function handleSubmit(e: Event) {
     e.preventDefault();
     e.stopPropagation();
+    // 实际提交逻辑：通过校验后调用 onFinish，否则 onFinishFailed
     formInstance.validateFields().then(
         (values) => {
             emit('finish', values);
-            callbacksRef.value.onFinish?.(values);
+            callbacksRef.value.onFinish?.(values as never);
         },
         (err: Error & { errorFields?: unknown[]; values?: unknown }) => {
             if (err && Array.isArray(err.errorFields)) {
@@ -91,13 +98,14 @@ function handleSubmit(e: Event) {
                     outOfDate: false,
                 };
                 emit('finishFailed', info);
-                callbacksRef.value.onFinishFailed?.(info);
+                callbacksRef.value.onFinishFailed?.(info as never);
             }
         }
     );
 }
 
 function handleReset(e: Event) {
+    // 由原生 <button type="reset"> 触发，preventDefault 阻止清空已注册的初始值
     e.preventDefault();
     formInstance.resetFields();
     emit('reset', e);
@@ -116,7 +124,10 @@ defineExpose({
             `island-form--${layout}`,
             `island-form--${size}`,
             { 'island-form--disabled': disabled },
+            props.class,
         ]"
+        :style="props.style"
+        v-bind="attrs"
         @submit="handleSubmit"
         @reset="handleReset"
     >
@@ -155,11 +166,13 @@ defineExpose({
         flex-direction: column;
         gap: @form-item-gap;
 
-        .island-form-item {
+        :deep(.island-form-item) {
             display: grid;
             grid-template-columns: repeat(24, minmax(0, 1fr));
             align-items: baseline;
             row-gap: @form-item-gap;
+            // horizontal 下 label/wrapper 在 24 列栅格里相邻，不该有 column-gap
+            // 否则 23 × 16px = 368px 直接撑爆 form
         }
     }
 
@@ -168,7 +181,7 @@ defineExpose({
         flex-direction: column;
         gap: @form-item-gap;
 
-        .island-form-item {
+        :deep(.island-form-item) {
             display: block;
 
             &__label {
@@ -183,25 +196,25 @@ defineExpose({
         flex-wrap: wrap;
         gap: @inline-gap;
 
-        .island-form-item {
+        :deep(.island-form-item) {
             flex: 0 0 auto;
         }
     }
 
     &--small {
-        .island-form-item__label {
+        :deep(.island-form-item__label) {
             font-size: @label-font-size-small;
         }
     }
 
     &--middle {
-        .island-form-item__label {
+        :deep(.island-form-item__label) {
             font-size: @label-font-size-middle;
         }
     }
 
     &--large {
-        .island-form-item__label {
+        :deep(.island-form-item__label) {
             font-size: @label-font-size-large;
         }
     }

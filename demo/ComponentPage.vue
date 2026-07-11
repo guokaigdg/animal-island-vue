@@ -26,6 +26,12 @@ import TableDemo from './pages/TableDemo.vue';
 import TimeDemo from './pages/TimeDemo.vue';
 import PhoneDemo from './pages/PhoneDemo.vue';
 import WeddingInvitationDemo from './pages/WeddingInvitationDemo.vue';
+import FormDemo from './pages/FormDemo.vue';
+import TagDemo from './pages/TagDemo.vue';
+import ProgressDemo from './pages/ProgressDemo.vue';
+import DrawerDemo from './pages/DrawerDemo.vue';
+import NotificationDemo from './pages/NotificationDemo.vue';
+import WalletDemo from './pages/WalletDemo.vue';
 
 const props = defineProps<{ activeKey: string }>();
 
@@ -53,6 +59,12 @@ const PAGES: Record<string, unknown> = {
     time: TimeDemo,
     phone: PhoneDemo,
     'wedding-invitation': WeddingInvitationDemo,
+    form: FormDemo,
+    tag: TagDemo,
+    progress: ProgressDemo,
+    drawer: DrawerDemo,
+    notification: NotificationDemo,
+    wallet: WalletDemo,
 };
 
 // 与 React 版同款：根据 activeKey 哈希固定映射颜色，同页面不抖动

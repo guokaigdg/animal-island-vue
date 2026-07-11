@@ -9,6 +9,8 @@ interface Props {
     options: SelectOption[];
     placeholder?: string;
     disabled?: boolean;
+    ariaLabel?: string;
+    ariaLabelledBy?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -23,9 +25,16 @@ const emit = defineEmits<{
 
 const open = ref(false);
 const mounted = ref(false);
+const activeKey = ref<string | null>(null);
 const hoveredKey = ref<string | null>(null);
 const wrapperRef = ref<HTMLDivElement | null>(null);
+const triggerRef = ref<HTMLDivElement | null>(null);
 const dropdownStyle = ref<CSSProperties>({});
+
+// 唯一 id 前缀（类似 React 的 useId）
+const idBase = `animal-select-${Math.random().toString(36).slice(2, 10)}`;
+const listboxId = `${idBase}-listbox`;
+const optionId = (k: string) => `${idBase}-option-${k}`;
 
 const currentLabel = computed(
     () => props.options.find((o) => o.key === props.modelValue)?.label || props.placeholder,
@@ -41,6 +50,48 @@ function handleSelect(key: string) {
     emit('change', key);
     open.value = false;
     mounted.value = false;
+    triggerRef.value?.focus();
+}
+
+function moveActive(delta: 1 | -1) {
+    if (!props.options.length) return;
+    const idx = props.options.findIndex((o) => o.key === activeKey.value);
+    const nextIdx =
+        idx < 0 ? (delta === 1 ? 0 : props.options.length - 1) : (idx + delta + props.options.length) % props.options.length;
+    activeKey.value = props.options[nextIdx].key;
+}
+
+function handleKeyDown(e: KeyboardEvent) {
+    if (props.disabled) return;
+    const { key } = e;
+    if (!open.value) {
+        if (key === 'Enter' || key === ' ' || key === 'ArrowDown' || key === 'ArrowUp') {
+            e.preventDefault();
+            open.value = true;
+        }
+        return;
+    }
+    if (key === 'Escape') {
+        e.preventDefault();
+        open.value = false;
+        mounted.value = false;
+        triggerRef.value?.focus();
+    } else if (key === 'ArrowDown') {
+        e.preventDefault();
+        moveActive(1);
+    } else if (key === 'ArrowUp') {
+        e.preventDefault();
+        moveActive(-1);
+    } else if (key === 'Home') {
+        e.preventDefault();
+        if (props.options[0]) activeKey.value = props.options[0].key;
+    } else if (key === 'End') {
+        e.preventDefault();
+        if (props.options.length) activeKey.value = props.options[props.options.length - 1].key;
+    } else if (key === 'Enter' || key === ' ') {
+        e.preventDefault();
+        if (activeKey.value) handleSelect(activeKey.value);
+    }
 }
 
 function handleClickOutside(e: MouseEvent) {
@@ -52,6 +103,9 @@ function handleClickOutside(e: MouseEvent) {
 
 watch(open, (isOpen) => {
     if (isOpen && wrapperRef.value) {
+        // 打开时把 activeKey 落到当前选中项或第一项
+        activeKey.value = props.modelValue || props.options[0]?.key || null;
+
         document.addEventListener('mousedown', handleClickOutside);
 
         const rect = wrapperRef.value.getBoundingClientRect();
@@ -95,6 +149,7 @@ watch(open, (isOpen) => {
     } else {
         document.removeEventListener('mousedown', handleClickOutside);
         mounted.value = false;
+        activeKey.value = null;
     }
 });
 
@@ -108,12 +163,23 @@ onBeforeUnmount(() => {
         ref="wrapperRef"
         class="animal-select"
         :class="{ 'animal-select--disabled': disabled }"
+        @keydown="handleKeyDown"
         v-bind="attrs"
     >
         <div
+            ref="triggerRef"
             class="animal-select__trigger"
-            :class="{ 'animal-select__trigger--disabled': disabled }"
+            :class="{ 'animal-select__trigger--disabled': disabled, 'animal-select__trigger--open': open }"
             @click="handleToggle"
+            role="combobox"
+            aria-haspopup="listbox"
+            :aria-expanded="open"
+            :aria-controls="open ? listboxId : undefined"
+            :aria-activedescendant="open && activeKey ? optionId(activeKey) : undefined"
+            :aria-disabled="disabled || undefined"
+            :aria-label="ariaLabel"
+            :aria-labelledby="ariaLabelledBy"
+            :tabindex="disabled ? -1 : 0"
         >
             <span
                 class="animal-select__value"
@@ -140,6 +206,10 @@ onBeforeUnmount(() => {
             v-if="open && mounted"
             class="animal-select__dropdown"
             :style="dropdownStyle"
+            role="listbox"
+            :id="listboxId"
+            :aria-label="ariaLabel"
+            :aria-labelledby="ariaLabelledBy"
         >
             <div
                 v-for="option in options"
@@ -149,8 +219,11 @@ onBeforeUnmount(() => {
                     'animal-select__option--active': modelValue === option.key,
                     'animal-select__option--hovered': hoveredKey === option.key,
                 }"
+                role="option"
+                :id="optionId(option.key)"
+                :aria-selected="modelValue === option.key"
                 @click="handleSelect(option.key)"
-                @mouseenter="hoveredKey = option.key"
+                @mouseenter="hoveredKey = option.key; activeKey = option.key"
                 @mouseleave="hoveredKey = null"
             >
                 <span class="animal-select__spacer" />

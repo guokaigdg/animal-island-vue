@@ -9,7 +9,16 @@ export interface TableColumn<T extends TableRecord = TableRecord> {
     render?: (value: unknown, record: T, index: number) => VNode | string | number | null;
     width?: string | number;
     align?: 'left' | 'center' | 'right';
+    fixed?: 'left' | 'right';
     style?: CSSProperties;
+}
+
+export interface TableRowAttributes {
+    class?: string | string[] | Record<string, boolean>;
+    style?: CSSProperties;
+    onClick?: (e: MouseEvent) => void;
+    onDblclick?: (e: MouseEvent) => void;
+    [key: string]: unknown;
 }
 
 export interface TableProps<T extends TableRecord = TableRecord> {
@@ -18,6 +27,8 @@ export interface TableProps<T extends TableRecord = TableRecord> {
     rowKey?: string | ((record: T) => string);
     striped?: boolean;
     showHeader?: boolean;
+    rowClassName?: string | ((record: T, index: number) => string);
+    onRow?: (record: T, index: number) => TableRowAttributes;
     loading?: boolean;
     emptyText?: string;
     scroll?: { x?: number | string; y?: number | string };

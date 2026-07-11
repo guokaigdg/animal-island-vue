@@ -2,21 +2,39 @@ import { runRule } from './validators';
 import type { FieldData, FormInstance, NamePath, RuleObject, Rules, ScrollOptions, ValidateError } from './types';
 import { stringifyNamePath } from './types';
 
+// ============================================
+// 字段元数据 + 订阅
+// ============================================
+
 interface FieldMeta {
+    /** 字符串化的字段名（Map key） */
     key: string;
+    /** 校验规则（render 函数已 resolve） */
     rules: Rules;
+    /** 初始值快照（用于 resetFields） */
     initialValue: unknown;
+    /** 是否已设置过 initialValue（避免覆盖） */
     initialSet: boolean;
+    /** 字段所属 Form 触发 onValuesChange 时用：当前值 */
     currentValue: unknown;
+    /** FormItem 订阅通知 */
     notify: () => void;
 }
+
+// ============================================
+// 内部 store 创建
+// ============================================
 
 interface FormStore {
     registerField: (name: NamePath, rules: Rules, initialValue: unknown, notify: () => void) => void;
     unregisterField: (name: NamePath) => void;
+    /** 当前是否已有该字段（用于 FormItem 初始化时避免覆盖 setFieldsValue） */
     hasField: (name: NamePath) => boolean;
+    /** 更新字段的 rules（不重新注册） */
     updateRules: (name: NamePath, rules: Rules) => void;
+    /** 通知所有已注册字段重新渲染 */
     notifyAll: () => void;
+    /** 遍历字段元数据 */
     forEachField: (cb: (meta: { key: string; rules: Rules; notify: () => void }) => void) => void;
 }
 
@@ -28,7 +46,7 @@ function createFormStore(): FormStore {
             try {
                 meta.notify();
             } catch {
-                //
+                // 单个 FormItem 通知失败不影响其他字段
             }
         });
     };
@@ -52,6 +70,7 @@ function createFormStore(): FormStore {
                     notify,
                 });
             } else {
+                // 已存在：仅更新 rules 和 notify
                 const meta = fields.get(key);
                 if (meta) {
                     meta.rules = rules;
@@ -77,6 +96,17 @@ function createFormStore(): FormStore {
     };
 }
 
+// ============================================
+// Form 实例创建
+// ============================================
+
+/**
+ * 把嵌套对象展平为 dot-path 形式，与 stringifyNamePath 配套。
+ * 例：{ user: { name: 'tom', tags: ['a','b'] } } → { 'user.name': 'tom', 'user.tags': ['a','b'] }
+ * - 数组当 leaf（不递归）
+ * - null/undefined 当 leaf
+ * - 已含 dot 的顶层 key 不再解析，按字面 key 写入
+ */
 function flattenInitialValues(
     values: Record<string, unknown>,
     prefix = '',
@@ -103,6 +133,7 @@ interface FormOptions {
         errorFields: ValidateError[];
         outOfDate: boolean;
     }) => void;
+    /** 提交回调：Form 触发 submit 时调用（先校验） */
     submit: () => void;
 }
 
@@ -114,6 +145,7 @@ function createFormInstance(options: FormOptions): FormInstance {
     const validatingSet = new Set<string>();
     const fieldStore = createFormStore();
 
+    // 初始值写入
     if (options.initialValues) {
         const flat = flattenInitialValues(options.initialValues);
         Object.keys(flat).forEach((k) => {
@@ -146,6 +178,7 @@ function createFormInstance(options: FormOptions): FormInstance {
         const prev = store.get(key);
         store.set(key, value);
         touchedSet.add(key);
+        // 通知对应 FormItem
         fieldStore.forEachField((meta) => {
             if (meta.key === key) meta.notify();
         });
@@ -158,16 +191,19 @@ function createFormInstance(options: FormOptions): FormInstance {
         const flat = flattenInitialValues(values);
         Object.keys(flat).forEach((k) => {
             store.set(k, flat[k]);
+            // 首次写入时同步到 initialStore（resetFields 用）
             if (!initialStore.has(k)) {
                 initialStore.set(k, flat[k]);
             }
         });
+        // 通知所有字段
         fieldStore.notifyAll();
     }
 
     function resetFields(nameList?: NamePath[]): void {
         const keys = nameList ? nameList.map(stringifyNamePath) : Array.from(store.keys());
         keys.forEach((k) => {
+            // 还原到 initialStore 记录的值；没有记录则清空
             store.set(k, initialStore.get(k));
             errorsStore.delete(k);
             touchedSet.delete(k);
@@ -210,6 +246,7 @@ function createFormInstance(options: FormOptions): FormInstance {
             }
         });
 
+        // 标记 validating
         targetMetas.forEach((m) => validatingSet.add(m.key));
         fieldStore.notifyAll();
 
@@ -268,6 +305,10 @@ function createFormInstance(options: FormOptions): FormInstance {
             });
     }
 
+    /**
+     * 由 <Form> 注入最新回调引用，避免 options 闭包过期。
+     * 也用于支持受控 form（form 实例由 useForm 创建，Form 组件后续桥接 onFinish 等）。
+     */
     function bindCallbacks(c: {
         onFinish?: (values: Record<string, unknown>) => void;
         onFinishFailed?: (info: {
@@ -283,7 +324,9 @@ function createFormInstance(options: FormOptions): FormInstance {
     }
 
     function scrollToField(name: NamePath, _options?: ScrollOptions): void {
+        // 占位：实际滚动交给消费者，组件库不强耦合 DOM API
         const key = stringifyNamePath(name);
+        // 找到对应 FormItem 渲染的 DOM 元素（通过 data-field-name 属性）
         if (typeof document !== 'undefined') {
             const el = document.querySelector(`[data-field-name="${key}"]`);
             el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -305,26 +348,30 @@ function createFormInstance(options: FormOptions): FormInstance {
         scrollToField,
     };
 
+    // 暴露内部 store 给 FormItem 使用（避免循环依赖，靠一个特殊 prop）
     (formInstance as unknown as { __store: FormStore }).__store = fieldStore;
+    // 暴露 bind 钩子供 <Form> 注入回调
     (formInstance as unknown as { __bindCallbacks: typeof bindCallbacks }).__bindCallbacks = bindCallbacks;
 
     return formInstance;
 }
 
-const formInstances = new Map<string, FormInstance<Record<string, unknown>>>();
+// ============================================
+// useForm hook
+// ============================================
 
-export function useForm<T = Record<string, unknown>>(options?: Omit<FormOptions, 'submit'>): [FormInstance<T>] {
-    const instanceKey = 'default';
-    let formInstance = formInstances.get(instanceKey) as FormInstance<T>;
-    
-    if (!formInstance) {
-        const inst = createFormInstance({
-            ...(options as FormOptions | undefined),
-            submit: () => inst.submit(),
-        });
-        formInstance = inst as unknown as FormInstance<T>;
-        formInstances.set(instanceKey, inst);
-    }
-    
-    return [formInstance];
+/**
+ * 创建受控 form 实例。
+ *
+ * 与 React 版对齐：每次调用返回一个稳定的 form 实例。Vue 中 setup() 只执行一次，
+ * 因此直接 newInstance 等价于 React 的 useRef 模式。
+ */
+export function useForm<T = Record<string, unknown>>(
+    options?: Omit<FormOptions, 'submit'>
+): [FormInstance<T>] {
+    const inst = createFormInstance({
+        ...(options as FormOptions | undefined),
+        submit: () => inst.submit(),
+    });
+    return [inst as unknown as FormInstance<T>];
 }
