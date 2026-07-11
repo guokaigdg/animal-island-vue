@@ -73,16 +73,18 @@ export type { SelectProps, SelectOption } from './components/Select';
 export { Tabs } from './components/Tabs';
 export type { TabsProps, TabItem } from './components/Tabs';
 
-export { Form, FormItem, useForm } from './components/Form';
+export { Form, FormItem, FormProvider, useForm } from './components/Form';
 export type {
     ColProps,
     FieldData,
+    FormContextValue,
     FormInstance,
     FormItemLayout,
     FormItemProps,
     FormLabelAlign,
     FormLayout,
     FormProps,
+    FormProviderProps,
     FormSize,
     NamePath,
     RequiredMark,
@@ -125,6 +127,29 @@ export type { TableProps, TableColumn, TableRecord } from './components/Table';
 
 export { Phone } from './components/Phone';
 export type { PhoneProps } from './components/Phone';
+
+// Phase 5 — 补全组件
+export { Tag } from './components/Tag';
+export type { TagProps, TagSize, TagVariant, TagColor } from './components/Tag';
+
+export { Progress } from './components/Progress';
+export type { ProgressProps, ProgressSize, ProgressInfoPosition } from './components/Progress';
+
+export { Drawer } from './components/Drawer';
+export type { DrawerProps, DrawerPlacement } from './components/Drawer';
+
+export { Notification, NotificationContainer } from './components/Notification';
+export type {
+    NotificationConfig,
+    NotificationItem,
+    NotificationPosition,
+    NotificationPlacement,
+    NotificationStatic,
+    NotificationType,
+} from './components/Notification';
+
+export { Wallet } from './components/Wallet';
+export type { WalletProps, WalletSize } from './components/Wallet';
 
 // 注：WeddingInvitation 是「Demo-only」演示组件 —— 仅用于站点展示，
 // 不打入对外发布的 npm 包。源码已迁移到 `demo/components/WeddingInvitation/`。

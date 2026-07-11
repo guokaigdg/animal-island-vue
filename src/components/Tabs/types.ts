@@ -9,4 +9,5 @@ export interface TabsProps {
     defaultActiveKey?: string;
     leafAnimation?: boolean;
     shadow?: boolean;
+    ariaLabel?: string;
 }

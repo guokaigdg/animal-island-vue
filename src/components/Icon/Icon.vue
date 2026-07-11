@@ -4,12 +4,15 @@ import type { CSSProperties } from 'vue';
 import type { IconName } from './types';
 
 interface Props {
-    name: IconName;
+    name?: IconName;
+    src?: string;
     size?: number | string;
     bounce?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
+    name: undefined,
+    src: undefined,
     size: 24,
     bounce: false,
 });
@@ -17,13 +20,14 @@ const props = withDefaults(defineProps<Props>(), {
 const sizeStyle = computed<CSSProperties>(() => ({
     width: typeof props.size === 'number' ? `${props.size}px` : props.size,
     height: typeof props.size === 'number' ? `${props.size}px` : props.size,
+    ...(props.src ? { backgroundImage: `url(${props.src})` } : null),
 }));
 </script>
 
 <template>
     <span
         class="animal-icon"
-        :class="[`animal-icon--${name}`, { 'animal-icon--bounce': bounce }]"
+        :class="[name ? `animal-icon--${name}` : '', { 'animal-icon--bounce': bounce }]"
         :style="sizeStyle"
     />
 </template>

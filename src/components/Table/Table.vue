@@ -1,6 +1,6 @@
 <script setup lang="ts" generic="T extends TableRecord">
 import { computed, useAttrs, type CSSProperties, type VNode } from 'vue';
-import type { TableColumn, TableRecord } from './types';
+import type { TableColumn, TableRecord, TableRowAttributes } from './types';
 
 const attrs = useAttrs();
 
@@ -11,6 +11,8 @@ const props = withDefaults(
         rowKey?: string | ((record: T) => string);
         striped?: boolean;
         showHeader?: boolean;
+        rowClassName?: string | ((record: T, index: number) => string);
+        onRow?: (record: T, index: number) => TableRowAttributes;
         loading?: boolean;
         emptyText?: string;
         scroll?: { x?: number | string; y?: number | string };
@@ -36,6 +38,21 @@ function getRowKey(record: T, index: number): string {
     if (typeof props.rowKey === 'function') return props.rowKey(record);
     const v = (record as TableRecord)[props.rowKey];
     return v != null ? String(v) : String(index);
+}
+
+function getRowClassName(record: T, index: number): string {
+    const classNames: string[] = ['animal-table__row'];
+    if (props.striped && index % 2 === 1) {
+        classNames.push('animal-table__row--striped');
+    }
+    if (props.rowClassName) {
+        if (typeof props.rowClassName === 'function') {
+            classNames.push(props.rowClassName(record, index));
+        } else {
+            classNames.push(props.rowClassName);
+        }
+    }
+    return classNames.filter(Boolean).join(' ');
 }
 
 function cellAlign(c: TableColumn<T>): CSSProperties['textAlign'] {
@@ -106,8 +123,8 @@ const wrapperStyle = computed<CSSProperties>(() => ({
                     v-for="(record, index) in dataSource"
                     v-else
                     :key="getRowKey(record, index)"
-                    class="animal-table__row"
-                    :class="{ 'animal-table__row--striped': striped && index % 2 === 1 }"
+                    :class="getRowClassName(record, index)"
+                    v-bind="onRow ? onRow(record, index) : {}"
                 >
                     <td
                         v-for="(col, ci) in columns"

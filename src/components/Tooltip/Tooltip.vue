@@ -30,6 +30,7 @@ let timer: ReturnType<typeof setTimeout> | undefined;
 
 const uid = Math.random().toString(36).slice(2, 10);
 const clipId = `animal-tooltip-clip-${uid}`;
+const tooltipId = `animal-tooltip-${uid}`;
 
 function show() {
     if (timer) clearTimeout(timer);
@@ -65,7 +66,11 @@ const triggerHandlers = computed(() => {
 
 <template>
     <span class="animal-tooltip" v-bind="attrs">
-        <span class="animal-tooltip__trigger" v-bind="triggerHandlers">
+        <span
+            class="animal-tooltip__trigger"
+            :aria-describedby="visible ? tooltipId : undefined"
+            v-bind="triggerHandlers"
+        >
             <slot />
         </span>
         <div
@@ -80,6 +85,7 @@ const triggerHandlers = computed(() => {
                 },
             ]"
             role="tooltip"
+            :id="tooltipId"
             :aria-hidden="!visible"
             @mouseenter="trigger === 'hover' ? show() : null"
             @mouseleave="trigger === 'hover' ? hide() : null"

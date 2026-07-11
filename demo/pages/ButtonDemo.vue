@@ -14,6 +14,7 @@ const BUTTON_API: ApiRow[] = [
     { prop: 'loading', desc: '加载状态', type: 'boolean', defaultVal: 'false' },
     { prop: 'disabled', desc: '禁用状态', type: 'boolean', defaultVal: 'false' },
     { prop: '#icon', desc: '图标插槽', type: 'slot', defaultVal: '-' },
+    { prop: 'icon', desc: '图标（文本/emoji，优先于 #icon slot）', type: 'string', defaultVal: '-' },
     { prop: 'htmlType', desc: '原生 button type', type: `'submit' | 'reset' | 'button'`, defaultVal: "'button'" },
     { prop: 'default', desc: '按钮内容（默认插槽）', type: 'slot', defaultVal: '-' },
     { prop: '@click', desc: '点击事件', type: '(e: MouseEvent) => void', defaultVal: '-' },
@@ -33,7 +34,7 @@ import { Button } from 'animal-island-vue';
     <Button type="primary" ghost>Ghost</Button>
     <Button type="primary" loading>Loading</Button>
     <Button type="primary" size="large">Large</Button>
-    <Button type="primary"><template #icon>🔍</template>搜索</Button>
+    <Button type="primary" icon="🔍">搜索</Button>
     <Button type="primary" block>Block</Button>
 </template>`;
 </script>
@@ -67,9 +68,9 @@ import { Button } from 'animal-island-vue';
             </div>
             <div :style="labelStyle">icon 图标按钮</div>
             <div :style="rowStyle">
-                <Button type="primary"><template #icon><span>🔍</span></template>搜索</Button>
-                <Button><template #icon><span>⭐</span></template>收藏</Button>
-                <Button type="dashed"><template #icon><span>＋</span></template>新增</Button>
+                <Button type="primary" icon="🔍">搜索</Button>
+                <Button icon="⭐">收藏</Button>
+                <Button type="dashed" icon="＋">新增</Button>
             </div>
             <div :style="labelStyle">block 块级按钮</div>
             <div :style="{ maxWidth: '360px' }">

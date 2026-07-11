@@ -51,7 +51,8 @@ const components = [
     { key: 'codeblock', name: 'CodeBlock', desc: '代码语法高亮组件' },
     { key: 'loading', name: 'Loading', desc: '动森风格小岛加载动画' },
     { key: 'table', name: 'Table', desc: '泛型表格、悬浮动画、加载/空态' },
-];
+    { key: 'form', name: 'Form', desc: '完整校验、三种布局、命令式 API' },
+    ];
 
 const installCode = `// 使用 npm 安装\nnpm install animal-island-vue`;
 const usageCode = `// 1. 引入组件\nimport { Button, Modal, Switch } from 'animal-island-vue';\nimport 'animal-island-vue/style';\n\n<template>\n    <Button>开始</Button>\n</template>`;

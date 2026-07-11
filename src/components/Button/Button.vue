@@ -10,6 +10,7 @@ interface Props {
     loading?: boolean;
     disabled?: boolean;
     htmlType?: ButtonHTMLType;
+    icon?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -44,7 +45,8 @@ defineSlots<{ default?: () => unknown; icon?: () => unknown }>();
         ]"
         @click="$emit('click', $event)"
     >
-        <span v-if="$slots.icon && !loading" class="animal-btn__icon">
+        <span v-if="icon && !loading" class="animal-btn__icon">{{ icon }}</span>
+        <span v-else-if="$slots.icon && !loading" class="animal-btn__icon">
             <slot name="icon" />
         </span>
         <span v-if="$slots.default"><slot /></span>

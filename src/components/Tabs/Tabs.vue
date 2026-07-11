@@ -16,6 +16,8 @@ interface Props {
     leafAnimation?: boolean;
     /** 是否显示选中状态阴影 */
     shadow?: boolean;
+    /** 无可见标题时给 tablist 一个无障碍标签 */
+    ariaLabel?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -38,6 +40,43 @@ const activeKey = computed(() =>
 );
 const activeItem = computed(() => props.items.find(i => i.key === activeKey.value));
 
+// ARIA 关联 id
+const idBase = `animal-tabs-${Math.random().toString(36).slice(2, 10)}`;
+const tabId = (k: string) => `${idBase}-tab-${k}`;
+const panelId = (k: string) => `${idBase}-panel-${k}`;
+
+const tabRefs = new Map<string, HTMLButtonElement>();
+
+function setTabRef(key: string, el: Element | unknown) {
+    if (el instanceof HTMLButtonElement) {
+        tabRefs.set(key, el);
+    } else {
+        tabRefs.delete(key);
+    }
+}
+
+function focusTab(key: string) {
+    tabRefs.get(key)?.focus();
+}
+
+function handleKeyDown(e: KeyboardEvent) {
+    const { key } = e;
+    if (key !== 'ArrowRight' && key !== 'ArrowLeft' && key !== 'Home' && key !== 'End') {
+        return;
+    }
+    e.preventDefault();
+    const idx = props.items.findIndex(i => i.key === activeKey.value);
+    if (idx < 0) return;
+    let nextIdx = idx;
+    if (key === 'ArrowRight') nextIdx = (idx + 1) % props.items.length;
+    else if (key === 'ArrowLeft') nextIdx = (idx - 1 + props.items.length) % props.items.length;
+    else if (key === 'Home') nextIdx = 0;
+    else if (key === 'End') nextIdx = props.items.length - 1;
+    const nextKey = props.items[nextIdx].key;
+    handleClick(nextKey);
+    focusTab(nextKey);
+}
+
 watch(
     () => props.items,
     list => {
@@ -59,10 +98,17 @@ function handleClick(key: string) {
 
 <template>
     <div class="animal-tabs" v-bind="attrs">
-        <div class="animal-tabs__list">
+        <div
+            class="animal-tabs__list"
+            role="tablist"
+            :aria-label="ariaLabel"
+            aria-orientation="horizontal"
+            @keydown="handleKeyDown"
+        >
             <button
                 v-for="item in items"
                 :key="item.key"
+                :ref="el => setTabRef(item.key, el)"
                 type="button"
                 class="animal-tabs__item"
                 :class="{
@@ -70,9 +116,14 @@ function handleClick(key: string) {
                     'animal-tabs__item--active-shadow':
                         shadow && item.key === activeKey,
                 }"
+                :id="tabId(item.key)"
+                role="tab"
+                :aria-selected="item.key === activeKey"
+                :aria-controls="panelId(item.key)"
+                :tabindex="item.key === activeKey ? 0 : -1"
                 @click="handleClick(item.key)"
             >
-                <span class="animal-tabs__icon">
+                <span class="animal-tabs__icon" aria-hidden="true">
                     {{ item.key === activeKey ? '●' : '○' }}
                 </span>
                 <span class="animal-tabs__label">{{ item.label }}</span>
@@ -85,7 +136,13 @@ function handleClick(key: string) {
                 />
             </button>
         </div>
-        <div class="animal-tabs__content">
+        <div
+            class="animal-tabs__content"
+            role="tabpanel"
+            :id="activeItem ? panelId(activeItem.key) : undefined"
+            :aria-labelledby="activeItem ? tabId(activeItem.key) : undefined"
+            tabindex="0"
+        >
             <div class="animal-tabs__inner">
                 <slot
                     v-if="activeItem"
