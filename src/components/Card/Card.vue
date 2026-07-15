@@ -5,12 +5,14 @@ interface Props {
     type?: CardType;
     color?: CardColor;
     pattern?: CardPattern;
+    hoverable?: boolean;
 }
 
 withDefaults(defineProps<Props>(), {
     type: 'default',
     color: 'default',
     pattern: 'none',
+    hoverable: false,
 });
 
 defineSlots<{ default?: () => unknown }>();
@@ -23,6 +25,7 @@ defineSlots<{ default?: () => unknown }>();
             `animal-card--${type}`,
             `animal-card--color-${color}`,
             pattern !== 'none' && `animal-card--pattern-${pattern}`,
+            hoverable && 'animal-card--hoverable',
         ]"
     >
         <slot />
@@ -35,7 +38,6 @@ defineSlots<{ default?: () => unknown }>();
 .animal-card {
     font-weight: 500;
     transition: all 0.3s ease;
-    cursor: pointer;
 
     // ---------- Type ----------
     &--default {
@@ -43,10 +45,7 @@ defineSlots<{ default?: () => unknown }>();
         padding: 16px 24px;
         background: rgb(247, 243, 223);
         color: #725d42;
-
-        &:hover {
-            transform: translateY(-2px);
-        }
+        // hover 效果默认关闭；通过 .animal-card--hoverable 启用
     }
     &--dashed {
         border-radius: 20px;
@@ -54,11 +53,6 @@ defineSlots<{ default?: () => unknown }>();
         border: 2px dashed #e8dcc8;
         background: rgb(250, 248, 242);
         box-shadow: none;
-
-        &:hover {
-            border-color: #d4c4a8;
-            transform: translateY(0);
-        }
     }
 
     // ---------- Color ----------
@@ -206,6 +200,18 @@ defineSlots<{ default?: () => unknown }>();
         background-position: 0 0, 7px 7px;
         border: 1.5px solid #e18c6f;
         color: #8a4a2a;
+    }
+}
+
+// ---------- Hoverable (opt-in) ----------
+// 必须放在 .animal-card 块外，编译为顶层选择器 .animal-card--hoverable[data-v-xxx]；
+// 嵌套在 .animal-card 内会被编译成后代选择器 .animal-card .animal-card--hoverable，
+// 但 --hoverable class 就在 .animal-card 根元素上，永远不会是它的后代，规则不会命中。
+.animal-card--hoverable {
+    cursor: pointer;
+
+    &:hover {
+        transform: translateY(-2px);
     }
 }
 </style>

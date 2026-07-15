@@ -259,9 +259,9 @@ export interface FormItemProps {
     /** 覆盖父级 wrapperCol */
     wrapperCol?: ColProps;
     /** 覆盖父级 colon */
-    colon?: boolean;
+    colon?: boolean | null;
     /** 覆盖父级 requiredMark */
-    requiredMark?: RequiredMark;
+    requiredMark?: RequiredMark | null;
     /** 覆盖父级 layout */
     layout?: FormItemLayout;
     /** 字段初始值（仅在挂载时生效一次） */

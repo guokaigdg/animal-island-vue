@@ -17,6 +17,12 @@ const CARD_API: ApiRow[] = [
         type: "'none' | 'default' | 'app-pink' | 'purple' | 'app-blue' | 'app-yellow' | 'app-orange' | 'app-teal' | 'app-green' | 'app-red' | 'lime-green' | 'yellow-green' | 'brown' | 'warm-peach-pink'",
         defaultVal: "'none'",
     },
+    {
+        prop: 'hoverable',
+        desc: '是否启用 hover 反馈',
+        type: 'boolean',
+        defaultVal: 'false',
+    },
     { prop: 'default', desc: '内容（默认 slot）', type: 'slot', defaultVal: '-' },
 ];
 
@@ -93,6 +99,13 @@ import { Card } from 'animal-island-vue';
                 <Card type="dashed" :style="{ maxWidth: '360px', width: '100%' }">
                     <p>欢迎来到无人岛！虚线边框适合用于轻量提示或次要信息展示。</p>
                 </Card>
+            </div>
+        </div>
+        <div :style="demoBodyStyle">
+            <div :style="labelStyle">hoverable — 启用 hover 反馈</div>
+            <div :style="rowStyle">
+                <Card hoverable><p>默认卡片（可点击）</p></Card>
+                <Card type="dashed" hoverable><p>虚线 + hoverable</p></Card>
             </div>
         </div>
         <div :style="demoBodyStyle">

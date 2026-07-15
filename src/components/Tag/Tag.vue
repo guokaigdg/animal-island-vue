@@ -59,6 +59,7 @@ function handleClose(event: MouseEvent) {
     <span
         class="animal-tag"
         :class="[
+            attrs.class,
             `animal-tag--${size}`,
             `animal-tag--${variant}`,
             color !== 'default' ? [`animal-tag--${color}`, 'animal-tag--colored'] : [],
@@ -67,6 +68,7 @@ function handleClose(event: MouseEvent) {
                 'animal-tag--clickable': isInteractive,
             },
         ]"
+        :style="attrs.style"
         :role="isInteractive ? 'button' : undefined"
         :tabindex="isInteractive ? 0 : undefined"
         @click="handleClick"
