@@ -16,6 +16,11 @@ const props = withDefaults(defineProps<FormItemProps>(), {
     hidden: false,
     hasFeedback: false,
     noStyle: false,
+    // Vue 3 会把未传的 boolean prop 强制转换为 false，
+    // 这会让 `props.colon ?? ctxColon` 始终是 false，破坏"未传时回退到 ctx"的语义。
+    // 显式给 null 默认值，让 ?? 在未传时正确回退。
+    colon: null,
+    requiredMark: null,
 });
 
 const ctx = inject(FormContextKey, null);
