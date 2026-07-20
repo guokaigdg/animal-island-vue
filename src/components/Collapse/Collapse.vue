@@ -27,9 +27,7 @@ defineSlots<{
 
 const isControlled = computed(() => props.expanded !== undefined);
 const innerExpanded = ref(props.defaultExpanded);
-const expandedState = computed(() =>
-    isControlled.value ? !!props.expanded : innerExpanded.value,
-);
+const expandedState = computed(() => (isControlled.value ? !!props.expanded : innerExpanded.value));
 
 const idBase = `animal-collapse-${Math.random().toString(36).slice(2, 10)}`;
 const headerId = `${idBase}-header`;
@@ -39,7 +37,7 @@ watch(
     () => props.expanded,
     (v) => {
         if (isControlled.value) innerExpanded.value = !!v;
-    },
+    }
 );
 
 function toggle() {
@@ -60,8 +58,8 @@ function toggle() {
         }"
     >
         <button
-            class="animal-collapse__header"
             :id="headerId"
+            class="animal-collapse__header"
             :disabled="disabled"
             :aria-expanded="expandedState"
             :aria-controls="panelId"
@@ -81,8 +79,8 @@ function toggle() {
             </span>
         </button>
         <div
-            class="animal-collapse__panel"
             :id="panelId"
+            class="animal-collapse__panel"
             role="region"
             :aria-labelledby="headerId"
             :style="{ gridTemplateRows: expandedState ? '1fr' : '0fr' }"
@@ -142,7 +140,8 @@ function toggle() {
         line-height: 1;
         flex-shrink: 0;
         box-shadow: 0 2px 4px rgba(25, 200, 185, 0.3);
-        transition: background-color @motion-duration-base @motion-ease,
+        transition:
+            background-color @motion-duration-base @motion-ease,
             transform @motion-duration-base @motion-ease;
     }
 
@@ -157,7 +156,8 @@ function toggle() {
     &__arrow {
         color: @primary-color;
         opacity: 0.5;
-        transition: opacity @motion-duration-base @motion-ease,
+        transition:
+            opacity @motion-duration-base @motion-ease,
             transform @motion-duration-base @motion-ease;
         display: inline-flex;
     }

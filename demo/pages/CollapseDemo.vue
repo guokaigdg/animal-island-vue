@@ -29,9 +29,7 @@ import { Collapse } from 'animal-island-vue';
 
 <template>
     <div :style="sectionStyle">
-        <div :style="sectionTitleStyle">
-            Collapse <span :style="tagStyle">FAQ</span>
-        </div>
+        <div :style="sectionTitleStyle">Collapse <span :style="tagStyle">FAQ</span></div>
         <div :style="demoBodyStyle">
             <div :style="labelStyle">基础用法</div>
             <div :style="{ maxWidth: '720px' }">

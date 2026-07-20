@@ -43,21 +43,47 @@ const sizeStyle = computed<CSSProperties>(() => ({
         animation: animal-icon-bounce 0.3s ease-in-out forwards;
     }
 
-    &--icon-miles { background-image: url('../../assets/img/icons/icon-miles.svg'); }
-    &--icon-camera { background-image: url('../../assets/img/icons/icon-camera.svg'); }
-    &--icon-chat { background-image: url('../../assets/img/icons/icon-chat.svg'); }
-    &--icon-critterpedia { background-image: url('../../assets/img/icons/icon-critterpedia.svg'); }
-    &--icon-design { background-image: url('../../assets/img/icons/icon-design.svg'); }
-    &--icon-diy { background-image: url('../../assets/img/icons/icon-diy.svg'); }
-    &--icon-helicopter { background-image: url('../../assets/img/icons/icon-helicopter.svg'); }
-    &--icon-map { background-image: url('../../assets/img/icons/icon-map.svg'); }
-    &--icon-shopping { background-image: url('../../assets/img/icons/icon-shopping.svg'); }
-    &--icon-variant { background-image: url('../../assets/img/icons/icon-variant.svg'); }
+    &--icon-miles {
+        background-image: url('../../assets/img/icons/icon-miles.svg');
+    }
+    &--icon-camera {
+        background-image: url('../../assets/img/icons/icon-camera.svg');
+    }
+    &--icon-chat {
+        background-image: url('../../assets/img/icons/icon-chat.svg');
+    }
+    &--icon-critterpedia {
+        background-image: url('../../assets/img/icons/icon-critterpedia.svg');
+    }
+    &--icon-design {
+        background-image: url('../../assets/img/icons/icon-design.svg');
+    }
+    &--icon-diy {
+        background-image: url('../../assets/img/icons/icon-diy.svg');
+    }
+    &--icon-helicopter {
+        background-image: url('../../assets/img/icons/icon-helicopter.svg');
+    }
+    &--icon-map {
+        background-image: url('../../assets/img/icons/icon-map.svg');
+    }
+    &--icon-shopping {
+        background-image: url('../../assets/img/icons/icon-shopping.svg');
+    }
+    &--icon-variant {
+        background-image: url('../../assets/img/icons/icon-variant.svg');
+    }
 }
 
 @keyframes animal-icon-bounce {
-    0% { transform: scale(1) rotate(0deg); }
-    50% { transform: scale(1.2) rotate(-5deg); }
-    100% { transform: scale(1.1) rotate(-4deg); }
+    0% {
+        transform: scale(1) rotate(0deg);
+    }
+    50% {
+        transform: scale(1.2) rotate(-5deg);
+    }
+    100% {
+        transform: scale(1.1) rotate(-4deg);
+    }
 }
 </style>

@@ -47,9 +47,7 @@ onBeforeUnmount(() => {
     if (timer) clearTimeout(timer);
 });
 
-const placementClass = computed(() =>
-    `animal-tooltip__bubble--${props.placement.replace(/-/g, '_')}`
-);
+const placementClass = computed(() => `animal-tooltip__bubble--${props.placement.replace(/-/g, '_')}`);
 
 const isIsland = computed(() => props.variant === 'island');
 
@@ -74,6 +72,7 @@ const triggerHandlers = computed(() => {
             <slot />
         </span>
         <div
+            :id="tooltipId"
             class="animal-tooltip__bubble"
             :class="[
                 placementClass,
@@ -85,17 +84,13 @@ const triggerHandlers = computed(() => {
                 },
             ]"
             role="tooltip"
-            :id="tooltipId"
             :aria-hidden="!visible"
             @mouseenter="trigger === 'hover' ? show() : null"
             @mouseleave="trigger === 'hover' ? hide() : null"
         >
             <template v-if="isIsland">
                 <div class="animal-tooltip__island-body">
-                    <svg
-                        style="position: absolute; width: 0; height: 0"
-                        aria-hidden="true"
-                    >
+                    <svg style="position: absolute; width: 0; height: 0" aria-hidden="true">
                         <clipPath :id="clipId" clipPathUnits="objectBoundingBox">
                             <path :d="ISLAND_CLIP_PATH" />
                         </clipPath>
@@ -116,10 +111,7 @@ const triggerHandlers = computed(() => {
                             stroke-linejoin="round"
                         />
                     </svg>
-                    <div
-                        class="animal-tooltip__island-content"
-                        :style="{ clipPath: `url(#${clipId})` }"
-                    >
+                    <div class="animal-tooltip__island-content" :style="{ clipPath: `url(#${clipId})` }">
                         <div class="animal-tooltip__content">
                             <slot name="title">{{ title }}</slot>
                         </div>
@@ -170,7 +162,8 @@ const triggerHandlers = computed(() => {
     letter-spacing: 0.01em;
     opacity: 0;
     pointer-events: none;
-    transition: opacity @motion-duration-base @motion-ease,
+    transition:
+        opacity @motion-duration-base @motion-ease,
         transform @motion-duration-base @motion-ease;
 
     &--visible {
@@ -211,7 +204,9 @@ const triggerHandlers = computed(() => {
     padding: 0;
     max-width: 280px;
 
-    &::after { display: none; }
+    &::after {
+        display: none;
+    }
 }
 
 .animal-tooltip__island-body {
@@ -275,84 +270,148 @@ const triggerHandlers = computed(() => {
 }
 
 // =========== Tail positions for island variant ============
-@tail-positions: top, top_start, top_end, bottom, bottom_start, bottom_end,
-    left, left_start, left_end, right, right_start, right_end;
+@tail-positions: top, top_start, top_end, bottom, bottom_start, bottom_end, left, left_start, left_end, right,
+    right_start, right_end;
 
 // Borderless island tails
 .animal-tooltip__bubble--island.animal-tooltip__bubble--borderless {
-    &.animal-tooltip__bubble--top .animal-tooltip__tail { bottom: -5px; left: 50%; transform: translateX(-50%); }
-    &.animal-tooltip__bubble--top_start .animal-tooltip__tail { bottom: -5px; left: 20px; }
-    &.animal-tooltip__bubble--top_end .animal-tooltip__tail { bottom: -5px; right: 20px; }
-    &.animal-tooltip__bubble--bottom .animal-tooltip__tail { top: -5px; left: 50%; transform: translateX(-50%); }
-    &.animal-tooltip__bubble--bottom_start .animal-tooltip__tail { top: -5px; left: 20px; }
-    &.animal-tooltip__bubble--bottom_end .animal-tooltip__tail { top: -5px; right: 20px; }
-    &.animal-tooltip__bubble--left .animal-tooltip__tail { right: -5px; top: 50%; transform: translateY(-50%); }
-    &.animal-tooltip__bubble--left_start .animal-tooltip__tail { right: -5px; top: 16px; }
-    &.animal-tooltip__bubble--left_end .animal-tooltip__tail { right: -5px; bottom: 16px; }
-    &.animal-tooltip__bubble--right .animal-tooltip__tail { left: -5px; top: 50%; transform: translateY(-50%); }
-    &.animal-tooltip__bubble--right_start .animal-tooltip__tail { left: -5px; top: 16px; }
-    &.animal-tooltip__bubble--right_end .animal-tooltip__tail { left: -5px; bottom: 16px; }
+    &.animal-tooltip__bubble--top .animal-tooltip__tail {
+        bottom: -5px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    &.animal-tooltip__bubble--top_start .animal-tooltip__tail {
+        bottom: -5px;
+        left: 20px;
+    }
+    &.animal-tooltip__bubble--top_end .animal-tooltip__tail {
+        bottom: -5px;
+        right: 20px;
+    }
+    &.animal-tooltip__bubble--bottom .animal-tooltip__tail {
+        top: -5px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    &.animal-tooltip__bubble--bottom_start .animal-tooltip__tail {
+        top: -5px;
+        left: 20px;
+    }
+    &.animal-tooltip__bubble--bottom_end .animal-tooltip__tail {
+        top: -5px;
+        right: 20px;
+    }
+    &.animal-tooltip__bubble--left .animal-tooltip__tail {
+        right: -5px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    &.animal-tooltip__bubble--left_start .animal-tooltip__tail {
+        right: -5px;
+        top: 16px;
+    }
+    &.animal-tooltip__bubble--left_end .animal-tooltip__tail {
+        right: -5px;
+        bottom: 16px;
+    }
+    &.animal-tooltip__bubble--right .animal-tooltip__tail {
+        left: -5px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    &.animal-tooltip__bubble--right_start .animal-tooltip__tail {
+        left: -5px;
+        top: 16px;
+    }
+    &.animal-tooltip__bubble--right_end .animal-tooltip__tail {
+        left: -5px;
+        bottom: 16px;
+    }
 }
 
 // Bordered island tails
 .animal-tooltip__bubble--island.animal-tooltip__bubble--bordered {
     &.animal-tooltip__bubble--top .animal-tooltip__tail {
-        bottom: -5px; left: 50%; transform: translateX(-50%) rotate(45deg);
+        bottom: -5px;
+        left: 50%;
+        transform: translateX(-50%) rotate(45deg);
         border-right: @border-width solid @tooltip-border;
         border-bottom: @border-width solid @tooltip-border;
     }
     &.animal-tooltip__bubble--top_start .animal-tooltip__tail {
-        bottom: -5px; left: 20px; transform: rotate(45deg);
+        bottom: -5px;
+        left: 20px;
+        transform: rotate(45deg);
         border-right: @border-width solid @tooltip-border;
         border-bottom: @border-width solid @tooltip-border;
     }
     &.animal-tooltip__bubble--top_end .animal-tooltip__tail {
-        bottom: -5px; right: 20px; transform: rotate(45deg);
+        bottom: -5px;
+        right: 20px;
+        transform: rotate(45deg);
         border-right: @border-width solid @tooltip-border;
         border-bottom: @border-width solid @tooltip-border;
     }
     &.animal-tooltip__bubble--bottom .animal-tooltip__tail {
-        top: -5px; left: 50%; transform: translateX(-50%) rotate(45deg);
+        top: -5px;
+        left: 50%;
+        transform: translateX(-50%) rotate(45deg);
         border-top: @border-width solid @tooltip-border;
         border-left: @border-width solid @tooltip-border;
     }
     &.animal-tooltip__bubble--bottom_start .animal-tooltip__tail {
-        top: -5px; left: 20px; transform: rotate(45deg);
+        top: -5px;
+        left: 20px;
+        transform: rotate(45deg);
         border-top: @border-width solid @tooltip-border;
         border-left: @border-width solid @tooltip-border;
     }
     &.animal-tooltip__bubble--bottom_end .animal-tooltip__tail {
-        top: -5px; right: 20px; transform: rotate(45deg);
+        top: -5px;
+        right: 20px;
+        transform: rotate(45deg);
         border-top: @border-width solid @tooltip-border;
         border-left: @border-width solid @tooltip-border;
     }
     &.animal-tooltip__bubble--left .animal-tooltip__tail {
-        right: -5px; top: 50%; transform: translateY(-50%) rotate(45deg);
+        right: -5px;
+        top: 50%;
+        transform: translateY(-50%) rotate(45deg);
         border-top: @border-width solid @tooltip-border;
         border-right: @border-width solid @tooltip-border;
     }
     &.animal-tooltip__bubble--left_start .animal-tooltip__tail {
-        right: -5px; top: 16px; transform: rotate(45deg);
+        right: -5px;
+        top: 16px;
+        transform: rotate(45deg);
         border-top: @border-width solid @tooltip-border;
         border-right: @border-width solid @tooltip-border;
     }
     &.animal-tooltip__bubble--left_end .animal-tooltip__tail {
-        right: -5px; bottom: 16px; transform: rotate(45deg);
+        right: -5px;
+        bottom: 16px;
+        transform: rotate(45deg);
         border-top: @border-width solid @tooltip-border;
         border-right: @border-width solid @tooltip-border;
     }
     &.animal-tooltip__bubble--right .animal-tooltip__tail {
-        left: -5px; top: 50%; transform: translateY(-50%) rotate(45deg);
+        left: -5px;
+        top: 50%;
+        transform: translateY(-50%) rotate(45deg);
         border-bottom: @border-width solid @tooltip-border;
         border-left: @border-width solid @tooltip-border;
     }
     &.animal-tooltip__bubble--right_start .animal-tooltip__tail {
-        left: -5px; top: 16px; transform: rotate(45deg);
+        left: -5px;
+        top: 16px;
+        transform: rotate(45deg);
         border-bottom: @border-width solid @tooltip-border;
         border-left: @border-width solid @tooltip-border;
     }
     &.animal-tooltip__bubble--right_end .animal-tooltip__tail {
-        left: -5px; bottom: 16px; transform: rotate(45deg);
+        left: -5px;
+        bottom: 16px;
+        transform: rotate(45deg);
         border-bottom: @border-width solid @tooltip-border;
         border-left: @border-width solid @tooltip-border;
     }
@@ -363,123 +422,178 @@ const triggerHandlers = computed(() => {
     bottom: calc(100% + @tooltip-gap);
     left: 50%;
     transform: translateX(-50%) translateY(4px);
-    &.animal-tooltip__bubble--visible { transform: translateX(-50%) translateY(0); }
+    &.animal-tooltip__bubble--visible {
+        transform: translateX(-50%) translateY(0);
+    }
     &::after {
-        bottom: -5px; left: 50%;
+        bottom: -5px;
+        left: 50%;
         transform: translateX(-50%) rotate(45deg);
         border-right: @border-width solid @tooltip-border;
         border-bottom: @border-width solid @tooltip-border;
     }
 }
 .animal-tooltip__bubble--top_start {
-    bottom: calc(100% + @tooltip-gap); left: 0;
+    bottom: calc(100% + @tooltip-gap);
+    left: 0;
     transform: translateY(4px);
-    &.animal-tooltip__bubble--visible { transform: translateY(0); }
+    &.animal-tooltip__bubble--visible {
+        transform: translateY(0);
+    }
     &::after {
-        bottom: -5px; left: 16px; transform: rotate(45deg);
+        bottom: -5px;
+        left: 16px;
+        transform: rotate(45deg);
         border-right: @border-width solid @tooltip-border;
         border-bottom: @border-width solid @tooltip-border;
     }
 }
 .animal-tooltip__bubble--top_end {
-    bottom: calc(100% + @tooltip-gap); right: 0;
+    bottom: calc(100% + @tooltip-gap);
+    right: 0;
     transform: translateY(4px);
-    &.animal-tooltip__bubble--visible { transform: translateY(0); }
+    &.animal-tooltip__bubble--visible {
+        transform: translateY(0);
+    }
     &::after {
-        bottom: -5px; right: 16px; transform: rotate(45deg);
+        bottom: -5px;
+        right: 16px;
+        transform: rotate(45deg);
         border-right: @border-width solid @tooltip-border;
         border-bottom: @border-width solid @tooltip-border;
     }
 }
 .animal-tooltip__bubble--bottom {
-    top: calc(100% + @tooltip-gap); left: 50%;
+    top: calc(100% + @tooltip-gap);
+    left: 50%;
     transform: translateX(-50%) translateY(-4px);
-    &.animal-tooltip__bubble--visible { transform: translateX(-50%) translateY(0); }
+    &.animal-tooltip__bubble--visible {
+        transform: translateX(-50%) translateY(0);
+    }
     &::after {
-        top: -5px; left: 50%;
+        top: -5px;
+        left: 50%;
         transform: translateX(-50%) rotate(45deg);
         border-top: @border-width solid @tooltip-border;
         border-left: @border-width solid @tooltip-border;
     }
 }
 .animal-tooltip__bubble--bottom_start {
-    top: calc(100% + @tooltip-gap); left: 0;
+    top: calc(100% + @tooltip-gap);
+    left: 0;
     transform: translateY(-4px);
-    &.animal-tooltip__bubble--visible { transform: translateY(0); }
+    &.animal-tooltip__bubble--visible {
+        transform: translateY(0);
+    }
     &::after {
-        top: -5px; left: 16px; transform: rotate(45deg);
+        top: -5px;
+        left: 16px;
+        transform: rotate(45deg);
         border-top: @border-width solid @tooltip-border;
         border-left: @border-width solid @tooltip-border;
     }
 }
 .animal-tooltip__bubble--bottom_end {
-    top: calc(100% + @tooltip-gap); right: 0;
+    top: calc(100% + @tooltip-gap);
+    right: 0;
     transform: translateY(-4px);
-    &.animal-tooltip__bubble--visible { transform: translateY(0); }
+    &.animal-tooltip__bubble--visible {
+        transform: translateY(0);
+    }
     &::after {
-        top: -5px; right: 16px; transform: rotate(45deg);
+        top: -5px;
+        right: 16px;
+        transform: rotate(45deg);
         border-top: @border-width solid @tooltip-border;
         border-left: @border-width solid @tooltip-border;
     }
 }
 .animal-tooltip__bubble--left {
-    right: calc(100% + @tooltip-gap); top: 50%;
+    right: calc(100% + @tooltip-gap);
+    top: 50%;
     transform: translateY(-50%) translateX(4px);
-    &.animal-tooltip__bubble--visible { transform: translateY(-50%) translateX(0); }
+    &.animal-tooltip__bubble--visible {
+        transform: translateY(-50%) translateX(0);
+    }
     &::after {
-        right: -5px; top: 50%;
+        right: -5px;
+        top: 50%;
         transform: translateY(-50%) rotate(45deg);
         border-top: @border-width solid @tooltip-border;
         border-right: @border-width solid @tooltip-border;
     }
 }
 .animal-tooltip__bubble--left_start {
-    right: calc(100% + @tooltip-gap); top: 0;
+    right: calc(100% + @tooltip-gap);
+    top: 0;
     transform: translateX(4px);
-    &.animal-tooltip__bubble--visible { transform: translateX(0); }
+    &.animal-tooltip__bubble--visible {
+        transform: translateX(0);
+    }
     &::after {
-        right: -5px; top: 12px; transform: rotate(45deg);
+        right: -5px;
+        top: 12px;
+        transform: rotate(45deg);
         border-top: @border-width solid @tooltip-border;
         border-right: @border-width solid @tooltip-border;
     }
 }
 .animal-tooltip__bubble--left_end {
-    right: calc(100% + @tooltip-gap); bottom: 0;
+    right: calc(100% + @tooltip-gap);
+    bottom: 0;
     transform: translateX(4px);
-    &.animal-tooltip__bubble--visible { transform: translateX(0); }
+    &.animal-tooltip__bubble--visible {
+        transform: translateX(0);
+    }
     &::after {
-        right: -5px; bottom: 12px; transform: rotate(45deg);
+        right: -5px;
+        bottom: 12px;
+        transform: rotate(45deg);
         border-top: @border-width solid @tooltip-border;
         border-right: @border-width solid @tooltip-border;
     }
 }
 .animal-tooltip__bubble--right {
-    left: calc(100% + @tooltip-gap); top: 50%;
+    left: calc(100% + @tooltip-gap);
+    top: 50%;
     transform: translateY(-50%) translateX(-4px);
-    &.animal-tooltip__bubble--visible { transform: translateY(-50%) translateX(0); }
+    &.animal-tooltip__bubble--visible {
+        transform: translateY(-50%) translateX(0);
+    }
     &::after {
-        left: -5px; top: 50%;
+        left: -5px;
+        top: 50%;
         transform: translateY(-50%) rotate(45deg);
         border-bottom: @border-width solid @tooltip-border;
         border-left: @border-width solid @tooltip-border;
     }
 }
 .animal-tooltip__bubble--right_start {
-    left: calc(100% + @tooltip-gap); top: 0;
+    left: calc(100% + @tooltip-gap);
+    top: 0;
     transform: translateX(-4px);
-    &.animal-tooltip__bubble--visible { transform: translateX(0); }
+    &.animal-tooltip__bubble--visible {
+        transform: translateX(0);
+    }
     &::after {
-        left: -5px; top: 12px; transform: rotate(45deg);
+        left: -5px;
+        top: 12px;
+        transform: rotate(45deg);
         border-bottom: @border-width solid @tooltip-border;
         border-left: @border-width solid @tooltip-border;
     }
 }
 .animal-tooltip__bubble--right_end {
-    left: calc(100% + @tooltip-gap); bottom: 0;
+    left: calc(100% + @tooltip-gap);
+    bottom: 0;
     transform: translateX(-4px);
-    &.animal-tooltip__bubble--visible { transform: translateX(0); }
+    &.animal-tooltip__bubble--visible {
+        transform: translateX(0);
+    }
     &::after {
-        left: -5px; bottom: 12px; transform: rotate(45deg);
+        left: -5px;
+        bottom: 12px;
+        transform: rotate(45deg);
         border-bottom: @border-width solid @tooltip-border;
         border-left: @border-width solid @tooltip-border;
     }

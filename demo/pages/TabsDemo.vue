@@ -66,14 +66,22 @@ const active = ref('tab1');
         <div :style="{ display: 'flex', gap: '16px', flexWrap: 'wrap' }">
             <div :style="demoBox">
                 <Tabs v-model="tab1" :items="itemsBasic">
-                    <template #a><p>鲈鱼、鲷鱼...</p></template>
-                    <template #b><p>蝴蝶、瓢虫...</p></template>
+                    <template #a>
+                        <p>鲈鱼、鲷鱼...</p>
+                    </template>
+                    <template #b>
+                        <p>蝴蝶、瓢虫...</p>
+                    </template>
                 </Tabs>
             </div>
             <div :style="demoBox">
                 <Tabs v-model="tab2" :items="itemsBasic" :shadow="false">
-                    <template #a><p>鲈鱼、鲷鱼...</p></template>
-                    <template #b><p>蝴蝶、瓢虫...</p></template>
+                    <template #a>
+                        <p>鲈鱼、鲷鱼...</p>
+                    </template>
+                    <template #b>
+                        <p>蝴蝶、瓢虫...</p>
+                    </template>
                 </Tabs>
             </div>
         </div>
@@ -81,9 +89,15 @@ const active = ref('tab1');
         <div :style="labelStyle">非受控模式（默认第一个）</div>
         <div :style="demoBox">
             <Tabs v-model="tab3" :items="itemsThree">
-                <template #a><p>鲈鱼、鲷鱼、河童...</p></template>
-                <template #b><p>蝴蝶、瓢虫、蜻蜓...</p></template>
-                <template #c><p>海星、珊瑚、小丑鱼...</p></template>
+                <template #a>
+                    <p>鲈鱼、鲷鱼、河童...</p>
+                </template>
+                <template #b>
+                    <p>蝴蝶、瓢虫、蜻蜓...</p>
+                </template>
+                <template #c>
+                    <p>海星、珊瑚、小丑鱼...</p>
+                </template>
             </Tabs>
         </div>
 
@@ -106,22 +120,32 @@ const active = ref('tab1');
         </div>
         <div :style="{ marginTop: '16px', fontSize: '13px', color: '#a08060' }">
             当前选中:
-            <span :style="{ color: '#19c8b9', fontWeight: 600 }">{{ items.find(i => i.key === activeKey)?.label }}</span>
+            <span :style="{ color: '#19c8b9', fontWeight: 600 }">{{
+                items.find((i) => i.key === activeKey)?.label
+            }}</span>
         </div>
 
         <div :style="labelStyle">leafAnimation 叶子动画控制</div>
         <div :style="{ display: 'flex', gap: '16px', flexWrap: 'wrap' }">
             <div :style="demoBox">
                 <Tabs v-model="tab4" :items="itemsBasic" :leaf-animation="true">
-                    <template #a><p>鲈鱼、鲷鱼...</p></template>
-                    <template #b><p>蝴蝶、瓢虫...</p></template>
+                    <template #a>
+                        <p>鲈鱼、鲷鱼...</p>
+                    </template>
+                    <template #b>
+                        <p>蝴蝶、瓢虫...</p>
+                    </template>
                 </Tabs>
                 <div :style="{ fontSize: '12px', color: '#a0936e', marginTop: '8px' }">leafAnimation=true (默认)</div>
             </div>
             <div :style="demoBox">
                 <Tabs v-model="tab5" :items="itemsBasic" :leaf-animation="false">
-                    <template #a><p>鲈鱼、鲷鱼...</p></template>
-                    <template #b><p>蝴蝶、瓢虫...</p></template>
+                    <template #a>
+                        <p>鲈鱼、鲷鱼...</p>
+                    </template>
+                    <template #b>
+                        <p>蝴蝶、瓢虫...</p>
+                    </template>
                 </Tabs>
                 <div :style="{ fontSize: '12px', color: '#a0936e', marginTop: '8px' }">leafAnimation=false</div>
             </div>

@@ -152,11 +152,7 @@ describe('Modal', () => {
                     const open = ref(false);
                     return () =>
                         h('div', [
-                            h(
-                                'button',
-                                { 'data-testid': 'trigger', onClick: () => (open.value = true) },
-                                'open',
-                            ),
+                            h('button', { 'data-testid': 'trigger', onClick: () => (open.value = true) }, 'open'),
                             h(
                                 Modal,
                                 {
@@ -164,7 +160,7 @@ describe('Modal', () => {
                                     'onUpdate:open': (v: boolean) => (open.value = v),
                                     typewriter: false,
                                 },
-                                () => h('button', { 'data-testid': 'inside' }, 'inside'),
+                                () => h('button', { 'data-testid': 'inside' }, 'inside')
                             ),
                         ]);
                 },
@@ -185,11 +181,7 @@ describe('Modal', () => {
                     const open = ref(false);
                     return () =>
                         h('div', [
-                            h(
-                                'button',
-                                { 'data-testid': 'trigger', onClick: () => (open.value = true) },
-                                'open',
-                            ),
+                            h('button', { 'data-testid': 'trigger', onClick: () => (open.value = true) }, 'open'),
                             h(
                                 Modal,
                                 {
@@ -197,7 +189,7 @@ describe('Modal', () => {
                                     'onUpdate:open': (v: boolean) => (open.value = v),
                                     typewriter: false,
                                 },
-                                () => h('button', { 'data-testid': 'inside' }, 'inside'),
+                                () => h('button', { 'data-testid': 'inside' }, 'inside')
                             ),
                         ]);
                 },
@@ -253,9 +245,7 @@ describe('Modal', () => {
             await nextTick();
             await nextTick();
             const b2 = document.querySelector('[data-testid="b2"]') as HTMLElement;
-            expect(document.activeElement).toBe(
-                document.querySelector('[data-testid="b1"]'),
-            );
+            expect(document.activeElement).toBe(document.querySelector('[data-testid="b1"]'));
             dispatchKey('Tab', true);
             await nextTick();
             expect(document.activeElement).toBe(b2);

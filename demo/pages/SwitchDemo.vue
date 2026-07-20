@@ -39,9 +39,7 @@ const checked = ref(false);
 
 <template>
     <div :style="sectionStyle">
-        <div :style="sectionTitleStyle">
-            Switch <span :style="tagStyle">2 sizes</span>
-        </div>
+        <div :style="sectionTitleStyle">Switch <span :style="tagStyle">2 sizes</span></div>
         <div :style="demoBodyStyle">
             <div :style="labelStyle">基础用法</div>
             <div :style="inlineRow">
@@ -51,8 +49,8 @@ const checked = ref(false);
             <div :style="labelStyle">checked / unchecked 自定义文案</div>
             <div :style="inlineRow">
                 <Switch default-checked>
-                    <template #checked>开</template>
-                    <template #unchecked>关</template>
+                    <template #checked> 开 </template>
+                    <template #unchecked> 关 </template>
                 </Switch>
             </div>
             <div :style="labelStyle">size 尺寸</div>

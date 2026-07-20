@@ -13,7 +13,7 @@ interface Props {
     icon?: string;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
     type: 'default',
     size: 'middle',
     danger: false,
@@ -228,7 +228,9 @@ defineSlots<{ default?: () => unknown; icon?: () => unknown }>();
     &--danger.animal-btn--link {
         color: #fff;
         &:hover:not(:disabled),
-        &:active:not(:disabled) { color: #fff; }
+        &:active:not(:disabled) {
+            color: #fff;
+        }
     }
 
     // ---------- Ghost ----------
@@ -262,13 +264,7 @@ defineSlots<{ default?: () => unknown; icon?: () => unknown }>();
         background: #0ec4b6;
         border: 4px solid #4de2da;
         color: #fff;
-        background-image: repeating-linear-gradient(
-            -45deg,
-            #0ec4b6,
-            #0ec4b6 10px,
-            #01b0a7 10px,
-            #01b0a7 20px
-        );
+        background-image: repeating-linear-gradient(-45deg, #0ec4b6, #0ec4b6 10px, #01b0a7 10px, #01b0a7 20px);
         background-size: 28.28px 28.28px;
         animation: animal-btn-loading 1s linear infinite;
     }
@@ -280,7 +276,11 @@ defineSlots<{ default?: () => unknown; icon?: () => unknown }>();
 }
 
 @keyframes animal-btn-loading {
-    0% { background-position: 0 0; }
-    100% { background-position: -28.28px 0; }
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: -28.28px 0;
+    }
 }
 </style>

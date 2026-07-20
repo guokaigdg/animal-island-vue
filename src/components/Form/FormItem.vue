@@ -28,7 +28,17 @@ if (!ctx) {
     throw new Error('Form.Item must be used inside <Form> or <Form.Provider>');
 }
 
-const { form, layout: ctxLayout, labelAlign, labelCol: ctxLabelCol, wrapperCol: ctxWrapperCol, size, disabled: ctxDisabled, colon: ctxColon, requiredMark: ctxRequiredMark } = ctx;
+const {
+    form,
+    layout: ctxLayout,
+    labelAlign,
+    labelCol: ctxLabelCol,
+    wrapperCol: ctxWrapperCol,
+    size,
+    disabled: ctxDisabled,
+    colon: ctxColon,
+    requiredMark: ctxRequiredMark,
+} = ctx;
 
 const fieldKey = computed(() => (props.name !== undefined ? stringifyNamePath(props.name) : null));
 
@@ -89,23 +99,25 @@ watch(
 const _readTick = computed(() => tick.value);
 
 const value = computed(() => {
-    _readTick.value;
+    void _readTick.value;
     return fieldKey.value ? form.getFieldValue(props.name!) : undefined;
 });
 const errors = computed(() => {
-    _readTick.value;
+    void _readTick.value;
     return fieldKey.value ? form.getFieldError(props.name!) : undefined;
 });
 const isValidating = computed(() => {
-    _readTick.value;
+    void _readTick.value;
     return fieldKey.value ? form.isFieldValidating(props.name!) : false;
 });
 const touched = computed(() => {
-    _readTick.value;
+    void _readTick.value;
     return fieldKey.value ? form.isFieldTouched(props.name!) : false;
 });
 
-const computedStatus = computed(() => props.validateStatus ?? (isValidating.value ? 'validating' : errors.value?.[0] ? 'error' : ''));
+const computedStatus = computed(
+    () => props.validateStatus ?? (isValidating.value ? 'validating' : errors.value?.[0] ? 'error' : '')
+);
 const displayError = computed(() => {
     const e = touched.value && errors.value?.[0] ? errors.value[0] : undefined;
     return e;
@@ -113,7 +125,9 @@ const displayError = computed(() => {
 const showHelp = computed(() => displayError.value ?? props.help);
 
 const mergedRequiredMark = computed(() => props.requiredMark ?? ctxRequiredMark);
-const isRequired = computed(() => props.required || props.rules.some((r) => (typeof r === 'object' ? r.required : false)));
+const isRequired = computed(
+    () => props.required || props.rules.some((r) => (typeof r === 'object' ? r.required : false))
+);
 const showRequiredMark = computed(() => isRequired.value && mergedRequiredMark.value !== false);
 
 const itemLayoutTyped = computed(() => (props.layout ?? ctxLayout) as 'horizontal' | 'vertical' | 'inline');
@@ -136,7 +150,8 @@ const labelColStyle = computed(() => buildGridStyle(mergedLabelCol.value, 1));
 const wrapperColStyle = computed(() => buildGridStyle(mergedWrapperCol.value, labelEndCol.value + 1));
 
 // 透传处理 children：克隆首个子 vnode 注入 value / trigger / size / status / disabled
-const slots = useSlots();
+// 显式标注类型避开 vue-tsc 2.2.0 对 useSlots() 返回类型推断过严的问题
+const slots = useSlots() as { default?: (props?: Record<string, never>) => VNode | VNode[] | undefined };
 
 function buildChildProps(originalProps: Record<string, unknown> | null): Record<string, unknown> {
     const childProps: Record<string, unknown> = {};
@@ -158,7 +173,9 @@ function buildChildProps(originalProps: Record<string, unknown> | null): Record<
             if (!fieldKey.value) return;
             const rawValue = props.getValueFromEvent(event);
             const prevValue = form.getFieldValue(props.name!);
-            const finalValue = props.normalize ? props.normalize(rawValue, prevValue, form.getFieldsValue(true)) : rawValue;
+            const finalValue = props.normalize
+                ? props.normalize(rawValue, prevValue, form.getFieldsValue(true))
+                : rawValue;
             form.setFieldValue(props.name!, finalValue);
         };
     }
@@ -186,7 +203,7 @@ function getFirstChild(): VNode | null {
 
 const renderedFirstChild = computed<VNode | null>(() => {
     // 触发响应式依赖
-    _readTick.value;
+    void _readTick.value;
     const first = getFirstChild();
     if (!first) return null;
     const originalProps = (first.props as Record<string, unknown> | null) ?? null;

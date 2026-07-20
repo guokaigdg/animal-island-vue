@@ -1,20 +1,12 @@
 <script setup lang="ts">
 import type { CSSProperties } from 'vue';
 import { Tooltip, Button } from '../../src';
-import {
-    sectionStyle,
-    sectionTitleStyle,
-    tagStyle,
-    labelStyle,
-    demoBoxStyle,
-    ApiTable,
-    CodeBlock,
-} from '../tools';
+import { sectionStyle, sectionTitleStyle, tagStyle, labelStyle, demoBoxStyle, ApiTable, CodeBlock } from '../tools';
 import type { ApiRow } from '../tools';
 
 const TOOLTIP_API: ApiRow[] = [
     { prop: 'title', desc: '提示文本（也可使用 #title 插槽）', type: 'string', defaultVal: '-' },
-    { prop: 'placement', desc: '位置', type: "12 个方向，详见类型", defaultVal: "'top'" },
+    { prop: 'placement', desc: '位置', type: '12 个方向，详见类型', defaultVal: "'top'" },
     { prop: 'trigger', desc: '触发方式', type: "'hover' | 'focus' | 'click'", defaultVal: "'hover'" },
     { prop: 'variant', desc: '视觉风格', type: "'default' | 'island'", defaultVal: "'default'" },
     { prop: 'bordered', desc: '是否显示边框', type: 'boolean', defaultVal: 'true' },
@@ -96,15 +88,13 @@ import { Tooltip, Button } from 'animal-island-vue';
 
 <template>
     <div :style="sectionStyle">
-        <div :style="sectionTitleStyle">
-            Tooltip <span :style="tagStyle">气泡提示</span>
-        </div>
+        <div :style="sectionTitleStyle">Tooltip <span :style="tagStyle">气泡提示</span></div>
 
         <div :style="labelStyle">基础用法 — hover 触发</div>
         <div :style="demoBoxStyle">
             <div :style="{ display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }">
                 <Tooltip title="提示文字">
-                    <Button type="primary" size="small">Hover 我</Button>
+                    <Button type="primary" size="small"> Hover 我 </Button>
                 </Tooltip>
             </div>
         </div>
@@ -113,24 +103,24 @@ import { Tooltip, Button } from 'animal-island-vue';
         <div :style="{ ...demoBoxStyle, overflow: 'visible' }">
             <div :style="{ display: 'flex', gap: '24px', alignItems: 'center', flexWrap: 'wrap' }">
                 <Tooltip title="标准矩形气泡" placement="top">
-                    <Button size="small">default</Button>
+                    <Button size="small"> default </Button>
                 </Tooltip>
                 <Tooltip title="无边框矩形" placement="top" :bordered="false">
-                    <Button size="small">default 无边框</Button>
+                    <Button size="small"> default 无边框 </Button>
                 </Tooltip>
                 <Tooltip variant="island" :bordered="true" placement="top">
                     <template #title>
                         钓到<span :style="{ color: '#d4834a' }">石头</span>了！<br />
                         竟然连这种都能钓起来…
                     </template>
-                    <Button size="small">island 有边框</Button>
+                    <Button size="small"> island 有边框 </Button>
                 </Tooltip>
                 <Tooltip variant="island" :bordered="false" placement="top">
                     <template #title>
                         无边框有机气泡<br />
                         圆点指示方向
                     </template>
-                    <Button size="small">island 无边框</Button>
+                    <Button size="small"> island 无边框 </Button>
                 </Tooltip>
             </div>
         </div>
@@ -140,61 +130,59 @@ import { Tooltip, Button } from 'animal-island-vue';
             <div :style="placementBoxStyle">
                 <div :style="placementRowStyle">
                     <Tooltip title="top-start" placement="top-start">
-                        <Button size="small">top-start</Button>
+                        <Button size="small"> top-start </Button>
                     </Tooltip>
                     <Tooltip title="top" placement="top">
-                        <Button size="small">top</Button>
+                        <Button size="small"> top </Button>
                     </Tooltip>
                     <Tooltip title="top-end" placement="top-end">
-                        <Button size="small">top-end</Button>
+                        <Button size="small"> top-end </Button>
                     </Tooltip>
                 </div>
 
                 <div :style="{ display: 'flex', alignItems: 'center', gap: '48px' }">
                     <div :style="leftColStyle">
                         <Tooltip placement="left-start">
-                            <template #title>left-start<br />箭头在右侧<br />指向触发按钮</template>
-                            <Button size="small">left-start</Button>
+                            <template #title> left-start<br />箭头在右侧<br />指向触发按钮 </template>
+                            <Button size="small"> left-start </Button>
                         </Tooltip>
                         <Tooltip placement="left">
-                            <template #title>left<br />箭头在右侧<br />指向触发按钮</template>
-                            <Button size="small">left</Button>
+                            <template #title> left<br />箭头在右侧<br />指向触发按钮 </template>
+                            <Button size="small"> left </Button>
                         </Tooltip>
                         <Tooltip placement="left-end">
-                            <template #title>left-end<br />箭头在右侧<br />指向触发按钮</template>
-                            <Button size="small">left-end</Button>
+                            <template #title> left-end<br />箭头在右侧<br />指向触发按钮 </template>
+                            <Button size="small"> left-end </Button>
                         </Tooltip>
                     </div>
 
-                    <div :style="centerMarkStyle">
-                        12<br />placements
-                    </div>
+                    <div :style="centerMarkStyle">12<br />placements</div>
 
                     <div :style="rightColStyle">
                         <Tooltip placement="right-start">
-                            <template #title>right-start<br />箭头在左侧<br />指向触发按钮</template>
-                            <Button size="small">right-start</Button>
+                            <template #title> right-start<br />箭头在左侧<br />指向触发按钮 </template>
+                            <Button size="small"> right-start </Button>
                         </Tooltip>
                         <Tooltip placement="right">
-                            <template #title>right<br />箭头在左侧<br />指向触发按钮</template>
-                            <Button size="small">right</Button>
+                            <template #title> right<br />箭头在左侧<br />指向触发按钮 </template>
+                            <Button size="small"> right </Button>
                         </Tooltip>
                         <Tooltip placement="right-end">
-                            <template #title>right-end<br />箭头在左侧<br />指向触发按钮</template>
-                            <Button size="small">right-end</Button>
+                            <template #title> right-end<br />箭头在左侧<br />指向触发按钮 </template>
+                            <Button size="small"> right-end </Button>
                         </Tooltip>
                     </div>
                 </div>
 
                 <div :style="placementRowStyle">
                     <Tooltip title="bottom-start" placement="bottom-start">
-                        <Button size="small">bottom-start</Button>
+                        <Button size="small"> bottom-start </Button>
                     </Tooltip>
                     <Tooltip title="bottom" placement="bottom">
-                        <Button size="small">bottom</Button>
+                        <Button size="small"> bottom </Button>
                     </Tooltip>
                     <Tooltip title="bottom-end" placement="bottom-end">
-                        <Button size="small">bottom-end</Button>
+                        <Button size="small"> bottom-end </Button>
                     </Tooltip>
                 </div>
             </div>
@@ -203,7 +191,7 @@ import { Tooltip, Button } from 'animal-island-vue';
         <div :style="labelStyle">触发方式 — click</div>
         <div :style="demoBoxStyle">
             <Tooltip title="点击触发，再点关闭" trigger="click" placement="bottom">
-                <Button size="small">Click 触发</Button>
+                <Button size="small"> Click 触发 </Button>
             </Tooltip>
         </div>
 
@@ -236,18 +224,18 @@ import { Tooltip, Button } from 'animal-island-vue';
                         第二行文字<br />
                         第三行文字 🍃
                     </template>
-                    <Button size="small">多行 slot</Button>
+                    <Button size="small"> 多行 slot </Button>
                 </Tooltip>
 
                 <Tooltip title="第一行\n第二行\n第三行 🌿" placement="top">
-                    <Button size="small">换行符 \n</Button>
+                    <Button size="small"> 换行符 \n </Button>
                 </Tooltip>
 
                 <Tooltip
                     title="这是一段比较长的提示文字，用来测试 Tooltip 的自动换行效果。当文字超过最大宽度时会自动换行。"
                     placement="top"
                 >
-                    <Button size="small">自动换行长文本</Button>
+                    <Button size="small"> 自动换行长文本 </Button>
                 </Tooltip>
             </div>
         </div>

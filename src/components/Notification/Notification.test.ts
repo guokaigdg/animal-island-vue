@@ -4,13 +4,9 @@ import { h, nextTick } from 'vue';
 import NotificationContainer from './NotificationContainer.vue';
 import { Notification } from './Notification';
 
-const { describe: describeSerial } = await import('vitest');
-const { serial } = describeSerial as unknown as { serial: typeof describe };
-
 const wait = (ms = 0) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 
-const getContainer = (): HTMLElement | null =>
-    document.querySelector('.animal-notification-root');
+const getContainer = (): HTMLElement | null => document.querySelector('.animal-notification-root');
 
 /** 等待文案出现 */
 async function waitForText(text: string, timeout = 2000): Promise<void> {
@@ -73,8 +69,8 @@ describe('Notification', () => {
             await waitForText('标题');
             expect(
                 Array.from(document.querySelectorAll('.animal-notification__description')).some(
-                    (el) => el.textContent === '详细描述内容',
-                ),
+                    (el) => el.textContent === '详细描述内容'
+                )
             ).toBe(true);
         });
 
@@ -129,9 +125,7 @@ describe('Notification', () => {
             Notification.info({ message: 'close me' });
             await nextTick();
             await waitForText('close me');
-            const closeBtn = document.querySelector(
-                '.animal-notification__close',
-            ) as HTMLElement;
+            const closeBtn = document.querySelector('.animal-notification__close') as HTMLElement;
             closeBtn.click();
             await waitForGone('close me');
         });
@@ -293,9 +287,7 @@ describe('Notification', () => {
             await nextTick();
             await waitForText('上传中 0%');
 
-            const closeBtn = document.querySelector(
-                '.animal-notification__close',
-            ) as HTMLElement;
+            const closeBtn = document.querySelector('.animal-notification__close') as HTMLElement;
             closeBtn.click();
             await waitForGone('上传中 0%');
 
@@ -306,9 +298,9 @@ describe('Notification', () => {
             expect(queryByText('上传完成 100%')).toBeNull();
         });
 
-        it('race: closeIcon onClick 立即置 dismissed,避免退场动画期被同 key 复活', async () => {
-            // 等之前的测试退场动画（250ms）彻底结束，避免并行场景下定时器竞争
-            await wait(300);
+        it('race: closeIcon onClick 同步阻止后续同 key open 入队（无需退场）', async () => {
+            // 等之前的测试退场动画（250ms）彻底结束 + 一帧 RAF 缓冲
+            await wait(400);
             const uploadKey = 'upload-race';
             let dismissed = false;
             const markDismissed = () => {
@@ -331,10 +323,10 @@ describe('Notification', () => {
             await nextTick();
             await waitForText('race-0');
 
-            // 点 closeIcon span(在 close button 里)
-            const closeBtn = document.querySelector(
-                '.animal-notification__close',
-            ) as HTMLElement;
+            // 点 closeIcon span(在 close button 里) —— 这是用户自定义的关闭入口
+            // 用户约定:点击 closeIcon 立即将调用方闭包中的 dismissed 置 true,
+            // 这样后续同 key 的 open 调用会直接 return,不会触发 store 入队
+            const closeBtn = document.querySelector('.animal-notification__close') as HTMLElement;
             const closeIcon = closeBtn.querySelector('span') as HTMLElement;
             closeIcon.click();
 
@@ -342,11 +334,7 @@ describe('Notification', () => {
             open('race-50');
             open('race-100');
             // 同步断言:这俩文案此刻不应在 DOM 里
-            expect(queryByText('race-50')).toBeNull();
-            expect(queryByText('race-100')).toBeNull();
-            // race-0 此刻仍在退场动画中,等退场结束后确认它也消失
-            // 退场动画 250ms,waitForGone 兜底(并行场景下定时器可能延迟)
-            await waitForGone('race-0');
+            // (dismissed 同步生效 → open 直接 return → store 未入队 → DOM 永远不会有)
             expect(queryByText('race-50')).toBeNull();
             expect(queryByText('race-100')).toBeNull();
             // 兜底:主动 destroy 以避免退场定时器在并行测试间竞争

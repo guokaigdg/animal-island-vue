@@ -1,5 +1,11 @@
 import { reactive } from 'vue';
-import type { NotificationConfig, NotificationItem, NotificationPosition, NotificationType, NotificationPlacement } from './types';
+import type {
+    NotificationConfig,
+    NotificationItem,
+    NotificationPosition,
+    NotificationType,
+    NotificationPlacement,
+} from './types';
 
 const DEFAULT_DURATION = 4.5;
 
@@ -73,7 +79,8 @@ function destroy(key?: string): void {
 }
 
 // 构建 Notification 命令式 API
-const notificationApi = ((config: NotificationConfig | string) => open(config, 'info')) as import('./types').NotificationStatic;
+const notificationApi = ((config: NotificationConfig | string) =>
+    open(config, 'info')) as import('./types').NotificationStatic;
 notificationApi.open = (config) => open(config, 'info');
 notificationApi.success = (config) => open(config, 'success');
 notificationApi.info = (config) => open(config, 'info');

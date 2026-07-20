@@ -10,7 +10,9 @@ const now = ref(new Date());
 let timer: ReturnType<typeof setInterval> | null = null;
 
 onMounted(() => {
-    timer = setInterval(() => { now.value = new Date(); }, 1000);
+    timer = setInterval(() => {
+        now.value = new Date();
+    }, 1000);
 });
 onBeforeUnmount(() => {
     if (timer) clearInterval(timer);
@@ -27,9 +29,7 @@ function pad(n: number) {
             <span class="animal-time__weekday">
                 {{ weekdays[now.getDay()] }}
             </span>
-            <span class="animal-time__month-day">
-                {{ months[now.getMonth()] }} {{ now.getDate() }}
-            </span>
+            <span class="animal-time__month-day"> {{ months[now.getMonth()] }} {{ now.getDate() }} </span>
         </div>
         <div class="animal-time__clock">
             {{ pad(now.getHours()) }}<span class="animal-time__colon">:</span>{{ pad(now.getMinutes()) }}
@@ -93,10 +93,18 @@ function pad(n: number) {
 }
 
 @keyframes animal-time-fade-up {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 @keyframes animal-time-blink {
-    50% { opacity: 0; }
+    50% {
+        opacity: 0;
+    }
 }
 </style>

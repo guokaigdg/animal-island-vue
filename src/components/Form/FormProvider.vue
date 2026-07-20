@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { provide, computed } from 'vue';
 import { FormContextKey } from './context';
-import type { FormContextValue, FormInstance, FormProviderProps } from './types';
+import type { FormContextValue, FormProviderProps } from './types';
 
 const props = defineProps<FormProviderProps>();
 

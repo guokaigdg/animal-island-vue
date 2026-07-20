@@ -14,7 +14,7 @@ npm install animal-island-vue
 // app entry (main.ts)
 import { createApp } from 'vue';
 import App from './App.vue';
-import 'animal-island-vue/style';          // MUST import BEFORE any component usage
+import 'animal-island-vue/style'; // MUST import BEFORE any component usage
 // Fonts (Nunito / Noto Sans SC) are auto-bundled via @fontsource.
 
 createApp(App).mount('#app');
@@ -35,41 +35,84 @@ All named exports from `animal-island-vue`:
 
 ```ts
 import {
-  Button, Input, Switch, Modal, Card, Title,
-  Collapse, Cursor, Time, Phone, Footer, Divider,
-  Typewriter, Tabs, Icon, Select, Checkbox, Radio,
-  Tooltip, Loading, Table, CodeBlock,
-  WeddingInvitation, WeddingInvitationExportButton,
+    Button,
+    Input,
+    Switch,
+    Modal,
+    Card,
+    Title,
+    Collapse,
+    Cursor,
+    Time,
+    Phone,
+    Footer,
+    Divider,
+    Typewriter,
+    Tabs,
+    Icon,
+    Select,
+    Checkbox,
+    Radio,
+    Tooltip,
+    Loading,
+    Table,
+    CodeBlock,
+    WeddingInvitation,
+    WeddingInvitationExportButton,
 } from 'animal-island-vue';
 
 // Runtime value export (icon catalogue — 10 entries)
 import { ICON_LIST } from 'animal-island-vue';
 
 import type {
-  ButtonProps, ButtonType, ButtonSize,
-  InputProps, InputSize,
-  SwitchProps, SwitchSize,
-  ModalProps,
-  CardProps, CardType, CardColor, CardPattern,
-  TitleProps, TitleSize, TitleColor,
-  CollapseProps,
-  CursorProps,
-  TimeProps,
-  PhoneProps,
-  FooterProps, FooterType,
-  DividerProps,
-  TypewriterProps,
-  TabsProps, TabItem,
-  IconProps, IconName,
-  SelectProps, SelectOption,
-  CheckboxProps, CheckboxOption, CheckboxSize, CheckboxValue,
-  RadioProps, RadioOption, RadioSize, RadioValue,
-  TooltipProps, TooltipPlacement, TooltipTrigger, TooltipVariant,
-  LoadingProps,
-  TableProps, TableColumn,
-  CodeBlockProps,
-  WeddingInvitationProps, WeddingInvitationExpose,
-  WeddingInvitationExportButtonProps,
+    ButtonProps,
+    ButtonType,
+    ButtonSize,
+    InputProps,
+    InputSize,
+    SwitchProps,
+    SwitchSize,
+    ModalProps,
+    CardProps,
+    CardType,
+    CardColor,
+    CardPattern,
+    TitleProps,
+    TitleSize,
+    TitleColor,
+    CollapseProps,
+    CursorProps,
+    TimeProps,
+    PhoneProps,
+    FooterProps,
+    FooterType,
+    DividerProps,
+    TypewriterProps,
+    TabsProps,
+    TabItem,
+    IconProps,
+    IconName,
+    SelectProps,
+    SelectOption,
+    CheckboxProps,
+    CheckboxOption,
+    CheckboxSize,
+    CheckboxValue,
+    RadioProps,
+    RadioOption,
+    RadioSize,
+    RadioValue,
+    TooltipProps,
+    TooltipPlacement,
+    TooltipTrigger,
+    TooltipVariant,
+    LoadingProps,
+    TableProps,
+    TableColumn,
+    CodeBlockProps,
+    WeddingInvitationProps,
+    WeddingInvitationExpose,
+    WeddingInvitationExportButtonProps,
 } from 'animal-island-vue';
 ```
 
@@ -80,25 +123,26 @@ import type {
 ### 1.1 Button
 
 ```ts
-type ButtonType     = 'primary' | 'default' | 'dashed' | 'text' | 'link';
-type ButtonSize     = 'small' | 'middle' | 'large';
+type ButtonType = 'primary' | 'default' | 'dashed' | 'text' | 'link';
+type ButtonSize = 'small' | 'middle' | 'large';
 type ButtonHTMLType = 'submit' | 'reset' | 'button';
 
 interface ButtonProps {
-  type?: ButtonType;          // default 'default'
-  size?: ButtonSize;          // default 'middle'
-  danger?: boolean;           // default false
-  ghost?: boolean;            // default false
-  block?: boolean;            // default false
-  loading?: boolean;          // default false — renders diagonal-stripe animation
-  disabled?: boolean;         // default false
-  htmlType?: ButtonHTMLType;  // default 'button'
+    type?: ButtonType; // default 'default'
+    size?: ButtonSize; // default 'middle'
+    danger?: boolean; // default false
+    ghost?: boolean; // default false
+    block?: boolean; // default false
+    loading?: boolean; // default false — renders diagonal-stripe animation
+    disabled?: boolean; // default false
+    htmlType?: ButtonHTMLType; // default 'button'
 }
 // Emits: (e: 'click', event: MouseEvent)
 // Slots: default (label), icon (leading icon)
 ```
 
 Canonical usage:
+
 ```vue
 <Button type="primary" @click="save">Save</Button>
 <Button type="primary" danger loading>Deleting…</Button>
@@ -117,16 +161,16 @@ Canonical usage:
 type InputSize = 'small' | 'middle' | 'large';
 
 interface InputProps {
-  modelValue?: string;               // v-model, default ''
-  size?: InputSize;                  // default 'middle'
-  allowClear?: boolean;              // default false
-  status?: 'error' | 'warning';
-  shadow?: boolean;                  // default false — when true, render the 3D pixel-stack shadow
-  disabled?: boolean;                // default false
-  placeholder?: string;
-  type?: string;                     // default 'text'
-  readonly?: boolean;                // default false
-  maxlength?: number;
+    modelValue?: string; // v-model, default ''
+    size?: InputSize; // default 'middle'
+    allowClear?: boolean; // default false
+    status?: 'error' | 'warning';
+    shadow?: boolean; // default false — when true, render the 3D pixel-stack shadow
+    disabled?: boolean; // default false
+    placeholder?: string;
+    type?: string; // default 'text'
+    readonly?: boolean; // default false
+    maxlength?: number;
 }
 // Emits: update:modelValue, change(value, event), clear
 // Slots: prefix, suffix
@@ -151,18 +195,18 @@ interface InputProps {
 type SwitchSize = 'small' | 'default';
 
 interface SwitchProps {
-  modelValue?: boolean;               // v-model (controlled)
-  defaultChecked?: boolean;           // default false
-  size?: SwitchSize;                  // default 'default'
-  disabled?: boolean;                 // default false
-  loading?: boolean;                  // default false
+    modelValue?: boolean; // v-model (controlled)
+    defaultChecked?: boolean; // default false
+    size?: SwitchSize; // default 'default'
+    disabled?: boolean; // default false
+    loading?: boolean; // default false
 }
 // Emits: update:modelValue, change(checked)
 // Slots: checked, unchecked  (replace React's checkedChildren / unCheckedChildren)
 ```
 
 ```vue
-<Switch :default-checked="true" @change="v => console.log(v)" />
+<Switch :default-checked="true" @change="(v) => console.log(v)" />
 <Switch size="small">
   <template #checked>ON</template>
   <template #unchecked>OFF</template>
@@ -176,14 +220,14 @@ interface SwitchProps {
 
 ```ts
 interface ModalProps {
-  open: boolean;                       // REQUIRED, supports v-model:open
-  title?: string;                      // heading text — NOT the <Title> component (see § 1.6).
-                                       // For rich content use the #title slot.
-  width?: number | string;             // default 520
-  maskClosable?: boolean;              // default true
-  showFooter?: boolean;                // default true — set false to hide footer entirely
-  typewriter?: boolean;                // default true — body plays typewriter on open
-  typeSpeed?: number;                  // default 80 (ms/char for built-in typewriter)
+    open: boolean; // REQUIRED, supports v-model:open
+    title?: string; // heading text — NOT the <Title> component (see § 1.6).
+    // For rich content use the #title slot.
+    width?: number | string; // default 520
+    maskClosable?: boolean; // default true
+    showFooter?: boolean; // default true — set false to hide footer entirely
+    typewriter?: boolean; // default true — body plays typewriter on open
+    typeSpeed?: number; // default 80 (ms/char for built-in typewriter)
 }
 // Emits: update:open, close, ok
 // Slots: default (body), title (rich heading), footer (replace default 取消/确定 buttons)
@@ -194,22 +238,30 @@ interface ModalProps {
 import { ref } from 'vue';
 import { Modal } from 'animal-island-vue';
 const open = ref(false);
-function submit() { /* ... */ }
+function submit() {
+    /* ... */
+}
 </script>
 
 <template>
-  <Modal
-    v-model:open="open"
-    title="Confirm"
-    @close="open = false"
-    @ok="() => { submit(); open = false; }"
-  >
-    Proceed to delete this island?
-  </Modal>
+    <Modal
+        v-model:open="open"
+        title="Confirm"
+        @close="open = false"
+        @ok="
+            () => {
+                submit();
+                open = false;
+            }
+        "
+    >
+        Proceed to delete this island?
+    </Modal>
 </template>
 ```
 
 Notes:
+
 - Modal already ships the required SVG `<clipPath id="animal-modal-clip">` internally.
 - To disable the typewriter animation for dynamic content: `:typewriter="false"`.
 - Custom footer: use `<template #footer>...</template>`; to hide entirely set `:show-footer="false"`.
@@ -220,34 +272,44 @@ Notes:
 ### 1.5 Card
 
 ```ts
-type CardType  = 'default' | 'dashed';
+type CardType = 'default' | 'dashed';
 
 type CardColor =
-  | 'default'          // rgb(247,243,223) / #725d42 text
-  | 'app-pink'         // #f8a6b2 / #fff
-  | 'purple'           // #b77dee / #fff
-  | 'app-blue'         // #889df0 / #fff
-  | 'app-yellow'       // #f7cd67 / #725d42
-  | 'app-orange'       // #e59266 / #fff
-  | 'app-teal'         // #82d5bb / #fff
-  | 'app-green'        // #8ac68a / #fff
-  | 'app-red'          // #fc736d / #fff
-  | 'lime-green'       // #d1da49 / #3d5a1a
-  | 'yellow-green'     // #ecdf52 / #725d42
-  | 'brown'            // #9a835a / #fff
-  | 'warm-peach-pink'; // #e18c6f / #fff
+    | 'default' // rgb(247,243,223) / #725d42 text
+    | 'app-pink' // #f8a6b2 / #fff
+    | 'purple' // #b77dee / #fff
+    | 'app-blue' // #889df0 / #fff
+    | 'app-yellow' // #f7cd67 / #725d42
+    | 'app-orange' // #e59266 / #fff
+    | 'app-teal' // #82d5bb / #fff
+    | 'app-green' // #8ac68a / #fff
+    | 'app-red' // #fc736d / #fff
+    | 'lime-green' // #d1da49 / #3d5a1a
+    | 'yellow-green' // #ecdf52 / #725d42
+    | 'brown' // #9a835a / #fff
+    | 'warm-peach-pink'; // #e18c6f / #fff
 
 // Decorative pattern overlay — 'none' or any of the 13 CardColor values.
 type CardPattern =
-  | 'none'
-  | 'default' | 'app-pink' | 'purple' | 'app-blue' | 'app-yellow'
-  | 'app-orange' | 'app-teal' | 'app-green' | 'app-red'
-  | 'lime-green' | 'yellow-green' | 'brown' | 'warm-peach-pink';
+    | 'none'
+    | 'default'
+    | 'app-pink'
+    | 'purple'
+    | 'app-blue'
+    | 'app-yellow'
+    | 'app-orange'
+    | 'app-teal'
+    | 'app-green'
+    | 'app-red'
+    | 'lime-green'
+    | 'yellow-green'
+    | 'brown'
+    | 'warm-peach-pink';
 
 interface CardProps {
-  type?: CardType;        // default 'default'
-  color?: CardColor;      // default 'default'
-  pattern?: CardPattern;  // default 'none'
+    type?: CardType; // default 'default'
+    color?: CardColor; // default 'default'
+    pattern?: CardPattern; // default 'none'
 }
 // Slots: default
 ```
@@ -266,15 +328,25 @@ interface CardProps {
 ### 1.6 Title
 
 ```ts
-type TitleSize  = 'small' | 'middle' | 'large';
+type TitleSize = 'small' | 'middle' | 'large';
 type TitleColor =
-  | 'default' | 'app-pink' | 'purple' | 'app-blue' | 'app-yellow'
-  | 'app-orange' | 'app-teal' | 'app-green' | 'app-red'
-  | 'lime-green' | 'yellow-green' | 'brown' | 'warm-peach-pink';
+    | 'default'
+    | 'app-pink'
+    | 'purple'
+    | 'app-blue'
+    | 'app-yellow'
+    | 'app-orange'
+    | 'app-teal'
+    | 'app-green'
+    | 'app-red'
+    | 'lime-green'
+    | 'yellow-green'
+    | 'brown'
+    | 'warm-peach-pink';
 
 interface TitleProps {
-  size?: TitleSize;                 // default 'middle'
-  color?: TitleColor;               // default 'default'
+    size?: TitleSize; // default 'middle'
+    color?: TitleColor; // default 'default'
 }
 // Slots: default (REQUIRED — heading content)
 ```
@@ -294,11 +366,11 @@ interface TitleProps {
 
 ```ts
 interface CollapseProps {
-  question?: string;           // header text — for rich content use the #question slot
-  answer?: string;             // body text   — for rich content use the default slot
-  defaultExpanded?: boolean;   // default false
-  expanded?: boolean;          // controlled — supports v-model:expanded
-  disabled?: boolean;          // default false
+    question?: string; // header text — for rich content use the #question slot
+    answer?: string; // body text   — for rich content use the default slot
+    defaultExpanded?: boolean; // default false
+    expanded?: boolean; // controlled — supports v-model:expanded
+    disabled?: boolean; // default false
 }
 // Emits: update:expanded, change(value)
 // Slots: question (rich header), default (rich body)
@@ -320,8 +392,8 @@ interface CollapseProps {
 
 ```ts
 interface CursorProps {
-  /** Force-override the cursor on every descendant (including <a>/<button>/inputs). Default true. */
-  forceAll?: boolean;          // default true
+    /** Force-override the cursor on every descendant (including <a>/<button>/inputs). Default true. */
+    forceAll?: boolean; // default true
 }
 // Slots: default
 ```
@@ -350,7 +422,8 @@ interface TimeProps {}
 ```
 
 ```vue
-<Time />   <!-- auto-updates every second, shows weekday + date + clock -->
+<Time />
+<!-- auto-updates every second, shows weekday + date + clock -->
 ```
 
 > No configurable props — it is a self-contained HUD widget. No `format`, no `value`, no timezone — uses the browser's local clock.
@@ -377,13 +450,15 @@ interface PhoneProps {}
 type FooterType = 'sea' | 'tree';
 
 interface FooterProps {
-  type?: FooterType;          // default 'tree'
+    type?: FooterType; // default 'tree'
 }
 ```
 
 ```vue
-<Footer />              <!-- forest silhouette, 60px tall — default -->
-<Footer type="sea" />   <!-- ocean wave, 80px tall -->
+<Footer />
+<!-- forest silhouette, 60px tall — default -->
+<Footer type="sea" />
+<!-- ocean wave, 80px tall -->
 ```
 
 > `class` / `:style` accept layout properties only (margin / position). Don't try to recolor via `background-color` — the asset is a fixed PNG/SVG.
@@ -393,11 +468,19 @@ interface FooterProps {
 ### 1.12 Divider
 
 ```ts
-type DividerType = 'line-brown' | 'line-teal' | 'line-white' | 'line-yellow' | 'wave-yellow'
-                 | 'dashed-brown' | 'dashed-teal' | 'dashed-white' | 'dashed-yellow';
+type DividerType =
+    | 'line-brown'
+    | 'line-teal'
+    | 'line-white'
+    | 'line-yellow'
+    | 'wave-yellow'
+    | 'dashed-brown'
+    | 'dashed-teal'
+    | 'dashed-white'
+    | 'dashed-yellow';
 
 interface DividerProps {
-  type?: DividerType;         // default 'line-brown'
+    type?: DividerType; // default 'line-brown'
 }
 ```
 
@@ -414,10 +497,10 @@ interface DividerProps {
 
 ```ts
 interface TypewriterProps {
-  speed?: number;                // ms per char, default 90
-  trigger?: unknown;             // change this value to restart animation (e.g. modal openCount)
-  autoPlay?: boolean;            // default true (false = show full immediately)
-  text?: string;                 // optional: pass plain text instead of using the slot
+    speed?: number; // ms per char, default 90
+    trigger?: unknown; // change this value to restart animation (e.g. modal openCount)
+    autoPlay?: boolean; // default true (false = show full immediately)
+    text?: string; // optional: pass plain text instead of using the slot
 }
 // Emits: done
 // Slots: default — ANY VNode tree; preserves element structure, classes, inline styles
@@ -441,16 +524,16 @@ interface TypewriterProps {
 
 ```ts
 interface TabItem {
-  key: string;
-  label: string;
+    key: string;
+    label: string;
 }
 
 interface TabsProps {
-  items: TabItem[];           // REQUIRED
-  modelValue?: string;        // v-model — controlled active key
-  defaultActiveKey?: string;  // default: first item's key
-  leafAnimation?: boolean;    // default true — active-tab leaf wiggle
-  shadow?: boolean;           // default true — drop-shadow on active tab
+    items: TabItem[]; // REQUIRED
+    modelValue?: string; // v-model — controlled active key
+    defaultActiveKey?: string; // default: first item's key
+    leafAnimation?: boolean; // default true — active-tab leaf wiggle
+    shadow?: boolean; // default true — drop-shadow on active tab
 }
 // Emits: update:modelValue(key), change(key)
 // Slots: ONE NAMED SLOT PER `item.key` — the slot named `[key]` becomes the panel body
@@ -459,11 +542,11 @@ interface TabsProps {
 ```vue
 <!-- Uncontrolled mode -->
 <Tabs
-  :items="[
-    { key: 'tab1', label: '鱼类' },
-    { key: 'tab2', label: '昆虫' },
-  ]"
-  default-active-key="tab1"
+    :items="[
+        { key: 'tab1', label: '鱼类' },
+        { key: 'tab2', label: '昆虫' },
+    ]"
+    default-active-key="tab1"
 >
   <template #tab1><p>鲈鱼、鲷鱼...</p></template>
   <template #tab2><p>蝴蝶、蜻蜓...</p></template>
@@ -474,16 +557,16 @@ interface TabsProps {
 import { ref } from 'vue';
 const activeKey = ref('tab1');
 const items = [
-  { key: 'tab1', label: '鱼类' },
-  { key: 'tab2', label: '昆虫' },
+    { key: 'tab1', label: '鱼类' },
+    { key: 'tab2', label: '昆虫' },
 ];
 </script>
 
 <template>
-  <Tabs :items="items" v-model="activeKey">
-    <template #tab1><p>鲈鱼、鲷鱼...</p></template>
-    <template #tab2><p>蝴蝶、蜻蜓...</p></template>
-  </Tabs>
+    <Tabs :items="items" v-model="activeKey">
+        <template #tab1><p>鲈鱼、鲷鱼...</p></template>
+        <template #tab2><p>蝴蝶、蜻蜓...</p></template>
+    </Tabs>
 </template>
 ```
 
@@ -497,14 +580,21 @@ const items = [
 
 ```ts
 type IconName =
-  | 'icon-miles' | 'icon-camera' | 'icon-chat' | 'icon-critterpedia'
-  | 'icon-design' | 'icon-diy'    | 'icon-helicopter'
-  | 'icon-map'   | 'icon-shopping' | 'icon-variant';
+    | 'icon-miles'
+    | 'icon-camera'
+    | 'icon-chat'
+    | 'icon-critterpedia'
+    | 'icon-design'
+    | 'icon-diy'
+    | 'icon-helicopter'
+    | 'icon-map'
+    | 'icon-shopping'
+    | 'icon-variant';
 
 interface IconProps {
-  name: IconName;                // REQUIRED — one of the 10 built-in SVG icons
-  size?: number | string;        // default 24 — applied to width & height
-  bounce?: boolean;              // default false — adds hover bounce animation
+    name: IconName; // REQUIRED — one of the 10 built-in SVG icons
+    size?: number | string; // default 24 — applied to width & height
+    bounce?: boolean; // default false — adds hover bounce animation
 }
 
 // Runtime catalogue for dynamic rendering / pickers (length = 10):
@@ -516,7 +606,7 @@ declare const ICON_LIST: { name: IconName; label: string }[];
 <Icon name="icon-chat" bounce />
 
 <template v-for="{ name, label } in ICON_LIST" :key="name">
-  <Icon :name="name" :title="label" />
+    <Icon :name="name" :title="label" />
 </template>
 ```
 
@@ -530,10 +620,10 @@ declare const ICON_LIST: { name: IconName; label: string }[];
 type SelectOption = { key: string; label: string };
 
 interface SelectProps {
-  modelValue: string;                      // REQUIRED — v-model (controlled-only)
-  options: SelectOption[];                 // REQUIRED
-  placeholder?: string;                    // default '请选择'
-  disabled?: boolean;                      // default false
+    modelValue: string; // REQUIRED — v-model (controlled-only)
+    options: SelectOption[]; // REQUIRED
+    placeholder?: string; // default '请选择'
+    disabled?: boolean; // default false
 }
 // Emits: update:modelValue(key), change(key)
 ```
@@ -545,19 +635,20 @@ const lang = ref('zh');
 </script>
 
 <template>
-  <Select
-    v-model="lang"
-    :options="[
-      { key: 'zh', label: '简体中文' },
-      { key: 'en', label: 'English' },
-      { key: 'ja', label: '日本語' },
-    ]"
-    placeholder="Choose language"
-  />
+    <Select
+        v-model="lang"
+        :options="[
+            { key: 'zh', label: '简体中文' },
+            { key: 'en', label: 'English' },
+            { key: 'ja', label: '日本語' },
+        ]"
+        placeholder="Choose language"
+    />
 </template>
 ```
 
 Notes:
+
 - **Controlled only.** `v-model` (modelValue + update:modelValue) is required — there is no `defaultValue`.
 - Dropdown auto-flips (top/bottom, left/right) based on viewport space.
 - Click-outside to close is built-in.
@@ -569,21 +660,21 @@ Notes:
 ### 1.17 Checkbox
 
 ```ts
-type CheckboxSize  = 'small' | 'middle' | 'large';
+type CheckboxSize = 'small' | 'middle' | 'large';
 type CheckboxValue = string | number;
 
 interface CheckboxOption {
-  label: string;
-  value: CheckboxValue;
-  disabled?: boolean;         // disable this option only
+    label: string;
+    value: CheckboxValue;
+    disabled?: boolean; // disable this option only
 }
 
 interface CheckboxProps {
-  options: CheckboxOption[];                        // REQUIRED
-  modelValue?: CheckboxValue[];                     // v-model, default []
-  size?: CheckboxSize;                              // default 'middle'
-  disabled?: boolean;                               // default false — disables all
-  direction?: 'horizontal' | 'vertical';            // default 'horizontal'
+    options: CheckboxOption[]; // REQUIRED
+    modelValue?: CheckboxValue[]; // v-model, default []
+    size?: CheckboxSize; // default 'middle'
+    disabled?: boolean; // default false — disables all
+    direction?: 'horizontal' | 'vertical'; // default 'horizontal'
 }
 // Emits: update:modelValue(values), change(values)
 ```
@@ -596,31 +687,26 @@ const picks = ref<(string | number)[]>(['beach']);
 </script>
 
 <template>
-  <Checkbox
-    v-model="picks"
-    :options="[
-      { label: '🌊 海滩', value: 'beach' },
-      { label: '🌳 森林', value: 'forest' },
-      { label: '🦀 螃蟹', value: 'crab', disabled: true },
-    ]"
-  />
+    <Checkbox
+        v-model="picks"
+        :options="[
+            { label: '🌊 海滩', value: 'beach' },
+            { label: '🌳 森林', value: 'forest' },
+            { label: '🦀 螃蟹', value: 'crab', disabled: true },
+        ]"
+    />
 
-  <!-- Controlled + vertical -->
-  <Checkbox
-    v-model="picks"
-    :options="options"
-    direction="vertical"
-    size="large"
-  />
+    <!-- Controlled + vertical -->
+    <Checkbox v-model="picks" :options="options" direction="vertical" size="large" />
 
-  <!-- Numeric values also allowed (string | number) -->
-  <Checkbox
-    v-model="picks"
-    :options="[
-      { label: 'Weekday', value: 1 },
-      { label: 'Weekend', value: 2 },
-    ]"
-  />
+    <!-- Numeric values also allowed (string | number) -->
+    <Checkbox
+        v-model="picks"
+        :options="[
+            { label: 'Weekday', value: 1 },
+            { label: 'Weekend', value: 2 },
+        ]"
+    />
 </template>
 ```
 
@@ -631,21 +717,21 @@ const picks = ref<(string | number)[]>(['beach']);
 ### 1.18 Radio
 
 ```ts
-type RadioSize  = 'small' | 'middle' | 'large';
+type RadioSize = 'small' | 'middle' | 'large';
 type RadioValue = string | number;
 
 interface RadioOption {
-  label: string;
-  value: RadioValue;
-  disabled?: boolean;
+    label: string;
+    value: RadioValue;
+    disabled?: boolean;
 }
 
 interface RadioProps {
-  options: RadioOption[];                              // REQUIRED
-  modelValue?: RadioValue;                             // v-model
-  size?: RadioSize;                                    // default 'middle'
-  disabled?: boolean;                                  // default false — disables all
-  direction?: 'horizontal' | 'vertical';               // default 'horizontal'
+    options: RadioOption[]; // REQUIRED
+    modelValue?: RadioValue; // v-model
+    size?: RadioSize; // default 'middle'
+    disabled?: boolean; // default false — disables all
+    direction?: 'horizontal' | 'vertical'; // default 'horizontal'
 }
 // Emits: update:modelValue(value), change(value)
 ```
@@ -657,14 +743,14 @@ const v = ref<string | number>('zh');
 </script>
 
 <template>
-  <Radio
-    v-model="v"
-    :options="[
-      { label: '中文', value: 'zh' },
-      { label: 'English', value: 'en' },
-      { label: '日本語', value: 'ja', disabled: true },
-    ]"
-  />
+    <Radio
+        v-model="v"
+        :options="[
+            { label: '中文', value: 'zh' },
+            { label: 'English', value: 'en' },
+            { label: '日本語', value: 'ja', disabled: true },
+        ]"
+    />
 </template>
 ```
 
@@ -678,20 +764,28 @@ const v = ref<string | number>('zh');
 
 ```ts
 type TooltipPlacement =
-  | 'top' | 'top-start' | 'top-end'
-  | 'bottom' | 'bottom-start' | 'bottom-end'
-  | 'left' | 'left-start' | 'left-end'
-  | 'right' | 'right-start' | 'right-end';
+    | 'top'
+    | 'top-start'
+    | 'top-end'
+    | 'bottom'
+    | 'bottom-start'
+    | 'bottom-end'
+    | 'left'
+    | 'left-start'
+    | 'left-end'
+    | 'right'
+    | 'right-start'
+    | 'right-end';
 
 type TooltipTrigger = 'hover' | 'focus' | 'click';
 type TooltipVariant = 'default' | 'island';
 
 interface TooltipProps {
-  title?: string;                    // tooltip body text — for rich content use the #title slot
-  placement?: TooltipPlacement;      // default 'top'
-  trigger?: TooltipTrigger;          // default 'hover'
-  variant?: TooltipVariant;          // default 'default'
-  bordered?: boolean;                // default true
+    title?: string; // tooltip body text — for rich content use the #title slot
+    placement?: TooltipPlacement; // default 'top'
+    trigger?: TooltipTrigger; // default 'hover'
+    variant?: TooltipVariant; // default 'default'
+    bordered?: boolean; // default true
 }
 // Slots:
 //   default — REQUIRED — the SINGLE trigger element
@@ -723,12 +817,13 @@ interface TooltipProps {
 
 ```ts
 interface LoadingProps {
-  active?: boolean;             // default true
+    active?: boolean; // default true
 }
 ```
 
 ```vue
-<Loading />                     <!-- full-bleed loading scene -->
+<Loading />
+<!-- full-bleed loading scene -->
 <Loading :active="isLoading" />
 ```
 
@@ -746,24 +841,24 @@ import type { CSSProperties, VNode } from 'vue';
 type TableRecord = Record<string, unknown>;
 
 interface TableColumn<T extends TableRecord = TableRecord> {
-  title: string | (() => VNode | string);
-  dataIndex?: keyof T & string;
-  /** Custom cell renderer. Use slot `cell-{dataIndex}` for richer control. */
-  render?: (value: unknown, record: T, index: number) => VNode | string | number | null;
-  width?: string | number;
-  align?: 'left' | 'center' | 'right';
-  style?: CSSProperties;
+    title: string | (() => VNode | string);
+    dataIndex?: keyof T & string;
+    /** Custom cell renderer. Use slot `cell-{dataIndex}` for richer control. */
+    render?: (value: unknown, record: T, index: number) => VNode | string | number | null;
+    width?: string | number;
+    align?: 'left' | 'center' | 'right';
+    style?: CSSProperties;
 }
 
 interface TableProps<T extends TableRecord = TableRecord> {
-  columns?: TableColumn<T>[];                         // default []
-  dataSource?: T[];                                   // default []
-  rowKey?: string | ((record: T) => string);          // default 'key'
-  striped?: boolean;                                  // default true
-  showHeader?: boolean;                               // default true
-  loading?: boolean;                                  // default false
-  emptyText?: string;                                 // default '暂无数据'
-  scroll?: { x?: number | string; y?: number | string };
+    columns?: TableColumn<T>[]; // default []
+    dataSource?: T[]; // default []
+    rowKey?: string | ((record: T) => string); // default 'key'
+    striped?: boolean; // default true
+    showHeader?: boolean; // default true
+    loading?: boolean; // default false
+    emptyText?: string; // default '暂无数据'
+    scroll?: { x?: number | string; y?: number | string };
 }
 // Slots: empty (custom empty-state placeholder), cell-{dataIndex} (per-column cell renderer)
 ```
@@ -773,22 +868,26 @@ interface TableProps<T extends TableRecord = TableRecord> {
 import type { TableColumn } from 'animal-island-vue';
 import { Button } from 'animal-island-vue';
 
-interface Item { id: string; name: string; price: number }
+interface Item {
+    id: string;
+    name: string;
+    price: number;
+}
 
 const columns: TableColumn<Item>[] = [
-  { title: '名称', dataIndex: 'name', width: 160 },
-  { title: '价格', dataIndex: 'price', align: 'right' },
-  { title: '操作' },
+    { title: '名称', dataIndex: 'name', width: 160 },
+    { title: '价格', dataIndex: 'price', align: 'right' },
+    { title: '操作' },
 ];
 
 const items: Item[] = [];
 </script>
 
 <template>
-  <Table :columns="columns" :data-source="items" row-key="id">
-    <template #cell-price="{ value }">¥ {{ value }}</template>
-    <!-- For a column without dataIndex, render via column.render or per-row template logic -->
-  </Table>
+    <Table :columns="columns" :data-source="items" row-key="id">
+        <template #cell-price="{ value }">¥ {{ value }}</template>
+        <!-- For a column without dataIndex, render via column.render or per-row template logic -->
+    </Table>
 </template>
 ```
 
@@ -800,7 +899,7 @@ const items: Item[] = [];
 
 ```ts
 interface CodeBlockProps {
-  code: string;                // REQUIRED — raw source string
+    code: string; // REQUIRED — raw source string
 }
 ```
 
@@ -818,27 +917,27 @@ interface CodeBlockProps {
 import type { CSSProperties } from 'vue';
 
 interface WeddingInvitationExpose {
-  exportAsImage: (filename?: string) => Promise<void>;
-  getElement: () => HTMLDivElement | null;
+    exportAsImage: (filename?: string) => Promise<void>;
+    getElement: () => HTMLDivElement | null;
 }
 
 interface WeddingInvitationProps {
-  groomName?: string;          // default '小狸'
-  brideName?: string;          // default '小兔'
-  date?: string;               // default '2026.06.15'
-  weekday?: string;            // default '星期六'
-  time?: string;               // default '10:00 AM'
-  venue?: string;              // default '彩虹岛 · 樱花广场'
-  address?: string;            // default '动物之森 · 无人岛 · K.K. 演奏台前'
-  title?: string;              // default 'Wedding Invitation' — heading text, NOT the <Title> component
-  subtitle?: string;           // default built-in bilingual subtitle
-  message?: string;            // default bilingual blessing text
-  showLotteryNumber?: boolean; // default true
-  lotteryNumber?: string;      // default '0001'
-  lotteryLabel?: string;       // default 'LUCKY NUMBER'
-  lotteryHint?: string;        // default bilingual hint
-  class?: string;
-  style?: CSSProperties | string;
+    groomName?: string; // default '小狸'
+    brideName?: string; // default '小兔'
+    date?: string; // default '2026.06.15'
+    weekday?: string; // default '星期六'
+    time?: string; // default '10:00 AM'
+    venue?: string; // default '彩虹岛 · 樱花广场'
+    address?: string; // default '动物之森 · 无人岛 · K.K. 演奏台前'
+    title?: string; // default 'Wedding Invitation' — heading text, NOT the <Title> component
+    subtitle?: string; // default built-in bilingual subtitle
+    message?: string; // default bilingual blessing text
+    showLotteryNumber?: boolean; // default true
+    lotteryNumber?: string; // default '0001'
+    lotteryLabel?: string; // default 'LUCKY NUMBER'
+    lotteryHint?: string; // default bilingual hint
+    class?: string;
+    style?: CSSProperties | string;
 }
 // Slots: title, subtitle, message — for rich content; override the matching string prop.
 // Exposed (via template ref + defineExpose):
@@ -846,11 +945,11 @@ interface WeddingInvitationProps {
 //   getElement(): HTMLDivElement | null
 
 interface WeddingInvitationExportButtonProps {
-  /** The template ref of <WeddingInvitation> (use the resolved expose object, not the raw ref) */
-  target: WeddingInvitationExpose | null | undefined;
-  filename?: string;           // default 'wedding-invitation' (extension added automatically)
-  class?: string;
-  style?: CSSProperties | string;
+    /** The template ref of <WeddingInvitation> (use the resolved expose object, not the raw ref) */
+    target: WeddingInvitationExpose | null | undefined;
+    filename?: string; // default 'wedding-invitation' (extension added automatically)
+    class?: string;
+    style?: CSSProperties | string;
 }
 // Slots: default (button label, defaults to '保存为图片')
 ```
@@ -858,18 +957,14 @@ interface WeddingInvitationExportButtonProps {
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import {
-  WeddingInvitation,
-  WeddingInvitationExportButton,
-  type WeddingInvitationExpose,
-} from 'animal-island-vue';
+import { WeddingInvitation, WeddingInvitationExportButton, type WeddingInvitationExpose } from 'animal-island-vue';
 
 const card = ref<WeddingInvitationExpose | null>(null);
 </script>
 
 <template>
-  <WeddingInvitation ref="card" groom-name="Kai" bride-name="Lily" />
-  <WeddingInvitationExportButton :target="card">导出 PNG</WeddingInvitationExportButton>
+    <WeddingInvitation ref="card" groom-name="Kai" bride-name="Lily" />
+    <WeddingInvitationExportButton :target="card">导出 PNG</WeddingInvitationExportButton>
 </template>
 ```
 
@@ -892,21 +987,15 @@ const invalid = ref(false);
 </script>
 
 <template>
-  <Card>
-    <label>Email</label>
-    <Input
-      v-model="email"
-      size="large"
-      type="email"
-      allow-clear
-      :status="invalid ? 'error' : undefined"
-    />
-    <Switch v-model="subscribe">
-      <template #checked>Subscribe</template>
-      <template #unchecked>Off</template>
-    </Switch>
-    <Button type="primary" html-type="submit" block>Submit</Button>
-  </Card>
+    <Card>
+        <label>Email</label>
+        <Input v-model="email" size="large" type="email" allow-clear :status="invalid ? 'error' : undefined" />
+        <Switch v-model="subscribe">
+            <template #checked>Subscribe</template>
+            <template #unchecked>Off</template>
+        </Switch>
+        <Button type="primary" html-type="submit" block>Submit</Button>
+    </Card>
 </template>
 ```
 
@@ -918,23 +1007,42 @@ import { ref } from 'vue';
 import { Modal, Button } from 'animal-island-vue';
 
 const open = ref(false);
-function close() { open.value = false; }
-function remove() { /* … */ }
+function close() {
+    open.value = false;
+}
+function remove() {
+    /* … */
+}
 </script>
 
 <template>
-  <Modal
-    v-model:open="open"
-    title="Delete save file?"
-    @close="close"
-    @ok="() => { remove(); close(); }"
-  >
-    This cannot be undone.
-    <template #footer>
-      <Button @click="close">Cancel</Button>
-      <Button type="primary" danger @click="() => { remove(); close(); }">Delete</Button>
-    </template>
-  </Modal>
+    <Modal
+        v-model:open="open"
+        title="Delete save file?"
+        @close="close"
+        @ok="
+            () => {
+                remove();
+                close();
+            }
+        "
+    >
+        This cannot be undone.
+        <template #footer>
+            <Button @click="close">Cancel</Button>
+            <Button
+                type="primary"
+                danger
+                @click="
+                    () => {
+                        remove();
+                        close();
+                    }
+                "
+                >Delete</Button
+            >
+        </template>
+    </Modal>
 </template>
 ```
 
@@ -945,18 +1053,18 @@ function remove() { /* … */ }
 import { Cursor, Title, Divider, Collapse, Footer } from 'animal-island-vue';
 
 const faqs = [
-  { id: 1, q: 'Question 1?', a: 'Answer 1.' },
-  { id: 2, q: 'Question 2?', a: 'Answer 2.' },
+    { id: 1, q: 'Question 1?', a: 'Answer 1.' },
+    { id: 2, q: 'Question 2?', a: 'Answer 2.' },
 ];
 </script>
 
 <template>
-  <Cursor>
-    <Title size="large">FAQ</Title>
-    <Divider type="wave-yellow" />
-    <Collapse v-for="f in faqs" :key="f.id" :question="f.q" :answer="f.a" />
-    <Footer type="sea" />
-  </Cursor>
+    <Cursor>
+        <Title size="large">FAQ</Title>
+        <Divider type="wave-yellow" />
+        <Collapse v-for="f in faqs" :key="f.id" :question="f.q" :answer="f.a" />
+        <Footer type="sea" />
+    </Cursor>
 </template>
 ```
 
@@ -997,7 +1105,7 @@ Follow these strictly; violations are bugs:
 21. **Radio is single-select; values are `string | number`.** Mirrors `Checkbox` API (options, size, direction) but `modelValue` is a scalar, not an array.
 22. **Loading takes no content** — it's a self-contained scene. Use `:active` to fade in/out, do not put children inside it.
 23. **Title is the dedicated component** for chapter/section ribbons (swallowtail clip-path). For inline section headings use `<Title>` — there is no longer a `Card type="title"` variant.
-24. **Watch the `title` prop collision.** `<Modal title=…>`, `<Tooltip title=…>` and `<WeddingInvitation title=…>` all take a *string* for their internal heading slot — this is NOT the `<Title>` component (§ 1.6). For rich content use the `#title` slot. Do not pass a `<Title>` element to those props.
+24. **Watch the `title` prop collision.** `<Modal title=…>`, `<Tooltip title=…>` and `<WeddingInvitation title=…>` all take a _string_ for their internal heading slot — this is NOT the `<Title>` component (§ 1.6). For rich content use the `#title` slot. Do not pass a `<Title>` element to those props.
 25. **Vue-only bans:**
     - **No JSX** (`tsx`/`jsx`) in this codebase — every example is a `<script setup lang="ts">` SFC with a `<template>`.
     - **No React hooks** (`useState`, `useEffect`, `useRef`, `forwardRef`, `useImperativeHandle`). Use `ref` / `reactive` / `computed` / `watch` / `onMounted` / `onBeforeUnmount` and `defineExpose` instead.
@@ -1046,15 +1154,15 @@ const draft = ref('');
 </script>
 
 <template>
-  <Cursor>
-    <main :style="{ padding: '32px', maxWidth: '720px', margin: '0 auto' }">
-      <Title size="large">Animal Island</Title>
-      <Card>
-        <Input v-model="draft" placeholder="What's on your mind?" allow-clear />
-        <Button type="primary" block :style="{ marginTop: '16px' }">Post</Button>
-      </Card>
-    </main>
-    <Footer type="sea" />
-  </Cursor>
+    <Cursor>
+        <main :style="{ padding: '32px', maxWidth: '720px', margin: '0 auto' }">
+            <Title size="large">Animal Island</Title>
+            <Card>
+                <Input v-model="draft" placeholder="What's on your mind?" allow-clear />
+                <Button type="primary" block :style="{ marginTop: '16px' }">Post</Button>
+            </Card>
+        </main>
+        <Footer type="sea" />
+    </Cursor>
 </template>
 ```

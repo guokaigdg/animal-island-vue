@@ -82,7 +82,8 @@ import { Card } from 'animal-island-vue';
 <template>
     <div :style="sectionStyle">
         <div :style="sectionTitleStyle">
-            Card <span :style="tagStyle">2 types</span> <span :style="tagStyle">13 colors</span> <span :style="tagStyle">13 patterns</span>
+            Card <span :style="tagStyle">2 types</span> <span :style="tagStyle">13 colors</span>
+            <span :style="tagStyle">13 patterns</span>
         </div>
 
         <div :style="demoBodyStyle">
@@ -90,12 +91,17 @@ import { Card } from 'animal-island-vue';
             <div :style="rowStyle">
                 <Card><p>基础卡片</p></Card>
                 <Card :style="{ maxWidth: '560px', width: '100%' }">
-                    <p>在 Nintendo 3DS《Animal Island: New Leaf》和《Happy Home Designer》中製作的「我的設計」QR Code，以智慧型裝置讀取就能下載至《集合啦！動物森友會》。</p>
+                    <p>
+                        在 Nintendo 3DS《Animal Island: New Leaf》和《Happy Home Designer》中製作的「我的設計」QR
+                        Code，以智慧型裝置讀取就能下載至《集合啦！動物森友會》。
+                    </p>
                 </Card>
             </div>
             <div :style="labelStyle">type="dashed"</div>
             <div :style="rowStyle">
-                <Card type="dashed"><p>虚线边框卡片</p></Card>
+                <Card type="dashed">
+                    <p>虚线边框卡片</p>
+                </Card>
                 <Card type="dashed" :style="{ maxWidth: '360px', width: '100%' }">
                     <p>欢迎来到无人岛！虚线边框适合用于轻量提示或次要信息展示。</p>
                 </Card>
@@ -104,16 +110,31 @@ import { Card } from 'animal-island-vue';
         <div :style="demoBodyStyle">
             <div :style="labelStyle">hoverable — 启用 hover 反馈</div>
             <div :style="rowStyle">
-                <Card hoverable><p>默认卡片（可点击）</p></Card>
-                <Card type="dashed" hoverable><p>虚线 + hoverable</p></Card>
+                <Card hoverable>
+                    <p>默认卡片（可点击）</p>
+                </Card>
+                <Card type="dashed" hoverable>
+                    <p>虚线 + hoverable</p>
+                </Card>
             </div>
         </div>
         <div :style="demoBodyStyle">
             <div :style="labelStyle">pattern — 花纹类型</div>
-            <div :style="{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '16px', marginBottom: '24px' }">
+            <div
+                :style="{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))',
+                    gap: '16px',
+                    marginBottom: '24px',
+                }"
+            >
                 <Card v-for="[p, en, cn] in patterns" :key="p" :pattern="p as any" :style="{ padding: '16px 20px' }">
-                    <div :style="{ fontWeight: 700, fontSize: '14px', marginBottom: '4px' }">{{ en }}</div>
-                    <div :style="{ fontSize: '12px', opacity: 0.85 }">{{ cn }}</div>
+                    <div :style="{ fontWeight: 700, fontSize: '14px', marginBottom: '4px' }">
+                        {{ en }}
+                    </div>
+                    <div :style="{ fontSize: '12px', opacity: 0.85 }">
+                        {{ cn }}
+                    </div>
                     <div :style="{ fontSize: '11px', opacity: 0.7, marginTop: '6px' }">pattern="{{ p }}"</div>
                 </Card>
             </div>
@@ -121,14 +142,24 @@ import { Card } from 'animal-island-vue';
 
         <div :style="demoBodyStyle">
             <div :style="labelStyle">color — 主题颜色</div>
-            <div :style="{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '16px', marginBottom: '24px' }">
+            <div
+                :style="{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',
+                    gap: '16px',
+                    marginBottom: '24px',
+                }"
+            >
                 <Card v-for="[c, en, cn] in colors" :key="c" :color="c as any" :style="{ padding: '16px 20px' }">
-                    <div :style="{ fontWeight: 700, fontSize: '14px', marginBottom: '4px' }">{{ en }}</div>
-                    <div :style="{ fontSize: '12px', opacity: 0.85 }">{{ cn }}</div>
+                    <div :style="{ fontWeight: 700, fontSize: '14px', marginBottom: '4px' }">
+                        {{ en }}
+                    </div>
+                    <div :style="{ fontSize: '12px', opacity: 0.85 }">
+                        {{ cn }}
+                    </div>
                 </Card>
             </div>
         </div>
-
 
         <CodeBlock :code="code" />
         <ApiTable :rows="CARD_API" />

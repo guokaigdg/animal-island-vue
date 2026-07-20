@@ -57,147 +57,222 @@ defineSlots<{ default?: () => unknown }>();
 
     // ---------- Color ----------
     // 默认色背景已挂载在 --default 上，避免复合选择器覆盖花纹样式
-    &--color-app-pink { background: #f8a6b2; color: #fff; }
-    &--color-purple { background: #b77dee; color: #fff; }
-    &--color-app-blue { background: #889df0; color: #fff; }
-    &--color-app-yellow { background: #f7cd67; color: #725d42; }
-    &--color-app-orange { background: #e59266; color: #fff; }
-    &--color-app-teal { background: #82d5bb; color: #fff; }
-    &--color-app-green { background: #8ac68a; color: #fff; }
-    &--color-app-red { background: #fc736d; color: #fff; }
-    &--color-lime-green { background: #d1da49; color: #3d5a1a; }
-    &--color-yellow-green { background: #ecdf52; color: #725d42; }
-    &--color-brown { background: #9a835a; color: #fff; }
-    &--color-warm-peach-pink { background: #e18c6f; color: #fff; }
+    &--color-app-pink {
+        background: #f8a6b2;
+        color: #fff;
+    }
+    &--color-purple {
+        background: #b77dee;
+        color: #fff;
+    }
+    &--color-app-blue {
+        background: #889df0;
+        color: #fff;
+    }
+    &--color-app-yellow {
+        background: #f7cd67;
+        color: #725d42;
+    }
+    &--color-app-orange {
+        background: #e59266;
+        color: #fff;
+    }
+    &--color-app-teal {
+        background: #82d5bb;
+        color: #fff;
+    }
+    &--color-app-green {
+        background: #8ac68a;
+        color: #fff;
+    }
+    &--color-app-red {
+        background: #fc736d;
+        color: #fff;
+    }
+    &--color-lime-green {
+        background: #d1da49;
+        color: #3d5a1a;
+    }
+    &--color-yellow-green {
+        background: #ecdf52;
+        color: #725d42;
+    }
+    &--color-brown {
+        background: #9a835a;
+        color: #fff;
+    }
+    &--color-warm-peach-pink {
+        background: #e18c6f;
+        color: #fff;
+    }
 
     // ---------- Pattern ----------
     &--pattern-default {
         background:
             radial-gradient(circle, rgba(196, 184, 158, 0.15) 1.5px, transparent 1.5px),
-            radial-gradient(circle, rgba(196, 184, 158, 0.1) 1px, transparent 1px),
-            rgb(247, 243, 223);
-        background-size: 28px 28px, 14px 14px;
-        background-position: 0 0, 7px 7px;
+            radial-gradient(circle, rgba(196, 184, 158, 0.1) 1px, transparent 1px), rgb(247, 243, 223);
+        background-size:
+            28px 28px,
+            14px 14px;
+        background-position:
+            0 0,
+            7px 7px;
         border: 1.5px solid #d4c4a8;
         color: #725d42;
     }
     &--pattern-app-pink {
         background:
             radial-gradient(circle, rgba(248, 166, 178, 0.18) 1.5px, transparent 1.5px),
-            radial-gradient(circle, rgba(255, 200, 210, 0.12) 1px, transparent 1px),
-            #fde4e8;
-        background-size: 28px 28px, 14px 14px;
-        background-position: 0 0, 7px 7px;
+            radial-gradient(circle, rgba(255, 200, 210, 0.12) 1px, transparent 1px), #fde4e8;
+        background-size:
+            28px 28px,
+            14px 14px;
+        background-position:
+            0 0,
+            7px 7px;
         border: 1.5px solid #f8a6b2;
         color: #a85565;
     }
     &--pattern-purple {
         background:
             radial-gradient(circle, rgba(183, 125, 238, 0.18) 1.5px, transparent 1.5px),
-            radial-gradient(circle, rgba(220, 180, 255, 0.12) 1px, transparent 1px),
-            #f0e8ff;
-        background-size: 28px 28px, 14px 14px;
-        background-position: 0 0, 7px 7px;
+            radial-gradient(circle, rgba(220, 180, 255, 0.12) 1px, transparent 1px), #f0e8ff;
+        background-size:
+            28px 28px,
+            14px 14px;
+        background-position:
+            0 0,
+            7px 7px;
         border: 1.5px solid #b77dee;
         color: #6a3a9a;
     }
     &--pattern-app-blue {
         background:
             radial-gradient(circle, rgba(136, 157, 240, 0.18) 1.5px, transparent 1.5px),
-            radial-gradient(circle, rgba(180, 195, 255, 0.12) 1px, transparent 1px),
-            #e8edff;
-        background-size: 28px 28px, 14px 14px;
-        background-position: 0 0, 7px 7px;
+            radial-gradient(circle, rgba(180, 195, 255, 0.12) 1px, transparent 1px), #e8edff;
+        background-size:
+            28px 28px,
+            14px 14px;
+        background-position:
+            0 0,
+            7px 7px;
         border: 1.5px solid #889df0;
         color: #4a5a8a;
     }
     &--pattern-app-yellow {
         background:
             radial-gradient(circle, rgba(247, 205, 103, 0.18) 1.5px, transparent 1.5px),
-            radial-gradient(circle, rgba(255, 230, 160, 0.12) 1px, transparent 1px),
-            #fff8e0;
-        background-size: 28px 28px, 14px 14px;
-        background-position: 0 0, 7px 7px;
+            radial-gradient(circle, rgba(255, 230, 160, 0.12) 1px, transparent 1px), #fff8e0;
+        background-size:
+            28px 28px,
+            14px 14px;
+        background-position:
+            0 0,
+            7px 7px;
         border: 1.5px solid #f7cd67;
         color: #7a6528;
     }
     &--pattern-app-orange {
         background:
             radial-gradient(circle, rgba(229, 146, 102, 0.18) 1.5px, transparent 1.5px),
-            radial-gradient(circle, rgba(255, 190, 150, 0.12) 1px, transparent 1px),
-            #fff0e8;
-        background-size: 28px 28px, 14px 14px;
-        background-position: 0 0, 7px 7px;
+            radial-gradient(circle, rgba(255, 190, 150, 0.12) 1px, transparent 1px), #fff0e8;
+        background-size:
+            28px 28px,
+            14px 14px;
+        background-position:
+            0 0,
+            7px 7px;
         border: 1.5px solid #e59266;
         color: #8a4a2a;
     }
     &--pattern-app-teal {
         background:
             radial-gradient(circle, rgba(130, 213, 187, 0.18) 1.5px, transparent 1.5px),
-            radial-gradient(circle, rgba(170, 235, 210, 0.12) 1px, transparent 1px),
-            #e8faf5;
-        background-size: 28px 28px, 14px 14px;
-        background-position: 0 0, 7px 7px;
+            radial-gradient(circle, rgba(170, 235, 210, 0.12) 1px, transparent 1px), #e8faf5;
+        background-size:
+            28px 28px,
+            14px 14px;
+        background-position:
+            0 0,
+            7px 7px;
         border: 1.5px solid #82d5bb;
         color: #2a6b5a;
     }
     &--pattern-app-green {
         background:
             radial-gradient(circle, rgba(138, 198, 138, 0.18) 1.5px, transparent 1.5px),
-            radial-gradient(circle, rgba(180, 220, 180, 0.12) 1px, transparent 1px),
-            #e8f5e8;
-        background-size: 28px 28px, 14px 14px;
-        background-position: 0 0, 7px 7px;
+            radial-gradient(circle, rgba(180, 220, 180, 0.12) 1px, transparent 1px), #e8f5e8;
+        background-size:
+            28px 28px,
+            14px 14px;
+        background-position:
+            0 0,
+            7px 7px;
         border: 1.5px solid #8ac68a;
         color: #3a6b3a;
     }
     &--pattern-app-red {
         background:
             radial-gradient(circle, rgba(252, 115, 109, 0.18) 1.5px, transparent 1.5px),
-            radial-gradient(circle, rgba(255, 160, 155, 0.12) 1px, transparent 1px),
-            #ffe8e8;
-        background-size: 28px 28px, 14px 14px;
-        background-position: 0 0, 7px 7px;
+            radial-gradient(circle, rgba(255, 160, 155, 0.12) 1px, transparent 1px), #ffe8e8;
+        background-size:
+            28px 28px,
+            14px 14px;
+        background-position:
+            0 0,
+            7px 7px;
         border: 1.5px solid #fc736d;
         color: #9a3a3a;
     }
     &--pattern-lime-green {
         background:
             radial-gradient(circle, rgba(209, 218, 73, 0.18) 1.5px, transparent 1.5px),
-            radial-gradient(circle, rgba(230, 240, 130, 0.12) 1px, transparent 1px),
-            #f5f8e0;
-        background-size: 28px 28px, 14px 14px;
-        background-position: 0 0, 7px 7px;
+            radial-gradient(circle, rgba(230, 240, 130, 0.12) 1px, transparent 1px), #f5f8e0;
+        background-size:
+            28px 28px,
+            14px 14px;
+        background-position:
+            0 0,
+            7px 7px;
         border: 1.5px solid #d1da49;
         color: #5a6b28;
     }
     &--pattern-yellow-green {
         background:
             radial-gradient(circle, rgba(236, 223, 82, 0.18) 1.5px, transparent 1.5px),
-            radial-gradient(circle, rgba(255, 245, 140, 0.12) 1px, transparent 1px),
-            #fffde8;
-        background-size: 28px 28px, 14px 14px;
-        background-position: 0 0, 7px 7px;
+            radial-gradient(circle, rgba(255, 245, 140, 0.12) 1px, transparent 1px), #fffde8;
+        background-size:
+            28px 28px,
+            14px 14px;
+        background-position:
+            0 0,
+            7px 7px;
         border: 1.5px solid #ecdf52;
         color: #6a5a28;
     }
     &--pattern-brown {
         background:
             radial-gradient(circle, rgba(154, 131, 90, 0.18) 1.5px, transparent 1.5px),
-            radial-gradient(circle, rgba(190, 165, 120, 0.12) 1px, transparent 1px),
-            #f5f0e0;
-        background-size: 28px 28px, 14px 14px;
-        background-position: 0 0, 7px 7px;
+            radial-gradient(circle, rgba(190, 165, 120, 0.12) 1px, transparent 1px), #f5f0e0;
+        background-size:
+            28px 28px,
+            14px 14px;
+        background-position:
+            0 0,
+            7px 7px;
         border: 1.5px solid #9a835a;
         color: #5a4a2a;
     }
     &--pattern-warm-peach-pink {
         background:
             radial-gradient(circle, rgba(225, 140, 111, 0.18) 1.5px, transparent 1.5px),
-            radial-gradient(circle, rgba(255, 185, 160, 0.12) 1px, transparent 1px),
-            #fff0e8;
-        background-size: 28px 28px, 14px 14px;
-        background-position: 0 0, 7px 7px;
+            radial-gradient(circle, rgba(255, 185, 160, 0.12) 1px, transparent 1px), #fff0e8;
+        background-size:
+            28px 28px,
+            14px 14px;
+        background-position:
+            0 0,
+            7px 7px;
         border: 1.5px solid #e18c6f;
         color: #8a4a2a;
     }

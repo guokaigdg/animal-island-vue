@@ -120,75 +120,250 @@ defineExpose<WeddingInvitationExpose>({ exportAsImage, getElement });
         v-bind="attrs"
     >
         <!-- 边角装饰 -->
-        <svg class="animal-wedding__corner-leaf animal-wedding__corner-leaf--tl" viewBox="0 0 64 64" width="56" height="56" aria-hidden="true">
-            <path d="M8 56 C 8 24, 32 4, 60 6 C 58 36, 38 58, 8 56 Z" fill="#8ac68a" stroke="#3d5a1a" stroke-width="2.5" stroke-linejoin="round" />
-            <path d="M14 50 C 26 40, 40 26, 56 12" stroke="#3d5a1a" stroke-width="2" fill="none" stroke-linecap="round" />
-            <path d="M22 42 C 28 38, 32 34, 36 30" stroke="#3d5a1a" stroke-width="1.4" fill="none" stroke-linecap="round" />
-            <path d="M30 48 C 34 44, 38 40, 42 36" stroke="#3d5a1a" stroke-width="1.4" fill="none" stroke-linecap="round" />
+        <svg
+            class="animal-wedding__corner-leaf animal-wedding__corner-leaf--tl"
+            viewBox="0 0 64 64"
+            width="56"
+            height="56"
+            aria-hidden="true"
+        >
+            <path
+                d="M8 56 C 8 24, 32 4, 60 6 C 58 36, 38 58, 8 56 Z"
+                fill="#8ac68a"
+                stroke="#3d5a1a"
+                stroke-width="2.5"
+                stroke-linejoin="round"
+            />
+            <path
+                d="M14 50 C 26 40, 40 26, 56 12"
+                stroke="#3d5a1a"
+                stroke-width="2"
+                fill="none"
+                stroke-linecap="round"
+            />
+            <path
+                d="M22 42 C 28 38, 32 34, 36 30"
+                stroke="#3d5a1a"
+                stroke-width="1.4"
+                fill="none"
+                stroke-linecap="round"
+            />
+            <path
+                d="M30 48 C 34 44, 38 40, 42 36"
+                stroke="#3d5a1a"
+                stroke-width="1.4"
+                fill="none"
+                stroke-linecap="round"
+            />
         </svg>
-        <svg class="animal-wedding__corner-leaf animal-wedding__corner-leaf--tr" viewBox="0 0 64 64" width="56" height="56" aria-hidden="true">
-            <path d="M8 56 C 8 24, 32 4, 60 6 C 58 36, 38 58, 8 56 Z" fill="#8ac68a" stroke="#3d5a1a" stroke-width="2.5" stroke-linejoin="round" />
-            <path d="M14 50 C 26 40, 40 26, 56 12" stroke="#3d5a1a" stroke-width="2" fill="none" stroke-linecap="round" />
-            <path d="M22 42 C 28 38, 32 34, 36 30" stroke="#3d5a1a" stroke-width="1.4" fill="none" stroke-linecap="round" />
-            <path d="M30 48 C 34 44, 38 40, 42 36" stroke="#3d5a1a" stroke-width="1.4" fill="none" stroke-linecap="round" />
+        <svg
+            class="animal-wedding__corner-leaf animal-wedding__corner-leaf--tr"
+            viewBox="0 0 64 64"
+            width="56"
+            height="56"
+            aria-hidden="true"
+        >
+            <path
+                d="M8 56 C 8 24, 32 4, 60 6 C 58 36, 38 58, 8 56 Z"
+                fill="#8ac68a"
+                stroke="#3d5a1a"
+                stroke-width="2.5"
+                stroke-linejoin="round"
+            />
+            <path
+                d="M14 50 C 26 40, 40 26, 56 12"
+                stroke="#3d5a1a"
+                stroke-width="2"
+                fill="none"
+                stroke-linecap="round"
+            />
+            <path
+                d="M22 42 C 28 38, 32 34, 36 30"
+                stroke="#3d5a1a"
+                stroke-width="1.4"
+                fill="none"
+                stroke-linecap="round"
+            />
+            <path
+                d="M30 48 C 34 44, 38 40, 42 36"
+                stroke="#3d5a1a"
+                stroke-width="1.4"
+                fill="none"
+                stroke-linecap="round"
+            />
         </svg>
-        <svg class="animal-wedding__corner-leaf animal-wedding__corner-leaf--bl" viewBox="0 0 64 64" width="56" height="56" aria-hidden="true">
-            <path d="M8 56 C 8 24, 32 4, 60 6 C 58 36, 38 58, 8 56 Z" fill="#8ac68a" stroke="#3d5a1a" stroke-width="2.5" stroke-linejoin="round" />
-            <path d="M14 50 C 26 40, 40 26, 56 12" stroke="#3d5a1a" stroke-width="2" fill="none" stroke-linecap="round" />
-            <path d="M22 42 C 28 38, 32 34, 36 30" stroke="#3d5a1a" stroke-width="1.4" fill="none" stroke-linecap="round" />
-            <path d="M30 48 C 34 44, 38 40, 42 36" stroke="#3d5a1a" stroke-width="1.4" fill="none" stroke-linecap="round" />
+        <svg
+            class="animal-wedding__corner-leaf animal-wedding__corner-leaf--bl"
+            viewBox="0 0 64 64"
+            width="56"
+            height="56"
+            aria-hidden="true"
+        >
+            <path
+                d="M8 56 C 8 24, 32 4, 60 6 C 58 36, 38 58, 8 56 Z"
+                fill="#8ac68a"
+                stroke="#3d5a1a"
+                stroke-width="2.5"
+                stroke-linejoin="round"
+            />
+            <path
+                d="M14 50 C 26 40, 40 26, 56 12"
+                stroke="#3d5a1a"
+                stroke-width="2"
+                fill="none"
+                stroke-linecap="round"
+            />
+            <path
+                d="M22 42 C 28 38, 32 34, 36 30"
+                stroke="#3d5a1a"
+                stroke-width="1.4"
+                fill="none"
+                stroke-linecap="round"
+            />
+            <path
+                d="M30 48 C 34 44, 38 40, 42 36"
+                stroke="#3d5a1a"
+                stroke-width="1.4"
+                fill="none"
+                stroke-linecap="round"
+            />
         </svg>
-        <svg class="animal-wedding__corner-leaf animal-wedding__corner-leaf--br" viewBox="0 0 64 64" width="56" height="56" aria-hidden="true">
-            <path d="M8 56 C 8 24, 32 4, 60 6 C 58 36, 38 58, 8 56 Z" fill="#8ac68a" stroke="#3d5a1a" stroke-width="2.5" stroke-linejoin="round" />
-            <path d="M14 50 C 26 40, 40 26, 56 12" stroke="#3d5a1a" stroke-width="2" fill="none" stroke-linecap="round" />
-            <path d="M22 42 C 28 38, 32 34, 36 30" stroke="#3d5a1a" stroke-width="1.4" fill="none" stroke-linecap="round" />
-            <path d="M30 48 C 34 44, 38 40, 42 36" stroke="#3d5a1a" stroke-width="1.4" fill="none" stroke-linecap="round" />
+        <svg
+            class="animal-wedding__corner-leaf animal-wedding__corner-leaf--br"
+            viewBox="0 0 64 64"
+            width="56"
+            height="56"
+            aria-hidden="true"
+        >
+            <path
+                d="M8 56 C 8 24, 32 4, 60 6 C 58 36, 38 58, 8 56 Z"
+                fill="#8ac68a"
+                stroke="#3d5a1a"
+                stroke-width="2.5"
+                stroke-linejoin="round"
+            />
+            <path
+                d="M14 50 C 26 40, 40 26, 56 12"
+                stroke="#3d5a1a"
+                stroke-width="2"
+                fill="none"
+                stroke-linecap="round"
+            />
+            <path
+                d="M22 42 C 28 38, 32 34, 36 30"
+                stroke="#3d5a1a"
+                stroke-width="1.4"
+                fill="none"
+                stroke-linecap="round"
+            />
+            <path
+                d="M30 48 C 34 44, 38 40, 42 36"
+                stroke="#3d5a1a"
+                stroke-width="1.4"
+                fill="none"
+                stroke-linecap="round"
+            />
         </svg>
 
         <!-- 飘散花瓣 / 星星 -->
         <span class="animal-wedding__float-item animal-wedding__float-item--f1">
             <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true">
-                <ellipse v-for="a in [0, 72, 144, 216, 288]" :key="a" cx="16" cy="8" rx="5" ry="7" fill="#f8a6b2" stroke="#725d42" stroke-width="1.2" :transform="`rotate(${a} 16 16)`" />
+                <ellipse
+                    v-for="a in [0, 72, 144, 216, 288]"
+                    :key="a"
+                    cx="16"
+                    cy="8"
+                    rx="5"
+                    ry="7"
+                    fill="#f8a6b2"
+                    stroke="#725d42"
+                    stroke-width="1.2"
+                    :transform="`rotate(${a} 16 16)`"
+                />
                 <circle cx="16" cy="16" r="3.5" fill="#f7cd67" stroke="#725d42" stroke-width="1.2" />
             </svg>
         </span>
         <span class="animal-wedding__float-item animal-wedding__float-item--f2">
             <svg viewBox="0 0 32 32" width="22" height="22" aria-hidden="true">
-                <ellipse v-for="a in [0, 72, 144, 216, 288]" :key="a" cx="16" cy="8" rx="5" ry="7" fill="#ecdf52" stroke="#725d42" stroke-width="1.2" :transform="`rotate(${a} 16 16)`" />
+                <ellipse
+                    v-for="a in [0, 72, 144, 216, 288]"
+                    :key="a"
+                    cx="16"
+                    cy="8"
+                    rx="5"
+                    ry="7"
+                    fill="#ecdf52"
+                    stroke="#725d42"
+                    stroke-width="1.2"
+                    :transform="`rotate(${a} 16 16)`"
+                />
                 <circle cx="16" cy="16" r="3.5" fill="#e59266" stroke="#725d42" stroke-width="1.2" />
             </svg>
         </span>
         <span class="animal-wedding__float-item animal-wedding__float-item--f3">
             <svg viewBox="0 0 32 32" width="20" height="20" aria-hidden="true">
-                <ellipse v-for="a in [0, 72, 144, 216, 288]" :key="a" cx="16" cy="8" rx="5" ry="7" fill="#b77dee" stroke="#725d42" stroke-width="1.2" :transform="`rotate(${a} 16 16)`" />
+                <ellipse
+                    v-for="a in [0, 72, 144, 216, 288]"
+                    :key="a"
+                    cx="16"
+                    cy="8"
+                    rx="5"
+                    ry="7"
+                    fill="#b77dee"
+                    stroke="#725d42"
+                    stroke-width="1.2"
+                    :transform="`rotate(${a} 16 16)`"
+                />
                 <circle cx="16" cy="16" r="3.5" fill="#f7cd67" stroke="#725d42" stroke-width="1.2" />
             </svg>
         </span>
         <span class="animal-wedding__float-item animal-wedding__float-item--s1">
             <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-                <path d="M12 2 L14.5 9 L22 9.5 L16 14.5 L18 22 L12 17.5 L6 22 L8 14.5 L2 9.5 L9.5 9 Z" fill="#f7cd67" stroke="#725d42" stroke-width="1.4" stroke-linejoin="round" />
+                <path
+                    d="M12 2 L14.5 9 L22 9.5 L16 14.5 L18 22 L12 17.5 L6 22 L8 14.5 L2 9.5 L9.5 9 Z"
+                    fill="#f7cd67"
+                    stroke="#725d42"
+                    stroke-width="1.4"
+                    stroke-linejoin="round"
+                />
             </svg>
         </span>
         <span class="animal-wedding__float-item animal-wedding__float-item--s2">
             <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
-                <path d="M12 2 L14.5 9 L22 9.5 L16 14.5 L18 22 L12 17.5 L6 22 L8 14.5 L2 9.5 L9.5 9 Z" fill="#82d5bb" stroke="#725d42" stroke-width="1.4" stroke-linejoin="round" />
+                <path
+                    d="M12 2 L14.5 9 L22 9.5 L16 14.5 L18 22 L12 17.5 L6 22 L8 14.5 L2 9.5 L9.5 9 Z"
+                    fill="#82d5bb"
+                    stroke="#725d42"
+                    stroke-width="1.4"
+                    stroke-linejoin="round"
+                />
             </svg>
         </span>
 
         <div class="animal-wedding__banner">
             <span class="animal-wedding__banner-line" />
             <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
-                <path d="M12 2 L14.5 9 L22 9.5 L16 14.5 L18 22 L12 17.5 L6 22 L8 14.5 L2 9.5 L9.5 9 Z" fill="#f7cd67" stroke="#725d42" stroke-width="1.4" stroke-linejoin="round" />
+                <path
+                    d="M12 2 L14.5 9 L22 9.5 L16 14.5 L18 22 L12 17.5 L6 22 L8 14.5 L2 9.5 L9.5 9 Z"
+                    fill="#f7cd67"
+                    stroke="#725d42"
+                    stroke-width="1.4"
+                    stroke-linejoin="round"
+                />
             </svg>
             <span class="animal-wedding__banner-line" />
         </div>
 
         <div class="animal-wedding__title-en">
-            <slot name="title">{{ props.title }}</slot>
+            <slot name="title">
+                {{ props.title }}
+            </slot>
         </div>
         <div class="animal-wedding__title-zh">
             <slot name="subtitle">
-                <template v-if="props.subtitle">{{ props.subtitle }}</template>
+                <template v-if="props.subtitle">
+                    {{ props.subtitle }}
+                </template>
                 <img v-else :src="weddingTitleImg" alt="集合啦 婚礼森友会" />
             </slot>
         </div>
@@ -199,22 +374,34 @@ defineExpose<WeddingInvitationExpose>({ exportAsImage, getElement });
 
         <div class="animal-wedding__couple-row">
             <div class="animal-wedding__mascot">
-                <div class="animal-wedding__name">{{ props.brideName }}</div>
+                <div class="animal-wedding__name">
+                    {{ props.brideName }}
+                </div>
             </div>
             <div class="animal-wedding__heart-col">
                 <svg viewBox="0 0 64 64" width="30" height="30" aria-hidden="true">
-                    <path d="M32 56 C 8 40, 4 22, 16 14 C 24 9, 30 14, 32 20 C 34 14, 40 9, 48 14 C 60 22, 56 40, 32 56 Z" fill="#fc736d" stroke="#725d42" stroke-width="2.5" stroke-linejoin="round" />
+                    <path
+                        d="M32 56 C 8 40, 4 22, 16 14 C 24 9, 30 14, 32 20 C 34 14, 40 9, 48 14 C 60 22, 56 40, 32 56 Z"
+                        fill="#fc736d"
+                        stroke="#725d42"
+                        stroke-width="2.5"
+                        stroke-linejoin="round"
+                    />
                     <ellipse cx="22" cy="22" rx="3.5" ry="5" fill="#fff" opacity="0.7" transform="rotate(-25 22 22)" />
                 </svg>
             </div>
             <div class="animal-wedding__mascot">
-                <div class="animal-wedding__name">{{ props.groomName }}</div>
+                <div class="animal-wedding__name">
+                    {{ props.groomName }}
+                </div>
             </div>
         </div>
 
         <div class="animal-wedding__date-card">
             <div class="animal-wedding__date-label">婚礼时间</div>
-            <div class="animal-wedding__date-value">{{ props.date }}</div>
+            <div class="animal-wedding__date-value">
+                {{ props.date }}
+            </div>
             <div class="animal-wedding__date-meta">
                 <span>{{ props.weekday }}</span>
                 <span class="animal-wedding__dot">·</span>
@@ -227,13 +414,19 @@ defineExpose<WeddingInvitationExpose>({ exportAsImage, getElement });
                 <Icon name="icon-map" :size="26" />
             </span>
             <div class="animal-wedding__venue-text">
-                <div class="animal-wedding__venue-name">{{ props.venue }}</div>
-                <div class="animal-wedding__venue-addr">{{ props.address }}</div>
+                <div class="animal-wedding__venue-name">
+                    {{ props.venue }}
+                </div>
+                <div class="animal-wedding__venue-addr">
+                    {{ props.address }}
+                </div>
             </div>
         </div>
 
         <div class="animal-wedding__message">
-            <slot name="message">{{ props.message }}</slot>
+            <slot name="message">
+                {{ props.message }}
+            </slot>
         </div>
 
         <template v-if="props.showLotteryNumber">
@@ -247,7 +440,13 @@ defineExpose<WeddingInvitationExpose>({ exportAsImage, getElement });
             <div class="animal-wedding__lottery">
                 <span class="animal-wedding__tear-hint">
                     <svg viewBox="0 0 24 24" width="11" height="11" aria-hidden="true">
-                        <g fill="none" stroke="#725d42" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <g
+                            fill="none"
+                            stroke="#725d42"
+                            stroke-width="1.6"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
                             <circle cx="6" cy="6" r="2.4" />
                             <circle cx="6" cy="18" r="2.4" />
                             <path d="M8 7.5 L21 17 M8 16.5 L21 7" />
@@ -255,7 +454,13 @@ defineExpose<WeddingInvitationExpose>({ exportAsImage, getElement });
                     </svg>
                     <span>沿虚线剪开</span>
                     <svg viewBox="0 0 24 24" width="11" height="11" aria-hidden="true">
-                        <g fill="none" stroke="#725d42" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <g
+                            fill="none"
+                            stroke="#725d42"
+                            stroke-width="1.6"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
                             <circle cx="6" cy="6" r="2.4" />
                             <circle cx="6" cy="18" r="2.4" />
                             <path d="M8 7.5 L21 17 M8 16.5 L21 7" />
@@ -265,18 +470,32 @@ defineExpose<WeddingInvitationExpose>({ exportAsImage, getElement });
                 <div class="animal-wedding__lottery-title">婚礼抽奖券</div>
                 <div class="animal-wedding__lottery-label">
                     <svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true">
-                        <path d="M12 2 L14.5 9 L22 9.5 L16 14.5 L18 22 L12 17.5 L6 22 L8 14.5 L2 9.5 L9.5 9 Z" fill="#f7cd67" stroke="#725d42" stroke-width="1.4" stroke-linejoin="round" />
+                        <path
+                            d="M12 2 L14.5 9 L22 9.5 L16 14.5 L18 22 L12 17.5 L6 22 L8 14.5 L2 9.5 L9.5 9 Z"
+                            fill="#f7cd67"
+                            stroke="#725d42"
+                            stroke-width="1.4"
+                            stroke-linejoin="round"
+                        />
                     </svg>
                     <span>{{ props.lotteryLabel }}</span>
                     <svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true">
-                        <path d="M12 2 L14.5 9 L22 9.5 L16 14.5 L18 22 L12 17.5 L6 22 L8 14.5 L2 9.5 L9.5 9 Z" fill="#f7cd67" stroke="#725d42" stroke-width="1.4" stroke-linejoin="round" />
+                        <path
+                            d="M12 2 L14.5 9 L22 9.5 L16 14.5 L18 22 L12 17.5 L6 22 L8 14.5 L2 9.5 L9.5 9 Z"
+                            fill="#f7cd67"
+                            stroke="#725d42"
+                            stroke-width="1.4"
+                            stroke-linejoin="round"
+                        />
                     </svg>
                 </div>
                 <div class="animal-wedding__lottery-number">
                     <span class="animal-wedding__lottery-hash">NO.</span>{{ props.lotteryNumber }}
                 </div>
                 <div v-if="slots.lotteryHint || props.lotteryHint" class="animal-wedding__lottery-hint">
-                    <slot name="lotteryHint">{{ props.lotteryHint }}</slot>
+                    <slot name="lotteryHint">
+                        {{ props.lotteryHint }}
+                    </slot>
                 </div>
             </div>
         </template>

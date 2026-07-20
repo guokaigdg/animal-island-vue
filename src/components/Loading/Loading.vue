@@ -53,18 +53,13 @@ watch(
             }, duration * 1000);
         }
     },
-    { immediate: false },
+    { immediate: false }
 );
 </script>
 
 <template>
     <div ref="wrapperRef" class="animal-loading">
-        <div
-            ref="containerRef"
-            class="animal-loading__container"
-            v-bind="attrs"
-            v-html="SVG_CONTENT"
-        />
+        <div ref="containerRef" class="animal-loading__container" v-bind="attrs" v-html="SVG_CONTENT" />
     </div>
 </template>
 

@@ -69,8 +69,17 @@ const PAGES: Record<string, unknown> = {
 
 // 与 React 版同款：根据 activeKey 哈希固定映射颜色，同页面不抖动
 const TITLE_COLORS: TitleColor[] = [
-    'lime-green', 'default', 'app-pink', 'purple', 'app-blue', 'app-yellow',
-    'app-orange', 'app-red', 'yellow-green', 'brown', 'warm-peach-pink',
+    'lime-green',
+    'default',
+    'app-pink',
+    'purple',
+    'app-blue',
+    'app-yellow',
+    'app-orange',
+    'app-red',
+    'yellow-green',
+    'brown',
+    'warm-peach-pink',
 ];
 
 const titleColor = computed<TitleColor>(() => {
@@ -84,11 +93,7 @@ const PageComponent = computed(() => PAGES[props.activeKey] ?? null);
 
 <template>
     <template v-if="info && PageComponent">
-        <Title
-            size="large"
-            :color="titleColor"
-            :style="{ marginBottom: '30px', marginLeft: '18px' }"
-        >
+        <Title size="large" :color="titleColor" :style="{ marginBottom: '30px', marginLeft: '18px' }">
             {{ info.title }}
         </Title>
         <div class="page-desc">

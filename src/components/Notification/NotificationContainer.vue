@@ -25,12 +25,7 @@ function handleRemove(key: string) {
                 :class="`animal-notification__position--${group.position}`"
                 :data-position="group.position"
             >
-                <NotificationView
-                    v-for="item in group.items"
-                    :key="item.key"
-                    :item="item"
-                    @remove="handleRemove"
-                />
+                <NotificationView v-for="item in group.items" :key="item.key" :item="item" @remove="handleRemove" />
             </div>
         </template>
     </div>

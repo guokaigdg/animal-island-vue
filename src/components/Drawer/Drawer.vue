@@ -15,7 +15,10 @@ defineSlots<{
     default?: () => unknown;
     footer?: () => unknown;
 }>();
-const slots = useSlots();
+const slots = useSlots() as {
+    default?: () => unknown;
+    footer?: () => unknown;
+};
 
 const dialogRef = ref<HTMLDivElement | null>(null);
 const previouslyFocused = ref<HTMLElement | null>(null);
@@ -251,29 +254,26 @@ const titleId = `${idBase}-title`;
                 class="animal-drawer__mask"
                 :class="{ 'animal-drawer__mask--open': open }"
                 :style="maskStyle"
-                @click="handleMaskClick"
                 :aria-hidden="!open"
+                @click="handleMaskClick"
             >
                 <div
                     ref="dialogRef"
                     :class="panelClass"
                     :style="panelStyle"
-                    @click="handleContentClick"
                     role="dialog"
                     aria-modal="true"
                     :aria-labelledby="title ? titleId : undefined"
                     :aria-hidden="!open"
                     :inert="!open"
                     tabindex="-1"
+                    @click="handleContentClick"
                 >
                     <div v-if="title" class="animal-drawer__header">
-                        <div class="animal-drawer__title" :id="titleId">{{ title }}</div>
-                        <button
-                            type="button"
-                            class="animal-drawer__close"
-                            @click="emit('close')"
-                            aria-label="关闭"
-                        >
+                        <div :id="titleId" class="animal-drawer__title">
+                            {{ title }}
+                        </div>
+                        <button type="button" class="animal-drawer__close" aria-label="关闭" @click="emit('close')">
                             ×
                         </button>
                     </div>
@@ -281,7 +281,9 @@ const titleId = `${idBase}-title`;
                         <slot />
                     </div>
                     <div v-if="footer || slots.footer" class="animal-drawer__footer">
-                        <slot name="footer">{{ footer }}</slot>
+                        <slot name="footer">
+                            {{ footer }}
+                        </slot>
                     </div>
                 </div>
             </div>

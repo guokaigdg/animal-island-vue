@@ -1,5 +1,14 @@
 <script setup lang="ts">
-import { sectionStyle, sectionTitleStyle, tagStyle, labelStyle, demoBodyStyle, demoDashedBoxStyle, ApiTable, CodeBlock } from '../tools';
+import {
+    sectionStyle,
+    sectionTitleStyle,
+    tagStyle,
+    labelStyle,
+    demoBodyStyle,
+    demoDashedBoxStyle,
+    ApiTable,
+    CodeBlock,
+} from '../tools';
 import type { ApiRow } from '../tools';
 import { Cursor } from '../../src';
 
@@ -36,12 +45,11 @@ import { Cursor } from 'animal-island-vue';
 
 <template>
     <div :style="sectionStyle">
-        <div :style="sectionTitleStyle">
-            Cursor <span :style="tagStyle">光标</span>
-        </div>
+        <div :style="sectionTitleStyle">Cursor <span :style="tagStyle">光标</span></div>
         <p :style="labelStyle">
-            Cursor 组件通过 CSS cursor 属性将子元素的鼠标光标替换为自定义手指图标。
-            默认 <code>forceAll=true</code> 全覆盖所有后代；设置 <code>forceAll=false</code> 可保留 a/button 的 pointer 和输入框的 text 语义。
+            Cursor 组件通过 CSS cursor 属性将子元素的鼠标光标替换为自定义手指图标。 默认
+            <code>forceAll=true</code> 全覆盖所有后代；设置 <code>forceAll=false</code> 可保留 a/button 的 pointer
+            和输入框的 text 语义。
         </p>
         <div :style="demoBodyStyle">
             <div :style="labelStyle">forceAll=true（默认）：全覆盖</div>
@@ -62,7 +70,15 @@ import { Cursor } from 'animal-island-vue';
                     }"
                 >
                     <div>鼠标移入此区域，交互元素恢复语义光标</div>
-                    <div :style="{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center' }">
+                    <div
+                        :style="{
+                            display: 'flex',
+                            gap: '16px',
+                            flexWrap: 'wrap',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }"
+                    >
                         <a href="#" @click.prevent>链接 (pointer)</a>
                         <button type="button">按钮 (pointer)</button>
                         <button type="button" disabled>禁用 (not-allowed)</button>

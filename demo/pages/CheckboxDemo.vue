@@ -57,15 +57,20 @@ const value = ref(['beach']);
 
 <template>
     <div :style="sectionStyle">
-        <div :style="sectionTitleStyle">
-            Checkbox <span :style="tagStyle">基础用法</span>
-        </div>
+        <div :style="sectionTitleStyle">Checkbox <span :style="tagStyle">基础用法</span></div>
 
         <div :style="labelStyle">默认水平排列（受控）</div>
         <div :style="{ marginBottom: '8px', fontSize: '13px', color: '#a08060' }">
             已选中:
             <span :style="{ color: '#19c8b9', fontWeight: 600 }">
-                {{ selected1.length > 0 ? islandOptions.filter(o => selected1.includes(o.value)).map(o => o.label).join('、') : '无' }}
+                {{
+                    selected1.length > 0
+                        ? islandOptions
+                              .filter((o) => selected1.includes(o.value))
+                              .map((o) => o.label)
+                              .join('、')
+                        : '无'
+                }}
             </span>
         </div>
         <div :style="demoBox">

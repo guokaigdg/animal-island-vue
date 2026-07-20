@@ -25,7 +25,7 @@ const props = withDefaults(
         showHeader: true,
         loading: false,
         emptyText: '暂无数据',
-    },
+    }
 );
 
 defineSlots<{
@@ -37,7 +37,7 @@ defineSlots<{
 function getRowKey(record: T, index: number): string {
     if (typeof props.rowKey === 'function') return props.rowKey(record);
     const v = (record as TableRecord)[props.rowKey];
-    return v != null ? String(v) : String(index);
+    return v !== null && v !== undefined ? String(v) : String(index);
 }
 
 function getRowClassName(record: T, index: number): string {
@@ -59,11 +59,7 @@ function cellAlign(c: TableColumn<T>): CSSProperties['textAlign'] {
     return c.align ?? 'left';
 }
 
-function renderCustom(
-    col: TableColumn<T>,
-    record: T,
-    index: number,
-): VNode | string | number | null {
+function renderCustom(col: TableColumn<T>, record: T, index: number): VNode | string | number | null {
     if (!col.render) return null;
     const value = col.dataIndex ? (record as TableRecord)[col.dataIndex] : undefined;
     return col.render(value, record, index);
@@ -78,10 +74,7 @@ const wrapperStyle = computed<CSSProperties>(() => ({
 
 <template>
     <div class="animal-table-wrapper" :style="wrapperStyle" v-bind="attrs">
-        <table
-            class="animal-table"
-            :class="{ 'animal-table--loading': loading }"
-        >
+        <table class="animal-table" :class="{ 'animal-table--loading': loading }">
             <thead v-if="showHeader" class="animal-table__head">
                 <tr class="animal-table__head-row">
                     <th
@@ -95,17 +88,16 @@ const wrapperStyle = computed<CSSProperties>(() => ({
                         }"
                     >
                         <component :is="typeof col.title === 'function' ? col.title : 'span'">
-                            <template v-if="typeof col.title !== 'function'">{{ col.title }}</template>
+                            <template v-if="typeof col.title !== 'function'">
+                                {{ col.title }}
+                            </template>
                         </component>
                     </th>
                 </tr>
             </thead>
             <tbody class="animal-table__body">
                 <tr v-if="dataSource.length === 0">
-                    <td
-                        :colspan="columns.length || 1"
-                        class="animal-table__empty-cell"
-                    >
+                    <td :colspan="columns.length || 1" class="animal-table__empty-cell">
                         <div class="animal-table__empty">
                             <slot name="empty">
                                 <svg viewBox="0 0 24 24" width="48" height="48" class="animal-table__empty-icon">
@@ -312,11 +304,22 @@ const wrapperStyle = computed<CSSProperties>(() => ({
 }
 
 @keyframes animal-table-spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 @keyframes animal-table-dash {
-    0% { stroke-dasharray: 1, 150; stroke-dashoffset: 0; }
-    50% { stroke-dasharray: 90, 150; stroke-dashoffset: -35; }
-    100% { stroke-dasharray: 90, 150; stroke-dashoffset: -124; }
+    0% {
+        stroke-dasharray: 1, 150;
+        stroke-dashoffset: 0;
+    }
+    50% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -35;
+    }
+    100% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -124;
+    }
 }
 </style>

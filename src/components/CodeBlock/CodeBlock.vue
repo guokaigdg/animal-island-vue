@@ -22,15 +22,16 @@ const COLORS = {
     default: '#e8d5bc',
 };
 
-interface Token { start: number; end: number; color: string; }
+interface Token {
+    start: number;
+    end: number;
+    color: string;
+}
 
 function tokenize(code: string): Token[] {
     const tokens: Token[] = [];
     const add = (regex: RegExp, color: string) => {
-        const re = new RegExp(
-            regex.source,
-            regex.flags.includes('g') ? regex.flags : regex.flags + 'g',
-        );
+        const re = new RegExp(regex.source, regex.flags.includes('g') ? regex.flags : regex.flags + 'g');
         let m: RegExpExecArray | null;
         while ((m = re.exec(code)) !== null) {
             tokens.push({ start: m.index, end: m.index + m[0].length, color });
@@ -47,14 +48,14 @@ function tokenize(code: string): Token[] {
     add(/\/?>/g, COLORS.jsx);
     add(
         /\b(React|useState|useEffect|useCallback|useMemo|useRef|useContext|useReducer|useLayoutEffect|useImperativeHandle|useDebugValue|createContext|createElement|cloneElement|Fragment|Suspense|lazy|memo|forwardRef|useId|FC|ReactNode|ReactElement|CSSProperties|ref|reactive|computed|watch|defineComponent|defineProps|defineEmits|onMounted|onBeforeUnmount)\b/g,
-        COLORS.react,
+        COLORS.react
     );
     add(/\b(true|false)\b/g, COLORS.keyword);
     add(/\b(null|undefined|void|NaN|Infinity)\b/gi, COLORS.keyword);
     add(/\b\d+\.?\d*\b/g, COLORS.number);
     add(
         /\b(import|from|as|export|default|const|let|var|function|return|if|else|for|while|switch|case|break|continue|try|catch|throw|finally|new|typeof|instanceof|async|await|type|interface)\b/g,
-        COLORS.keyword,
+        COLORS.keyword
     );
     add(/\b[A-Z][a-zA-Z0-9_$]*\b/g, COLORS.component);
     add(/\b[a-z][a-zA-Z0-9_$]*\s*(?=\()/g, COLORS.func);
@@ -66,7 +67,10 @@ function tokenize(code: string): Token[] {
     return tokens;
 }
 
-interface Segment { text: string; color: string; }
+interface Segment {
+    text: string;
+    color: string;
+}
 
 const segments = computed<Segment[]>(() => {
     const code = props.code;
@@ -89,7 +93,7 @@ const segments = computed<Segment[]>(() => {
         v-for="(seg, i) in segments"
         :key="i"
         :style="{ color: seg.color }"
-    >{{ seg.text }}</span></pre>
+  >{{ seg.text }}</span></pre>
 </template>
 
 <style lang="less" scoped>

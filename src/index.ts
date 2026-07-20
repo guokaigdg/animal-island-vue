@@ -44,28 +44,13 @@ export { Switch } from './components/Switch';
 export type { SwitchProps, SwitchSize } from './components/Switch';
 
 export { Checkbox } from './components/Checkbox';
-export type {
-    CheckboxProps,
-    CheckboxOption,
-    CheckboxSize,
-    CheckboxValue,
-} from './components/Checkbox';
+export type { CheckboxProps, CheckboxOption, CheckboxSize, CheckboxValue } from './components/Checkbox';
 
 export { Radio } from './components/Radio';
-export type {
-    RadioProps,
-    RadioOption,
-    RadioSize,
-    RadioValue,
-} from './components/Radio';
+export type { RadioProps, RadioOption, RadioSize, RadioValue } from './components/Radio';
 
 export { Tooltip } from './components/Tooltip';
-export type {
-    TooltipProps,
-    TooltipPlacement,
-    TooltipTrigger,
-    TooltipVariant,
-} from './components/Tooltip';
+export type { TooltipProps, TooltipPlacement, TooltipTrigger, TooltipVariant } from './components/Tooltip';
 
 export { Select } from './components/Select';
 export type { SelectProps, SelectOption } from './components/Select';

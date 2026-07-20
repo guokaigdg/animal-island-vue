@@ -12,8 +12,16 @@ import menuBgUrl from './img/menu_bg.svg';
 import homeBgUrl from './img/home_bg.webp';
 import guideLineUrl from './img/guide-bg-line.webp';
 
-interface MenuChild { key: string; label: string; isNew?: boolean }
-interface MenuItem { key: string; label: string; children?: MenuChild[] }
+interface MenuChild {
+    key: string;
+    label: string;
+    isNew?: boolean;
+}
+interface MenuItem {
+    key: string;
+    label: string;
+    children?: MenuChild[];
+}
 
 // ============================================
 // Menu config — 5 categories (与 React 版一致):
@@ -98,7 +106,9 @@ const activeKey = computed(() => {
 });
 const isHomePage = computed(() => activeKey.value === 'home');
 
-watch(isMobile, v => { if (!v) drawerOpen.value = false; });
+watch(isMobile, (v) => {
+    if (!v) drawerOpen.value = false;
+});
 watch(activeKey, () => {
     drawerOpen.value = false;
     mainRef.value?.scrollTo({ top: 0 });
@@ -112,8 +122,12 @@ function handleHomeNavigate(path: string) {
     loadingMounted.value = true;
     loadingActive.value = true;
     navigate(path);
-    window.setTimeout(() => { loadingActive.value = false; }, 2000);
-    window.setTimeout(() => { loadingMounted.value = false; }, 3500);
+    window.setTimeout(() => {
+        loadingActive.value = false;
+    }, 2000);
+    window.setTimeout(() => {
+        loadingMounted.value = false;
+    }, 3500);
 }
 
 // 包装为完整 url() 值，避免 url(v-bind(...)) 被 css minifier 解析失败
@@ -140,15 +154,26 @@ const menuBgImage = `url("${menuBgUrl}")`;
                 <nav class="menu-list">
                     <template v-for="item in MENU_ITEMS" :key="item.key">
                         <div v-if="item.children">
-                            <div class="cat-label">{{ item.label }}</div>
-                            <div v-for="child in item.children" :key="child.key" class="menu-item"
-                                :class="{ active: activeKey === child.key }" @click="handleNavigate(`/${child.key}`)">
+                            <div class="cat-label">
+                                {{ item.label }}
+                            </div>
+                            <div
+                                v-for="child in item.children"
+                                :key="child.key"
+                                class="menu-item"
+                                :class="{ active: activeKey === child.key }"
+                                @click="handleNavigate(`/${child.key}`)"
+                            >
                                 <span>{{ child.label }}</span>
                                 <span v-if="child.isNew" class="menu-badge">NEW</span>
                             </div>
                         </div>
-                        <div v-else class="menu-item" :class="{ active: activeKey === item.key }"
-                            @click="handleNavigate(`/${item.key}`)">
+                        <div
+                            v-else
+                            class="menu-item"
+                            :class="{ active: activeKey === item.key }"
+                            @click="handleNavigate(`/${item.key}`)"
+                        >
                             <span>{{ item.label }}</span>
                         </div>
                     </template>
@@ -173,10 +198,16 @@ const menuBgImage = `url("${menuBgUrl}")`;
                     <nav class="menu-list">
                         <template v-for="item in MENU_ITEMS" :key="item.key">
                             <div v-if="item.children">
-                                <div class="cat-label">{{ item.label }}</div>
-                                <div v-for="child in item.children" :key="child.key" class="menu-item"
+                                <div class="cat-label">
+                                    {{ item.label }}
+                                </div>
+                                <div
+                                    v-for="child in item.children"
+                                    :key="child.key"
+                                    class="menu-item"
                                     :class="{ active: activeKey === child.key }"
-                                    @click="handleNavigate(`/${child.key}`)">
+                                    @click="handleNavigate(`/${child.key}`)"
+                                >
                                     <span>{{ child.label }}</span>
                                     <span v-if="child.isNew" class="menu-badge">NEW</span>
                                 </div>
@@ -186,10 +217,14 @@ const menuBgImage = `url("${menuBgUrl}")`;
                 </aside>
             </template>
 
-            <main ref="mainRef" class="main" :style="{
-                padding: isMobile ? '16px' : '32px 40px',
-                paddingTop: isMobile ? '68px' : '32px',
-            }">
+            <main
+                ref="mainRef"
+                class="main"
+                :style="{
+                    padding: isMobile ? '16px' : '32px 40px',
+                    paddingTop: isMobile ? '68px' : '32px',
+                }"
+            >
                 <ComponentPage :active-key="activeKey" />
             </main>
 
@@ -218,7 +253,15 @@ const menuBgImage = `url("${menuBgUrl}")`;
     display: flex;
     height: 100dvh;
     overflow: hidden;
-    font-family: Nunito, 'Noto Sans SC', 'Zen Maru Gothic', -apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+    font-family:
+        Nunito,
+        'Noto Sans SC',
+        'Zen Maru Gothic',
+        -apple-system,
+        'PingFang SC',
+        'Hiragino Sans GB',
+        'Microsoft YaHei',
+        sans-serif;
     background-image: v-bind(contentBgImage);
     background-position: center;
     background-size: auto;
@@ -227,7 +270,7 @@ const menuBgImage = `url("${menuBgUrl}")`;
 
 .home-bg {
     background-image: v-bind(homeBgImage);
-    background-color: #7DC395;
+    background-color: #7dc395;
     background-position: 0 0;
     background-size: auto;
     background-repeat: repeat;
@@ -300,7 +343,7 @@ const menuBgImage = `url("${menuBgUrl}")`;
 }
 
 .menu-item.active {
-    background: #B7C6E5;
+    background: #b7c6e5;
     color: #fff;
 }
 
@@ -333,7 +376,6 @@ const menuBgImage = `url("${menuBgUrl}")`;
 }
 
 @keyframes badgePulse {
-
     0%,
     100% {
         transform: scale(1);

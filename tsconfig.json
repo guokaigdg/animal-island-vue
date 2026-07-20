@@ -20,6 +20,16 @@
         },
         "typeRoots": ["./node_modules/@types", "./src/types"]
     },
-    "include": ["src/**/*", "src/**/*.vue", "demo/**/*", "demo/**/*.vue", "docs/**/*", "docs/**/*.vue", "vite.config.ts", "vite.config.docs.ts"],
+    "include": [
+        "src/**/*",
+        "src/**/*.vue",
+        "demo/**/*",
+        "demo/**/*.vue",
+        "docs/**/*",
+        "docs/**/*.vue",
+        "vite.config.ts",
+        "vite.config.docs.ts",
+        "vitest.config.ts"
+    ],
     "exclude": ["node_modules", "dist", "docs-dist"]
 }

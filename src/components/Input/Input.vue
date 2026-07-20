@@ -42,9 +42,7 @@ defineSlots<{
     suffix?: () => unknown;
 }>();
 
-const showClear = computed(
-    () => props.allowClear && !!props.modelValue && !props.disabled,
-);
+const showClear = computed(() => props.allowClear && !!props.modelValue && !props.disabled);
 
 function handleInput(event: Event) {
     const value = (event.target as HTMLInputElement).value;
@@ -86,7 +84,9 @@ function handleClear() {
             class="animal-input__clear"
             :aria-label="clearAriaLabel"
             @click="handleClear"
-        >×</button>
+        >
+            ×
+        </button>
         <span v-if="suffix || $slots.suffix" class="animal-input__suffix">
             <slot name="suffix">{{ suffix }}</slot>
         </span>
@@ -139,8 +139,12 @@ function handleClear() {
         color: #a0936e;
         flex-shrink: 0;
     }
-    &__prefix { margin-right: 6px; }
-    &__suffix { margin-left: 6px; }
+    &__prefix {
+        margin-right: 6px;
+    }
+    &__suffix {
+        margin-left: 6px;
+    }
 
     &__clear {
         display: inline-flex;
@@ -188,11 +192,15 @@ function handleClear() {
     // Status
     &--error {
         border-color: @error-color;
-        &:hover { border-color: @error-color-hover; }
+        &:hover {
+            border-color: @error-color-hover;
+        }
     }
     &--warning {
         border-color: @warning-color;
-        &:hover { border-color: @warning-color-hover; }
+        &:hover {
+            border-color: @warning-color-hover;
+        }
     }
 
     // Disabled
@@ -202,14 +210,26 @@ function handleClear() {
         opacity: 0.6;
         cursor: not-allowed;
 
-        &:hover { border-color: @shadow-soft; }
+        &:hover {
+            border-color: @shadow-soft;
+        }
     }
 
     // Shadow (varies by size + status)
-    &--shadow.animal-input--small { box-shadow: 0 2px 0 0 @shadow-soft; }
-    &--shadow.animal-input--middle { box-shadow: 0 3px 0 0 @shadow-soft; }
-    &--shadow.animal-input--large { box-shadow: 0 4px 0 0 @shadow-soft; }
-    &--shadow.animal-input--error { box-shadow: 0 3px 0 0 @error-color-active; }
-    &--shadow.animal-input--warning { box-shadow: 0 3px 0 0 @warning-color-active; }
+    &--shadow.animal-input--small {
+        box-shadow: 0 2px 0 0 @shadow-soft;
+    }
+    &--shadow.animal-input--middle {
+        box-shadow: 0 3px 0 0 @shadow-soft;
+    }
+    &--shadow.animal-input--large {
+        box-shadow: 0 4px 0 0 @shadow-soft;
+    }
+    &--shadow.animal-input--error {
+        box-shadow: 0 3px 0 0 @error-color-active;
+    }
+    &--shadow.animal-input--warning {
+        box-shadow: 0 3px 0 0 @warning-color-active;
+    }
 }
 </style>

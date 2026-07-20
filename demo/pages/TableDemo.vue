@@ -45,11 +45,11 @@ const dataSource: Person[] = [
 ];
 
 const tagStyles: Record<string, { bg: string; color: string }> = {
-    '音乐': { bg: 'rgba(147, 112, 219, 0.15)', color: '#9370db' },
-    '运动': { bg: 'rgba(255, 140, 0, 0.15)', color: '#ff8c00' },
-    '唱歌': { bg: 'rgba(255, 99, 71, 0.15)', color: '#ff6347' },
-    '钓鱼': { bg: 'rgba(30, 144, 255, 0.15)', color: '#1e90ff' },
-    '画画': { bg: 'rgba(255, 105, 180, 0.15)', color: '#ff69b4' },
+    音乐: { bg: 'rgba(147, 112, 219, 0.15)', color: '#9370db' },
+    运动: { bg: 'rgba(255, 140, 0, 0.15)', color: '#ff8c00' },
+    唱歌: { bg: 'rgba(255, 99, 71, 0.15)', color: '#ff6347' },
+    钓鱼: { bg: 'rgba(30, 144, 255, 0.15)', color: '#1e90ff' },
+    画画: { bg: 'rgba(255, 105, 180, 0.15)', color: '#ff69b4' },
 };
 
 function hobbyStyle(hobby: string) {
@@ -98,12 +98,8 @@ const striped = ref(true);
 
 <template>
     <div :style="sectionStyle">
-        <div :style="sectionTitleStyle">
-            Table <span :style="tagStyle">表格</span>
-        </div>
-        <div :style="labelStyle">
-            数据表格组件，支持斑马纹、边框、加载状态等常用功能。
-        </div>
+        <div :style="sectionTitleStyle">Table <span :style="tagStyle">表格</span></div>
+        <div :style="labelStyle">数据表格组件，支持斑马纹、边框、加载状态等常用功能。</div>
 
         <div :style="{ marginBottom: '16px', display: 'flex', gap: '16px', flexWrap: 'wrap' }">
             <Button :type="striped ? 'primary' : 'default'" @click="striped = !striped">

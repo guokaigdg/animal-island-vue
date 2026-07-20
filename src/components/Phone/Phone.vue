@@ -31,7 +31,9 @@ const now = ref(new Date());
 let timer: ReturnType<typeof setInterval> | null = null;
 
 onMounted(() => {
-    timer = setInterval(() => { now.value = new Date(); }, 1000);
+    timer = setInterval(() => {
+        now.value = new Date();
+    }, 1000);
 });
 onBeforeUnmount(() => {
     if (timer) clearInterval(timer);
@@ -62,7 +64,8 @@ const iconStyleFor = (app: AppDef): CSSProperties => ({
                         <div class="animal-phone__topbar">
                             <span class="animal-phone__icon animal-phone__icon--wifi" />
                             <div class="animal-phone__time">
-                                {{ display.hours }}<span class="animal-phone__blink">:</span>{{ display.minutes }}{{ display.ampm }}
+                                {{ display.hours }}<span class="animal-phone__blink">:</span>{{ display.minutes
+                                }}{{ display.ampm }}
                             </div>
                             <span class="animal-phone__icon animal-phone__icon--loc" />
                         </div>
@@ -243,24 +246,47 @@ const iconStyleFor = (app: AppDef): CSSProperties => ({
 }
 
 @keyframes animal-phone-grasswave {
-    0%, 100% { background-position: 0% 0%; }
-    50% { background-position: 0% 100%; }
+    0%,
+    100% {
+        background-position: 0% 0%;
+    }
+    50% {
+        background-position: 0% 100%;
+    }
 }
 
 @keyframes animal-phone-blink {
-    0%, 50% { opacity: 1; }
-    51%, 100% { opacity: 0; }
+    0%,
+    50% {
+        opacity: 1;
+    }
+    51%,
+    100% {
+        opacity: 0;
+    }
 }
 
 @keyframes animal-phone-bounce {
-    0% { transform: scale(1) rotate(0deg); }
-    50% { transform: scale(1.2) rotate(-5deg); }
-    100% { transform: scale(1.1) rotate(-4deg); }
+    0% {
+        transform: scale(1) rotate(0deg);
+    }
+    50% {
+        transform: scale(1.2) rotate(-5deg);
+    }
+    100% {
+        transform: scale(1.1) rotate(-4deg);
+    }
 }
 
 @keyframes animal-phone-bounce-offset {
-    0% { transform: scale(1) rotate(0deg) translateY(15px); }
-    50% { transform: scale(1.2) rotate(-5deg) translateY(15px); }
-    100% { transform: scale(1.1) rotate(-4deg) translateY(15px); }
+    0% {
+        transform: scale(1) rotate(0deg) translateY(15px);
+    }
+    50% {
+        transform: scale(1.2) rotate(-5deg) translateY(15px);
+    }
+    100% {
+        transform: scale(1.1) rotate(-4deg) translateY(15px);
+    }
 }
 </style>

@@ -31,8 +31,12 @@ const hovered = ref(false);
                 transition: 'transform 0.3s ease',
             }"
         />
-        <div class="title">{{ feature.title }}</div>
-        <div class="desc">{{ feature.desc }}</div>
+        <div class="title">
+            {{ feature.title }}
+        </div>
+        <div class="desc">
+            {{ feature.desc }}
+        </div>
     </Card>
 </template>
 

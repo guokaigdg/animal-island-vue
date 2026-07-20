@@ -46,10 +46,7 @@ describe('Typewriter', () => {
         const wrapper = mount(Typewriter, {
             props: { autoPlay: false },
             slots: {
-                default: () => [
-                    h('strong', { 'data-testid': 'bold' }, 'Bold'),
-                    'Tail',
-                ],
+                default: () => [h('strong', { 'data-testid': 'bold' }, 'Bold'), 'Tail'],
             },
         });
         const bold = wrapper.find('[data-testid="bold"]');

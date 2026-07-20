@@ -17,10 +17,7 @@ function stripWoffFallbackPlugin(): Plugin {
         transform(code, id) {
             if (!id.includes('@fontsource')) return null;
             if (!id.endsWith('.css') && !/\.css\?/.test(id)) return null;
-            const transformed = code.replace(
-                /,\s*url\([^)]+\.woff\)\s*format\(['"]woff['"]\)/g,
-                '',
-            );
+            const transformed = code.replace(/,\s*url\([^)]+\.woff\)\s*format\(['"]woff['"]\)/g, '');
             return transformed === code ? null : { code: transformed, map: null };
         },
         generateBundle(_, bundle) {
@@ -49,8 +46,7 @@ function emitStyleDtsPlugin(): Plugin {
             this.emitFile({
                 type: 'asset',
                 fileName: 'style.d.ts',
-                source:
-                    '// Side-effect only stylesheet entry. No runtime exports.\nexport {};\n',
+                source: '// Side-effect only stylesheet entry. No runtime exports.\nexport {};\n',
             });
         },
     };
@@ -109,11 +105,7 @@ export default defineConfig(({ mode }) => {
             rollupOptions: {
                 external: ['vue'],
                 onwarn(warning, defaultHandler) {
-                    if (
-                        warning.message?.includes(
-                            'overwrites a previously emitted file',
-                        )
-                    ) {
+                    if (warning.message?.includes('overwrites a previously emitted file')) {
                         return;
                     }
                     defaultHandler(warning);
@@ -123,8 +115,7 @@ export default defineConfig(({ mode }) => {
                           globals: { vue: 'Vue' },
                           // CJS 走聚合：所有样式合到 dist/index.css
                           assetFileNames: (assetInfo) => {
-                              if (assetInfo.name?.endsWith('.css'))
-                                  return 'index.css';
+                              if (assetInfo.name?.endsWith('.css')) return 'index.css';
                               return assetInfo.name!;
                           },
                       }
@@ -137,8 +128,7 @@ export default defineConfig(({ mode }) => {
                           entryFileNames: 'es/[name].js',
                           // CSS / 字体等资源沿用 [name] 默认文件名以避免哈希漂移
                           assetFileNames: (assetInfo) => {
-                              if (assetInfo.name?.endsWith('.css'))
-                                  return 'es/[name][extname]';
+                              if (assetInfo.name?.endsWith('.css')) return 'es/[name][extname]';
                               return 'files/[name][extname]';
                           },
                       },

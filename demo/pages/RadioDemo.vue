@@ -1,15 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { Radio } from '../../src';
-import {
-    sectionStyle,
-    sectionTitleStyle,
-    tagStyle,
-    labelStyle,
-    demoBoxStyle,
-    ApiTable,
-    CodeBlock,
-} from '../tools';
+import { sectionStyle, sectionTitleStyle, tagStyle, labelStyle, demoBoxStyle, ApiTable, CodeBlock } from '../tools';
 import type { ApiRow } from '../tools';
 
 const RADIO_API: ApiRow[] = [
@@ -71,15 +63,13 @@ const value = ref('spring');
 
 <template>
     <div :style="sectionStyle">
-        <div :style="sectionTitleStyle">
-            Radio <span :style="tagStyle">单选框</span>
-        </div>
+        <div :style="sectionTitleStyle">Radio <span :style="tagStyle">单选框</span></div>
 
         <div :style="labelStyle">水平排列（受控）— 支持方向键 ↑↓←→ 切换</div>
         <div :style="{ marginBottom: '8px', fontSize: '13px', color: '#a08060' }">
             已选中:
             <span :style="{ color: '#19c8b9', fontWeight: 600 }">
-                {{ seasonOptions.find(o => o.value === selected1)?.label ?? '无' }}
+                {{ seasonOptions.find((o) => o.value === selected1)?.label ?? '无' }}
             </span>
         </div>
         <div :style="demoBoxStyle">
@@ -88,12 +78,7 @@ const value = ref('spring');
 
         <div :style="labelStyle">垂直排列 + 含禁用选项</div>
         <div :style="demoBoxStyle">
-            <Radio
-                v-model="selected2"
-                :options="fruitOptions"
-                direction="vertical"
-                :style="{ gap: '12px' }"
-            />
+            <Radio v-model="selected2" :options="fruitOptions" direction="vertical" :style="{ gap: '12px' }" />
         </div>
 
         <div :style="labelStyle">小尺寸</div>
@@ -115,7 +100,7 @@ const value = ref('spring');
         <div :style="{ marginBottom: '8px', fontSize: '13px', color: '#a08060' }">
             已选中:
             <span :style="{ color: '#19c8b9', fontWeight: 600 }">
-                {{ timeOptions.find(o => o.value === selected3)?.label ?? '无' }}
+                {{ timeOptions.find((o) => o.value === selected3)?.label ?? '无' }}
             </span>
         </div>
         <div :style="demoBoxStyle">

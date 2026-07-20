@@ -39,7 +39,14 @@
         "build:demo": "vite build --config vite.config.docs.ts",
         "preview:docs": "vite preview --config vite.config.docs.ts",
         "test": "vitest",
+        "test:run": "vitest run",
+        "test:report": "vitest run --reporter=./scripts/vitest-table-reporter.mjs --reporter=default",
         "typecheck": "vue-tsc --noEmit",
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix",
+        "format": "prettier --write .",
+        "format:check": "prettier --check .",
+        "ci": "npm run format:check && npm run lint && npm run test:run && npm run build",
         "prepublishOnly": "npm run build"
     },
     "peerDependencies": {
@@ -50,19 +57,26 @@
         "@fontsource/nunito": "^5.2.7"
     },
     "devDependencies": {
+        "@eslint/js": "^9.0.0",
         "@laynezh/vite-plugin-lib-assets": "^2.1.3",
         "@types/node": "^25.5.2",
         "@vitejs/plugin-vue": "^6.0.0",
         "@vue/test-utils": "^2.4.6",
+        "eslint": "^9.0.0",
+        "eslint-plugin-vue": "^9.28.0",
         "gh-pages": "^6.3.0",
+        "globals": "^15.0.0",
         "jsdom": "^25.0.1",
         "less": "^4.6.4",
         "modern-screenshot": "^4.6.0",
+        "prettier": "^3.4.0",
         "typescript": "^5.7.3",
+        "typescript-eslint": "^8.0.0",
         "vite": "^7.3.2",
         "vite-plugin-dts": "^4.5.4",
         "vitest": "^2.1.8",
         "vue": "^3.5.13",
+        "vue-eslint-parser": "^9.4.3",
         "vue-tsc": "^2.2.0"
     },
     "keywords": [

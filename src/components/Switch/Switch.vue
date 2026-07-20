@@ -65,9 +65,9 @@ function handleKeyDown(e: KeyboardEvent) {
             'animal-switch--disabled': disabled,
             'animal-switch--loading': loading,
         }"
+        v-bind="attrs"
         @click="handleClick"
         @keydown="handleKeyDown"
-        v-bind="attrs"
     >
         <span class="animal-switch__handle">
             <span v-if="loading" class="animal-switch__spinner" />
@@ -158,8 +158,13 @@ function handleKeyDown(e: KeyboardEvent) {
             left: calc(100% - 24px);
             border-color: @success-color;
         }
-        .animal-switch__inner { padding: 0 28px 0 8px; }
-        .animal-switch__spinner { border-color: @success-color; border-right-color: transparent; }
+        .animal-switch__inner {
+            padding: 0 28px 0 8px;
+        }
+        .animal-switch__spinner {
+            border-color: @success-color;
+            border-right-color: transparent;
+        }
     }
 
     // ---------- Size: small ----------
@@ -175,8 +180,13 @@ function handleKeyDown(e: KeyboardEvent) {
         &.animal-switch--checked .animal-switch__handle {
             left: calc(100% - 16px);
         }
-        .animal-switch__inner { padding: 0 6px 0 20px; font-size: 9px; }
-        &.animal-switch--checked .animal-switch__inner { padding: 0 20px 0 6px; }
+        .animal-switch__inner {
+            padding: 0 6px 0 20px;
+            font-size: 9px;
+        }
+        &.animal-switch--checked .animal-switch__inner {
+            padding: 0 20px 0 6px;
+        }
     }
 
     // ---------- Disabled ----------
@@ -193,6 +203,8 @@ function handleKeyDown(e: KeyboardEvent) {
 }
 
 @keyframes animal-switch-spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 </style>

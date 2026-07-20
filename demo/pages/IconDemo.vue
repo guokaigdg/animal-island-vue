@@ -21,9 +21,7 @@ import { Icon } from 'animal-island-vue';
 
 <template>
     <div :style="sectionStyle">
-        <div :style="sectionTitleStyle">
-            Icon <span :style="tagStyle">10 icons</span>
-        </div>
+        <div :style="sectionTitleStyle">Icon <span :style="tagStyle">10 icons</span></div>
         <div :style="labelStyle">基础用法</div>
         <div :style="{ display: 'flex', gap: '20px', flexWrap: 'wrap', alignItems: 'center' }">
             <Icon name="icon-miles" :size="32" />
@@ -61,7 +59,14 @@ import { Icon } from 'animal-island-vue';
             >
                 <Icon :name="icon.name" :size="32" />
                 <span :style="{ fontSize: '14px', color: '#725d42' }">{{ icon.label }}</span>
-                <span :style="{ marginLeft: 'auto', fontSize: '12px', color: '#a0936e', fontFamily: `'SF Mono', 'Fira Code', Consolas, monospace` }">
+                <span
+                    :style="{
+                        marginLeft: 'auto',
+                        fontSize: '12px',
+                        color: '#a0936e',
+                        fontFamily: `'SF Mono', 'Fira Code', Consolas, monospace`,
+                    }"
+                >
                     {{ icon.name }}
                 </span>
             </div>

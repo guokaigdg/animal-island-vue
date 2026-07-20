@@ -17,9 +17,7 @@ const time = ref('10:00 AM');
 const venue = ref('彩虹岛 · 樱花广场');
 const address = ref('动物之森 · 无人岛 · K.K. 演奏台前');
 const title = ref('Wedding Invitation');
-const message = ref(
-    '哎呀，恭喜恭喜！我们要在小岛上举办婚礼啦~ 诚挚邀请您一同前来见证这个被花瓣和音符包围的日子！',
-);
+const message = ref('哎呀，恭喜恭喜！我们要在小岛上举办婚礼啦~ 诚挚邀请您一同前来见证这个被花瓣和音符包围的日子！');
 const showLotteryNumber = ref(true);
 const lotteryNumber = ref('0001');
 const lotteryLabel = ref('LUCKY NUMBER');
@@ -36,7 +34,12 @@ const WEDDING_API: ApiRow[] = [
     { prop: 'venue', desc: '婚礼地点', type: 'string', defaultVal: '彩虹岛 · 樱花广场' },
     { prop: 'address', desc: '详细地址', type: 'string', defaultVal: '-' },
     { prop: 'title', desc: '英文主标题', type: 'string', defaultVal: 'Wedding Invitation' },
-    { prop: 'subtitle', desc: '中文副标题（默认渲染 wedding.PNG 标题图，可通过 #subtitle 插槽自定义）', type: 'string', defaultVal: '<img src={wedding.PNG} />' },
+    {
+        prop: 'subtitle',
+        desc: '中文副标题（默认渲染 wedding.PNG 标题图，可通过 #subtitle 插槽自定义）',
+        type: 'string',
+        defaultVal: '<img src={wedding.PNG} />',
+    },
     { prop: 'message', desc: '邀请正文（也可通过 #message 插槽传入富内容）', type: 'string', defaultVal: '-' },
     { prop: 'showLotteryNumber', desc: '是否显示底部抽奖号码区', type: 'boolean', defaultVal: 'true' },
     { prop: 'lotteryNumber', desc: '抽奖号码', type: 'string', defaultVal: '0001' },
@@ -47,12 +50,22 @@ const WEDDING_API: ApiRow[] = [
 ];
 
 const WEDDING_REF_API: ApiRow[] = [
-    { prop: 'exportAsImage', desc: '导出为 PNG 并触发下载', type: '(filename?: string) => Promise<void>', defaultVal: '-' },
+    {
+        prop: 'exportAsImage',
+        desc: '导出为 PNG 并触发下载',
+        type: '(filename?: string) => Promise<void>',
+        defaultVal: '-',
+    },
     { prop: 'getElement', desc: '获取请柬根 DOM', type: '() => HTMLDivElement | null', defaultVal: '-' },
 ];
 
 const EXPORT_BTN_API: ApiRow[] = [
-    { prop: 'target', desc: '关联的 WeddingInvitation 实例（template ref）', type: 'WeddingInvitationExpose | null', defaultVal: '-' },
+    {
+        prop: 'target',
+        desc: '关联的 WeddingInvitation 实例（template ref）',
+        type: 'WeddingInvitationExpose | null',
+        defaultVal: '-',
+    },
     { prop: 'filename', desc: '文件名（不含扩展名）', type: 'string', defaultVal: 'wedding-invitation' },
     { prop: 'class', desc: '自定义类名', type: 'string', defaultVal: '-' },
     { prop: 'style', desc: '自定义样式', type: 'CSSProperties | string', defaultVal: '-' },
@@ -91,9 +104,7 @@ const cardRef = useTemplateRef<WeddingInvitationExpose>('cardRef');
 
 <template>
     <div :style="sectionStyle">
-        <div :style="sectionTitleStyle">
-            WeddingInvitation <span :style="tagStyle">婚礼请柬</span>
-        </div>
+        <div :style="sectionTitleStyle">WeddingInvitation <span :style="tagStyle">婚礼请柬</span></div>
         <div :style="labelStyle">
             动森风格婚礼请柬，定位为「设计 → 导出图片 → 分享 / 打印」。组件本身只渲染卡面，导出按钮通过 ref 在外部触发。
         </div>
@@ -110,7 +121,7 @@ const cardRef = useTemplateRef<WeddingInvitationExpose>('cardRef');
                 flexWrap: 'wrap',
             }"
         >
-            <div style="display: flex; flex-direction: column; align-items: center; gap: 16px;">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 16px">
                 <WeddingInvitation
                     ref="cardRef"
                     :bride-name="brideName"
@@ -136,17 +147,15 @@ const cardRef = useTemplateRef<WeddingInvitationExpose>('cardRef');
                     min-width: 365px;
                     padding: 20px;
                     border-radius: 20px;
-                    background: #F8F4E8;
+                    background: #f8f4e8;
                     display: flex;
                     flex-direction: column;
                     gap: 12px;
                 "
             >
-                <div style="font-size: 14px; font-weight: 700; color: #725d42;">
-                    编辑请柬
-                </div>
+                <div style="font-size: 14px; font-weight: 700; color: #725d42">编辑请柬</div>
 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px">
                     <div class="field">
                         <span class="field__label">新娘</span>
                         <Input v-model="brideName" />
@@ -162,7 +171,7 @@ const cardRef = useTemplateRef<WeddingInvitationExpose>('cardRef');
                     <Input v-model="title" />
                 </div>
 
-                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px">
                     <div class="field">
                         <span class="field__label">日期</span>
                         <Input v-model="date" />
@@ -207,22 +216,13 @@ const cardRef = useTemplateRef<WeddingInvitationExpose>('cardRef');
                     />
                 </div>
 
-                <div
-                    style="
-                        display: flex;
-                        align-items: center;
-                        justify-content: space-between;
-                        padding: 4px 0;
-                    "
-                >
-                    <span style="font-size: 12px; color: #725d42; font-weight: 600;">
-                        显示抽奖券
-                    </span>
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 4px 0">
+                    <span style="font-size: 12px; color: #725d42; font-weight: 600"> 显示抽奖券 </span>
                     <Switch v-model="showLotteryNumber" />
                 </div>
 
                 <template v-if="showLotteryNumber">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px">
                         <div class="field">
                             <span class="field__label">抽奖号码</span>
                             <Input v-model="lotteryNumber" />
@@ -238,11 +238,8 @@ const cardRef = useTemplateRef<WeddingInvitationExpose>('cardRef');
                     </div>
                 </template>
 
-                <div style="margin-top: 4px; display: flex; justify-content: center;">
-                    <WeddingInvitationExportButton
-                        :target="cardRef"
-                        :filename="`${brideName}-${groomName}-请柬`"
-                    />
+                <div style="margin-top: 4px; display: flex; justify-content: center">
+                    <WeddingInvitationExportButton :target="cardRef" :filename="`${brideName}-${groomName}-请柬`" />
                 </div>
             </div>
         </div>

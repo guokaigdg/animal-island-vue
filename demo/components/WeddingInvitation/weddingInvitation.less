@@ -95,10 +95,26 @@
         pointer-events: none;
         filter: drop-shadow(0 2px 3px rgba(61, 52, 40, 0.15));
 
-        &--tl { top: -10px; left: -10px; transform: rotate(-25deg); }
-        &--tr { top: -10px; right: -10px; transform: rotate(115deg) scaleX(-1); }
-        &--bl { bottom: -10px; left: -10px; transform: rotate(-115deg); }
-        &--br { bottom: -10px; right: -10px; transform: rotate(25deg) scaleX(-1); }
+        &--tl {
+            top: -10px;
+            left: -10px;
+            transform: rotate(-25deg);
+        }
+        &--tr {
+            top: -10px;
+            right: -10px;
+            transform: rotate(115deg) scaleX(-1);
+        }
+        &--bl {
+            bottom: -10px;
+            left: -10px;
+            transform: rotate(-115deg);
+        }
+        &--br {
+            bottom: -10px;
+            right: -10px;
+            transform: rotate(25deg) scaleX(-1);
+        }
     }
 
     // ---------- 飘散装饰 ----------
@@ -109,11 +125,31 @@
         filter: drop-shadow(0 2px 2px rgba(61, 52, 40, 0.12));
         animation: animal-wedding-float 4.5s ease-in-out infinite;
 
-        &--f1 { top: 60px; right: 38px; animation-delay: 0s; }
-        &--f2 { top: 130px; left: 30px; animation-delay: 0.6s; }
-        &--f3 { bottom: calc(var(--lottery-h) + 24px); right: 26px; animation-delay: 1.2s; }
-        &--s1 { top: 100px; right: 80px; animation-delay: 0.3s; }
-        &--s2 { bottom: calc(var(--lottery-h) - 4px); left: 60px; animation-delay: 1s; }
+        &--f1 {
+            top: 60px;
+            right: 38px;
+            animation-delay: 0s;
+        }
+        &--f2 {
+            top: 130px;
+            left: 30px;
+            animation-delay: 0.6s;
+        }
+        &--f3 {
+            bottom: calc(var(--lottery-h) + 24px);
+            right: 26px;
+            animation-delay: 1.2s;
+        }
+        &--s1 {
+            top: 100px;
+            right: 80px;
+            animation-delay: 0.3s;
+        }
+        &--s2 {
+            bottom: calc(var(--lottery-h) - 4px);
+            left: 60px;
+            animation-delay: 1s;
+        }
     }
 
     // ---------- 顶部 banner ----------
@@ -458,7 +494,8 @@
 }
 
 @keyframes animal-wedding-float {
-    0%, 100% {
+    0%,
+    100% {
         transform: translateY(0) rotate(0deg);
     }
     50% {
@@ -467,8 +504,17 @@
 }
 
 @keyframes animal-wedding-heartbeat {
-    0%, 100% { transform: scale(1); }
-    25% { transform: scale(1.12); }
-    50% { transform: scale(1); }
-    75% { transform: scale(1.08); }
+    0%,
+    100% {
+        transform: scale(1);
+    }
+    25% {
+        transform: scale(1.12);
+    }
+    50% {
+        transform: scale(1);
+    }
+    75% {
+        transform: scale(1.08);
+    }
 }

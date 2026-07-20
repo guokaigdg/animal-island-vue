@@ -45,7 +45,7 @@ export const WEDDING_FONT_FAMILY =
 const buildFontFaceCss = (urlResolver: (url: string) => string): string =>
     WEDDING_FONTS.map(
         ({ family, weight, url }) =>
-            `@font-face{font-family:'${family}';font-style:normal;font-weight:${weight};font-display:swap;src:url('${urlResolver(url)}') format('woff2');}`,
+            `@font-face{font-family:'${family}';font-style:normal;font-weight:${weight};font-display:swap;src:url('${urlResolver(url)}') format('woff2');}`
     ).join('\n');
 
 // ---------- 网页用：模块加载即把指向 woff2 url 的 @font-face 注入 <head> ----------
@@ -105,16 +105,14 @@ export const prepareWeddingFontsForExport = (): Promise<string> => {
                 } catch (err) {
                     console.warn('[WeddingInvitation] 字体抓取失败：', url, err);
                 }
-            }),
+            })
         );
         try {
             await document.fonts?.ready;
         } catch {
             // 容错
         }
-        console.info(
-            `[WeddingInvitation] 字体已就绪：${dataUrlMap.size}/${WEDDING_FONTS.length}`,
-        );
+        console.info(`[WeddingInvitation] 字体已就绪：${dataUrlMap.size}/${WEDDING_FONTS.length}`);
         return buildFontFaceCss((u) => dataUrlMap.get(u) ?? u);
     })();
     return exportPrepPromise;
