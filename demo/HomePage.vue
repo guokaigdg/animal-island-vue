@@ -26,7 +26,11 @@ function openGithub() {
 
 const features = [
     { icon: nook1Url, title: 'Animal风格', desc: 'SVG 有机形状裁切，3D 按压按钮，温暖质朴的自然 UI 质感' },
-    { icon: shoppingUrl, title: '19 个组件', desc: 'Button / Input / Switch / Modal / Typewriter / Card / Collapse / Cursor / Divider / Time / Phone / Footer / Icon / Checkbox / Select / Tabs / CodeBlock / Loading / Table' },
+    {
+        icon: shoppingUrl,
+        title: '19 个组件',
+        desc: 'Button / Input / Switch / Modal / Typewriter / Card / Collapse / Cursor / Divider / Time / Phone / Footer / Icon / Checkbox / Select / Tabs / CodeBlock / Loading / Table',
+    },
     { icon: cameraUrl, title: '主题定制', desc: '基于 Less 变量 + CSS 自定义属性，40+ 设计令牌运行时换肤无需重新构建' },
     { icon: recipesUrl, title: '开箱即用', desc: 'ESM + CJS 双格式输出，TypeScript 类型声明完整' },
 ];
@@ -52,7 +56,7 @@ const components = [
     { key: 'loading', name: 'Loading', desc: '动森风格小岛加载动画' },
     { key: 'table', name: 'Table', desc: '泛型表格、悬浮动画、加载/空态' },
     { key: 'form', name: 'Form', desc: '完整校验、三种布局、命令式 API' },
-    ];
+];
 
 const installCode = `// 使用 npm 安装\nnpm install animal-island-vue`;
 const usageCode = `// 1. 引入组件\nimport { Button, Modal, Switch } from 'animal-island-vue';\nimport 'animal-island-vue/style';\n\n<template>\n    <Button>开始</Button>\n</template>`;
@@ -64,7 +68,10 @@ const HL: { re: RegExp; color: string }[] = [
     { re: /(\/\/.*$|\/\*[\s\S]*?\*\/)/gm, color: '#6b5e50' },
     { re: /("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|`(?:[^`\\]|\\.)*`)/g, color: '#a8d4a0' },
     { re: /(<\/?[\w.]+|\/?>)/g, color: '#f0a870' },
-    { re: /\b(import|from|const|let|var|function|return|export|default|true|false|null|undefined)\b/g, color: '#d4a0e0' },
+    {
+        re: /\b(import|from|const|let|var|function|return|export|default|true|false|null|undefined)\b/g,
+        color: '#d4a0e0',
+    },
     { re: /\b(npm|yarn|pnpm)\b/g, color: '#f0a870' },
     { re: /(install|uninstall|run|add|remove)\b/g, color: '#a8d4a0' },
     { re: /(\{|\})/g, color: '#d4b896' },
@@ -75,7 +82,7 @@ const HL: { re: RegExp; color: string }[] = [
 ];
 
 function highlight(code: string): Seg[][] {
-    return code.split('\n').map(line => {
+    return code.split('\n').map((line) => {
         const segs: { start: number; end: number; color: string }[] = [];
         for (const t of HL) {
             const re = new RegExp(t.re.source, t.re.flags);
@@ -109,13 +116,16 @@ function highlight(code: string): Seg[][] {
         <!-- Hero -->
         <div class="hero">
             <div :class="isMobile ? 'hero-content-mobile' : 'hero-content'">
-                <div v-if="isMobile" style="text-align:center">
-                    <img :src="animalIconUrl" style="width:180px;height:112px" alt="logo" decoding="async" />
+                <div v-if="isMobile" style="text-align: center">
+                    <img :src="animalIconUrl" style="width: 180px; height: 112px" alt="logo" decoding="async" />
                 </div>
                 <div :class="isMobile ? 'hero-text-center' : 'hero-text'">
                     <h1 class="hero-title" :style="{ fontSize: isMobile ? '37px' : '60px' }">
-                        <template v-if="isMobile">Animal Island UI</template>
-                        <template v-else>Animal <br /> Island UI</template>
+                        <template v-if="isMobile"> Animal Island UI </template>
+                        <template v-else>
+                            Animal <br />
+                            Island UI
+                        </template>
                         <span class="hero-version">v0.1.0</span>
                     </h1>
                     <Typewriter :speed="60">
@@ -124,13 +134,11 @@ function highlight(code: string): Seg[][] {
                         </p>
                     </Typewriter>
                     <div class="hero-actions" :style="{ justifyContent: isMobile ? 'center' : 'flex-start' }">
-                        <Button type="primary" size="large" @click="emit('navigate', '/button')">
-                            开始使用 →
-                        </Button>
+                        <Button type="primary" size="large" @click="emit('navigate', '/button')"> 开始使用 → </Button>
                     </div>
                 </div>
-                <div v-if="!isMobile" style="text-align:center">
-                    <img :src="animalIconUrl" style="width:320px;height:200px" alt="logo" decoding="async" />
+                <div v-if="!isMobile" style="text-align: center">
+                    <img :src="animalIconUrl" style="width: 320px; height: 200px" alt="logo" decoding="async" />
                 </div>
             </div>
         </div>
@@ -145,7 +153,13 @@ function highlight(code: string): Seg[][] {
         >
             <span>向下滑动</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                <path d="M12 5v14M5 12l7 7 7-7" stroke="#FFF9E6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                <path
+                    d="M12 5v14M5 12l7 7 7-7"
+                    stroke="#FFF9E6"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                />
             </svg>
         </div>
 
@@ -171,8 +185,12 @@ function highlight(code: string): Seg[][] {
                     :style="{ padding: '16px 20px', cursor: 'pointer' }"
                     @click="emit('navigate', `/${c.key}`)"
                 >
-                    <div class="comp-name">{{ c.name }}</div>
-                    <div class="comp-desc">{{ c.desc }}</div>
+                    <div class="comp-name">
+                        {{ c.name }}
+                    </div>
+                    <div class="comp-desc">
+                        {{ c.desc }}
+                    </div>
                 </Card>
             </div>
         </div>
@@ -183,7 +201,9 @@ function highlight(code: string): Seg[][] {
         <div class="section" :style="{ padding: isMobile ? '32px 16px' : '48px 40px' }">
             <div class="section-title">安装</div>
             <div class="section-desc">一行命令即可安装</div>
-            <pre class="code-box"><template v-for="(line, li) in highlight(installCode)" :key="li"><span v-for="(seg, si) in line" :key="si" :style="seg.color ? { color: seg.color } : undefined">{{ seg.text }}</span><br v-if="li < highlight(installCode).length - 1" /></template></pre>
+            <pre
+                class="code-box"
+            ><template v-for="(line, li) in highlight(installCode)" :key="li"><span v-for="(seg, si) in line" :key="si" :style="seg.color ? { color: seg.color } : undefined">{{ seg.text }}</span><br v-if="li < highlight(installCode).length - 1" /></template></pre>
         </div>
 
         <Divider :style="{ width: isMobile ? '90%' : '800px', margin: '0 auto' }" />
@@ -192,7 +212,9 @@ function highlight(code: string): Seg[][] {
         <div class="section" :style="{ padding: isMobile ? '32px 16px' : '48px 40px' }">
             <div class="section-title">快速上手</div>
             <div class="section-desc">引入组件即可使用，样式自动加载</div>
-            <pre class="code-box"><template v-for="(line, li) in highlight(usageCode)" :key="li"><span v-for="(seg, si) in line" :key="si" :style="seg.color ? { color: seg.color } : undefined">{{ seg.text }}</span><br v-if="li < highlight(usageCode).length - 1" /></template></pre>
+            <pre
+                class="code-box"
+            ><template v-for="(line, li) in highlight(usageCode)" :key="li"><span v-for="(seg, si) in line" :key="si" :style="seg.color ? { color: seg.color } : undefined">{{ seg.text }}</span><br v-if="li < highlight(usageCode).length - 1" /></template></pre>
         </div>
 
         <Divider :style="{ width: isMobile ? '90%' : '800px', margin: '0 auto' }" />
@@ -201,7 +223,9 @@ function highlight(code: string): Seg[][] {
         <div class="section" :style="{ padding: isMobile ? '32px 16px' : '48px 40px' }">
             <div class="section-title">主题定制</div>
             <div class="section-desc">通过覆盖 CSS 自定义属性实现运行时换肤，无需重新构建</div>
-            <pre class="code-box"><template v-for="(line, li) in highlight(themeCode)" :key="li"><span v-for="(seg, si) in line" :key="si" :style="seg.color ? { color: seg.color } : undefined">{{ seg.text }}</span><br v-if="li < highlight(themeCode).length - 1" /></template></pre>
+            <pre
+                class="code-box"
+            ><template v-for="(line, li) in highlight(themeCode)" :key="li"><span v-for="(seg, si) in line" :key="si" :style="seg.color ? { color: seg.color } : undefined">{{ seg.text }}</span><br v-if="li < highlight(themeCode).length - 1" /></template></pre>
         </div>
 
         <!-- Footer -->
@@ -248,14 +272,25 @@ function highlight(code: string): Seg[][] {
     max-width: 880px;
     width: 100%;
 }
-.hero-text { text-align: left; }
-.hero-text-center { text-align: center; }
+.hero-text {
+    text-align: left;
+}
+.hero-text-center {
+    text-align: center;
+}
 
 .hero-title {
-    font-family: Nunito, 'Zen Maru Gothic', -apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+    font-family:
+        Nunito,
+        'Zen Maru Gothic',
+        -apple-system,
+        'PingFang SC',
+        'Hiragino Sans GB',
+        'Microsoft YaHei',
+        sans-serif;
     font-weight: 800;
     line-height: 1.1;
-    color: #FFF9E6;
+    color: #fff9e6;
     text-shadow: 0px 4px 1px rgba(0, 0, 0, 0.4);
     margin: 0 0 12px;
 }
@@ -294,9 +329,9 @@ function highlight(code: string): Seg[][] {
     gap: 4px;
     cursor: pointer;
     transition: opacity 0.3s ease;
-    color: #FFF9E6;
+    color: #fff9e6;
     font-size: 12px;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .section {
@@ -304,7 +339,14 @@ function highlight(code: string): Seg[][] {
     margin: 0 auto;
 }
 .section-title {
-    font-family: Nunito, 'Zen Maru Gothic', -apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+    font-family:
+        Nunito,
+        'Zen Maru Gothic',
+        -apple-system,
+        'PingFang SC',
+        'Hiragino Sans GB',
+        'Microsoft YaHei',
+        sans-serif;
     font-size: 24px;
     font-weight: 700;
     color: #725d42;
@@ -381,7 +423,14 @@ function highlight(code: string): Seg[][] {
 <style>
 /* 非 scoped：keyframes 需保持全局名称，否则内联 :style 中的 animation-name 无法匹配 */
 @keyframes bounce {
-    0%, 100% { transform: translateX(-50%) translateY(0); opacity: 1; }
-    50% { transform: translateX(-50%) translateY(-8px); opacity: 0.7; }
+    0%,
+    100% {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+    }
+    50% {
+        transform: translateX(-50%) translateY(-8px);
+        opacity: 0.7;
+    }
 }
 </style>

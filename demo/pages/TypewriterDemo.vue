@@ -1,7 +1,16 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { Button, Typewriter } from '../../src';
-import { sectionStyle, sectionTitleStyle, tagStyle, labelStyle, demoBodyStyle, demoDashedBoxStyle, ApiTable, CodeBlock } from '../tools';
+import {
+    sectionStyle,
+    sectionTitleStyle,
+    tagStyle,
+    labelStyle,
+    demoBodyStyle,
+    demoDashedBoxStyle,
+    ApiTable,
+    CodeBlock,
+} from '../tools';
 import type { ApiRow } from '../tools';
 
 const TYPEWRITER_API: ApiRow[] = [
@@ -38,21 +47,27 @@ const key = ref(0);
 
 <template>
     <div :style="sectionStyle">
-        <div :style="sectionTitleStyle">
-            Typewriter <span :style="tagStyle">打字机</span>
-        </div>
+        <div :style="sectionTitleStyle">Typewriter <span :style="tagStyle">打字机</span></div>
 
         <div :style="demoBodyStyle">
             <div>
                 <div :style="labelStyle">基础用法</div>
                 <div :style="{ ...demoDashedBoxStyle, marginBottom: '20px' }">
-                    <Typewriter :trigger="replayKey">你好，欢迎来到动物岛！今天的天气真不错呢～</Typewriter>
+                    <Typewriter :trigger="replayKey"> 你好，欢迎来到动物岛！今天的天气真不错呢～ </Typewriter>
                 </div>
             </div>
 
             <div>
                 <div :style="labelStyle">保留多行与富内容 (速度 40ms)</div>
-                <div :style="{ ...demoDashedBoxStyle, flexDirection: 'column', alignItems: 'flex-start', marginBottom: '20px', gap: '8px' }">
+                <div
+                    :style="{
+                        ...demoDashedBoxStyle,
+                        flexDirection: 'column',
+                        alignItems: 'flex-start',
+                        marginBottom: '20px',
+                        gap: '8px',
+                    }"
+                >
                     <Typewriter :speed="40" :trigger="replayKey">
                         <div>第一行：钓到石头了！</div>
                         <div>第二行：竟然连这种都能钓起来...</div>
@@ -62,7 +77,7 @@ const key = ref(0);
             </div>
 
             <div :style="rowStyle">
-                <Button type="primary" @click="replayKey++">重新播放</Button>
+                <Button type="primary" @click="replayKey++"> 重新播放 </Button>
             </div>
         </div>
 

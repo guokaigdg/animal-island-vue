@@ -75,7 +75,7 @@ describe('Collapse', () => {
                             'data-testid': 'ext',
                             onClick: () => (open.value = !open.value),
                         },
-                        'toggle',
+                        'toggle'
                     ),
                     h(Collapse, {
                         key: String(open.value),

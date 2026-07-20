@@ -40,9 +40,7 @@ const value = ref('');
 
 <template>
     <div :style="sectionStyle">
-        <div :style="sectionTitleStyle">
-            Input <span :style="tagStyle">3 sizes</span>
-        </div>
+        <div :style="sectionTitleStyle">Input <span :style="tagStyle">3 sizes</span></div>
         <div :style="demoBodyStyle">
             <div :style="labelStyle">shadow 阴影控制</div>
             <div :style="colStyle">

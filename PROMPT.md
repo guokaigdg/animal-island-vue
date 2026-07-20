@@ -18,35 +18,35 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 
 - **DELIVER A SINGLE SELF-CONTAINED `index.html` FILE** that the user can save to disk and **double-click to preview directly in any modern browser** — NO build step, NO npm install, NO bundler. The user is non-technical.
 - The HTML must use this CDN script inside `<head>` (Vue 3 global build — includes the in-browser template compiler so `template: \`...\`` strings work):
-  ```html
-  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
-  ```
+    ```html
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    ```
 - Write the page logic as a single plain `<script>` block at the bottom of `<body>`. NO Babel, NO `<script type="text/babel">`, NO JSX, NO `.vue` SFC files. Each library component is a plain options object with `props`, `emits`, `setup()` (or `data()`), and a `template: \`...\`` string. Use Vue 3's global API (`Vue.ref`, `Vue.reactive`, `Vue.computed`, `Vue.onMounted`, `Vue.watch`, etc.) — these are all attached to the global `Vue` object exposed by the global build.
 - Mount target: `<div id="app"></div>` inside `<body>`. Use `Vue.createApp(App).mount('#app');`.
 - Put ALL CSS inline in a single `<style>` block in `<head>` (design tokens on `:root`, then component classes). Do NOT depend on external CSS frameworks. Tailwind is forbidden in this output mode.
 - Inject the Modal SVG `<defs>` clip-path block (see Modal section) once at the top of `<body>` so `clip-path: url(#animal-modal-clip)` resolves.
 - Every value below is exact. Do NOT round, approximate, or substitute "close" colors.
 - The npm package `animal-island-vue` is NOT available via UMD CDN in this offline-HTML mode, so you must **hand-roll the library's components inline as Vue 3 components that mirror the real library's API** (component names, prop names, prop values, `v-model` semantics, slot names). **Always prefer the library API over raw HTML.** Concretely:
-  - At the top of the `<script>` block, define inline Vue components with the EXACT names the library exports: `Button`, `Input`, `Switch`, `Checkbox`, `Radio`, `Card`, `Title`, `Tabs`, `Collapse`, `Modal`, `Select`, `Tooltip`, `Loading`, `Table`, `Time`, `Divider`, `Footer`, `Phone`, `Cursor`, `Typewriter`, `Icon`, `CodeBlock`, `WeddingInvitation`. Each component must accept the documented props (e.g. `<Card color="default">`, `<Button type="primary" size="large">`, `<Title color="app-teal" size="large">`, `<Switch v-model="checked" />`).
-  - In the page (root `App` component), **compose the UI exclusively with these components in the `template` string** — do NOT write `<div class="card">` / `<button class="btn">` etc. inline. The page should read like real animal-island-vue usage.
-  - Only fall back to raw HTML (`<div>`, `<span>`, `<h1>`, `<img>`, layout helpers, page-specific decorations, app-specific widgets) when no library component covers the use case (e.g. page layout, header bar, two-column grid, custom illustration). In that case, still use the design tokens (`var(--text-body)`, `var(--bg-content)` …) instead of raw colors.
-  - Forbidden: native `<button>`, native `<input>`, native `<select>`, native checkbox/radio used as visible UI. They MUST be wrapped by the inline `Button` / `Input` / `Select` / `Checkbox` / `Radio` components defined above.
+    - At the top of the `<script>` block, define inline Vue components with the EXACT names the library exports: `Button`, `Input`, `Switch`, `Checkbox`, `Radio`, `Card`, `Title`, `Tabs`, `Collapse`, `Modal`, `Select`, `Tooltip`, `Loading`, `Table`, `Time`, `Divider`, `Footer`, `Phone`, `Cursor`, `Typewriter`, `Icon`, `CodeBlock`, `WeddingInvitation`. Each component must accept the documented props (e.g. `<Card color="default">`, `<Button type="primary" size="large">`, `<Title color="app-teal" size="large">`, `<Switch v-model="checked" />`).
+    - In the page (root `App` component), **compose the UI exclusively with these components in the `template` string** — do NOT write `<div class="card">` / `<button class="btn">` etc. inline. The page should read like real animal-island-vue usage.
+    - Only fall back to raw HTML (`<div>`, `<span>`, `<h1>`, `<img>`, layout helpers, page-specific decorations, app-specific widgets) when no library component covers the use case (e.g. page layout, header bar, two-column grid, custom illustration). In that case, still use the design tokens (`var(--text-body)`, `var(--bg-content)` …) instead of raw colors.
+    - Forbidden: native `<button>`, native `<input>`, native `<select>`, native checkbox/radio used as visible UI. They MUST be wrapped by the inline `Button` / `Input` / `Select` / `Checkbox` / `Radio` components defined above.
 - Vue idioms (don't accidentally write React):
-  - Use `class=` (NOT `className=`).
-  - Use `@click` (NOT `onClick={...}`), `@input`, `@change`, etc.
-  - Two-way bind text inputs / checkbox / switch / select with `v-model` (e.g. `<Input v-model="name" />`, `<Switch v-model="enabled" />`). Internally components use `props.modelValue` + `emit('update:modelValue', next)`. NEVER use a React-style `:value="x" @change="x = ..."` controlled pair.
-  - Use `Vue.ref()` for reactive scalars, `Vue.reactive()` for objects, `Vue.computed()` for derived state, `Vue.onMounted()` for mount effects, and a string `ref="el"` on the template + `Vue.ref(null)` in setup for template refs (NOT React's `useRef`/`useState`).
-  - Use `v-if` / `v-else` / `v-for="(item, i) in list" :key="i"` for rendering lists (NEVER `array.map(...)` inside a template). Always supply `:key`.
-  - Slots replace React children-as-render-prop: use `<slot />`, named slots `<slot name="icon" />`, and at the call site `<template #icon>...</template>`.
-  - Use `:prop="expr"` for dynamic binding and `prop="literal"` for static strings.
+    - Use `class=` (NOT `className=`).
+    - Use `@click` (NOT `onClick={...}`), `@input`, `@change`, etc.
+    - Two-way bind text inputs / checkbox / switch / select with `v-model` (e.g. `<Input v-model="name" />`, `<Switch v-model="enabled" />`). Internally components use `props.modelValue` + `emit('update:modelValue', next)`. NEVER use a React-style `:value="x" @change="x = ..."` controlled pair.
+    - Use `Vue.ref()` for reactive scalars, `Vue.reactive()` for objects, `Vue.computed()` for derived state, `Vue.onMounted()` for mount effects, and a string `ref="el"` on the template + `Vue.ref(null)` in setup for template refs (NOT React's `useRef`/`useState`).
+    - Use `v-if` / `v-else` / `v-for="(item, i) in list" :key="i"` for rendering lists (NEVER `array.map(...)` inside a template). Always supply `:key`.
+    - Slots replace React children-as-render-prop: use `<slot />`, named slots `<slot name="icon" />`, and at the call site `<template #icon>...</template>`.
+    - Use `:prop="expr"` for dynamic binding and `prop="literal"` for static strings.
 - The file must work with **zero network access except for the unpkg CDN + Google Fonts** — no other external dependencies.
 
 ## TECH STACK CONSTRAINTS
 
 - Fonts: Nunito + Noto Sans SC ONLY. Add to <head>:
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet" />
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet" />
 - Body font-family: Nunito, 'Noto Sans SC', -apple-system, 'PingFang SC', sans-serif;
 - Body weight 500, button/heading 600–700, time/Title-ribbon 900, placeholder 400.
 - Letter-spacing: body 0.01em, button/heading 0.02em.
@@ -56,58 +56,58 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 
 ```css
 :root {
-  /* primary mint teal */
-  --primary:        #19c8b9;
-  --primary-hover:  #3dd4c6;
-  --primary-active: #11a89b;
-  --primary-bg:     #e6f9f6;
+    /* primary mint teal */
+    --primary: #19c8b9;
+    --primary-hover: #3dd4c6;
+    --primary-active: #11a89b;
+    --primary-bg: #e6f9f6;
 
-  /* warm-brown text */
-  --text:           #794f27;   /* headings / sidebar */
-  --text-body:      #725d42;   /* in-component body */
-  --text-secondary: #9f927d;
-  --text-muted:     #8a7b66;
-  --text-disabled:  #c4b89e;
+    /* warm-brown text */
+    --text: #794f27; /* headings / sidebar */
+    --text-body: #725d42; /* in-component body */
+    --text-secondary: #9f927d;
+    --text-muted: #8a7b66;
+    --text-disabled: #c4b89e;
 
-  /* parchment background */
-  --bg:             #f8f8f0;
-  --bg-content:     rgb(247, 243, 223);   /* card / modal / table inside */
-  --bg-disabled:    #f0ece2;
+    /* parchment background */
+    --bg: #f8f8f0;
+    --bg-content: rgb(247, 243, 223); /* card / modal / table inside */
+    --bg-disabled: #f0ece2;
 
-  /* borders */
-  --border:         #c4b89e;
-  --border-hover:   #a89878;
-  --border-strong:  #9f927d;
+    /* borders */
+    --border: #c4b89e;
+    --border-hover: #a89878;
+    --border-strong: #9f927d;
 
-  /* status */
-  --success:        #6fba2c;
-  --success-active: #5a9e1e;
-  --warning:        #f5c31c;
-  --warning-active: #dba90e;
-  --error:          #e05a5a;
-  --error-active:   #c94444;
+    /* status */
+    --success: #6fba2c;
+    --success-active: #5a9e1e;
+    --warning: #f5c31c;
+    --warning-active: #dba90e;
+    --error: #e05a5a;
+    --error-active: #c94444;
 
-  /* game-special */
-  --focus-yellow:   #ffcc00;   /* Input/Switch/Checkbox focus — NOT blue */
-  --focus-yellow-d: #e0b800;
-  --focus-yellow-radio: #f5c31c;  /* Radio uses warmer yellow */
+    /* game-special */
+    --focus-yellow: #ffcc00; /* Input/Switch/Checkbox focus — NOT blue */
+    --focus-yellow-d: #e0b800;
+    --focus-yellow-radio: #f5c31c; /* Radio uses warmer yellow */
 
-  /* 3D shadow taupe */
-  --shadow-btn:     #bdaea0;
-  --shadow-input:   #d4c9b4;
-  --shadow-switch:  #5a9e1e;
+    /* 3D shadow taupe */
+    --shadow-btn: #bdaea0;
+    --shadow-input: #d4c9b4;
+    --shadow-switch: #5a9e1e;
 
-  /* radii */
-  --r-sm:   12px;
-  --r-base: 18px;
-  --r-lg:   24px;
-  --r-pill: 50px;
+    /* radii */
+    --r-sm: 12px;
+    --r-base: 18px;
+    --r-lg: 24px;
+    --r-pill: 50px;
 
-  /* motion */
-  --ease:     cubic-bezier(0.4, 0, 0.2, 1);
-  --d-fast:   0.15s;
-  --d-base:   0.25s;
-  --d-slow:   0.35s;
+    /* motion */
+    --ease: cubic-bezier(0.4, 0, 0.2, 1);
+    --d-fast: 0.15s;
+    --d-base: 0.25s;
+    --d-slow: 0.35s;
 }
 ```
 
@@ -117,7 +117,7 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 - `Switch` does NOT have any outer 3D pixel-stack shadow. The track has an INSET shadow only: `inset 0 2px 4px rgba(114,93,66,0.15)` (off) / `inset 0 2px 4px rgba(90,158,30,0.20)` (on). The handle is a flat circle with 2.5px border and NO box-shadow.
 - `Input` does NOT show any shadow by default (`shadow` prop defaults to `false`). Only when explicitly opted-in does it apply the 3D pixel-stack shadow described in the Input section. (Status error/warning shadows render regardless.)
 - `default`/`dashed`/`text`/`link` buttons use a soft elevation only:
-  rest:  box-shadow: 0 2px 4px 0 rgba(61, 52, 40, 0.06);
+  rest: box-shadow: 0 2px 4px 0 rgba(61, 52, 40, 0.06);
   hover: box-shadow: 0 3px 10px 0 rgba(61, 52, 40, 0.10); transform: translateY(-1px);
 - Cards have NO box-shadow. They float on hover with `transform: translateY(-2px);` only. Pattern variants add a 1.5px solid border in the palette hue.
 - Switch handle stays vertically centered via `transform: translateY(-50%);` and has a 2.5px border but NO `box-shadow` of its own. Track has only inset shadow (see SHADOW SYSTEM above).
@@ -125,15 +125,16 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 ## COMPONENT SPECS (24 named exports = 23 components + 1 export-button companion)
 
 ### Button (3 sizes × 5 types)
+
 - Sizes (height / padding-x / font-size / radius):
-  small  32px / 16px / 12px / 16px
-  middle 45px / 20px / 14px / 50px      ← default
-  large  48px / 32px / 16px / 24px
+  small 32px / 16px / 12px / 16px
+  middle 45px / 20px / 14px / 50px ← default
+  large 48px / 32px / 16px / 24px
 - font-weight 600, letter-spacing 0.02em, line-height 1, border-width 2px.
 - type="primary":
   color #794f27; bg #f8f8f0; border #f8f8f0;
-  rest:   box-shadow: 0 5px 0 0 #bdaea0;
-  hover:  box-shadow: 0 6px 0 0 #bdaea0; transform: translateY(-1px);
+  rest: box-shadow: 0 5px 0 0 #bdaea0;
+  hover: box-shadow: 0 6px 0 0 #bdaea0; transform: translateY(-1px);
   active: box-shadow: 0 1px 0 0 #bdaea0; transform: translateY(2px);
   focus-visible: outline 2px solid #19c8b9; outline-offset 2px;
 - `:danger="true"` + primary: same shape, replace #bdaea0 with #c94444. Text white.
@@ -155,11 +156,12 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 - Vue API: `<Button type="primary" size="large" :danger="false" :loading="busy" :disabled="locked" html-type="submit" @click="onSave">Save</Button>`. Default slot for label content. Real lib props: `type`, `size`, `danger`, `ghost`, `block`, `loading`, `disabled`, `htmlType` (NOT `type="danger"` — danger is its own boolean flag).
 
 ### Input (3 sizes)
+
 - **Default `:shadow="false"`** — no box-shadow at rest. The `shadow / hover / focus` shadow values below ONLY apply when the user opts in via `shadow` prop. Status (error/warning) and focus rings render regardless.
 - Sizes (height / padding-x / font-size / radius / opt-in-shadow):
-  small  32px / 14px / 12px / 40px / 0 2px 0 0 #d4c9b4
+  small 32px / 14px / 12px / 40px / 0 2px 0 0 #d4c9b4
   middle 40px / 18px / 14px / 50px / 0 3px 0 0 #d4c9b4
-  large  48px / 22px / 16px / 50px / 0 4px 0 0 #d4c9b4
+  large 48px / 22px / 16px / 50px / 0 4px 0 0 #d4c9b4
 - bg rgb(247, 243, 223); border 2px solid #c4b89e; color #725d42; weight 500; letter-spacing 0.01em.
 - placeholder color #c4b89e; weight 400.
 - prefix/suffix color #a0936e; gap 6px (use `<template #prefix>` / `<template #suffix>` slots).
@@ -171,6 +173,7 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 - Vue API: `<Input v-model="name" placeholder="..." size="middle" :allow-clear="true" status="error" :shadow="false" />`. Internally: `props.modelValue` + `emit('update:modelValue', e.target.value)`. Slots `#prefix` / `#suffix`. NEVER expose a `:value` + `@change` controlled pair.
 
 ### Switch (default 52×28 / small 38×20)
+
 - Track: min-width 52px (small 38px); height 28px (small 20px); border-radius 50px; bg `#d4c9b4`; border `2.5px solid #c4b89e`; inset shadow `inset 0 2px 4px rgba(114,93,66,0.15)`. NO outer box-shadow.
 - Handle: 21×21 circle (small 14×14); bg `rgb(247,243,223)`; border `2.5px solid #c4b89e`; border-radius 50%; absolutely positioned `left: 2px` (small: 1px); vertically centered via `top:50%; transform: translateY(-50%)`. Handle has NO `box-shadow`.
 - Hover (off): track border `#a89878`.
@@ -182,71 +185,77 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 - Vue API: `<Switch v-model="enabled" size="default" :loading="busy" :disabled="locked"><template #checked>ON</template><template #unchecked>OFF</template></Switch>`. Sizes are `'default' | 'small'` (NO `'middle'`).
 
 ### Modal (SVG blob clip-path — cannot be replaced with rounded rect)
+
 - Inject ONCE somewhere in body:
-  ```html
-  <svg style="position:absolute;width:0;height:0" aria-hidden>
-    <defs>
-      <clipPath id="animal-modal-clip" clipPathUnits="objectBoundingBox">
-        <path d="M0.501,0.005 L0.501,0.005 L0.523,0.005 L0.549,0.006 C0.704,0.01,0.796,0.017,0.825,0.027 L0.827,0.028 C0.872,0.045,0.939,0.044,0.978,0.17 C1,0.254,1,0.365,0.99,0.505 L0.988,0.513 C0.979,0.558,0.971,0.598,0.965,0.633 C0.956,0.689,0.979,0.77,0.964,0.865 C0.953,0.928,0.921,0.966,0.869,0.979 C0.821,0.986,0.773,0.992,0.726,0.995 L0.712,0.996 L0.694,0.997 C0.648,1,0.586,1,0.507,1 L0.501,1 L0.464,1 C0.385,1,0.325,0.998,0.283,0.995 C0.234,0.992,0.184,0.987,0.133,0.979 C0.081,0.966,0.05,0.928,0.039,0.865 C0.023,0.77,0.047,0.689,0.037,0.633 C0.031,0.595,0.023,0.552,0.013,0.505 C-0.006,0.365,-0.002,0.254,0.024,0.17 C0.064,0.045,0.13,0.045,0.174,0.028 L0.175,0.028 C0.204,0.017,0.303,0.009,0.474,0.005 L0.501,0.005"/>
-      </clipPath>
-    </defs>
-  </svg>
-  ```
+    ```html
+    <svg style="position:absolute;width:0;height:0" aria-hidden>
+        <defs>
+            <clipPath id="animal-modal-clip" clipPathUnits="objectBoundingBox">
+                <path
+                    d="M0.501,0.005 L0.501,0.005 L0.523,0.005 L0.549,0.006 C0.704,0.01,0.796,0.017,0.825,0.027 L0.827,0.028 C0.872,0.045,0.939,0.044,0.978,0.17 C1,0.254,1,0.365,0.99,0.505 L0.988,0.513 C0.979,0.558,0.971,0.598,0.965,0.633 C0.956,0.689,0.979,0.77,0.964,0.865 C0.953,0.928,0.921,0.966,0.869,0.979 C0.821,0.986,0.773,0.992,0.726,0.995 L0.712,0.996 L0.694,0.997 C0.648,1,0.586,1,0.507,1 L0.501,1 L0.464,1 C0.385,1,0.325,0.998,0.283,0.995 C0.234,0.992,0.184,0.987,0.133,0.979 C0.081,0.966,0.05,0.928,0.039,0.865 C0.023,0.77,0.047,0.689,0.037,0.633 C0.031,0.595,0.023,0.552,0.013,0.505 C-0.006,0.365,-0.002,0.254,0.024,0.17 C0.064,0.045,0.13,0.045,0.174,0.028 L0.175,0.028 C0.204,0.017,0.303,0.009,0.474,0.005 L0.501,0.005"
+                />
+            </clipPath>
+        </defs>
+    </svg>
+    ```
 - Modal content: clip-path: url(#animal-modal-clip); bg rgb(247,243,223); padding 48px 48px 32px 48px; color #725d42.
 - Backdrop: rgba(40, 30, 20, 0.45); backdrop-filter: blur(2px).
 - Confirm button uses game yellow: bg #ffcc00, color #725d42, 3D shadow #e0b800.
 - Vue API: `<Modal v-model:open="visible" title="Hello" :width="520" :mask-closable="true" :show-footer="true" :typewriter="true" :type-speed="80" @ok="onOk" @close="onClose">...</Modal>`. Default slot for body, `#title` / `#footer` slots for header / footer overrides. Use `<Teleport to="body">` internally.
 
 ### Card (default radius 20px + 13 colors)
+
 - **VISUAL DEFAULT — for the signature animal-island look, layer the polka-dot wallpaper background (see CSS recipe below) onto the Card via inline `:style` or a custom decoration class.** The dot wallpaper is the signature animal-island look. (The published Vue Card exposes `type` + `color` only — there is no `pattern` prop. The wallpaper is achieved by composing `color="<name>"` with the radial-gradient backgrounds shown below, applied via a wrapper style or extra class on the inline implementation.)
 - Default (`type="default"`, `color="default"`): bg rgb(247,243,223); padding 16px 24px; color #725d42; weight 500; **no box-shadow**; transition 0.3s ease; hover transform translateY(-2px); cursor pointer.
 - `type="dashed"`: bg rgb(250,248,242); border 2px dashed #e8dcc8; no shadow; hover border-color #d4c4a8 + no transform.
 - `color` prop (13 solid variants — choose one):
   default rgb(247,243,223)+#725d42 / app-pink #f8a6b2+#fff / purple #b77dee+#fff / app-blue #889df0+#fff / app-yellow #f7cd67+#725d42 / app-orange #e59266+#fff / app-teal #82d5bb+#fff / app-green #8ac68a+#fff / app-red #fc736d+#fff / lime-green #d1da49+#3d5a1a / yellow-green #ecdf52+#725d42 / brown #9a835a+#fff / warm-peach-pink #e18c6f+#fff
 - Polka-dot wallpaper recipe (apply via inline style / decoration class — there is NO `pattern` prop on the Vue Card, so layer it yourself):
-  ```css
-  /* example: pink wallpaper for color="app-pink" */
-  background:
-    radial-gradient(circle, rgba(248,166,178,0.18) 1.5px, transparent 1.5px) 0 0/28px 28px,
-    radial-gradient(circle, rgba(255,200,210,0.12) 1px, transparent 1px) 7px 7px/14px 14px,
-    #fde4e8;
-  border: 1.5px solid #f8a6b2;
-  color: #a85565;
-  ```
-  Wallpaper values for the other 12 colors follow the same formula: lighten the palette hue ~70% for bg, use the pure palette hue at 0.18 alpha for the 1.5px dots and a paler tint at 0.12 alpha for the 1px dots, set border to the pure palette hue, choose darker readable text (#3d2e1e, #6a3a9a, etc.).
+    ```css
+    /* example: pink wallpaper for color="app-pink" */
+    background:
+        radial-gradient(circle, rgba(248, 166, 178, 0.18) 1.5px, transparent 1.5px) 0 0/28px 28px,
+        radial-gradient(circle, rgba(255, 200, 210, 0.12) 1px, transparent 1px) 7px 7px/14px 14px,
+        #fde4e8;
+    border: 1.5px solid #f8a6b2;
+    color: #a85565;
+    ```
+    Wallpaper values for the other 12 colors follow the same formula: lighten the palette hue ~70% for bg, use the pure palette hue at 0.18 alpha for the 1.5px dots and a paler tint at 0.12 alpha for the 1px dots, set border to the pure palette hue, choose darker readable text (#3d2e1e, #6a3a9a, etc.).
 - Vue API: `<Card type="default" color="app-pink">...</Card>`. Default slot for body. Real lib props: `type` (`'default' | 'dashed'`) + `color` (13 names) + `pattern` (`'none'` or any `CardColor` value, 13 dot-overlay variants).
 
 ### Title (ribbon banner — REPLACES old `Card type="title"`)
+
 - Layered structure: back-tail (swallowtail clip-path) → fold-shadow triangle → 3deg-tilted front face → top text.
 - Sizes (font-size of wrapper; everything else in em):
   small 14px / middle 20px / large 28px.
 - Wrapper: display inline-flex; height 2em; padding 0 1.6em; weight 800; line-height 1; letter-spacing 0.04em; filter drop-shadow(0 0.08em 0.12em rgba(0,0,0,0.05)).
 - .ribbonText: weight 900; padding-top 0.11em (CJK optical centering); z-index 4.
 - .ribbonBack (z-index 1, width 1.7em, height 1.7em, bottom -0.4em):
-  left:  clip-path: polygon(100% 0%, 100% 100%, 0% 100%, 30% 50%, 0% 0%);
+  left: clip-path: polygon(100% 0%, 100% 100%, 0% 100%, 30% 50%, 0% 0%);
   right: clip-path: polygon(0% 0%, 100% 0%, 70% 50%, 100% 100%, 0% 100%);
   bg: var(--rb).
 - .ribbonFold (z-index 2, top calc(100% - 0.04em); CSS triangle via border):
-  left:  border-width: 0 0.95em 0.45em 0; border-color: transparent var(--rk) transparent transparent;
+  left: border-width: 0 0.95em 0.45em 0; border-color: transparent var(--rk) transparent transparent;
   right: border-width: 0 0 0.45em 0.95em; border-color: transparent transparent transparent var(--rk);
 - .ribbonFront (z-index 3): inset 0 0.1em; border-radius 0.2em; bg var(--rf); transform perspective(11.5em) rotateX(3deg); inset shadow 0 -0.06em 0 rgba(0,0,0,0.05).
 - Color attribute drives 4 vars (--rf front / --rb back / --rk fold / --rt text). 13 schemes:
-  default-green: --rf #27d039  --rb #20992a  --rk #115017  --rt #fff
-  app-pink:      --rf #f8a6b2  --rb #e06880  --rk #a03060  --rt #fff
-  purple:        --rf #b77dee  --rb #9050d0  --rk #5a1a9a  --rt #fff
-  app-blue:      --rf #889df0  --rb #5068d8  --rk #2030a0  --rt #fff
-  app-yellow:    --rf #f7cd67  --rb #d4a030  --rk #8a6010  --rt #725d42
-  app-orange:    --rf #e59266  --rb #c06a30  --rk #7a3a10  --rt #fff
-  app-teal:      --rf #82d5bb  --rb #40a880  --rk #186048  --rt #fff
-  app-green:     --rf #8ac68a  --rb #509050  --rk #205020  --rt #fff
-  app-red:       --rf #fc736d  --rb #d43030  --rk #900010  --rt #fff
-  lime-green:    --rf #d1da49  --rb #90a010  --rk #485800  --rt #3d5a1a
-  yellow-green:  --rf #ecdf52  --rb #c0b010  --rk #706800  --rt #725d42
-  brown:         --rf #9a835a  --rb #705830  --rk #3a2810  --rt #fff
-  warm-peach-pink: --rf #e18c6f  --rb #b85a30  --rk #6a2a10  --rt #fff
+  default-green: --rf #27d039 --rb #20992a --rk #115017 --rt #fff
+  app-pink: --rf #f8a6b2 --rb #e06880 --rk #a03060 --rt #fff
+  purple: --rf #b77dee --rb #9050d0 --rk #5a1a9a --rt #fff
+  app-blue: --rf #889df0 --rb #5068d8 --rk #2030a0 --rt #fff
+  app-yellow: --rf #f7cd67 --rb #d4a030 --rk #8a6010 --rt #725d42
+  app-orange: --rf #e59266 --rb #c06a30 --rk #7a3a10 --rt #fff
+  app-teal: --rf #82d5bb --rb #40a880 --rk #186048 --rt #fff
+  app-green: --rf #8ac68a --rb #509050 --rk #205020 --rt #fff
+  app-red: --rf #fc736d --rb #d43030 --rk #900010 --rt #fff
+  lime-green: --rf #d1da49 --rb #90a010 --rk #485800 --rt #3d5a1a
+  yellow-green: --rf #ecdf52 --rb #c0b010 --rk #706800 --rt #725d42
+  brown: --rf #9a835a --rb #705830 --rk #3a2810 --rt #fff
+  warm-peach-pink: --rf #e18c6f --rb #b85a30 --rk #6a2a10 --rt #fff
 - Vue API: `<Title size="large" color="app-teal">Settings</Title>`. Default slot for the heading text.
 
 ### Collapse / Accordion (CSS-only height animation)
+
 - Container: bg rgb(247,243,223); border 2px solid #9f927d; border-radius 18px; margin-bottom 12px.
 - Header row: padding 16px 24px; gap 12px; font-size 16px; weight 600; line-height 1.4.
 - Toggle icon: 28px circle bg #19c8b9 color #fff; weight 700; border-radius 50%; shadow 0 2px 4px rgba(25,200,185,0.3); content `+` (collapsed) → `−` (expanded), rotated 180deg on expand.
@@ -254,10 +263,11 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 - Vue API: a single panel — `<Collapse question="问题？" answer="答案" :default-expanded="false" :disabled="false" v-model:expanded="open" />`. Optionally use `<template #question>...</template>` for a rich header and the default slot for rich body content. Real lib props: `question`, `answer`, `defaultExpanded`, `expanded`, `disabled`. To stack multiple FAQs, render multiple `<Collapse>` instances via `v-for` in the parent (NEVER `.map()` in template).
 
 ### Tabs
+
 - Wrapper: bg rgb(247,243,223); border 2px solid #9f927d; border-radius 24px; overflow hidden.
 - Tab list: padding 16px; gap 6px; bg rgba(255,255,255,0.6); border-bottom 2px solid #c4b89e.
 - Tab item: padding 8px 16px; border-radius 24px (pill); color #725d42; weight 500.
-  hover:  bg rgba(25,200,185,0.1); color #725d42.
+  hover: bg rgba(25,200,185,0.1); color #725d42.
   active: **bg `#0CC0B5` (solid teal)**; **color `#FFF9E3` (cream)**; weight 600; icon scales 1.2.
   Optional `shadow` modifier (default true): box-shadow 0 3px 0 0 #d4c9b4 on active tab.
 - Optional leaf decoration on active tab (top-right, 18×18), animated leafWiggle 2s ease-in-out infinite. Toggle via `:leaf-animation="false"` to freeze.
@@ -265,6 +275,7 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
   `<template #a>Panel A</template><template #b>Panel B</template></Tabs>`. The active panel is rendered via the slot whose name equals the active `key`. Items have only `{ key, label }` — content lives in named slots, NOT on the items objects. Tab list iteration uses `v-for` + `:key` internally (never `.map(...)`).
 
 ### Select
+
 - Trigger is **NOT the Input visual** — it's its own design:
   bg `#fff`; border `2px solid #e8dcc8`; border-radius `12px`; padding `8px 13px`; color `#725d42` weight 600.
   hover: border `#d4c4a8`; bg `#fffdf7`. open: arrow rotated 180deg, color `#19c8b9`.
@@ -276,6 +287,7 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 - Vue API: `<Select v-model="value" :options="[{ key: 'a', label: 'Apple' }, { key: 'b', label: 'Banana' }]" placeholder="..." :disabled="false" />`. Options use `{ key, label }` shape (the lib uses `key` rather than `value` for option identity). Options rendered via `v-for` with `:key="opt.key"`.
 
 ### Checkbox (square box, sizes 18 / 22 / 28 px)
+
 - Box: bg rgb(247,243,223); border 2.5px solid #c4b89e; border-radius 8px.
 - hover: border #19c8b9; transform translateY(-1px).
 - checked: bg #19c8b9; border #11a89b; checkmark color #fff weight 700; pop animation 0.15s.
@@ -287,6 +299,7 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 - Vue API: `<Checkbox v-model="picks" :options="[{ label: '苹果', value: 'a' }, { label: '香蕉', value: 'b', disabled: true }]" size="middle" direction="horizontal" :disabled="false" />`. The component IS the group — `v-model` is the array of selected values (NOT a single boolean). Real lib props: `modelValue` (string|number array), `options`, `size`, `disabled`, `direction`.
 
 ### Radio (heavily-rounded square with check-mark — NOT a circle, NOT a dot)
+
 - API: `<Radio v-model="value" :options="[{ label, value, disabled? }]" size="middle" direction="horizontal" />`. The component IS the group — there is no separate `<Radio>` item + `<RadioGroup>` split. `direction="horizontal" | "vertical"`. Roving tabindex on the focused circle (don't set tabIndex manually).
 - Box (`.circle`, sizes small/middle/large): 18×18 / 22×22 / 28×28 px; bg rgb(247,243,223); border 2px solid #c4b89e; border-radius 12 / 14 / 16 px (heavily rounded square — NOT a circle).
 - hover: border #19c8b9; transform translateY(-1px).
@@ -297,6 +310,7 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 - Group container: flex, gap 16px (horizontal) / 8px (vertical); flex-wrap allowed.
 
 ### Tooltip (two distinct variants — do not confuse)
+
 - variant="default": bg rgb(247,243,223); border 2px solid #c4b89e; border-radius 16px;
   padding 6px 12px; max-width 240px; font 12px/500 #725d42; line-height 1.5;
   shadow 0 3px 10px rgba(61,52,40,0.10); z-index 100; gap 10px from trigger;
@@ -307,17 +321,19 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 - Vue API: `<Tooltip title="Tip text" placement="top" trigger="hover" variant="default" :bordered="true"><Button>Hover me</Button></Tooltip>`. The default slot is the trigger; pass tip content via the `title` prop OR `<template #title>...</template>` slot for rich content. Triggers: `'hover' | 'focus' | 'click'`.
 
 ### Loading (full-screen overlay — NOT button stripe)
+
 - Container: position absolute; inset 0; bg black; overflow hidden.
 - Reveal mask: mask: radial-gradient(circle at center, transparent var(--mask-r), black calc(var(--mask-r) + 1px));
   Animate --mask-r outward to fade in/out content.
 - SVG spinner: color #19c8b9; rotate 1s linear infinite; circle stroke-dasharray animation 1.5s ease-in-out:
-  0%   stroke-dasharray 1, 150;  stroke-dashoffset 0;
-  50%  stroke-dasharray 90, 150; stroke-dashoffset -35;
+  0% stroke-dasharray 1, 150; stroke-dashoffset 0;
+  50% stroke-dasharray 90, 150; stroke-dashoffset -35;
   100% stroke-dasharray 90, 150; stroke-dashoffset -124.
 - The diagonal-stripe loading at -45deg #0ec4b6/#01b0a7 28.28px is for Button only — do not put it here.
 - Vue API: `<Loading :active="isLoading" />`. Default slot wraps the content the overlay reveals.
 
 ### Table
+
 - Wrapper: bg rgb(247,243,223); border-radius 20px; padding 6px (NO border).
 - Header cell: padding 16px 20px; font 14px/700 #725d42; letter-spacing 0.02em; ::after divider 1px dashed (6px on / 6px off) rgb(240,232,216).
 - Body cell: padding 14px 20px; font 14px/500 #725d42; line-height 1.6; same dashed bottom divider via ::after.
@@ -331,6 +347,7 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 - Vue API: `<Table :columns="cols" :data-source="rows" row-key="id" :striped="true" :show-header="true" :loading="false" empty-text="暂无数据" />`. `cols` items: `{ title, dataIndex, render?, width?, align?, style? }`. For rich cell rendering, prefer the `cell-{dataIndex}` named slot over `render`. Both `cols` and `rows` arrays are iterated with `v-for` + `:key` internally — never `.map(...)` in the template.
 
 ### Time (HUD clock)
+
 - Container: padding 16px 36px; gap 24px; bg linear-gradient(180deg, #fff 0%, #f8f8f0 100%); border 3px solid #d4cfc3; border-radius 18px.
 - Date section right border 3px solid rgba(159,146,125,0.35); padding-right 24px.
 - Weekday: color #6fba2c; weight 900; font-size 14px; letter-spacing 1.5px; UPPERCASE.
@@ -340,6 +357,7 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 - Vue: drive the clock with `Vue.ref(new Date())` + `setInterval` inside `Vue.onMounted` (clear in `Vue.onBeforeUnmount`).
 
 ### Phone (NookPhone decorative widget)
+
 - Shell: 527×788; border-radius 136px (capsule); bg #F8F4E8; overflow hidden.
 - Home: padding-top 40px; bg #F8F4E8 with 100% 200% size; animation grasswave 8s ease-in-out infinite.
 - Top bar: wifi icon (79×29) | time 32px/800/letter-spacing 2px color #DDDBCC | location icon (36×36).
@@ -351,38 +369,45 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 - App palette: camera #B77DEE, app #889DF0, critterpedia #F7CD67, diy #E59266, shopping #F8A6B2, variant #82D5BB, design #8AC68A, map #FC736D, chat #D1DA49.
 
 ### Footer (decoration)
+
 - type="sea": width 100%; height 80px; bg url(footer-sea.svg) center/contain no-repeat. Coral #EC7175, ocean #327A93/#98D2E3/#008077.
 - type="tree" (default): width 100%; height 60px; bg url(footer-tree.webp) bottom center/cover.
 
 ### Divider
+
 - 9 types, all height 12px; background center/contain no-repeat:
   line-brown (default, SVG fill #D8D0C3), line-teal (SVG), line-white (PNG), line-yellow (SVG), wave-yellow (SVG),
   dashed-brown, dashed-teal, dashed-white, dashed-yellow.
 
 ### Cursor (wrapper)
+
 - Wraps default-slot content, applies: cursor: url(cursor-icon.png) 4 0, auto !important; (and same on all descendants via .animal-cursor *). Hotspot (4, 0). `forceAll` prop (default true) controls whether the override cascades to all descendants.
 - Vue API: `<Cursor :force-all="true">...</Cursor>` — wraps the app or a region via the default slot.
 
 ### Typewriter
+
 - Recursively truncates the default slot's vnode tree by character count, preserves element structure, class, inline styles. Returns a fragment (no extra wrapping div/span — zero layout impact).
 - Default speed 90ms/char. Restart by changing the `trigger` prop (any value).
 - Vue API: `<Typewriter :speed="90" :trigger="key" :auto-play="true">...rich text...</Typewriter>`. Also accepts a `text="..."` prop instead of slot content. Emits `done` when the animation finishes.
 
 ### Icon (10 named icons)
+
 - SVG-based, single-color. Pass via `<Icon name="..." :size="20" :bounce="false" />`. Names: `icon-miles`, `icon-camera`, `icon-chat`, `icon-critterpedia`, `icon-design`, `icon-diy`, `icon-helicopter`, `icon-map`, `icon-shopping`, `icon-variant` (defer to ICON_LIST runtime export).
 
 ### CodeBlock (dark JSX/TS only)
+
 - Container: padding 20px 24px; bg #2b2118; border 1px solid #3d3028; border-radius 20px;
   font-size 14px; line-height 1.7; tab-size 4;
   font-family 'SF Mono','Fira Code','Cascadia Code',Consolas,monospace; weight 600;
   white-space pre; overflow auto; default text #e8d5bc.
 - Token colors:
-  comment   #6b5e50    string  #a8d4a0    keyword #d4a0e0    react   #e06c75
-  component #80c0e0    func    #61afef    prop    #e8c87a    jsx     #f0a870
-  operator  #d4b896
+  comment #6b5e50 string #a8d4a0 keyword #d4a0e0 react #e06c75
+  component #80c0e0 func #61afef prop #e8c87a jsx #f0a870
+  operator #d4b896
 - Vue API: `<CodeBlock :code="codeString" />`.
 
 ### WeddingInvitation (specialty card + companion export button)
+
 - Envelope: max-width 420px; padding 56px 36px (top/sides) + var(--lottery-h, 160px) bottom; border-radius 16px.
 - Background: multi-layer radial-gradient + image (NOT a single solid color).
 - filter: drop-shadow(0 10px 24px rgba(61,52,40,0.18)); inset shadow 0 0 0 2px rgba(114,93,66,0.12).
@@ -417,13 +442,14 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
     - Controlled-input pair `:value="x" @input="x = $event.target.value"` for text/select/checkbox/switch → use `v-model` (or `v-model:open`, `v-model:expanded`, etc.).
     - `{array.map(item => <X />)}` inside a template → use `<X v-for="item in array" :key="item.id" />`. Never call `.map()` to render in a Vue template.
     - JSX / TSX, Babel-standalone, `<script type="text/babel">`, `ReactDOM.createRoot`, `<React.Fragment>`, `{children}` — none of these appear. Use Vue 3 global build (`Vue.createApp(App).mount('#app')`) and `template:` strings only. Replace `{children}` with `<slot />`.
-    - Inline component definitions like `function X() { return <jsx/> }` → instead `const X = { props: {...}, emits: [...], setup() {...}, template: \`...\` }` registered via `app.component('X', X)` or in `components: { X }` on the parent.
+    - Inline component definitions like `function X() { return <jsx/> }` → instead `const X = { props: {...}, emits: [...], setup() {...}, template: \`...\` }`registered via`app.component('X', X)`or in`components: { X }` on the parent.
 
 ## TASK
 
 **STEP 1 — Ask before generating.** If the user has not yet told you what page/component they want, your FIRST reply must be a short question asking what to build, with 3–5 concrete suggestions. Do NOT generate any HTML in this turn. Example reply (adapt to the user's language):
 
 > 你想生成什么页面？比如：
+>
 > - 一个个人博客首页
 > - 一个商品列表 / 卡片墙
 > - 一个 FAQ / 设置页
@@ -440,20 +466,20 @@ Structure the script like this:
 
 ```html
 <script>
-// 1) Inline Vue components mirroring animal-island-vue's API (Card, Button, Input, Switch, ...)
-const Button = {
-  props: {
-    type:    { type: String, default: 'default' },
-    size:    { type: String, default: 'middle' },
-    danger:  Boolean,
-    ghost:   Boolean,
-    block:   Boolean,
-    loading: Boolean,
-    disabled:Boolean,
-    htmlType:{ type: String, default: 'button' },
-  },
-  emits: ['click'],
-  template: `
+    // 1) Inline Vue components mirroring animal-island-vue's API (Card, Button, Input, Switch, ...)
+    const Button = {
+        props: {
+            type: { type: String, default: 'default' },
+            size: { type: String, default: 'middle' },
+            danger: Boolean,
+            ghost: Boolean,
+            block: Boolean,
+            loading: Boolean,
+            disabled: Boolean,
+            htmlType: { type: String, default: 'button' },
+        },
+        emits: ['click'],
+        template: `
     <button
       :type="htmlType"
       class="animal-btn"
@@ -466,33 +492,35 @@ const Button = {
       @click="$emit('click', $event)"
     ><slot /></button>
   `,
-};
+    };
 
-const Card = {
-  props: {
-    type:  { type: String, default: 'default' },
-    color: { type: String, default: 'default' },
-  },
-  template: `
+    const Card = {
+        props: {
+            type: { type: String, default: 'default' },
+            color: { type: String, default: 'default' },
+        },
+        template: `
     <div class="animal-card" :class="['animal-card--' + type, 'animal-card--color-' + color]">
       <slot />
     </div>
   `,
-};
+    };
 
-// ... Title, Tabs, Collapse, Modal, Switch, Input, Checkbox, Radio, Select, Tooltip, Loading,
-//     Table, Time, Divider, Footer, Phone, Cursor, Typewriter, Icon, CodeBlock, WeddingInvitation
+    // ... Title, Tabs, Collapse, Modal, Switch, Input, Checkbox, Radio, Select, Tooltip, Loading,
+    //     Table, Time, Divider, Footer, Phone, Cursor, Typewriter, Icon, CodeBlock, WeddingInvitation
 
-// 2) Page composition uses ONLY those components (plus layout divs)
-const App = {
-  components: { Title, Card, Tabs, Switch, Button /* ... */ },
-  setup() {
-    const enabled = Vue.ref(false);
-    const tab = Vue.ref('a');
-    const onSave = () => { /* ... */ };
-    return { enabled, tab, onSave };
-  },
-  template: `
+    // 2) Page composition uses ONLY those components (plus layout divs)
+    const App = {
+        components: { Title, Card, Tabs, Switch, Button /* ... */ },
+        setup() {
+            const enabled = Vue.ref(false);
+            const tab = Vue.ref('a');
+            const onSave = () => {
+                /* ... */
+            };
+            return { enabled, tab, onSave };
+        },
+        template: `
     <div class="page">
       <Title color="app-teal" size="large">Settings</Title>
       <Card color="default">...</Card>
@@ -504,9 +532,9 @@ const App = {
       <Button type="primary" size="large" @click="onSave">Save</Button>
     </div>
   `,
-};
+    };
 
-Vue.createApp(App).mount('#app');
+    Vue.createApp(App).mount('#app');
 </script>
 ```
 

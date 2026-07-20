@@ -32,7 +32,10 @@ const inputRefs = ref<Array<HTMLInputElement | null>>([]);
 
 // 当前聚焦的索引（用于 roving tabindex）
 const focusedIndex = ref<number>(
-    Math.max(0, props.options.findIndex((o) => o.value === props.modelValue))
+    Math.max(
+        0,
+        props.options.findIndex((o) => o.value === props.modelValue)
+    )
 );
 
 watch(
@@ -50,9 +53,7 @@ const enabledIndices = computed(() =>
         .map(({ idx }) => idx)
 );
 
-const currentEnabledPos = computed(() =>
-    enabledIndices.value.indexOf(focusedIndex.value)
-);
+const currentEnabledPos = computed(() => enabledIndices.value.indexOf(focusedIndex.value));
 
 function isChecked(value: RadioValue) {
     return props.modelValue === value;
@@ -80,9 +81,7 @@ function handleKeyDown(e: KeyboardEvent) {
         case 'ArrowLeft':
         case 'ArrowUp':
             e.preventDefault();
-            nextPos =
-                (currentEnabledPos.value - 1 + enabledIndices.value.length) %
-                enabledIndices.value.length;
+            nextPos = (currentEnabledPos.value - 1 + enabledIndices.value.length) % enabledIndices.value.length;
             break;
         case 'Home':
             e.preventDefault();
@@ -113,13 +112,10 @@ function setRef(el: unknown, idx: number) {
     <div
         ref="groupRef"
         class="animal-radio-group"
-        :class="[
-            `animal-radio-group--${direction}`,
-            { 'animal-radio-group--disabled': disabled },
-        ]"
+        :class="[`animal-radio-group--${direction}`, { 'animal-radio-group--disabled': disabled }]"
         role="radiogroup"
-        @keydown="handleKeyDown"
         v-bind="attrs"
+        @keydown="handleKeyDown"
     >
         <label
             v-for="(opt, idx) in options"

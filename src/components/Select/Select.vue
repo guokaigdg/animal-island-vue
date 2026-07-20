@@ -36,9 +36,7 @@ const idBase = `animal-select-${Math.random().toString(36).slice(2, 10)}`;
 const listboxId = `${idBase}-listbox`;
 const optionId = (k: string) => `${idBase}-option-${k}`;
 
-const currentLabel = computed(
-    () => props.options.find((o) => o.key === props.modelValue)?.label || props.placeholder,
-);
+const currentLabel = computed(() => props.options.find((o) => o.key === props.modelValue)?.label || props.placeholder);
 
 function handleToggle() {
     if (props.disabled) return;
@@ -57,7 +55,11 @@ function moveActive(delta: 1 | -1) {
     if (!props.options.length) return;
     const idx = props.options.findIndex((o) => o.key === activeKey.value);
     const nextIdx =
-        idx < 0 ? (delta === 1 ? 0 : props.options.length - 1) : (idx + delta + props.options.length) % props.options.length;
+        idx < 0
+            ? delta === 1
+                ? 0
+                : props.options.length - 1
+            : (idx + delta + props.options.length) % props.options.length;
     activeKey.value = props.options[nextIdx].key;
 }
 
@@ -145,7 +147,9 @@ watch(open, (isOpen) => {
             newStyle.bottom = 'auto';
         }
         dropdownStyle.value = newStyle;
-        requestAnimationFrame(() => { mounted.value = true; });
+        requestAnimationFrame(() => {
+            mounted.value = true;
+        });
     } else {
         document.removeEventListener('mousedown', handleClickOutside);
         mounted.value = false;
@@ -163,14 +167,13 @@ onBeforeUnmount(() => {
         ref="wrapperRef"
         class="animal-select"
         :class="{ 'animal-select--disabled': disabled }"
-        @keydown="handleKeyDown"
         v-bind="attrs"
+        @keydown="handleKeyDown"
     >
         <div
             ref="triggerRef"
             class="animal-select__trigger"
             :class="{ 'animal-select__trigger--disabled': disabled, 'animal-select__trigger--open': open }"
-            @click="handleToggle"
             role="combobox"
             aria-haspopup="listbox"
             :aria-expanded="open"
@@ -180,17 +183,12 @@ onBeforeUnmount(() => {
             :aria-label="ariaLabel"
             :aria-labelledby="ariaLabelledBy"
             :tabindex="disabled ? -1 : 0"
+            @click="handleToggle"
         >
-            <span
-                class="animal-select__value"
-                :class="{ 'animal-select__value--placeholder': !modelValue }"
-            >
+            <span class="animal-select__value" :class="{ 'animal-select__value--placeholder': !modelValue }">
                 {{ currentLabel }}
             </span>
-            <span
-                class="animal-select__arrow"
-                :class="{ 'animal-select__arrow--open': open }"
-            >
+            <span class="animal-select__arrow" :class="{ 'animal-select__arrow--open': open }">
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                     <path
                         d="M3 4.5L6 7.5L9 4.5"
@@ -204,15 +202,16 @@ onBeforeUnmount(() => {
         </div>
         <div
             v-if="open && mounted"
+            :id="listboxId"
             class="animal-select__dropdown"
             :style="dropdownStyle"
             role="listbox"
-            :id="listboxId"
             :aria-label="ariaLabel"
             :aria-labelledby="ariaLabelledBy"
         >
             <div
                 v-for="option in options"
+                :id="optionId(option.key)"
                 :key="option.key"
                 class="animal-select__option"
                 :class="{
@@ -220,18 +219,17 @@ onBeforeUnmount(() => {
                     'animal-select__option--hovered': hoveredKey === option.key,
                 }"
                 role="option"
-                :id="optionId(option.key)"
                 :aria-selected="modelValue === option.key"
                 @click="handleSelect(option.key)"
-                @mouseenter="hoveredKey = option.key; activeKey = option.key"
+                @mouseenter="
+                    hoveredKey = option.key;
+                    activeKey = option.key;
+                "
                 @mouseleave="hoveredKey = null"
             >
                 <span class="animal-select__spacer" />
                 {{ option.label }}
-                <div
-                    v-if="modelValue === option.key"
-                    class="animal-select__highlight"
-                />
+                <div v-if="modelValue === option.key" class="animal-select__highlight" />
             </div>
         </div>
     </div>
@@ -363,13 +361,26 @@ onBeforeUnmount(() => {
 }
 
 @keyframes animal-select-fade-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 @keyframes animal-select-cursor-in {
-    0% { opacity: 0; transform: translateY(-50%) translateX(-20px) rotate(-15deg); }
-    60% { opacity: 1; transform: translateY(-50%) translateX(5px) rotate(5deg); }
-    100% { opacity: 1; transform: translateY(-50%) translateX(0) rotate(0deg); }
+    0% {
+        opacity: 0;
+        transform: translateY(-50%) translateX(-20px) rotate(-15deg);
+    }
+    60% {
+        opacity: 1;
+        transform: translateY(-50%) translateX(5px) rotate(5deg);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(-50%) translateX(0) rotate(0deg);
+    }
 }
 </style>

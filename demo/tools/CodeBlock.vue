@@ -6,15 +6,14 @@ defineProps<{ code: string }>();
 <template>
     <div class="codeblock-wrap">
         <div class="code-label">使用示例</div>
-        <CodeBlockBase
-            :code="code"
-            :style="{ marginTop: '0px', borderRadius: '0 20px 20px 20px' }"
-        />
+        <CodeBlockBase :code="code" :style="{ marginTop: '0px', borderRadius: '0 20px 20px 20px' }" />
     </div>
 </template>
 
 <style scoped>
-.codeblock-wrap { margin-top: 36px; }
+.codeblock-wrap {
+    margin-top: 36px;
+}
 .code-label {
     font-size: 14px;
     font-weight: 600;

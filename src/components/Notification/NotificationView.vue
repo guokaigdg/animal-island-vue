@@ -86,11 +86,11 @@ function handleKeydown(e: KeyboardEvent) {
             item.className,
         ]"
         :style="item.style"
-        @click="handleClick"
         :role="item.onClick ? 'button' : undefined"
         :tabindex="item.onClick ? 0 : undefined"
-        @keydown="handleKeydown"
         :data-notification-key="item.key"
+        @click="handleClick"
+        @keydown="handleKeydown"
     >
         <div class="animal-notification__icon-wrap" aria-hidden="true">
             <VNodeRenderer v-if="item.icon" :node="item.icon" />
@@ -139,7 +139,9 @@ function handleKeydown(e: KeyboardEvent) {
             </svg>
         </div>
         <div class="animal-notification__body">
-            <div class="animal-notification__title">{{ item.message }}</div>
+            <div class="animal-notification__title">
+                {{ item.message }}
+            </div>
             <div v-if="item.description != null" class="animal-notification__description">
                 {{ item.description }}
             </div>
@@ -147,12 +149,7 @@ function handleKeydown(e: KeyboardEvent) {
         <div v-if="item.btn" class="animal-notification__btn-slot">
             <VNodeRenderer :node="item.btn" />
         </div>
-        <button
-            type="button"
-            class="animal-notification__close"
-            aria-label="close"
-            @click="handleCloseClick"
-        >
+        <button type="button" class="animal-notification__close" aria-label="close" @click="handleCloseClick">
             <VNodeRenderer v-if="item.closeIcon" :node="item.closeIcon" />
             <span v-else aria-hidden="true">×</span>
         </button>
@@ -173,9 +170,17 @@ function handleKeydown(e: KeyboardEvent) {
     border: 2px solid #c4b89e;
     border-radius: 18px;
     box-shadow: 0 6px 18px rgba(61, 52, 40, 0.14);
-    font-family: Nunito, 'Noto Sans SC', -apple-system, 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+    font-family:
+        Nunito,
+        'Noto Sans SC',
+        -apple-system,
+        'PingFang SC',
+        'Hiragino Sans GB',
+        sans-serif;
     color: #725d42;
-    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    transition:
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
     will-change: transform, opacity;
 }
 
@@ -328,20 +333,44 @@ function handleKeydown(e: KeyboardEvent) {
 }
 
 @keyframes animal-notification-slide-from-top {
-    from { opacity: 0; transform: translateY(-16px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(-16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 @keyframes animal-notification-slide-out-top {
-    from { opacity: 1; transform: translateY(0); }
-    to { opacity: 0; transform: translateY(-16px); }
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-16px);
+    }
 }
 @keyframes animal-notification-rise-from-bottom {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 @keyframes animal-notification-sink-out-bottom {
-    from { opacity: 1; transform: translateY(0); }
-    to { opacity: 0; transform: translateY(16px); }
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(16px);
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {

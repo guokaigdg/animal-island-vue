@@ -1,0 +1,16 @@
+# 构建产物
+dist/
+demo-dist/
+coverage/
+node_modules/
+
+# 提示词 / 设计文档（嵌入 HTML 代码块，会触发 Prettier 缩进循环）
+PROMPT.md
+AI_USAGE.md
+DESIGN_PROMPT.md
+
+# 其它无需格式化的产物
+*.min.js
+*.min.css
+*.min.d.ts
+package-lock.json

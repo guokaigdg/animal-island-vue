@@ -2,7 +2,16 @@
 import { ref } from 'vue';
 import { Select } from '../../src';
 import type { SelectOption } from '../../src';
-import { sectionStyle, sectionTitleStyle, tagStyle, labelStyle, demoBoxStyle, demoDashedBoxStyle, ApiTable, CodeBlock } from '../tools';
+import {
+    sectionStyle,
+    sectionTitleStyle,
+    tagStyle,
+    labelStyle,
+    demoBoxStyle,
+    demoDashedBoxStyle,
+    ApiTable,
+    CodeBlock,
+} from '../tools';
 import type { ApiRow } from '../tools';
 
 const SELECT_API: ApiRow[] = [
@@ -61,13 +70,13 @@ const value = ref('option1');
 
 <template>
     <div :style="sectionStyle">
-        <div :style="sectionTitleStyle">
-            Select <span :style="tagStyle">基础用法</span>
-        </div>
+        <div :style="sectionTitleStyle">Select <span :style="tagStyle">基础用法</span></div>
         <div :style="labelStyle">默认状态</div>
         <div :style="{ marginBottom: '8px', fontSize: '13px', color: '#a08060' }">
             当前选中:
-            <span :style="{ color: '#19c8b9', fontWeight: 600 }">{{ fishOptions.find(o => o.key === value1)?.label }}</span>
+            <span :style="{ color: '#19c8b9', fontWeight: 600 }">{{
+                fishOptions.find((o) => o.key === value1)?.label
+            }}</span>
         </div>
         <div :style="demoBox">
             <Select v-model="value1" :options="fishOptions" />

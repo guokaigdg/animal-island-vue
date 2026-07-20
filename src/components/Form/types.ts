@@ -45,16 +45,7 @@ export function defaultGetValueFromEvent(event: unknown): StoreValue {
 // ============================================
 
 export type RuleType =
-    | 'string'
-    | 'number'
-    | 'boolean'
-    | 'integer'
-    | 'float'
-    | 'array'
-    | 'object'
-    | 'email'
-    | 'url'
-    | 'date';
+    'string' | 'number' | 'boolean' | 'integer' | 'float' | 'array' | 'object' | 'email' | 'url' | 'date';
 
 export interface RuleObject {
     /** 必填 */

@@ -21,8 +21,7 @@ describe('Form', () => {
         it('渲染为 <form> 元素', () => {
             mount(Form, {
                 slots: {
-                    default: () =>
-                        h(FormItem, { label: '姓名', name: 'name' }, () => h(Input)),
+                    default: () => h(FormItem, { label: '姓名', name: 'name' }, () => h(Input)),
                 },
                 attachTo: document.body,
             });
@@ -43,8 +42,7 @@ describe('Form', () => {
         it('hidden 的 Form.Item 不渲染 DOM', () => {
             mount(Form, {
                 slots: {
-                    default: () =>
-                        h(FormItem, { name: 'hidden', hidden: true }, () => h(Input)),
+                    default: () => h(FormItem, { name: 'hidden', hidden: true }, () => h(Input)),
                 },
                 attachTo: document.body,
             });
@@ -132,10 +130,7 @@ describe('Form', () => {
             });
             const wrapper = mount(Form, {
                 slots: {
-                    default: () => [
-                        h(Bind),
-                        h(FormItem, { name: 'username', initialValue: 'init' }, () => h(Input)),
-                    ],
+                    default: () => [h(Bind), h(FormItem, { name: 'username', initialValue: 'init' }, () => h(Input))],
                 },
             });
             expect(() => formRef?.getFieldValue('username')).not.toThrow();
@@ -175,8 +170,7 @@ describe('Form', () => {
             const wrapper = mount(Form, {
                 props: { initialValues: { user: { name: 'tom' } } },
                 slots: {
-                    default: () =>
-                        h(FormItem, { name: ['user', 'name'] }, () => h(Input)),
+                    default: () => h(FormItem, { name: ['user', 'name'] }, () => h(Input)),
                 },
             });
             await nextTick();
@@ -197,7 +191,7 @@ describe('Form', () => {
                                     'data-testid': 'set',
                                     onClick: () => form.setFieldsValue({ a: '1' }),
                                 },
-                                'set',
+                                'set'
                             ),
                             h(Form, { form }, () => h(FormItem, { name: 'a' }, () => h(Input))),
                         ]);
@@ -226,7 +220,7 @@ describe('Form', () => {
                                     'data-testid': 'reset',
                                     onClick: () => form.resetFields(),
                                 },
-                                'reset',
+                                'reset'
                             ),
                             h(
                                 'button',
@@ -235,10 +229,10 @@ describe('Form', () => {
                                     'data-testid': 'dirty',
                                     onClick: () => form.setFieldsValue({ a: 'dirty' }),
                                 },
-                                'dirty',
+                                'dirty'
                             ),
                             h(Form, { form, initialValues: { a: 'init' } }, () =>
-                                h(FormItem, { name: 'a' }, () => h(Input)),
+                                h(FormItem, { name: 'a' }, () => h(Input))
                             ),
                         ]);
                 },
@@ -305,8 +299,7 @@ describe('Form', () => {
             const ruleLen: RuleObject = { len: 3, message: '必须 3 个字符' };
             const wrapper = mount(Form, {
                 slots: {
-                    default: () =>
-                        h(FormItem, { name: 'code', rules: [ruleLen] }, () => h(Input)),
+                    default: () => h(FormItem, { name: 'code', rules: [ruleLen] }, () => h(Input)),
                 },
                 attachTo: document.body,
             });
@@ -338,7 +331,9 @@ describe('Form', () => {
             const wrapper = mount(Form, {
                 slots: {
                     default: () =>
-                        h(FormItem, { name: 'age', rules: [{ type: 'integer', message: '请输入整数' }] }, () => h(Input)),
+                        h(FormItem, { name: 'age', rules: [{ type: 'integer', message: '请输入整数' }] }, () =>
+                            h(Input)
+                        ),
                 },
                 attachTo: document.body,
             });
@@ -386,7 +381,7 @@ describe('Form', () => {
                         h(
                             FormItem,
                             { name: 'age', rules: [{ type: 'integer', min: 0, max: 150, message: '0-150' }] },
-                            () => h(Input),
+                            () => h(Input)
                         ),
                 },
                 attachTo: document.body,
@@ -422,7 +417,9 @@ describe('Form', () => {
             const wrapper = mount(Form, {
                 slots: {
                     default: () =>
-                        h(FormItem, { name: 'email', rules: [{ pattern: /^[a-z]+@/i, message: '邮箱格式不对' }] }, () => h(Input)),
+                        h(FormItem, { name: 'email', rules: [{ pattern: /^[a-z]+@/i, message: '邮箱格式不对' }] }, () =>
+                            h(Input)
+                        ),
                 },
                 attachTo: document.body,
             });
@@ -467,7 +464,7 @@ describe('Form', () => {
                                     },
                                 ],
                             },
-                            () => h(Input),
+                            () => h(Input)
                         ),
                 },
                 attachTo: document.body,
@@ -490,10 +487,7 @@ describe('Form', () => {
             const Host = defineComponent({
                 setup() {
                     const [form] = useForm();
-                    return () =>
-                        h(Form, { form, onValuesChange }, () =>
-                            h(FormItem, { name: 'a' }, () => h(Input)),
-                        );
+                    return () => h(Form, { form, onValuesChange }, () => h(FormItem, { name: 'a' }, () => h(Input)));
                 },
             });
             const wrapper = mount(Host, { attachTo: document.body });
@@ -510,10 +504,7 @@ describe('Form', () => {
         it('空表单不触发 onFinish（全部无 required）', async () => {
             const wrapper = mount(Form, {
                 slots: {
-                    default: () => [
-                        h(FormItem, { name: 'a' }, () => h(Input)),
-                        h('button', { type: 'submit' }, 'go'),
-                    ],
+                    default: () => [h(FormItem, { name: 'a' }, () => h(Input)), h('button', { type: 'submit' }, 'go')],
                 },
                 attachTo: document.body,
             });
@@ -560,8 +551,7 @@ describe('Form', () => {
         it('type=number 规则：接受整数 + 浮点 + 数字字符串', async () => {
             const wrapper = mount(Form, {
                 slots: {
-                    default: () =>
-                        h(FormItem, { name: 'v', rules: [{ type: 'number' }] }, () => h(Input)),
+                    default: () => h(FormItem, { name: 'v', rules: [{ type: 'number' }] }, () => h(Input)),
                 },
                 attachTo: document.body,
             });
@@ -603,8 +593,7 @@ describe('Form', () => {
         it('type=float 规则：只接受浮点', async () => {
             const wrapper = mount(Form, {
                 slots: {
-                    default: () =>
-                        h(FormItem, { name: 'v', rules: [{ type: 'float' }] }, () => h(Input)),
+                    default: () => h(FormItem, { name: 'v', rules: [{ type: 'float' }] }, () => h(Input)),
                 },
                 attachTo: document.body,
             });
@@ -635,8 +624,7 @@ describe('Form', () => {
         it('type=email 规则：邮箱格式', async () => {
             const wrapper = mount(Form, {
                 slots: {
-                    default: () =>
-                        h(FormItem, { name: 'email', rules: [{ type: 'email' }] }, () => h(Input)),
+                    default: () => h(FormItem, { name: 'email', rules: [{ type: 'email' }] }, () => h(Input)),
                 },
                 attachTo: document.body,
             });
@@ -665,8 +653,7 @@ describe('Form', () => {
         it('type=url 规则：URL 格式', async () => {
             const wrapper = mount(Form, {
                 slots: {
-                    default: () =>
-                        h(FormItem, { name: 'url', rules: [{ type: 'url' }] }, () => h(Input)),
+                    default: () => h(FormItem, { name: 'url', rules: [{ type: 'url' }] }, () => h(Input)),
                 },
                 attachTo: document.body,
             });
@@ -699,7 +686,7 @@ describe('Form', () => {
                         h(
                             FormItem,
                             { name: 'name', rules: [{ required: true, whitespace: true, message: '不能为空或空白' }] },
-                            () => h(Input),
+                            () => h(Input)
                         ),
                 },
                 attachTo: document.body,
@@ -744,7 +731,7 @@ describe('Form', () => {
                                     { type: 'integer', min: 0, max: 150, message: '0-150' },
                                 ],
                             },
-                            () => h(Input),
+                            () => h(Input)
                         ),
                 },
                 attachTo: document.body,
@@ -803,7 +790,7 @@ describe('Form', () => {
                                     },
                                 ],
                             },
-                            () => h(Input),
+                            () => h(Input)
                         ),
                 },
                 attachTo: document.body,
@@ -872,8 +859,7 @@ describe('Form', () => {
             mount(Form, {
                 props: { requiredMark: false },
                 slots: {
-                    default: () =>
-                        h(FormItem, { label: '姓名', name: 'n', required: true }, () => h(Input)),
+                    default: () => h(FormItem, { label: '姓名', name: 'n', required: true }, () => h(Input)),
                 },
                 attachTo: document.body,
             });
@@ -884,8 +870,7 @@ describe('Form', () => {
             mount(Form, {
                 props: { requiredMark: true },
                 slots: {
-                    default: () =>
-                        h(FormItem, { label: '姓名', name: 'n', required: true }, () => h(Input)),
+                    default: () => h(FormItem, { label: '姓名', name: 'n', required: true }, () => h(Input)),
                 },
                 attachTo: document.body,
             });
@@ -896,8 +881,7 @@ describe('Form', () => {
             mount(Form, {
                 props: { requiredMark: 'optional' },
                 slots: {
-                    default: () =>
-                        h(FormItem, { label: '姓名', name: 'n', required: true }, () => h(Input)),
+                    default: () => h(FormItem, { label: '姓名', name: 'n', required: true }, () => h(Input)),
                 },
                 attachTo: document.body,
             });
@@ -937,8 +921,7 @@ describe('Form', () => {
         it('noStyle 时不渲染外层 label/wrapper 容器', () => {
             const wrapper = mount(Form, {
                 slots: {
-                    default: () =>
-                        h(FormItem, { name: 'a', noStyle: true }, () => h(Input)),
+                    default: () => h(FormItem, { name: 'a', noStyle: true }, () => h(Input)),
                 },
             });
             // 没有 form-item-label / form-item-control 容器
@@ -955,7 +938,7 @@ describe('Form', () => {
                         h(
                             FormItem,
                             { name: 'a', hasFeedback: true, rules: [{ required: true, message: '必填' }] },
-                            () => h(Input),
+                            () => h(Input)
                         ),
                 },
                 attachTo: document.body,
@@ -972,8 +955,7 @@ describe('Form', () => {
         it('validateStatus=success 手动指定覆盖自动推断', () => {
             mount(Form, {
                 slots: {
-                    default: () =>
-                        h(FormItem, { name: 'a', validateStatus: 'success' }, () => h(Input)),
+                    default: () => h(FormItem, { name: 'a', validateStatus: 'success' }, () => h(Input)),
                 },
                 attachTo: document.body,
             });
@@ -983,8 +965,7 @@ describe('Form', () => {
         it('help 文本：无错误时显示', () => {
             const wrapper = mount(Form, {
                 slots: {
-                    default: () =>
-                        h(FormItem, { name: 'a', help: '帮助说明' }, () => h(Input)),
+                    default: () => h(FormItem, { name: 'a', help: '帮助说明' }, () => h(Input)),
                 },
             });
             expect(wrapper.text()).toContain('帮助说明');
@@ -997,7 +978,7 @@ describe('Form', () => {
                         h(
                             FormItem,
                             { name: 'a', help: '帮助说明', rules: [{ required: true, message: '错误文案' }] },
-                            () => h(Input),
+                            () => h(Input)
                         ),
                 },
                 attachTo: document.body,
@@ -1026,17 +1007,15 @@ describe('Form', () => {
         it('getValueFromEvent 自定义取值', async () => {
             const wrapper = mount(Form, {
                 slots: {
-                    default: () =>
-                        h(FormItem, { name: 'custom' }, () => h('input', { 'data-v': 'from-custom' })),
+                    default: () => h(FormItem, { name: 'custom' }, () => h('input', { 'data-v': 'from-custom' })),
                 },
                 attachTo: document.body,
             });
             const form = findForm();
-            const input = document.querySelector('input') as HTMLInputElement;
-            // 原生 input 触发 change 事件，自定义 FormItem 用 onUpdate:modelValue 默认 trigger
-            // 这里仅冒烟测试：setFieldsValue 通过 form 即可
             // 简化：直接通过 form.setFieldsValue 设置值后提交
-            const formInstance = (wrapper.vm as unknown as { form?: { setFieldsValue: (v: Record<string, unknown>) => void } }).form;
+            const formInstance = (
+                wrapper.vm as unknown as { form?: { setFieldsValue: (v: Record<string, unknown>) => void } }
+            ).form;
             formInstance?.setFieldsValue({ custom: 'from-custom' });
             form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
             await nextTick();
@@ -1051,8 +1030,7 @@ describe('Form', () => {
             const trim = (v: unknown) => (typeof v === 'string' ? v.trim() : v);
             const wrapper = mount(Form, {
                 slots: {
-                    default: () =>
-                        h(FormItem, { name: 'name', normalize: trim }, () => h(Input)),
+                    default: () => h(FormItem, { name: 'name', normalize: trim }, () => h(Input)),
                 },
                 attachTo: document.body,
             });
@@ -1075,10 +1053,8 @@ describe('Form', () => {
             const wrapper = mount(Form, {
                 slots: {
                     default: () =>
-                        h(
-                            FormItem,
-                            { name: 'agree', valuePropName: 'checked', trigger: 'onChange' },
-                            () => h('input', { type: 'checkbox' }),
+                        h(FormItem, { name: 'agree', valuePropName: 'checked', trigger: 'onChange' }, () =>
+                            h('input', { type: 'checkbox' })
                         ),
                 },
                 attachTo: document.body,
@@ -1117,10 +1093,10 @@ describe('Form', () => {
                                         });
                                     },
                                 },
-                                'validate',
+                                'validate'
                             ),
                             h(Form, { form, initialValues: { a: 'x' } }, () =>
-                                h(FormItem, { name: 'a' }, () => h(Input)),
+                                h(FormItem, { name: 'a' }, () => h(Input))
                             ),
                         ]);
                 },
@@ -1151,10 +1127,10 @@ describe('Form', () => {
                                         });
                                     },
                                 },
-                                'validate',
+                                'validate'
                             ),
                             h(Form, { form }, () =>
-                                h(FormItem, { name: 'a', rules: [{ required: true, message: 'a!' }] }, () => h(Input)),
+                                h(FormItem, { name: 'a', rules: [{ required: true, message: 'a!' }] }, () => h(Input))
                             ),
                         ]);
                 },
@@ -1187,7 +1163,7 @@ describe('Form', () => {
                                         form.setFieldsValue({ registered: 1, unregistered: 2 });
                                     },
                                 },
-                                'set',
+                                'set'
                             ),
                             h(Form, { form }, () => h(FormItem, { name: 'registered' }, () => h(Input))),
                         ]);
@@ -1216,7 +1192,7 @@ describe('Form', () => {
                                         form.setFields([{ name: 'a', errors: ['服务器报错'], touched: true }]);
                                     },
                                 },
-                                'setErr',
+                                'setErr'
                             ),
                             h(Form, { form }, () => h(FormItem, { name: 'a' }, () => h(Input))),
                         ]);
@@ -1267,14 +1243,10 @@ describe('Form', () => {
                             initialSet.value = true;
                             form.setFieldsValue({ a: 'init' });
                         }
-                        return h(
-                            Form,
-                            { form, onValuesChange },
-                            () => [
-                                h(FormItem, { name: 'a' }, () => h(Input)),
-                                h(FormItem, { name: 'b' }, () => h(Input)),
-                            ],
-                        );
+                        return h(Form, { form, onValuesChange }, () => [
+                            h(FormItem, { name: 'a' }, () => h(Input)),
+                            h(FormItem, { name: 'b' }, () => h(Input)),
+                        ]);
                     };
                 },
             });
@@ -1302,7 +1274,7 @@ describe('Form', () => {
                     if ((form as unknown as { __store?: unknown }).__store) {
                         const orig = form.setFieldsValue.bind(form);
                         (form as unknown as { setFieldsValue: typeof orig }).setFieldsValue = ((
-                            v: Record<string, unknown>,
+                            v: Record<string, unknown>
                         ) => {
                             setFieldsValueSpy(v);
                             orig(v);
@@ -1311,7 +1283,7 @@ describe('Form', () => {
                     return () =>
                         h(Fragment, [
                             h(Form, { form, initialValues: { a: 1, b: 2 } }, () =>
-                                h(FormItem, { name: 'a' }, () => h(Input)),
+                                h(FormItem, { name: 'a' }, () => h(Input))
                             ),
                             h('div', props.tick),
                         ]);
@@ -1340,7 +1312,7 @@ describe('Form', () => {
                     if ((form as unknown as { __store?: unknown }).__store) {
                         const orig = form.setFieldsValue.bind(form);
                         (form as unknown as { setFieldsValue: typeof orig }).setFieldsValue = ((
-                            v: Record<string, unknown>,
+                            v: Record<string, unknown>
                         ) => {
                             setFieldsValueSpy(v);
                             orig(v);
@@ -1349,7 +1321,7 @@ describe('Form', () => {
                     return () =>
                         h(Fragment, [
                             h(Form, { form, initialValues: props.iv as Record<string, unknown> }, () =>
-                                h(FormItem, { name: 'a' }, () => h(Input)),
+                                h(FormItem, { name: 'a' }, () => h(Input))
                             ),
                             h('div', props.tick),
                         ]);

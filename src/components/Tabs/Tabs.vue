@@ -35,10 +35,8 @@ defineSlots<Record<string, (scope: { item: TabItem }) => unknown>>();
 // 内部 state，仅在非受控（未传 modelValue）时使用
 const internalKey = ref<string>(props.defaultActiveKey ?? props.items[0]?.key ?? '');
 
-const activeKey = computed(() =>
-    props.modelValue !== undefined ? props.modelValue : internalKey.value,
-);
-const activeItem = computed(() => props.items.find(i => i.key === activeKey.value));
+const activeKey = computed(() => (props.modelValue !== undefined ? props.modelValue : internalKey.value));
+const activeItem = computed(() => props.items.find((i) => i.key === activeKey.value));
 
 // ARIA 关联 id
 const idBase = `animal-tabs-${Math.random().toString(36).slice(2, 10)}`;
@@ -65,7 +63,7 @@ function handleKeyDown(e: KeyboardEvent) {
         return;
     }
     e.preventDefault();
-    const idx = props.items.findIndex(i => i.key === activeKey.value);
+    const idx = props.items.findIndex((i) => i.key === activeKey.value);
     if (idx < 0) return;
     let nextIdx = idx;
     if (key === 'ArrowRight') nextIdx = (idx + 1) % props.items.length;
@@ -79,12 +77,12 @@ function handleKeyDown(e: KeyboardEvent) {
 
 watch(
     () => props.items,
-    list => {
+    (list) => {
         if (props.modelValue !== undefined) return;
-        if (!list.find(i => i.key === internalKey.value)) {
+        if (!list.find((i) => i.key === internalKey.value)) {
             internalKey.value = list[0]?.key ?? '';
         }
-    },
+    }
 );
 
 function handleClick(key: string) {
@@ -107,16 +105,15 @@ function handleClick(key: string) {
         >
             <button
                 v-for="item in items"
+                :id="tabId(item.key)"
                 :key="item.key"
-                :ref="el => setTabRef(item.key, el)"
+                :ref="(el) => setTabRef(item.key, el)"
                 type="button"
                 class="animal-tabs__item"
                 :class="{
                     'animal-tabs__item--active': item.key === activeKey,
-                    'animal-tabs__item--active-shadow':
-                        shadow && item.key === activeKey,
+                    'animal-tabs__item--active-shadow': shadow && item.key === activeKey,
                 }"
-                :id="tabId(item.key)"
                 role="tab"
                 :aria-selected="item.key === activeKey"
                 :aria-controls="panelId(item.key)"
@@ -137,18 +134,14 @@ function handleClick(key: string) {
             </button>
         </div>
         <div
+            :id="activeItem ? panelId(activeItem.key) : undefined"
             class="animal-tabs__content"
             role="tabpanel"
-            :id="activeItem ? panelId(activeItem.key) : undefined"
             :aria-labelledby="activeItem ? tabId(activeItem.key) : undefined"
             tabindex="0"
         >
             <div class="animal-tabs__inner">
-                <slot
-                    v-if="activeItem"
-                    :name="activeItem.key"
-                    :item="activeItem"
-                />
+                <slot v-if="activeItem" :name="activeItem.key" :item="activeItem" />
             </div>
         </div>
     </div>
@@ -256,13 +249,26 @@ function handleClick(key: string) {
 }
 
 @keyframes animal-tabs-leaf-wiggle {
-    0%, 100% { transform: rotate(0deg); }
-    25% { transform: rotate(-10deg); }
-    75% { transform: rotate(10deg); }
+    0%,
+    100% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(-10deg);
+    }
+    75% {
+        transform: rotate(10deg);
+    }
 }
 
 @keyframes animal-tabs-fade-in {
-    from { opacity: 0; transform: translateY(4px); }
-    to   { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 </style>

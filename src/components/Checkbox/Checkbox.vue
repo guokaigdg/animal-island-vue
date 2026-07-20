@@ -41,10 +41,7 @@ function toggle(option: CheckboxOption) {
 <template>
     <div
         class="animal-checkbox-group"
-        :class="[
-            `animal-checkbox-group--${direction}`,
-            { 'animal-checkbox-group--disabled': disabled },
-        ]"
+        :class="[`animal-checkbox-group--${direction}`, { 'animal-checkbox-group--disabled': disabled }]"
         role="group"
         v-bind="attrs"
     >

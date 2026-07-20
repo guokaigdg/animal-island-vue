@@ -181,7 +181,7 @@ describe('Select', () => {
     });
 
     describe('定位策略', () => {
-        const openAndGetDropdown = async (mountOptions: Record<string, unknown>) => {
+        const openAndGetDropdown = async () => {
             const trigger = document.querySelector('.animal-select__trigger') as HTMLElement;
             trigger.click();
             await flushRaf();
@@ -192,7 +192,7 @@ describe('Select', () => {
             mockRect({ top: 200, right: 1900, bottom: 250, width: 100, height: 50 });
             mockViewport(2000, 2000);
             const wrapper = mount(Select, { props: { options, modelValue: '' }, attachTo: document.body });
-            const dropdown = await openAndGetDropdown({});
+            const dropdown = await openAndGetDropdown();
             expect(dropdown.style.right).toBe('100%');
             expect(dropdown.style.left).toBe('auto');
             wrapper.unmount();
@@ -203,7 +203,7 @@ describe('Select', () => {
             mockRect({ top: 100, right: 100, bottom: 1995, width: 100, height: 50 });
             mockViewport(2000, 2000);
             const wrapper = mount(Select, { props: { options, modelValue: '' }, attachTo: document.body });
-            const dropdown = await openAndGetDropdown({});
+            const dropdown = await openAndGetDropdown();
             // spaceBelow = 5 < 156, spaceAbove = 100 > 5 → 走 bottom=100%
             expect(dropdown.style.bottom).toBe('100%');
             expect(dropdown.style.top).toBe('auto');
@@ -214,7 +214,7 @@ describe('Select', () => {
             mockRect({ top: 10, right: 100, bottom: 500, width: 100, height: 50 });
             mockViewport(2000, 2000);
             const wrapper = mount(Select, { props: { options, modelValue: '' }, attachTo: document.body });
-            const dropdown = await openAndGetDropdown({});
+            const dropdown = await openAndGetDropdown();
             expect(dropdown.style.top).toBe('100%');
             expect(dropdown.style.marginTop).toBe('6px');
             wrapper.unmount();
@@ -223,7 +223,7 @@ describe('Select', () => {
         it('空间充足 → 默认垂直居中（top:50% translateY(-50%)）', async () => {
             // beforeEach 已配：trigger 在中段、视口 2000x2000
             const wrapper = mount(Select, { props: { options, modelValue: '' }, attachTo: document.body });
-            const dropdown = await openAndGetDropdown({});
+            const dropdown = await openAndGetDropdown();
             expect(dropdown.style.top).toBe('50%');
             expect(dropdown.style.transform).toBe('translateY(-50%)');
             wrapper.unmount();

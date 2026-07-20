@@ -3,9 +3,7 @@ import { CodeBlock as CodeBlockBase } from '../../src';
 import { sectionStyle, sectionTitleStyle, tagStyle, labelStyle, demoBoxStyle, ApiTable, CodeBlock } from '../tools';
 import type { ApiRow } from '../tools';
 
-const CODEBLOCK_API: ApiRow[] = [
-    { prop: 'code', desc: '代码字符串', type: 'string', defaultVal: '-', required: true },
-];
+const CODEBLOCK_API: ApiRow[] = [{ prop: 'code', desc: '代码字符串', type: 'string', defaultVal: '-', required: true }];
 
 const sample1 = `<script setup lang="ts">
 import { Button } from 'animal-island-vue';
@@ -41,14 +39,11 @@ import { CodeBlock } from 'animal-island-vue';
 </template>`;
 
 const demoBox = demoBoxStyle;
-
 </script>
 
 <template>
     <div :style="sectionStyle">
-        <div :style="sectionTitleStyle">
-            CodeBlock <span :style="tagStyle">代码高亮</span>
-        </div>
+        <div :style="sectionTitleStyle">CodeBlock <span :style="tagStyle">代码高亮</span></div>
         <div :style="labelStyle">基础用法</div>
         <div :style="demoBox">
             <CodeBlockBase :code="sample1" />

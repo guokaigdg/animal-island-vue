@@ -145,11 +145,15 @@ const FORM_ITEM_API: ApiRow[] = [
     { prop: 'initialValue', desc: '字段初始值', type: 'unknown', defaultVal: '-' },
 ];
 
-const codeExample = `<script setup lang="ts">
+const codeExample =
+    `<script setup lang="ts">
 import { Form, FormItem, useForm, Input, Button } from 'animal-island-vue';
 
 const [form] = useForm();
-` + '</' + 'script>' + `
+` +
+    '</' +
+    'script>' +
+    `
 
 <template>
     <Form
@@ -212,16 +216,13 @@ const [form] = useForm();
                     label="密码"
                     name="password"
                     required
-                    :rules="[
-                        { required: true, message: '请输入密码' },
-                        { validator: passwordValidator },
-                    ]"
+                    :rules="[{ required: true, message: '请输入密码' }, { validator: passwordValidator }]"
                 >
                     <Input type="password" placeholder="请输入密码" />
                 </FormItem>
                 <FormItem>
                     <div :style="{ marginTop: '8px' }">
-                        <Button type="primary" html-type="submit" block>登录</Button>
+                        <Button type="primary" html-type="submit" block> 登录 </Button>
                     </div>
                 </FormItem>
             </Form>
@@ -274,7 +275,7 @@ const [form] = useForm();
                     <Input placeholder="搜索关键词" />
                 </FormItem>
                 <FormItem>
-                    <Button type="primary" html-type="submit" size="small">搜索</Button>
+                    <Button type="primary" html-type="submit" size="small"> 搜索 </Button>
                 </FormItem>
             </Form>
         </Card>
@@ -306,13 +307,9 @@ const [form] = useForm();
                 </FormItem>
                 <FormItem>
                     <div :style="{ marginTop: '8px' }">
-                        <Button
-                            type="dashed"
-                            :style="{ marginRight: '8px' }"
-                            @click="fillAll"
-                        >一键填充</Button>
-                        <Button :style="{ marginRight: '8px' }" @click="form.resetFields()">重置</Button>
-                        <Button type="primary" html-type="submit">提交</Button>
+                        <Button type="dashed" :style="{ marginRight: '8px' }" @click="fillAll"> 一键填充 </Button>
+                        <Button :style="{ marginRight: '8px' }" @click="form.resetFields()"> 重置 </Button>
+                        <Button type="primary" html-type="submit"> 提交 </Button>
                     </div>
                 </FormItem>
             </Form>
@@ -409,7 +406,7 @@ const [form] = useForm();
                 </FormItem>
                 <FormItem>
                     <div :style="{ marginTop: '8px' }">
-                        <Button type="primary" html-type="submit" block>提交</Button>
+                        <Button type="primary" html-type="submit" block> 提交 </Button>
                     </div>
                 </FormItem>
             </Form>

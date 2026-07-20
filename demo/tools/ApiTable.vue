@@ -23,8 +23,12 @@ defineProps<{ rows: ApiRow[] }>();
                             <span v-if="row.required" class="required">*</span>
                         </td>
                         <td>{{ row.desc }}</td>
-                        <td class="type-cell">{{ row.type }}</td>
-                        <td class="default-cell">{{ row.defaultVal }}</td>
+                        <td class="type-cell">
+                            {{ row.type }}
+                        </td>
+                        <td class="default-cell">
+                            {{ row.defaultVal }}
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -33,7 +37,9 @@ defineProps<{ rows: ApiRow[] }>();
 </template>
 
 <style scoped>
-.api-wrap { margin-top: 24px; }
+.api-wrap {
+    margin-top: 24px;
+}
 .api-label {
     font-size: 14px;
     font-weight: 600;
@@ -66,9 +72,20 @@ defineProps<{ rows: ApiRow[] }>();
     color: #c8bba8;
     border-top: 1px solid #3d3028;
 }
-.api-table td { padding: 10px 16px; }
-.prop-name { color: #e8c87a; }
-.required { color: #f0a870; margin-left: 4px; }
-.type-cell { color: #d4a0e0; }
-.default-cell { color: #a8d4a0; }
+.api-table td {
+    padding: 10px 16px;
+}
+.prop-name {
+    color: #e8c87a;
+}
+.required {
+    color: #f0a870;
+    margin-left: 4px;
+}
+.type-cell {
+    color: #d4a0e0;
+}
+.default-cell {
+    color: #a8d4a0;
+}
 </style>

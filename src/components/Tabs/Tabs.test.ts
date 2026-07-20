@@ -61,13 +61,17 @@ describe('Tabs', () => {
             setup() {
                 const value = ref('a');
                 return () =>
-                    h(Tabs, {
-                        items,
-                        modelValue: value.value,
-                        'onUpdate:modelValue': (v: string) => {
-                            value.value = v;
+                    h(
+                        Tabs,
+                        {
+                            items,
+                            modelValue: value.value,
+                            'onUpdate:modelValue': (v: string) => {
+                                value.value = v;
+                            },
                         },
-                    }, paneSlots);
+                        paneSlots
+                    );
             },
         });
         const wrapper = mount(Host);

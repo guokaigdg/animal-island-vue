@@ -63,80 +63,78 @@ function onClose(e: MouseEvent) { console.log('closed', e); }
 
 <template>
     <div :style="sectionStyle">
-        <div :style="sectionTitleStyle">
-            Tag <span :style="tagStyle">标签</span>
-        </div>
+        <div :style="sectionTitleStyle">Tag <span :style="tagStyle">标签</span></div>
 
         <div :style="demoBodyStyle">
             <div :style="labelStyle">size 尺寸（默认颜色）</div>
             <div :style="demoBoxStyle">
                 <div :style="rowStyle">
-                    <Tag size="small">Small</Tag>
-                    <Tag size="medium">Medium</Tag>
-                    <Tag size="large">Large</Tag>
+                    <Tag size="small"> Small </Tag>
+                    <Tag size="medium"> Medium </Tag>
+                    <Tag size="large"> Large </Tag>
                 </div>
             </div>
 
             <div :style="labelStyle">variant 风格</div>
             <div :style="demoBoxStyle">
                 <div :style="rowStyle">
-                    <Tag variant="solid">Solid</Tag>
-                    <Tag variant="outlined">Outlined</Tag>
-                    <Tag variant="dashed">Dashed</Tag>
+                    <Tag variant="solid"> Solid </Tag>
+                    <Tag variant="outlined"> Outlined </Tag>
+                    <Tag variant="dashed"> Dashed </Tag>
                 </div>
             </div>
 
             <div :style="labelStyle">color 颜色</div>
             <div :style="demoBoxStyle">
                 <div :style="rowStyle">
-                    <Tag color="app-pink">app-pink</Tag>
-                    <Tag color="purple">purple</Tag>
-                    <Tag color="app-blue">app-blue</Tag>
-                    <Tag color="app-yellow">app-yellow</Tag>
-                    <Tag color="app-teal">app-teal</Tag>
-                    <Tag color="app-red">app-red</Tag>
-                    <Tag color="app-green">app-green</Tag>
-                    <Tag color="app-orange">app-orange</Tag>
-                    <Tag color="lime-green">lime-green</Tag>
-                    <Tag color="brown">brown</Tag>
-                    <Tag color="warm-peach-pink">warm-peach-pink</Tag>
+                    <Tag color="app-pink"> app-pink </Tag>
+                    <Tag color="purple"> purple </Tag>
+                    <Tag color="app-blue"> app-blue </Tag>
+                    <Tag color="app-yellow"> app-yellow </Tag>
+                    <Tag color="app-teal"> app-teal </Tag>
+                    <Tag color="app-red"> app-red </Tag>
+                    <Tag color="app-green"> app-green </Tag>
+                    <Tag color="app-orange"> app-orange </Tag>
+                    <Tag color="lime-green"> lime-green </Tag>
+                    <Tag color="brown"> brown </Tag>
+                    <Tag color="warm-peach-pink"> warm-peach-pink </Tag>
                 </div>
             </div>
 
             <div :style="labelStyle">color + variant 组合</div>
             <div :style="demoBoxStyle">
                 <div :style="rowStyle">
-                    <Tag color="app-blue" variant="solid">Solid</Tag>
-                    <Tag color="app-blue" variant="outlined">Outlined</Tag>
-                    <Tag color="app-blue" variant="dashed">Dashed</Tag>
+                    <Tag color="app-blue" variant="solid"> Solid </Tag>
+                    <Tag color="app-blue" variant="outlined"> Outlined </Tag>
+                    <Tag color="app-blue" variant="dashed"> Dashed </Tag>
                 </div>
             </div>
 
             <div :style="labelStyle">closable 可关闭（@close 打印到 console）</div>
             <div :style="demoBoxStyle">
                 <div :style="rowStyle">
-                    <Tag closable @close="handleClose">默认</Tag>
-                    <Tag color="app-pink" closable @close="handleClose">粉色</Tag>
-                    <Tag color="app-teal" closable @close="handleClose">青色</Tag>
-                    <Tag color="app-red" closable @close="handleClose">红色</Tag>
+                    <Tag closable @close="handleClose"> 默认 </Tag>
+                    <Tag color="app-pink" closable @close="handleClose"> 粉色 </Tag>
+                    <Tag color="app-teal" closable @close="handleClose"> 青色 </Tag>
+                    <Tag color="app-red" closable @close="handleClose"> 红色 </Tag>
                 </div>
             </div>
 
             <div :style="labelStyle">clickable 可点击（@click 打印到 console）</div>
             <div :style="demoBoxStyle">
                 <div :style="rowStyle">
-                    <Tag @click="handleClick">点击我</Tag>
-                    <Tag color="app-yellow" @click="handleClick">点击我</Tag>
-                    <Tag color="purple" variant="outlined" @click="handleClick">点击我</Tag>
+                    <Tag @click="handleClick"> 点击我 </Tag>
+                    <Tag color="app-yellow" @click="handleClick"> 点击我 </Tag>
+                    <Tag color="purple" variant="outlined" @click="handleClick"> 点击我 </Tag>
                 </div>
             </div>
 
             <div :style="labelStyle">disabled 禁用</div>
             <div :style="demoBoxStyle">
                 <div :style="rowStyle">
-                    <Tag disabled>Disabled</Tag>
-                    <Tag color="app-blue" disabled>Disabled</Tag>
-                    <Tag color="app-red" closable disabled>Disabled Closable</Tag>
+                    <Tag disabled> Disabled </Tag>
+                    <Tag color="app-blue" disabled> Disabled </Tag>
+                    <Tag color="app-red" closable disabled> Disabled Closable </Tag>
                 </div>
             </div>
         </div>

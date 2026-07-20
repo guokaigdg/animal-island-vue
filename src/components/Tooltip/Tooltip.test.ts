@@ -1,17 +1,9 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { mount } from '@vue/test-utils';
-import { h, nextTick } from 'vue';
+import { h } from 'vue';
 import Tooltip from './Tooltip.vue';
 
 const wait = (ms = 0) => new Promise<void>((resolve) => setTimeout(resolve, ms));
-
-function getBubble(): HTMLElement {
-    return document.querySelector('.animal-tooltip__bubble') as HTMLElement;
-}
-
-function getTrigger(): HTMLElement {
-    return document.querySelector('.animal-tooltip__trigger') as HTMLElement;
-}
 
 describe('Tooltip', () => {
     afterEach(() => {
@@ -74,9 +66,7 @@ describe('Tooltip', () => {
             props: { title: 'hi', placement: 'bottom-start' },
             slots: { default: h('button', null, 'btn') },
         });
-        expect(wrapper.find('[role="tooltip"]').classes()).toContain(
-            'animal-tooltip__bubble--bottom_start',
-        );
+        expect(wrapper.find('[role="tooltip"]').classes()).toContain('animal-tooltip__bubble--bottom_start');
     });
 
     it('variant=island 应用 island 类', () => {
@@ -84,9 +74,7 @@ describe('Tooltip', () => {
             props: { title: 'hi', variant: 'island' },
             slots: { default: h('button', null, 'btn') },
         });
-        expect(wrapper.find('[role="tooltip"]').classes()).toContain(
-            'animal-tooltip__bubble--island',
-        );
+        expect(wrapper.find('[role="tooltip"]').classes()).toContain('animal-tooltip__bubble--island');
     });
 
     it('保留子元素自身的事件处理器', async () => {

@@ -89,38 +89,36 @@ const open = ref(false);
 
 <template>
     <div :style="sectionStyle">
-        <div :style="sectionTitleStyle">
-            Drawer <span :style="tagStyle">抽屉</span>
-        </div>
+        <div :style="sectionTitleStyle">Drawer <span :style="tagStyle">抽屉</span></div>
 
         <div :style="demoBodyStyle">
             <div :style="labelStyle">placement 四个方向</div>
             <div :style="demoBoxStyle">
                 <div :style="rowStyle">
-                    <Button type="primary" @click="rightOpen = true">Right</Button>
-                    <Button type="primary" @click="leftOpen = true">Left</Button>
-                    <Button type="primary" @click="topOpen = true">Top</Button>
-                    <Button type="primary" @click="bottomOpen = true">Bottom</Button>
+                    <Button type="primary" @click="rightOpen = true"> Right </Button>
+                    <Button type="primary" @click="leftOpen = true"> Left </Button>
+                    <Button type="primary" @click="topOpen = true"> Top </Button>
+                    <Button type="primary" @click="bottomOpen = true"> Bottom </Button>
                 </div>
             </div>
 
             <div :style="labelStyle">无标题 / 自定义 footer</div>
             <div :style="demoBoxStyle">
                 <div :style="rowStyle">
-                    <Button @click="noTitleOpen = true">无标题</Button>
-                    <Button type="dashed" @click="footerOpen = true">自定义 Footer</Button>
+                    <Button @click="noTitleOpen = true"> 无标题 </Button>
+                    <Button type="dashed" @click="footerOpen = true"> 自定义 Footer </Button>
                 </div>
             </div>
 
             <div :style="labelStyle">maskClosable / pushBackground 选项</div>
             <div :style="demoBoxStyle">
                 <div :style="rowStyle">
-                    <Button type="primary" @click="optionsOpen = true">打开</Button>
+                    <Button type="primary" @click="optionsOpen = true"> 打开 </Button>
                     <label :style="checkLabelStyle">
-                        <input type="checkbox" v-model="maskClosable" /> maskClosable
+                        <input v-model="maskClosable" type="checkbox" /> maskClosable
                     </label>
                     <label :style="checkLabelStyle">
-                        <input type="checkbox" v-model="pushBackground" /> pushBackground
+                        <input v-model="pushBackground" type="checkbox" /> pushBackground
                     </label>
                 </div>
             </div>
@@ -130,27 +128,21 @@ const open = ref(false);
             这是右侧抽屉的内容。可以放置表单、详情信息等。
         </Drawer>
 
-        <Drawer :open="leftOpen" title="左侧抽屉" placement="left" @close="leftOpen = false">
-            左侧抽屉的内容。
-        </Drawer>
+        <Drawer :open="leftOpen" title="左侧抽屉" placement="left" @close="leftOpen = false"> 左侧抽屉的内容。 </Drawer>
 
-        <Drawer :open="topOpen" title="顶部抽屉" placement="top" @close="topOpen = false">
-            顶部抽屉的内容。
-        </Drawer>
+        <Drawer :open="topOpen" title="顶部抽屉" placement="top" @close="topOpen = false"> 顶部抽屉的内容。 </Drawer>
 
         <Drawer :open="bottomOpen" title="底部抽屉" placement="bottom" @close="bottomOpen = false">
             底部抽屉的内容。
         </Drawer>
 
-        <Drawer :open="noTitleOpen" @close="noTitleOpen = false">
-            这个抽屉没有标题，仅展示内容区域。
-        </Drawer>
+        <Drawer :open="noTitleOpen" @close="noTitleOpen = false"> 这个抽屉没有标题，仅展示内容区域。 </Drawer>
 
         <Drawer :open="footerOpen" title="确认操作" @close="footerOpen = false">
             确定要执行这个操作吗？此操作不可撤销。
             <template #footer>
-                <Button @click="footerOpen = false">取消</Button>
-                <Button type="primary" @click="footerOpen = false">确认</Button>
+                <Button @click="footerOpen = false"> 取消 </Button>
+                <Button type="primary" @click="footerOpen = false"> 确认 </Button>
             </template>
         </Drawer>
 

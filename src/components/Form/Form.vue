@@ -14,7 +14,10 @@ const props = withDefaults(defineProps<FormProps>(), {
 
 const emit = defineEmits<{
     (e: 'finish', values: Record<string, unknown>): void;
-    (e: 'finishFailed', info: { values: Record<string, unknown>; errorFields: ValidateError[]; outOfDate: boolean }): void;
+    (
+        e: 'finishFailed',
+        info: { values: Record<string, unknown>; errorFields: ValidateError[]; outOfDate: boolean }
+    ): void;
     (e: 'reset', event: Event): void;
 }>();
 
@@ -120,12 +123,7 @@ defineExpose({
 <template>
     <form
         class="island-form"
-        :class="[
-            `island-form--${layout}`,
-            `island-form--${size}`,
-            { 'island-form--disabled': disabled },
-            props.class,
-        ]"
+        :class="[`island-form--${layout}`, `island-form--${size}`, { 'island-form--disabled': disabled }, props.class]"
         :style="props.style"
         v-bind="attrs"
         @submit="handleSubmit"

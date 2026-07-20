@@ -52,10 +52,7 @@ const ariaValueNow = computed(() => Math.round(safePercent.value));
             <div v-if="showInfo" class="animal-progress__info animal-progress__info--top">
                 {{ renderedInfo }}
             </div>
-            <div
-                class="animal-progress__track"
-                :class="`animal-progress__track--${size}`"
-            >
+            <div class="animal-progress__track" :class="`animal-progress__track--${size}`">
                 <div
                     class="animal-progress__fill"
                     :class="{ 'animal-progress__fill--no-transition': duration === 0 }"
@@ -65,20 +62,13 @@ const ariaValueNow = computed(() => Math.round(safePercent.value));
                         {{ renderedInfo }}
                     </span>
                 </div>
-                <span
-                    v-if="isInside && !infoInsideVisible"
-                    class="animal-progress__info-inside"
-                    style="color: #725d42"
-                >
+                <span v-if="isInside && !infoInsideVisible" class="animal-progress__info-inside" style="color: #725d42">
                     {{ renderedInfo }}
                 </span>
             </div>
         </div>
         <div v-else class="animal-progress__row">
-            <div
-                class="animal-progress__track"
-                :class="`animal-progress__track--${size}`"
-            >
+            <div class="animal-progress__track" :class="`animal-progress__track--${size}`">
                 <div
                     class="animal-progress__fill"
                     :class="{ 'animal-progress__fill--no-transition': duration === 0 }"
@@ -88,18 +78,11 @@ const ariaValueNow = computed(() => Math.round(safePercent.value));
                         {{ renderedInfo }}
                     </span>
                 </div>
-                <span
-                    v-if="isInside && !infoInsideVisible"
-                    class="animal-progress__info-inside"
-                    style="color: #725d42"
-                >
+                <span v-if="isInside && !infoInsideVisible" class="animal-progress__info-inside" style="color: #725d42">
                     {{ renderedInfo }}
                 </span>
             </div>
-            <div
-                v-if="showInfo && infoPosition === 'right'"
-                class="animal-progress__info animal-progress__info--right"
-            >
+            <div v-if="showInfo && infoPosition === 'right'" class="animal-progress__info animal-progress__info--right">
                 {{ renderedInfo }}
             </div>
         </div>
@@ -200,13 +183,7 @@ const ariaValueNow = computed(() => Math.round(safePercent.value));
         width: 0;
         border-radius: 999px;
         background: #0ec4b6;
-        background-image: repeating-linear-gradient(
-            -45deg,
-            #0ec4b6 0,
-            #0ec4b6 10px,
-            #01b0a7 10px,
-            #01b0a7 20px
-        );
+        background-image: repeating-linear-gradient(-45deg, #0ec4b6 0, #0ec4b6 10px, #01b0a7 10px, #01b0a7 20px);
         background-size: 28.28px 28.28px;
         animation: animal-progress-stripe 1s linear infinite;
         transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);

@@ -44,9 +44,7 @@ import leafIcon from './icon-leaf.png';
 
 <template>
     <div :style="sectionStyle">
-        <div :style="sectionTitleStyle">
-            Wallet <span :style="tagStyle">钱包</span>
-        </div>
+        <div :style="sectionTitleStyle">Wallet <span :style="tagStyle">钱包</span></div>
 
         <div :style="demoBodyStyle">
             <div :style="labelStyle">默认钱包（value 默认 00,000）</div>

@@ -41,8 +41,10 @@ pnpm-debug.log*
 
 # Test
 coverage/
+test-report.md
 
 # Misc
 *.bak
 *.tmp
 *.temp
+.npmrc

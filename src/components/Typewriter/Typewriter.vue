@@ -12,14 +12,15 @@ import {
     type VNode,
 } from 'vue';
 
-interface State { remaining: number; stopped: boolean; }
+interface State {
+    remaining: number;
+    stopped: boolean;
+}
 
 function countText(nodes: unknown): number {
-    if (nodes == null || typeof nodes === 'boolean') return 0;
-    if (typeof nodes === 'string' || typeof nodes === 'number')
-        return String(nodes).length;
-    if (Array.isArray(nodes))
-        return nodes.reduce<number>((s, n) => s + countText(n), 0);
+    if (nodes === null || nodes === undefined || typeof nodes === 'boolean') return 0;
+    if (typeof nodes === 'string' || typeof nodes === 'number') return String(nodes).length;
+    if (Array.isArray(nodes)) return nodes.reduce<number>((s, n) => s + countText(n), 0);
     const v = nodes as VNode;
     if (v && typeof v === 'object' && 'type' in v) {
         if (v.type === Comment) return 0;
@@ -35,7 +36,7 @@ function cloneWithChildren(v: VNode, children: unknown): VNode {
 
 function clip(nodes: unknown, state: State): unknown {
     if (state.stopped) return null;
-    if (nodes == null || typeof nodes === 'boolean') return null;
+    if (nodes === null || nodes === undefined || typeof nodes === 'boolean') return null;
     if (typeof nodes === 'string' || typeof nodes === 'number') {
         const text = String(nodes);
         if (state.remaining >= text.length) {
@@ -67,7 +68,7 @@ function clip(nodes: unknown, state: State): unknown {
         if (v.type === Fragment) {
             return cloneWithChildren(v, clip(v.children, state));
         }
-        if (v.children == null || typeof v.children === 'string') {
+        if (v.children === null || v.children === undefined || typeof v.children === 'string') {
             const text = String(v.children ?? '');
             if (text.length === 0) return v;
             if (state.remaining >= text.length) {
@@ -102,7 +103,7 @@ export default defineComponent({
     emits: ['done'],
     setup(props, { slots, emit }) {
         const getNodes = (): VNode[] => {
-            if (props.text != null) return [h(Text, props.text) as unknown as VNode];
+            if (props.text !== null && props.text !== undefined) return [h(Text, props.text) as unknown as VNode];
             return slots.default ? slots.default() : [];
         };
 
@@ -143,7 +144,7 @@ export default defineComponent({
         watch(
             () => [props.speed, props.trigger, props.autoPlay, props.text],
             () => start(),
-            { immediate: true },
+            { immediate: true }
         );
 
         onBeforeUnmount(stop);

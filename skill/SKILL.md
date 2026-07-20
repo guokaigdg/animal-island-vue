@@ -1,17 +1,18 @@
 ---
 name: animal-island-vue-style
 description: >
-  使用 animal-island-vue 设计风格创建 Vue 3 UI 界面或组件。当用户需要：
-  (1) 用动物森友会风格创建 UI 页面或组件；
-  (2) 使用 animal-island-vue 组件库开发界面；
-  (3) 构建温馨自然、圆润可爱风格的 Vue 界面；
-  (4) 复现或扩展 animal-island-vue 的视觉语言；
-  (5) 提问"动物森友会风格"、"animal island 风格"、"可爱圆润风格"的 UI 时，务必使用此 skill。
+    使用 animal-island-vue 设计风格创建 Vue 3 UI 界面或组件。当用户需要：
+    (1) 用动物森友会风格创建 UI 页面或组件；
+    (2) 使用 animal-island-vue 组件库开发界面；
+    (3) 构建温馨自然、圆润可爱风格的 Vue 界面；
+    (4) 复现或扩展 animal-island-vue 的视觉语言；
+    (5) 提问"动物森友会风格"、"animal island 风格"、"可爱圆润风格"的 UI 时，务必使用此 skill。
 ---
 
 # Animal Island Vue 设计风格指南
 
 > **三文档分工**（生成代码 / 调样式时按需查阅，避免互相翻查）：
+>
 > - `AI_USAGE.md` — API 手册：每个组件的 props、类型、默认值、合法取值、禁用用法。**写代码优先查这里**。
 > - `skill/SKILL.md`（本文档）— 像素级样式：设计 token、每组件精确 CSS（hex/px/keyframe）、Demo 布局、新组件开发模板。**要自己实现/扩展样式时查这里**。
 > - `DESIGN_PROMPT.md` — 给外部工具（v0 / Figma AI / Midjourney / DALL-E）的提示词包，含 clip-path、色板速查、禁用清单。**只在喂别的 AI 时用**。
@@ -30,35 +31,36 @@ animal-island-vue 是一套受《集合啦！动物森友会》启发的 Vue 3 +
 
 从 `src/index.ts` 导出：
 
-| 组件 | 职责 | 交互 | 装饰 / 纯展示 |
-|---|---|---|---|
-| `Button` | 按钮，5 种类型 × 3 种尺寸 | ✓ | |
-| `Input` | 输入框，3 种尺寸 + clear/prefix/suffix | ✓ | |
-| `Switch` | 开关，默认/小号 | ✓ | |
-| `Modal` | SVG blob 裁切弹窗 | ✓ | |
-| `Card` | 容器，`default`/`dashed`，13 种 NookPhone 实色 + 13 种 `pattern` 波点墙纸（CSS radial-gradient，非图片） | | ✓ |
-| `Title` | 章节标题，飘带横幅（swallowtail clip-path 燕尾 + 折角阴影 + 微透视正面），13 种配色（替代旧 `Card type="title"`） | | ✓ |
-| `Collapse` | 手风琴（动画用 CSS Grid 0fr↔1fr 实现，无 JS 动画） | ✓ | |
-| `Select` | 下拉选择器（受控） | ✓ | |
-| `Checkbox` | 多选框组，水平/垂直，3 种尺寸 | ✓ | |
-| `Radio` | 单选框组，3 种尺寸，键盘 roving tabindex | ✓ | |
-| `Tooltip` | 12 种 placement，`hover`/`focus`/`click` 触发，`default`/`island` 形态 | ✓ | |
-| `Icon` | SVG 图标库（10 个） | | ✓ |
-| `Time` | HUD 实时时钟 | | ✓ |
-| `Phone` | NookPhone 3×3 应用网格 | | ✓ |
-| `Footer` | 底部装饰图（`sea`/`tree`） | | ✓ |
-| `Divider` | 装饰分割线，5 种风格 | | ✓ |
-| `Cursor` | 游戏手指光标包裹器 | | ✓ |
-| `Typewriter` | 打字机效果，保留 VNode 结构 | | ✓ |
-| `Tabs` | 标签页切换，叶子摆动动画可选 | ✓ | |
-| `CodeBlock` | JSX/TS 语法高亮代码块 | | ✓ |
-| `Loading` | 全屏遮罩 + SVG spinner（mint `#19c8b9`，`stroke-dasharray` 动画） | | ✓ |
-| `Table` | 数据表格，固定列、空状态、loading | ✓ | |
-| `WeddingInvitation` | 婚礼邀请函（含 `WeddingInvitationExportButton` 导出 PNG —— 这是清单里**唯一非组件的伴生导出按钮**） | | ✓ |
+| 组件                | 职责                                                                                                              | 交互 | 装饰 / 纯展示 |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------- | ---- | ------------- |
+| `Button`            | 按钮，5 种类型 × 3 种尺寸                                                                                         | ✓    |               |
+| `Input`             | 输入框，3 种尺寸 + clear/prefix/suffix                                                                            | ✓    |               |
+| `Switch`            | 开关，默认/小号                                                                                                   | ✓    |               |
+| `Modal`             | SVG blob 裁切弹窗                                                                                                 | ✓    |               |
+| `Card`              | 容器，`default`/`dashed`，13 种 NookPhone 实色 + 13 种 `pattern` 波点墙纸（CSS radial-gradient，非图片）          |      | ✓             |
+| `Title`             | 章节标题，飘带横幅（swallowtail clip-path 燕尾 + 折角阴影 + 微透视正面），13 种配色（替代旧 `Card type="title"`） |      | ✓             |
+| `Collapse`          | 手风琴（动画用 CSS Grid 0fr↔1fr 实现，无 JS 动画）                                                                | ✓    |               |
+| `Select`            | 下拉选择器（受控）                                                                                                | ✓    |               |
+| `Checkbox`          | 多选框组，水平/垂直，3 种尺寸                                                                                     | ✓    |               |
+| `Radio`             | 单选框组，3 种尺寸，键盘 roving tabindex                                                                          | ✓    |               |
+| `Tooltip`           | 12 种 placement，`hover`/`focus`/`click` 触发，`default`/`island` 形态                                            | ✓    |               |
+| `Icon`              | SVG 图标库（10 个）                                                                                               |      | ✓             |
+| `Time`              | HUD 实时时钟                                                                                                      |      | ✓             |
+| `Phone`             | NookPhone 3×3 应用网格                                                                                            |      | ✓             |
+| `Footer`            | 底部装饰图（`sea`/`tree`）                                                                                        |      | ✓             |
+| `Divider`           | 装饰分割线，5 种风格                                                                                              |      | ✓             |
+| `Cursor`            | 游戏手指光标包裹器                                                                                                |      | ✓             |
+| `Typewriter`        | 打字机效果，保留 VNode 结构                                                                                       |      | ✓             |
+| `Tabs`              | 标签页切换，叶子摆动动画可选                                                                                      | ✓    |               |
+| `CodeBlock`         | JSX/TS 语法高亮代码块                                                                                             |      | ✓             |
+| `Loading`           | 全屏遮罩 + SVG spinner（mint `#19c8b9`，`stroke-dasharray` 动画）                                                 |      | ✓             |
+| `Table`             | 数据表格，固定列、空状态、loading                                                                                 | ✓    |               |
+| `WeddingInvitation` | 婚礼邀请函（含 `WeddingInvitationExportButton` 导出 PNG —— 这是清单里**唯一非组件的伴生导出按钮**）               |      | ✓             |
 
 类型导出：`ButtonProps/ButtonType/ButtonSize/ButtonHTMLType`、`InputProps/InputSize`、`SwitchProps/SwitchSize`、`ModalProps`、`CardProps/CardType/CardColor`、`TitleProps/TitleSize/TitleColor`、`FooterProps/FooterType`、`CollapseProps`、`CursorProps`、`TimeProps`、`PhoneProps`、`DividerProps/DividerType`、`TypewriterProps`、`SelectProps/SelectOption`、`IconProps/IconName`、`TabsProps/TabItem`、`CheckboxProps/CheckboxOption/CheckboxSize/CheckboxValue`、`RadioProps/RadioOption/RadioSize/RadioValue`、`TooltipProps/TooltipPlacement/TooltipTrigger/TooltipVariant`、`CodeBlockProps`、`LoadingProps`、`TableProps/TableColumn/TableRecord`、`WeddingInvitationProps/WeddingInvitationExpose/WeddingInvitationExportButtonProps`。运行时值：`ICON_LIST`。
 
 > Vue 端约定：
+>
 > - 受控值统一通过 `v-model` / `v-model:open` / `v-model:expanded`（即 `modelValue` + `update:modelValue` 等事件）
 > - React 中的 `ReactNode` props 在 Vue 端改为**命名插槽**（`#icon`、`#prefix`、`#suffix`、`#footer`、`#checked`、`#unchecked`、`#question`、`#empty`、Table 的 `#cell-{dataIndex}` / `#header-{dataIndex}`、Tabs 按 `item.key` 命名的动态插槽等）；其余可结构化的内容统一通过**默认插槽**承载（如 Card、Collapse 答案区、Modal 主体、Typewriter 等）
 
@@ -70,68 +72,68 @@ animal-island-vue 是一套受《集合啦！动物森友会》启发的 Vue 3 +
 
 ```less
 // 主色（薄荷青绿）
-@primary-color:        #19c8b9;
-@primary-color-hover:  #3dd4c6;
+@primary-color: #19c8b9;
+@primary-color-hover: #3dd4c6;
 @primary-color-active: #11a89b;
-@primary-color-bg:     #e6f9f6;
+@primary-color-bg: #e6f9f6;
 
 // 文字（温暖棕色系）
-@text-color:           #794f27;    // 主文字（header/sidebar）
-@text-color-body:      #725d42;    // 正文（组件内文字）
-@text-color-secondary: #9f927d;    // 次级文字
-@text-color-muted:     #8a7b66;    // 浅棕（modal body）
-@text-color-disabled:  #c4b89e;    // 禁用
+@text-color: #794f27; // 主文字（header/sidebar）
+@text-color-body: #725d42; // 正文（组件内文字）
+@text-color-secondary: #9f927d; // 次级文字
+@text-color-muted: #8a7b66; // 浅棕（modal body）
+@text-color-disabled: #c4b89e; // 禁用
 
 // 边框
-@border-color:         #9f927d;
-@border-color-light:   #c4b89e;    // 输入框边框
-@border-color-hover:   #a89878;    // 输入框 hover
+@border-color: #9f927d;
+@border-color-light: #c4b89e; // 输入框边框
+@border-color-hover: #a89878; // 输入框 hover
 
 // 背景（奶油米白）
-@bg-color:             #f8f8f0;    // 主背景
-@bg-color-content:     rgb(247, 243, 223);  // 内容区（Modal、Card）
-@bg-color-secondary:   #f0e8d8;
-@bg-color-disabled:    #f0ece2;
-@bg-color-input:       rgb(247, 243, 223);  // 输入框背景
-@bg-color-input-dis:   #ece8dc;    // 输入框禁用
+@bg-color: #f8f8f0; // 主背景
+@bg-color-content: rgb(247, 243, 223); // 内容区（Modal、Card）
+@bg-color-secondary: #f0e8d8;
+@bg-color-disabled: #f0ece2;
+@bg-color-input: rgb(247, 243, 223); // 输入框背景
+@bg-color-input-dis: #ece8dc; // 输入框禁用
 
 // 状态色
-@success-color:        #6fba2c;
+@success-color: #6fba2c;
 @success-color-active: #5a9e1e;
-@warning-color:        #f5c31c;
+@warning-color: #f5c31c;
 @warning-color-active: #dba90e;
-@error-color:          #e05a5a;
-@error-color-active:   #c94444;
+@error-color: #e05a5a;
+@error-color-active: #c94444;
 
 // 游戏特殊色
-@focus-yellow:         #ffcc00;    // 焦点高亮（非蓝色）
-@focus-yellow-dark:    #e0b800;    // 焦点阴影
-@sidebar-active-bg:    #B7C6E5;    // 侧边栏选中背景
-@sidebar-hover-bg:     #d6dff0;    // 侧边栏 hover 背景
+@focus-yellow: #ffcc00; // 焦点高亮（非蓝色）
+@focus-yellow-dark: #e0b800; // 焦点阴影
+@sidebar-active-bg: #b7c6e5; // 侧边栏选中背景
+@sidebar-hover-bg: #d6dff0; // 侧边栏 hover 背景
 
 // 3D 阴影色
-@shadow-btn:           #bdaea0;    // 按钮 3D 阴影
-@shadow-input:         #d4c9b4;    // 输入框 3D 阴影
-@shadow-switch-on:     #5a9e1e;    // Switch 开启 3D 阴影
+@shadow-btn: #bdaea0; // 按钮 3D 阴影
+@shadow-input: #d4c9b4; // 输入框 3D 阴影
+@shadow-switch-on: #5a9e1e; // Switch 开启 3D 阴影
 ```
 
 **NookPhone 应用调色板**（Card `color` prop 可选值）：
 
-| color 值 | 背景色 | 文字色 |
-|---|---|---|
-| default | `rgb(247, 243, 223)` | `#725d42` |
-| app-pink | `#f8a6b2` | `#fff` |
-| purple | `#b77dee` | `#fff` |
-| app-blue | `#889df0` | `#fff` |
-| app-yellow | `#f7cd67` | `#725d42` |
-| app-orange | `#e59266` | `#fff` |
-| app-teal | `#82d5bb` | `#fff` |
-| app-green | `#8ac68a` | `#fff` |
-| app-red | `#fc736d` | `#fff` |
-| lime-green | `#d1da49` | `#3d5a1a` |
-| yellow-green | `#ecdf52` | `#725d42` |
-| brown | `#9a835a` | `#fff` |
-| warm-peach-pink | `#e18c6f` | `#fff` |
+| color 值        | 背景色               | 文字色    |
+| --------------- | -------------------- | --------- |
+| default         | `rgb(247, 243, 223)` | `#725d42` |
+| app-pink        | `#f8a6b2`            | `#fff`    |
+| purple          | `#b77dee`            | `#fff`    |
+| app-blue        | `#889df0`            | `#fff`    |
+| app-yellow      | `#f7cd67`            | `#725d42` |
+| app-orange      | `#e59266`            | `#fff`    |
+| app-teal        | `#82d5bb`            | `#fff`    |
+| app-green       | `#8ac68a`            | `#fff`    |
+| app-red         | `#fc736d`            | `#fff`    |
+| lime-green      | `#d1da49`            | `#3d5a1a` |
+| yellow-green    | `#ecdf52`            | `#725d42` |
+| brown           | `#9a835a`            | `#fff`    |
+| warm-peach-pink | `#e18c6f`            | `#fff`    |
 
 ---
 
@@ -144,8 +146,8 @@ animal-island-vue 是一套受《集合啦！动物森友会》启发的 Vue 3 +
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link
-  href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700&display=swap"
-  rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700&display=swap"
+    rel="stylesheet"
 />
 ```
 
@@ -156,18 +158,25 @@ animal-island-vue 是一套受《集合啦！动物森友会》启发的 Vue 3 +
 ```
 
 ```css
-font-family: Nunito, 'Noto Sans SC',
-  -apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+font-family:
+    Nunito,
+    'Noto Sans SC',
+    -apple-system,
+    'PingFang SC',
+    'Hiragino Sans GB',
+    'Microsoft YaHei',
+    sans-serif;
 ```
 
-| 字体 | 用途 | Google Fonts key |
-|---|---|---|
-| **Nunito** | 主字体，拉丁字符 | `family=Nunito` |
+| 字体             | 用途               | Google Fonts key      |
+| ---------------- | ------------------ | --------------------- |
+| **Nunito**       | 主字体，拉丁字符   | `family=Nunito`       |
 | **Noto Sans SC** | 中文字体，简体覆盖 | `family=Noto+Sans+SC` |
 
 > Vue 版本同时通过 `@fontsource/*` 在 `src/index.ts` 直接 import 字体子集（`nunito` / `noto-sans-sc` / `zen-maru-gothic`），库消费者无需手动 `<link>`；如果你脱离组件库自实现，按上文 `<link>` 引入即可。如需扩展日文字符，自行 `@import` `Zen Maru Gothic` 或类似字体并追加到 `font-family` 末尾。
 
 字重分级：
+
 - 正文内容：**500**
 - 按钮文字、标题、菜单项：**600–700**
 - 数字强调（时间数字、时钟）：**900**
@@ -193,23 +202,23 @@ font-family: Nunito, 'Noto Sans SC',
 
 ```css
 /* 卡片/容器阴影（暖色调，非冷黑）*/
-box-shadow: 0 3px 10px 0 rgba(61, 52, 40, 0.10);   /* 基础 */
-box-shadow: 0 8px 24px 0 rgba(61, 52, 40, 0.14);   /* 较大 */
+box-shadow: 0 3px 10px 0 rgba(61, 52, 40, 0.1); /* 基础 */
+box-shadow: 0 8px 24px 0 rgba(61, 52, 40, 0.14); /* 较大 */
 /* Card 默认无 box-shadow（依赖 border / pattern 营造层次，不靠悬浮阴影）*/
 
 /* 默认/虚线/文字/链接按钮阴影（柔和 elevation —— 非 3D 厚阴影）*/
-box-shadow: 0 2px 4px 0 rgba(61, 52, 40, 0.06);    /* btn-default 静止：--animal-shadow-sm */
-box-shadow: 0 3px 10px 0 rgba(61, 52, 40, 0.10);   /* btn-default hover：--animal-shadow-base */
+box-shadow: 0 2px 4px 0 rgba(61, 52, 40, 0.06); /* btn-default 静止：--animal-shadow-sm */
+box-shadow: 0 3px 10px 0 rgba(61, 52, 40, 0.1); /* btn-default hover：--animal-shadow-base */
 /* active 回落到 --animal-shadow-sm，translateY(0) */
 
 /* 游戏按键 3D 立体阴影（仅 primary / danger-primary 按钮；Input 仅 shadow={true} 时启用；Switch 仅 track inset 阴影，handle 无 box-shadow）*/
-box-shadow: 0 5px 0 0 #bdaea0;   /* primary 按钮默认 */
-box-shadow: 0 6px 0 0 #bdaea0;   /* primary 按钮 hover */
-box-shadow: 0 1px 0 0 #bdaea0;   /* primary 按钮 active */
-box-shadow: 0 5px 0 0 #c94444;   /* danger-primary 按钮默认（hover 6 / active 1） */
-box-shadow: 0 3px 0 0 #d4c9b4;   /* 输入框 shadow={true} 中号 */
-box-shadow: 0 2px 0 0 #d4c9b4;   /* 输入框 shadow={true} 小号 */
-box-shadow: 0 4px 0 0 #d4c9b4;   /* 输入框 shadow={true} 大号 */
+box-shadow: 0 5px 0 0 #bdaea0; /* primary 按钮默认 */
+box-shadow: 0 6px 0 0 #bdaea0; /* primary 按钮 hover */
+box-shadow: 0 1px 0 0 #bdaea0; /* primary 按钮 active */
+box-shadow: 0 5px 0 0 #c94444; /* danger-primary 按钮默认（hover 6 / active 1） */
+box-shadow: 0 3px 0 0 #d4c9b4; /* 输入框 shadow={true} 中号 */
+box-shadow: 0 2px 0 0 #d4c9b4; /* 输入框 shadow={true} 小号 */
+box-shadow: 0 4px 0 0 #d4c9b4; /* 输入框 shadow={true} 大号 */
 /* Switch 仅 track 有 inset 阴影：inset 0 2px 4px rgba(114,93,66,0.15) (OFF) / inset 0 2px 4px rgba(90,158,30,0.20) (ON)；handle 无 outer box-shadow */
 ```
 
@@ -220,31 +229,47 @@ box-shadow: 0 4px 0 0 #d4c9b4;   /* 输入框 shadow={true} 大号 */
 ### 动效
 
 ```css
-transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);   /* 通用 */
-transition: all 0.15s;                                  /* 快速（clear 按钮等）*/
-transition: all 0.3s ease;                              /* 卡片 */
-transition: grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1);  /* 手风琴 */
+transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); /* 通用 */
+transition: all 0.15s; /* 快速（clear 按钮等）*/
+transition: all 0.3s ease; /* 卡片 */
+transition: grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* 手风琴 */
 
 /* Hover：上浮 */
-transform: translateY(-1px);   /* 按钮 / 输入框 */
-transform: translateY(-2px);   /* 卡片 */
+transform: translateY(-1px); /* 按钮 / 输入框 */
+transform: translateY(-2px); /* 卡片 */
 /* Switch handle: 始终 translateY(-50%) 垂直居中，无 hover 上浮 */
 
 /* Active：下压（游戏按键反馈）*/
-transform: translateY(2px);    /* 按钮 active */
+transform: translateY(2px); /* 按钮 active */
 
 /* 出现动画 */
 @keyframes animal-zoom-in {
-  from { opacity: 0; transform: scale(0.92); }
-  to   { opacity: 1; transform: scale(1); }
+    from {
+        opacity: 0;
+        transform: scale(0.92);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 @keyframes animal-fade-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 @keyframes ac-fade-up {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 ```
 
@@ -254,15 +279,16 @@ transform: translateY(2px);    /* 按钮 active */
 
 ### Button
 
-| 属性 | small | middle | large |
-|---|---|---|---|
-| height | 32px | **45px** | 48px |
-| padding | `0 16px` | `0 20px` | `0 32px` |
-| font-size | 12px | 14px | 16px |
-| border-radius | 12px | **50px** | 24px |
-| border-width | 2px | 2px | 2px |
+| 属性          | small    | middle   | large    |
+| ------------- | -------- | -------- | -------- |
+| height        | 32px     | **45px** | 48px     |
+| padding       | `0 16px` | `0 20px` | `0 32px` |
+| font-size     | 12px     | 14px     | 16px     |
+| border-radius | 12px     | **50px** | 24px     |
+| border-width  | 2px      | 2px      | 2px      |
 
 **primary 按钮精确值（**仅 primary / danger-primary 用 3D 厚阴影**）：**
+
 ```css
 color: #794f27;
 background: #f8f8f0;
@@ -289,47 +315,51 @@ opacity: 0.5;
 ```
 
 **default / dashed / text / link 按钮（柔和 elevation）：**
+
 ```css
 /* 静止 */
-box-shadow: var(--animal-shadow-sm);     /* 0 2px 4px 0 rgba(61,52,40,0.06) */
+box-shadow: var(--animal-shadow-sm); /* 0 2px 4px 0 rgba(61,52,40,0.06) */
 
 /* hover */
 color: #19c8b9;
 border-color: #19c8b9;
-box-shadow: var(--animal-shadow-base);   /* 0 3px 10px 0 rgba(61,52,40,0.10) */
+box-shadow: var(--animal-shadow-base); /* 0 3px 10px 0 rgba(61,52,40,0.10) */
 transform: translateY(-1px);
 
 /* active */
 color: #11a89b;
 border-color: #11a89b;
 transform: translateY(0);
-box-shadow: var(--animal-shadow-sm);     /* 回落到静止态 */
+box-shadow: var(--animal-shadow-sm); /* 回落到静止态 */
 ```
+
 > 不要把 primary 那套 `0 5px / 6px / 1px #bdaea0` 套到 default / dashed 上 —— 整体会显得过重过 cartoon。
 
 **loading 斜纹动画（精确值）：**
+
 ```css
 background: #0ec4b6;
 border: 4px solid #4de2da;
 color: #fff;
-background-image: repeating-linear-gradient(
-  -45deg,
-  #0ec4b6, #0ec4b6 10px,
-  #01b0a7 10px, #01b0a7 20px
-);
+background-image: repeating-linear-gradient(-45deg, #0ec4b6, #0ec4b6 10px, #01b0a7 10px, #01b0a7 20px);
 background-size: 28.28px 28.28px;
 animation: animal-btn-loading 1s linear infinite;
 
 @keyframes animal-btn-loading {
-  0%   { background-position: 0 0; }
-  100% { background-position: -28.28px 0; }
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: -28.28px 0;
+    }
 }
 ```
 
 **danger primary 按钮：**
+
 ```css
 color: #fff;
-box-shadow: 0 5px 0 0 #c94444;  /* error-active */
+box-shadow: 0 5px 0 0 #c94444; /* error-active */
 ```
 
 ---
@@ -338,16 +368,17 @@ box-shadow: 0 5px 0 0 #c94444;  /* error-active */
 
 > ⚠️ **`shadow` prop 默认 `false`**：默认无阴影，下表的 `box-shadow` 仅在 `<Input shadow />` 显式开启时生效。status (error/warning) 阴影与 focus 黄色光晕不受此 prop 控制。
 
-| 属性 | small | middle | large |
-|---|---|---|---|
-| height | 32px | 40px | 48px |
-| padding | `0 14px` | `0 18px` | `0 22px` |
-| font-size | 12px | 14px | 16px |
-| border-radius | 40px | 50px | 50px |
-| border-width | 2.5px | 2.5px | **3px** |
+| 属性                             | small               | middle              | large               |
+| -------------------------------- | ------------------- | ------------------- | ------------------- |
+| height                           | 32px                | 40px                | 48px                |
+| padding                          | `0 14px`            | `0 18px`            | `0 22px`            |
+| font-size                        | 12px                | 14px                | 16px                |
+| border-radius                    | 40px                | 50px                | 50px                |
+| border-width                     | 2.5px               | 2.5px               | **3px**             |
 | box-shadow（仅 `shadow={true}`） | `0 2px 0 0 #d4c9b4` | `0 3px 0 0 #d4c9b4` | `0 4px 0 0 #d4c9b4` |
 
 **精确颜色值：**
+
 ```css
 background: rgb(247, 243, 223);
 border: 2.5px solid #c4b89e;
@@ -377,7 +408,9 @@ box-shadow: 0 3px 0 0 #c4b89e;
 
 /* focus */
 border-color: #ffcc00;
-box-shadow: 0 3px 0 0 #e0b800, 0 0 0 3px rgba(255, 204, 0, 0.15);
+box-shadow:
+    0 3px 0 0 #e0b800,
+    0 0 0 3px rgba(255, 204, 0, 0.15);
 
 /* disabled */
 background: #ece8dc;
@@ -394,14 +427,19 @@ box-shadow: 0 3px 0 0 #dba90e;
 ```
 
 **clear 按钮：**
+
 ```css
-width: 20px; height: 20px;
+width: 20px;
+height: 20px;
 margin-left: 4px;
 color: #c4b89e;
-font-size: 13px; font-weight: 700;
+font-size: 13px;
+font-weight: 700;
 border-radius: 50%;
 transition: all 0.15s;
-/* hover */ color: #725d42; background: rgba(114, 93, 66, 0.1);
+/* hover */
+color: #725d42;
+background: rgba(114, 93, 66, 0.1);
 ```
 
 ---
@@ -409,6 +447,7 @@ transition: all 0.15s;
 ### Switch
 
 **默认尺寸：**
+
 ```css
 min-width: 52px;
 height: 28px;
@@ -418,9 +457,11 @@ background: #d4c9b4;
 box-shadow: inset 0 2px 4px rgba(114, 93, 66, 0.15);
 
 /* handle */
-width: 21px; height: 21px;
-top: 50%; left: 2px;
-transform: translateY(-50%);   /* 垂直居中 */
+width: 21px;
+height: 21px;
+top: 50%;
+left: 2px;
+transform: translateY(-50%); /* 垂直居中 */
 background: rgb(247, 243, 223);
 border: 2.5px solid #bdaea0;
 border-radius: 50%;
@@ -443,33 +484,54 @@ opacity: 0.5;
 ```
 
 **small 尺寸：**
+
 ```css
-min-width: 38px; height: 20px; border-width: 2px;
-/* handle */ width: 14px; height: 14px; top: 1px; left: 1px;
+min-width: 38px;
+height: 20px;
+border-width: 2px;
+/* handle */
+width: 14px;
+height: 14px;
+top: 1px;
+left: 1px;
 box-shadow: 0 2px 0 0 #bdaea0;
-/* 开启 handle left */ left: calc(100% - 16px);
+/* 开启 handle left */
+left: calc(100% - 16px);
 box-shadow: 0 2px 0 0 #5a9e1e;
 ```
 
 **inner 文字（#checked / #unchecked 插槽）：**
+
 ```css
-font-size: 11px; font-weight: 700; color: #fff;
-line-height: 1; letter-spacing: 0.02em;
+font-size: 11px;
+font-weight: 700;
+color: #fff;
+line-height: 1;
+letter-spacing: 0.02em;
 text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-padding: 0 8px 0 28px;   /* 未开启 */
-padding: 0 28px 0 8px;   /* 开启 */
-/* small 版 */ padding: 0 6px 0 20px; font-size: 9px;
+padding: 0 8px 0 28px; /* 未开启 */
+padding: 0 28px 0 8px; /* 开启 */
+/* small 版 */
+padding: 0 6px 0 20px;
+font-size: 9px;
 ```
 
 **loading spinner：**
+
 ```css
-width: 11px; height: 11px;
+width: 11px;
+height: 11px;
 border: 2px solid #6fba2c;
 border-right-color: transparent;
 border-radius: 50%;
 animation: animal-spin 0.6s linear infinite;
-/* 关闭态 */ border-color: #a89878;
-@keyframes animal-spin { to { transform: rotate(360deg); } }
+/* 关闭态 */
+border-color: #a89878;
+@keyframes animal-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
 ```
 
 ---
@@ -485,7 +547,8 @@ color: #725d42;
 font-weight: 500;
 /* 默认 NO box-shadow（依赖 border / pattern 分层，不靠悬浮阴影）*/
 transition: all 0.3s ease;
-/* hover */ transform: translateY(-2px);
+/* hover */
+transform: translateY(-2px);
 
 /* dashed 类型 */
 border: 2px dashed #e8dcc8;
@@ -499,9 +562,9 @@ box-shadow: none;
    与 Card.color 同名，但呈现为浅底波点"墙纸"而非实色块。 */
 /* 例：pattern="app-pink" */
 background:
-  radial-gradient(circle, rgba(248,166,178,0.18) 1.5px, transparent 1.5px) 0 0/28px 28px,
-  radial-gradient(circle, rgba(255,200,210,0.12) 1px, transparent 1px) 7px 7px/14px 14px,
-  #fde4e8;
+    radial-gradient(circle, rgba(248, 166, 178, 0.18) 1.5px, transparent 1.5px) 0 0/28px 28px,
+    radial-gradient(circle, rgba(255, 200, 210, 0.12) 1px, transparent 1px) 7px 7px/14px 14px,
+    #fde4e8;
 border: 1.5px solid #f8a6b2;
 color: #a85565;
 /* 当 color 与 pattern 同时设置时，pattern 视觉上覆盖 color */
@@ -518,38 +581,55 @@ color: #a85565;
 
 ```css
 /* 默认（绿色配色，可被 .animal-title--color-* 覆盖） */
---rf: #27d039;   /* front 正面 */
---rb: #20992a;   /* back  燕尾 */
---rk: #115017;   /* fold  折角阴影 */
---rt: #fff;      /* text  文字色 */
+--rf: #27d039; /* front 正面 */
+--rb: #20992a; /* back  燕尾 */
+--rk: #115017; /* fold  折角阴影 */
+--rt: #fff; /* text  文字色 */
 
 font-family: Nunito, 'Noto Sans SC', sans-serif;
-font-weight: 800;             /* 外层 wrapper */
+font-weight: 800; /* 外层 wrapper */
 /* .animal-title__text 内层文字 font-weight 900；padding-top 0.11em CJK 光学居中 */
 
 /* 飘带主体 */
 display: inline-flex;
-height: 2em; padding: 0 1.6em;
+height: 2em;
+padding: 0 1.6em;
 letter-spacing: 0.04em;
 filter: drop-shadow(0 0.08em 0.12em rgba(0, 0, 0, 0.05));
 
 /* 燕尾（左/右）—— clip-path 鱼尾形 */
-.animal-title__back--left  { clip-path: polygon(100% 0%, 100% 100%, 0% 100%, 30% 50%, 0% 0%); }
-.animal-title__back--right { clip-path: polygon(0% 0%,   100% 0%, 70% 50%, 100% 100%, 0% 100%); }
-width: 1.7em; height: 1.7em; bottom: -0.4em;
+.animal-title__back--left {
+    clip-path: polygon(100% 0%, 100% 100%, 0% 100%, 30% 50%, 0% 0%);
+}
+.animal-title__back--right {
+    clip-path: polygon(0% 0%, 100% 0%, 70% 50%, 100% 100%, 0% 100%);
+}
+width: 1.7em;
+height: 1.7em;
+bottom: -0.4em;
 
 /* 折角阴影 —— CSS border 三角 */
-.animal-title__fold--left  { border-width: 0 0.95em 0.45em 0; border-color: transparent var(--rk) transparent transparent; }
-.animal-title__fold--right { border-width: 0 0 0.45em 0.95em; border-color: transparent transparent transparent var(--rk); }
+.animal-title__fold--left {
+    border-width: 0 0.95em 0.45em 0;
+    border-color: transparent var(--rk) transparent transparent;
+}
+.animal-title__fold--right {
+    border-width: 0 0 0.45em 0.95em;
+    border-color: transparent transparent transparent var(--rk);
+}
 
 /* 正面主体 */
-.animal-title__front { inset: 0 0.1em; border-radius: 0.2em; transform: perspective(11.5em) rotateX(3deg); }
+.animal-title__front {
+    inset: 0 0.1em;
+    border-radius: 0.2em;
+    transform: perspective(11.5em) rotateX(3deg);
+}
 ```
 
 尺寸（`SIZE_MAP` 通过 inline `font-size` 注入；所有内部 `em` 自动缩放）：
 
 | size   | font-size |
-|--------|-----------|
+| ------ | --------- |
 | small  | 14px      |
 | middle | 20px      |
 | large  | 28px      |
@@ -557,9 +637,20 @@ width: 1.7em; height: 1.7em; bottom: -0.4em;
 13 种颜色覆盖：在 wrapper 上叠加 `.animal-title--color-app-pink` / `.animal-title--color-purple` / `.animal-title--color-app-blue` / `.animal-title--color-app-yellow` / `.animal-title--color-app-orange` / `.animal-title--color-app-teal` / `.animal-title--color-app-green` / `.animal-title--color-app-red` / `.animal-title--color-lime-green` / `.animal-title--color-yellow-green` / `.animal-title--color-brown` / `.animal-title--color-warm-peach-pink` 之一；每个类同时覆盖 `--rf / --rb / --rk / --rt` 四个变量。详见 `Title.vue` `<style scoped>` 末尾的 13 行 `.animal-title--color-*` 定义。
 
 例：
+
 ```less
-.animal-title--color-app-yellow    { --rf: #f7cd67; --rb: #d4a030; --rk: #8a6010; --rt: #725d42; }
-.animal-title--color-purple        { --rf: #b77dee; --rb: #9050d0; --rk: #5a1a9a; --rt: #fff; }
+.animal-title--color-app-yellow {
+    --rf: #f7cd67;
+    --rb: #d4a030;
+    --rk: #8a6010;
+    --rt: #725d42;
+}
+.animal-title--color-purple {
+    --rf: #b77dee;
+    --rb: #9050d0;
+    --rk: #5a1a9a;
+    --rt: #fff;
+}
 ```
 
 ---
@@ -652,12 +743,12 @@ scoped Less + BEM；类名根 `.animal-tabs`，内部使用 `__list` / `__item` 
 }
 /* 激活状态 — 实心 teal 胶囊 + 奶油色字 */
 .animal-tabs__item.animal-tabs__item--active {
-    background: #0CC0B5;
-    color: #FFF9E3;
+    background: #0cc0b5;
+    color: #fff9e3;
     font-weight: 600;
 }
 .animal-tabs__item--active.animal-tabs__item--shadow {
-    box-shadow: 0 3px 0 0 #d4c9b4;   /* 仅 shadow opt-in 时启用 */
+    box-shadow: 0 3px 0 0 #d4c9b4; /* 仅 shadow opt-in 时启用 */
 }
 
 /* 标签图标 */
@@ -680,9 +771,16 @@ scoped Less + BEM；类名根 `.animal-tabs`，内部使用 `__list` / `__item` 
 /* leafAnimation={false} 时追加 .animal-tabs__leaf--static 修饰符去除 animation */
 
 @keyframes leafWiggle {
-    0%, 100% { transform: rotate(0deg); }
-    25% { transform: rotate(-10deg); }
-    75% { transform: rotate(10deg); }
+    0%,
+    100% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(-10deg);
+    }
+    75% {
+        transform: rotate(10deg);
+    }
 }
 
 /* 内容区 */
@@ -692,8 +790,14 @@ scoped Less + BEM；类名根 `.animal-tabs`，内部使用 `__list` / `__item` 
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(4px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 ```
 
@@ -702,12 +806,14 @@ scoped Less + BEM；类名根 `.animal-tabs`，内部使用 `__list` / `__item` 
 ### Modal
 
 **SVG clip-path 完整 path d 值（精确还原 blob 轮廓）：**
+
 ```vue
 <template>
-  <svg style="position: absolute; width: 0; height: 0" aria-hidden="true">
-    <defs>
-      <clipPath id="animal-modal-clip" clipPathUnits="objectBoundingBox">
-        <path d="M0.501,0.005 L0.501,0.005 L0.523,0.005 L0.549,0.006
+    <svg style="position: absolute; width: 0; height: 0" aria-hidden="true">
+        <defs>
+            <clipPath id="animal-modal-clip" clipPathUnits="objectBoundingBox">
+                <path
+                    d="M0.501,0.005 L0.501,0.005 L0.523,0.005 L0.549,0.006
           C0.704,0.01,0.796,0.017,0.825,0.027
           L0.827,0.028
           C0.872,0.045,0.939,0.044,0.978,0.17
@@ -729,14 +835,16 @@ scoped Less + BEM；类名根 `.animal-tabs`，内部使用 `__list` / `__item` 
           C0.064,0.045,0.13,0.045,0.174,0.028
           L0.175,0.028
           C0.204,0.017,0.303,0.009,0.474,0.005
-          L0.501,0.005" />
-      </clipPath>
-    </defs>
-  </svg>
+          L0.501,0.005"
+                />
+            </clipPath>
+        </defs>
+    </svg>
 </template>
 ```
 
 **Modal 精确样式：**
+
 ```css
 /* 遮罩 */
 background: rgba(0, 0, 0, 0.35);
@@ -755,20 +863,26 @@ color: rgb(128, 115, 89);
 padding: 48px 48px 32px 48px;
 
 /* 标题 */
-font-size: 28px; font-weight: 700;
+font-size: 28px;
+font-weight: 700;
 color: rgba(114, 93, 66, 1);
 padding-bottom: 15px;
 
 /* 关闭按钮 */
-width: 32px; height: 32px;
+width: 32px;
+height: 32px;
 font-size: 22px;
 color: rgba(114, 93, 66, 0.6);
 border-radius: 50%;
 transition: all 0.2s;
-/* hover */ background: rgba(114, 93, 66, 0.1); color: rgba(114, 93, 66, 1);
+/* hover */
+background: rgba(114, 93, 66, 0.1);
+color: rgba(114, 93, 66, 1);
 
 /* body */
-font-size: 20px; font-weight: 600; line-height: 1.6;
+font-size: 20px;
+font-weight: 600;
+line-height: 1.6;
 color: #8a7b66;
 padding-bottom: 20px;
 
@@ -776,18 +890,24 @@ padding-bottom: 20px;
 gap: 12px;
 
 /* 普通按钮 */
-height: 40px; padding: 0 24px;
+height: 40px;
+padding: 0 24px;
 font-size: 18px;
 border: 2px solid rgba(114, 93, 66, 0.3);
 border-radius: 39.81px;
-transition: all 0.2s; line-height: 1;
-/* hover */ border-color: rgba(114,93,66,0.6); background: rgba(114,93,66,0.08);
+transition: all 0.2s;
+line-height: 1;
+/* hover */
+border-color: rgba(114, 93, 66, 0.6);
+background: rgba(114, 93, 66, 0.08);
 
 /* 主按钮（确认）*/
 color: rgba(114, 93, 66, 1);
-background: rgba(255, 204, 0, 1);     /* 游戏黄色！*/
+background: rgba(255, 204, 0, 1); /* 游戏黄色！*/
 border-color: rgba(255, 204, 0, 1);
-/* hover */ background: rgba(255,204,0,0.85); border-color: rgba(255,204,0,0.85);
+/* hover */
+background: rgba(255, 204, 0, 0.85);
+border-color: rgba(255, 204, 0, 0.85);
 ```
 
 ---
@@ -842,95 +962,185 @@ padding: 12px 20px; gap: 12px;
 ### Phone（NookPhone）
 
 **外壳（固定尺寸，不响应式）：**
+
 ```css
 .animal-phone {
-  width: 527px; height: 788px;
-  background: #F8F4E8;           /* 奶油米 */
-  border-radius: 136px;           /* 超大圆角，近似胶囊 */
-  overflow: hidden;
+    width: 527px;
+    height: 788px;
+    background: #f8f4e8; /* 奶油米 */
+    border-radius: 136px; /* 超大圆角，近似胶囊 */
+    overflow: hidden;
 }
 .animal-phone__home-screen {
-  height: 100%;
-  padding-top: 40px;
-  background: #F8F4E8;
-  background-size: 100% 200%;
-  animation: grasswave 8s ease-in-out infinite;
-  display: flex; flex-direction: column; align-items: center;
+    height: 100%;
+    padding-top: 40px;
+    background: #f8f4e8;
+    background-size: 100% 200%;
+    animation: grasswave 8s ease-in-out infinite;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 @keyframes grasswave {
-  0%, 100% { background-position: 0% 0%; }
-  50%      { background-position: 0% 100%; }
+    0%,
+    100% {
+        background-position: 0% 0%;
+    }
+    50% {
+        background-position: 0% 100%;
+    }
 }
 ```
 
 **顶部时间栏：**
+
 ```css
-.animal-phone__date              { padding: 0 70px 31px 70px; text-align: center; }
-.animal-phone__date-header       { display:flex; justify-content:space-between; align-items:center;
-                                    font-size: 32px; font-weight: 800; letter-spacing: 2px; color: #DDDBCC; }
-.animal-phone__blink             { font-size: 32px; font-weight: 800; color: #DDDBCC;
-                                    animation: blink 1s steps(1) infinite; vertical-align: text-bottom; }
-@keyframes blink                 { 0%,50% { opacity: 1; } 51%,100% { opacity: 0; } }
-.animal-phone__day-text          { font-size: 48px; font-weight: 800; color: #725C4E;
-                                    letter-spacing: 2px; height: 56px; margin-top: 20px; }
+.animal-phone__date {
+    padding: 0 70px 31px 70px;
+    text-align: center;
+}
+.animal-phone__date-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #dddbcc;
+}
+.animal-phone__blink {
+    font-size: 32px;
+    font-weight: 800;
+    color: #dddbcc;
+    animation: blink 1s steps(1) infinite;
+    vertical-align: text-bottom;
+}
+@keyframes blink {
+    0%,
+    50% {
+        opacity: 1;
+    }
+    51%,
+    100% {
+        opacity: 0;
+    }
+}
+.animal-phone__day-text {
+    font-size: 48px;
+    font-weight: 800;
+    color: #725c4e;
+    letter-spacing: 2px;
+    height: 56px;
+    margin-top: 20px;
+}
 ```
 
 **3×3 应用网格：**
+
 ```css
-.animal-phone__apps-grid    { display: grid; grid-template-columns: repeat(3, 1fr);
-                               gap: 32px; padding: 8px; flex: 1;
-                               align-content: center; justify-content: center; }
-.animal-phone__app-item     { width: 123px; height: 123px;
-                               border-radius: 45px;        /* 圆角正方形 */
-                               position: relative;
-                               display: flex; justify-content: center; align-items: center; }
-.animal-phone__app-item:hover .animal-phone__app-icon { animation: iconBounce 0.3s ease-in-out forwards; }
-.animal-phone__app-icon     { width: 100%; height: 100%;
-                               background-repeat: no-repeat; background-position: center;
-                               background-size: 70% auto; }
-.animal-phone__app-item--offset { overflow: hidden; }
-.animal-phone__app-icon--offset { transform: translateY(10px); }
+.animal-phone__apps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    padding: 8px;
+    flex: 1;
+    align-content: center;
+    justify-content: center;
+}
+.animal-phone__app-item {
+    width: 123px;
+    height: 123px;
+    border-radius: 45px; /* 圆角正方形 */
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.animal-phone__app-item:hover .animal-phone__app-icon {
+    animation: iconBounce 0.3s ease-in-out forwards;
+}
+.animal-phone__app-icon {
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 70% auto;
+}
+.animal-phone__app-item--offset {
+    overflow: hidden;
+}
+.animal-phone__app-icon--offset {
+    transform: translateY(10px);
+}
 
 @keyframes iconBounce {
-  0%   { transform: scale(1) rotate(0deg); }
-  50%  { transform: scale(1.2) rotate(-5deg); }
-  100% { transform: scale(1.1) rotate(-4deg); }
+    0% {
+        transform: scale(1) rotate(0deg);
+    }
+    50% {
+        transform: scale(1.2) rotate(-5deg);
+    }
+    100% {
+        transform: scale(1.1) rotate(-4deg);
+    }
 }
 ```
 
 **应用数据结构（`src/components/Phone/Phone.vue`）：**
 
-| id | iconClass | 背景色 | offset | hasNewMessage |
-|---|---|---|---|---|
-| camera       | iconCamera       | `#B77DEE` |  | ✓ |
-| app          | iconApp          | `#889DF0` | ✓ |  |
-| critterpedia | iconCritterpedia | `#F7CD67` |  |  |
-| diy          | iconDiy          | `#E59266` |  |  |
-| shopping     | iconDesign       | `#F8A6B2` |  |  |
-| variant      | iconMap          | `#82D5BB` |  | ✓ |
-| design       | iconVariant      | `#8AC68A` |  |  |
-| map          | iconHelicopter   | `#FC736D` |  |  |
-| chat         | iconChat         | `#D1DA49` |  |  |
+| id           | iconClass        | 背景色    | offset | hasNewMessage |
+| ------------ | ---------------- | --------- | ------ | ------------- |
+| camera       | iconCamera       | `#B77DEE` |        | ✓             |
+| app          | iconApp          | `#889DF0` | ✓      |               |
+| critterpedia | iconCritterpedia | `#F7CD67` |        |               |
+| diy          | iconDiy          | `#E59266` |        |               |
+| shopping     | iconDesign       | `#F8A6B2` |        |               |
+| variant      | iconMap          | `#82D5BB` |        | ✓             |
+| design       | iconVariant      | `#8AC68A` |        |               |
+| map          | iconHelicopter   | `#FC736D` |        |               |
+| chat         | iconChat         | `#D1DA49` |        |               |
 
 每个 iconClass 都绑定一个 `background-image: url('./img/icon-*.svg')`，`iconApp` 特殊使用 `background-size: 100% auto`（其他是 `70% auto`）。可用图标资源：`icon-miles/camera/chat/critterpedia/design/diy/helicopter/map/shopping/variant.svg`，以及状态图标 `wifi.svg` / `location.svg` / `page.svg`。
 
 **小红点（新消息）：**
+
 ```css
 .animal-phone__badge {
-  position: absolute; top: 0; left: 0;
-  width: 28px; height: 28px; border-radius: 50%;
-  background: #FF544A;
-  border: 5px solid #F8F4E8;       /* 奶油米描边，形成游戏风徽章 */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #ff544a;
+    border: 5px solid #f8f4e8; /* 奶油米描边，形成游戏风徽章 */
 }
 ```
 
 **底部状态图标：**
+
 ```css
-.animal-phone__icon-wifi     { width: 79px; height: 29px;  background: url('./img/wifi.svg') center/contain no-repeat; }
-.animal-phone__icon-location { width: 36px; height: 36px;  background: url('./img/location.svg') center/contain no-repeat; }
-.animal-phone__icon-page     { width: 65px; height: 32px;  background: url('./img/page.svg') center/contain no-repeat; }
-.animal-phone__page-indicator{ display: flex; justify-content: center; align-items: center;
-                                margin-top: 74px; }
+.animal-phone__icon-wifi {
+    width: 79px;
+    height: 29px;
+    background: url('./img/wifi.svg') center/contain no-repeat;
+}
+.animal-phone__icon-location {
+    width: 36px;
+    height: 36px;
+    background: url('./img/location.svg') center/contain no-repeat;
+}
+.animal-phone__icon-page {
+    width: 65px;
+    height: 32px;
+    background: url('./img/page.svg') center/contain no-repeat;
+}
+.animal-phone__page-indicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 74px;
+}
 ```
 
 **行为：** 内部 `onMounted + setInterval(1000)` 更新时间（`onUnmounted` 清理），`12 小时制 + AM/PM + 零填充分钟`，冒号闪烁 1s 一个周期。组件无业务回调，纯展示。
@@ -941,18 +1151,25 @@ padding: 12px 20px; gap: 12px;
 
 ```vue
 <template>
-  <Footer />              <!-- 默认：森林（tree，高 60px） -->
-  <Footer type="sea" />   <!-- 海浪（高 80px） -->
+    <Footer />
+    <!-- 默认：森林（tree，高 60px） -->
+    <Footer type="sea" />
+    <!-- 海浪（高 80px） -->
 </template>
 ```
 
 ```less
-.animal-footer       { width: 100%; height: 80px;
-                        background: url('./img/footer-sea.svg') center/contain no-repeat; }
-.animal-footer--tree { background-image: url('./img/footer-tree.webp');
-                        height: 60px;
-                        background-size: cover;
-                        background-position: bottom center; }
+.animal-footer {
+    width: 100%;
+    height: 80px;
+    background: url('./img/footer-sea.svg') center/contain no-repeat;
+}
+.animal-footer--tree {
+    background-image: url('./img/footer-tree.webp');
+    height: 60px;
+    background-size: cover;
+    background-position: bottom center;
+}
 ```
 
 - `sea`：SVG 海浪插画，`viewBox="0 0 1440 186"`，多色（珊瑚 `#EC7175`、海蓝 `#327A93`、浅蓝 `#98D2E3`、深青 `#008077` 等）。
@@ -964,21 +1181,33 @@ padding: 12px 20px; gap: 12px;
 
 ```vue
 <template>
-  <Divider type="line-brown" />  <!-- 默认 -->
-  <Divider type="line-teal" />
-  <Divider type="line-white" />
-  <Divider type="line-yellow" />
-  <Divider type="wave-yellow" />
+    <Divider type="line-brown" />
+    <!-- 默认 -->
+    <Divider type="line-teal" />
+    <Divider type="line-white" />
+    <Divider type="line-yellow" />
+    <Divider type="wave-yellow" />
 </template>
 ```
 
 ```less
-.animal-divider { width: 100%; height: 12px;
-                   background: url('./img/divider-line-brown.svg') center/contain no-repeat; }
-.animal-divider--line-teal   { background-image: url('./img/divider-line-teal.svg'); }
-.animal-divider--line-white  { background-image: url('./img/divider-line-white.png'); }
-.animal-divider--line-yellow { background-image: url('./img/divider-line-yellow.svg'); }
-.animal-divider--wave-yellow { background-image: url('./img/wave-yellow.svg'); }
+.animal-divider {
+    width: 100%;
+    height: 12px;
+    background: url('./img/divider-line-brown.svg') center/contain no-repeat;
+}
+.animal-divider--line-teal {
+    background-image: url('./img/divider-line-teal.svg');
+}
+.animal-divider--line-white {
+    background-image: url('./img/divider-line-white.png');
+}
+.animal-divider--line-yellow {
+    background-image: url('./img/divider-line-yellow.svg');
+}
+.animal-divider--wave-yellow {
+    background-image: url('./img/wave-yellow.svg');
+}
 ```
 
 默认 SVG 色值参考：`#D8D0C3`（米褐），`viewBox="0 0 297 14"`。
@@ -989,17 +1218,21 @@ padding: 12px 20px; gap: 12px;
 
 ```vue
 <template>
-  <Cursor>
-    <App />   <!-- 此范围内所有元素变为游戏手指光标 -->
-  </Cursor>
+    <Cursor>
+        <App />
+        <!-- 此范围内所有元素变为游戏手指光标 -->
+    </Cursor>
 </template>
 ```
 
 样式文件为 **普通全局 CSS**（非 scoped；类名固定为 `animal-cursor`，挂在根 `<div>` 上）：
+
 ```css
 .animal-cursor,
 .animal-cursor * {
-  cursor: url('./cursor-icon.png') 4 0, auto !important;
+    cursor:
+        url('./cursor-icon.png') 4 0,
+        auto !important;
 }
 ```
 
@@ -1013,24 +1246,25 @@ padding: 12px 20px; gap: 12px;
 
 ```vue
 <template>
-  <Typewriter :speed="90" :trigger="openCount" auto-play @done="handleDone">
-    <p>第一行 <strong>加粗</strong></p>
-    <p>第二行</p>
-  </Typewriter>
+    <Typewriter :speed="90" :trigger="openCount" auto-play @done="handleDone">
+        <p>第一行 <strong>加粗</strong></p>
+        <p>第二行</p>
+    </Typewriter>
 </template>
 ```
 
 Props：
 
-| name | type | default | 说明 |
-|---|---|---|---|
-| 默认插槽 | `Slot` | — | 要逐字打出的内容，**保留原有元素结构 / 换行 / 样式** |
-| `speed` | `number (ms)` | `90` | 每字间隔 |
-| `trigger` | `unknown` | — | 值变化即重新播放（通常传递弹窗 open 次数或递增 key） |
-| `autoPlay` | `boolean` | `true` | `false` 直接全量显示 |
-| `@done` | `() => void` | — | 播放完成事件 |
+| name       | type          | default | 说明                                                 |
+| ---------- | ------------- | ------- | ---------------------------------------------------- |
+| 默认插槽   | `Slot`        | —       | 要逐字打出的内容，**保留原有元素结构 / 换行 / 样式** |
+| `speed`    | `number (ms)` | `90`    | 每字间隔                                             |
+| `trigger`  | `unknown`     | —       | 值变化即重新播放（通常传递弹窗 open 次数或递增 key） |
+| `autoPlay` | `boolean`     | `true`  | `false` 直接全量显示                                 |
+| `@done`    | `() => void`  | —       | 播放完成事件                                         |
 
 **实现要点：**
+
 - `countText(vnode)`：递归统计 VNode 树（含 children / `el?.textContent` / 字符串子节点）的纯文本长度
 - `renderTruncated(vnode, state)`：按剩余字符数递归裁剪，使用 `cloneVNode` 保留原节点与样式
 - `watch([() => total.value, () => props.speed, () => props.trigger, () => props.autoPlay])`，内部 `setInterval` 按步递增 `count`
@@ -1042,27 +1276,28 @@ Props：
 
 Props：
 
-| name | type | default | 说明 |
-|---|---|---|---|
-| `options` | `CheckboxOption[]` | — | **必填**；每项 `{ label, value, disabled? }` |
-| `modelValue` | `Array<string \| number>` | — | 受控选中值（配合 `v-model`） |
-| `defaultValue` | `Array<string \| number>` | `[]` | 非受控默认值 |
-| `size` | `'small' \| 'middle' \| 'large'` | `'middle'` | 尺寸 |
-| `disabled` | `boolean` | `false` | 禁用全部项 |
-| `direction` | `'horizontal' \| 'vertical'` | `'horizontal'` | 排列方向 |
-| `@update:modelValue` | `(values) => void` | — | 选中值变化（`v-model`） |
-| `@change` | `(values) => void` | — | 同上，业务回调 |
+| name                 | type                             | default        | 说明                                         |
+| -------------------- | -------------------------------- | -------------- | -------------------------------------------- |
+| `options`            | `CheckboxOption[]`               | —              | **必填**；每项 `{ label, value, disabled? }` |
+| `modelValue`         | `Array<string \| number>`        | —              | 受控选中值（配合 `v-model`）                 |
+| `defaultValue`       | `Array<string \| number>`        | `[]`           | 非受控默认值                                 |
+| `size`               | `'small' \| 'middle' \| 'large'` | `'middle'`     | 尺寸                                         |
+| `disabled`           | `boolean`                        | `false`        | 禁用全部项                                   |
+| `direction`          | `'horizontal' \| 'vertical'`     | `'horizontal'` | 排列方向                                     |
+| `@update:modelValue` | `(values) => void`               | —              | 选中值变化（`v-model`）                      |
+| `@change`            | `(values) => void`               | —              | 同上，业务回调                               |
 
 **尺寸表（box 方框）：**
 
-| 属性 | small | middle | large |
-|---|---|---|---|
-| 宽高 | 18×18px | **22×22px** | 28×28px |
-| border-width | 2px | 2.5px | 3px |
-| 标签 font-size | 12px | 14px | 16px |
-| 对勾 font-size | 11px | 13px | 16px |
+| 属性           | small   | middle      | large   |
+| -------------- | ------- | ----------- | ------- |
+| 宽高           | 18×18px | **22×22px** | 28×28px |
+| border-width   | 2px     | 2.5px       | 3px     |
+| 标签 font-size | 12px    | 14px        | 16px    |
+| 对勾 font-size | 11px    | 13px        | 16px    |
 
 **精确样式：**
+
 ```css
 /* group */
 display: flex; flex-wrap: wrap;
@@ -1121,11 +1356,11 @@ opacity: 0.55;
 
 Props：
 
-| name | type | default | 说明 |
-|---|---|---|---|
-| `code` | `string` | — | **必填**；原始源码字符串，内部自动按 JSX/TS 分词高亮 |
-| `style` | `CSSProperties` | — | 会合并覆盖默认深色主题 |
-| `class` | `string` | — | 自定义类名 |
+| name    | type            | default | 说明                                                 |
+| ------- | --------------- | ------- | ---------------------------------------------------- |
+| `code`  | `string`        | —       | **必填**；原始源码字符串，内部自动按 JSX/TS 分词高亮 |
+| `style` | `CSSProperties` | —       | 会合并覆盖默认深色主题                               |
+| `class` | `string`        | —       | 自定义类名                                           |
 
 **默认主题（写死在组件，不走 Less）：**
 
@@ -1136,7 +1371,7 @@ border: 1px solid #3d3028;
 border-radius: 20px;
 font-size: 14px;
 line-height: 1.7;
-font-family: 'SF Mono','Fira Code','Cascadia Code',Consolas,monospace;
+font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', Consolas, monospace;
 font-weight: 600;
 color: #e8d5bc;
 white-space: pre;
@@ -1146,18 +1381,18 @@ tab-size: 4;
 
 **Token 调色板（`COLORS` 常量）：**
 
-| token | 颜色 | 覆盖 |
-|---|---|---|
-| comment  | `#6b5e50` | `/* */`、`//` |
-| string   | `#a8d4a0` | 反引号 / 单双引号、数字 |
-| keyword  | `#d4a0e0` | `import/export/const/return/async/...`、`true/false/null/undefined` |
-| react    | `#e06c75` | `Vue/ref/computed/onMounted/defineProps/defineEmits/PropType/...`（保留 React 名字以兼容跨框架代码片段） |
-| component| `#80c0e0` | 大写驼峰标识符（组件名、类型名） |
-| func     | `#61afef` | 小写标识符后跟 `(` |
-| prop     | `#e8c87a` | 标识符后跟 `=`（template props / 赋值） |
-| jsx      | `#f0a870` | `<Tag`、`</Tag`、`/>` |
-| operator | `#d4b896` | `{}[]();,` 和 `+-*/=<>&|^~?:` 等 |
-| default  | `#e8d5bc` | 其余文本 |
+| token     | 颜色      | 覆盖                                                                                                     |
+| --------- | --------- | -------------------------------------------------------------------------------------------------------- |
+| comment   | `#6b5e50` | `/* */`、`//`                                                                                            |
+| string    | `#a8d4a0` | 反引号 / 单双引号、数字                                                                                  |
+| keyword   | `#d4a0e0` | `import/export/const/return/async/...`、`true/false/null/undefined`                                      |
+| react     | `#e06c75` | `Vue/ref/computed/onMounted/defineProps/defineEmits/PropType/...`（保留 React 名字以兼容跨框架代码片段） |
+| component | `#80c0e0` | 大写驼峰标识符（组件名、类型名）                                                                         |
+| func      | `#61afef` | 小写标识符后跟 `(`                                                                                       |
+| prop      | `#e8c87a` | 标识符后跟 `=`（template props / 赋值）                                                                  |
+| jsx       | `#f0a870` | `<Tag`、`</Tag`、`/>`                                                                                    |
+| operator  | `#d4b896` | `{}[]();,` 和 `+-*/=<>&                                                                                  | ^~?:` 等 |
+| default   | `#e8d5bc` | 其余文本                                                                                                 |
 
 > 不支持 `language` prop；非 JS/TS 代码（Python/Shell/SQL）会按通用规则着色，显示可能不准确。不带 copy 按钮、行号或折行。
 
@@ -1167,13 +1402,13 @@ tab-size: 4;
 
 源码：`src/components/Radio/Radio.vue`（scoped Less + BEM 类名 `animal-radio__*`）。
 
-| 属性 | small | middle | large |
-|---|---|---|---|
-| 外盒尺寸 | 18×18px | 22×22px | 28×28px |
-| 圆角 | 12px | 14px | 16px（**重圆方形，非正圆**） |
-| 边框宽 | 2px | 2px | 2px |
-| 内勾尺寸 | 10×10px | 12×12px | 16px font-size |
-| label font-size | 12px | 14px | 16px |
+| 属性            | small   | middle  | large                        |
+| --------------- | ------- | ------- | ---------------------------- |
+| 外盒尺寸        | 18×18px | 22×22px | 28×28px                      |
+| 圆角            | 12px    | 14px    | 16px（**重圆方形，非正圆**） |
+| 边框宽          | 2px     | 2px     | 2px                          |
+| 内勾尺寸        | 10×10px | 12×12px | 16px font-size               |
+| label font-size | 12px    | 14px    | 16px                         |
 
 ```css
 /* 默认（未选） */
@@ -1185,32 +1420,51 @@ border-color: #19c8b9;
 transform: translateY(-1px);
 
 /* checked */
-background: #19c8b9;        /* @primary-color */
-border-color: #11a89b;      /* @primary-color-active */
+background: #19c8b9; /* @primary-color */
+border-color: #11a89b; /* @primary-color-active */
 /* 内白色勾 pop 动画 */
 @keyframes radio-pop {
-  0%   { transform: scale(0.4); opacity: 0; }
-  60%  { transform: scale(1.2); }
-  100% { transform: scale(1); opacity: 1; }
+    0% {
+        transform: scale(0.4);
+        opacity: 0;
+    }
+    60% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 /* 时长 0.15s ease（@motion-duration-fast） */
 
 /* label */
-color: #725d42; font-weight: 500; letter-spacing: 0.01em;
-/* checked label */ color: #794f27;
+color: #725d42;
+font-weight: 500;
+letter-spacing: 0.01em;
+/* checked label */
+color: #794f27;
 
 /* focus-visible */
-outline: 2px solid #f5c31c;   /* 注意：Radio 用 @focus-yellow=#f5c31c，而非 Checkbox/Input 的 #ffcc00 */
+outline: 2px solid #f5c31c; /* 注意：Radio 用 @focus-yellow=#f5c31c，而非 Checkbox/Input 的 #ffcc00 */
 outline-offset: 2px;
 
 /* disabled */
-opacity: 0.55; cursor: not-allowed;
-background: #f0ece2; border-color: #d4c9b4;
-/* label */ color: #c4b89e;
+opacity: 0.55;
+cursor: not-allowed;
+background: #f0ece2;
+border-color: #d4c9b4;
+/* label */
+color: #c4b89e;
 
 /* group 布局 */
-/* horizontal */ display: flex; gap: 12px;
-/* vertical */   display: flex; flex-direction: column; gap: 8px;
+/* horizontal */
+display: flex;
+gap: 12px;
+/* vertical */
+display: flex;
+flex-direction: column;
+gap: 8px;
 ```
 
 ---
@@ -1222,29 +1476,34 @@ background: #f0ece2; border-color: #d4c9b4;
 **default 变体（标准温色 bubble）：**
 
 ```css
-background: rgb(247, 243, 223);   /* @tooltip-bg */
-border: 2px solid #c4b89e;         /* @tooltip-border */
-border-radius: 16px;               /* @border-radius-sm */
+background: rgb(247, 243, 223); /* @tooltip-bg */
+border: 2px solid #c4b89e; /* @tooltip-border */
+border-radius: 16px; /* @border-radius-sm */
 padding: 6px 12px;
 max-width: 240px;
 
-font-size: 12px; font-weight: 500; line-height: 1.5; letter-spacing: 0.01em;
+font-size: 12px;
+font-weight: 500;
+line-height: 1.5;
+letter-spacing: 0.01em;
 color: #725d42;
 
-box-shadow: 0 3px 10px rgba(61, 52, 40, 0.10);   /* @shadow-base */
+box-shadow: 0 3px 10px rgba(61, 52, 40, 0.1); /* @shadow-base */
 z-index: 100;
 
-/* 距 trigger 间距 */ gap: 10px;
+/* 距 trigger 间距 */
+gap: 10px;
 /* 入场动画：translateY 4px → 0，平滑显隐 */
 
 /* 三角箭头 */
-size: 8px; border-radius: 2px;     /* 8px 菱形，圆角 2px —— 不是 6px */
+size: 8px;
+border-radius: 2px; /* 8px 菱形，圆角 2px —— 不是 6px */
 ```
 
 **island 变体（透明有机气泡）：**
 
 ```css
-background: transparent;           /* 容器透明，无 border 无 shadow */
+background: transparent; /* 容器透明，无 border 无 shadow */
 border: none;
 box-shadow: none;
 /* 注意：island **不是** Modal blob clip-path —— 它是 transparent 容器 + 内部内容自带气泡 */
@@ -1252,12 +1511,16 @@ box-shadow: none;
 /* 内容区 */
 padding: 12px 20px;
 max-width: 280px;
-font-weight: 600; line-height: 1.55; text-align: center;
+font-weight: 600;
+line-height: 1.55;
+text-align: center;
 
 /* 箭头：14px 圆点（borderless）或 10px 菱形（bordered） */
 .animal-tooltip__island-arrow {
-  width: 14px; height: 14px; border-radius: 50%;
-  filter: drop-shadow(0 4px 14px rgba(121, 79, 39, 0.14));
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    filter: drop-shadow(0 4px 14px rgba(121, 79, 39, 0.14));
 }
 ```
 
@@ -1271,9 +1534,9 @@ placement 12 种：`top` / `top_start` / `top_end` / `bottom` / `bottom_start` /
 
 ```css
 /* 容器 */
-position: absolute;       /* 不是 fixed —— 受最近的 positioned 父级约束 */
+position: absolute; /* 不是 fixed —— 受最近的 positioned 父级约束 */
 inset: 0;
-background: black;        /* 不是 #f8f8f0 */
+background: black; /* 不是 #f8f8f0 */
 overflow: hidden;
 
 /* 揭示遮罩（消失时 mask 半径渐变） */
@@ -1282,16 +1545,29 @@ mask: radial-gradient(circle at center, transparent var(--mask-r), black calc(va
 /* active=false 时把 --mask-r 过渡到大值，得到圆形渐隐效果 */
 
 /* SVG spinner */
-color: #19c8b9;           /* @primary-color mint teal */
+color: #19c8b9; /* @primary-color mint teal */
 animation: spin 1s linear infinite;
-@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
 
 /* 内圈 circle 的 dash 动画 */
 animation: dash 1.5s ease-in-out infinite;
 @keyframes dash {
-  0%   { stroke-dasharray: 1, 150;  stroke-dashoffset: 0;    }
-  50%  { stroke-dasharray: 90, 150; stroke-dashoffset: -35;  }
-  100% { stroke-dasharray: 90, 150; stroke-dashoffset: -124; }
+    0% {
+        stroke-dasharray: 1, 150;
+        stroke-dashoffset: 0;
+    }
+    50% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -35;
+    }
+    100% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -124;
+    }
 }
 ```
 
@@ -1307,25 +1583,25 @@ animation: dash 1.5s ease-in-out infinite;
 /* 外壳 wrapper */
 background: rgb(247, 243, 223);
 border-radius: 20px;
-padding: 6px;                /* 仅 6px 内边距，无 border */
+padding: 6px; /* 仅 6px 内边距，无 border */
 box-sizing: border-box;
 
 /* 表头 cell */
 padding: 16px 20px;
 font-size: 14px;
 font-weight: 700;
-color: #725d42;              /* 不是 #794f27 */
+color: #725d42; /* 不是 #794f27 */
 letter-spacing: 0.02em;
 /* 表头底部分隔（::after dashed） */
 border-image: none;
 &::after {
-  content: '';
-  border-bottom: 1px dashed rgb(240, 232, 216);
-  /* dash pattern: 6px on / 6px off */
+    content: '';
+    border-bottom: 1px dashed rgb(240, 232, 216);
+    /* dash pattern: 6px on / 6px off */
 }
 
 /* body cell */
-padding: 14px 20px;          /* 无固定行高 48px —— 由 padding 撑起 */
+padding: 14px 20px; /* 无固定行高 48px —— 由 padding 撑起 */
 font-size: 14px;
 font-weight: 500;
 color: #725d42;
@@ -1333,14 +1609,10 @@ line-height: 1.6;
 /* 行底分隔线同样是 1px dashed (6/6) rgb(240,232,216) */
 
 /* striped 偶数行 */
-background: rgba(248, 248, 240, 0.6);   /* 不是 rgba(247,243,223,0.5) */
+background: rgba(248, 248, 240, 0.6); /* 不是 rgba(247,243,223,0.5) */
 
 /* row hover —— 对角青色条纹 + 内圆角剪切 */
-background: repeating-linear-gradient(
-  -45deg,
-  rgba(25, 200, 185, 0.6) 0 10px,
-  rgba(14, 196, 182, 0.6) 10px 20px
-);
+background: repeating-linear-gradient(-45deg, rgba(25, 200, 185, 0.6) 0 10px, rgba(14, 196, 182, 0.6) 10px 20px);
 background-size: 28.28px 28.28px;
 clip-path: inset(0 0 0 0 round 30px);
 color: #3d2e1e;
@@ -1349,12 +1621,14 @@ color: #3d2e1e;
 padding: 60px 20px;
 text-align: center;
 color: #9f927d;
-/* icon */ opacity: 0.5;
+/* icon */
+opacity: 0.5;
 
 /* loading 遮罩 */
 background: rgba(247, 243, 223, 0.8);
 backdrop-filter: blur(2px);
-/* spinner */ color: #19c8b9;
+/* spinner */
+color: #19c8b9;
 ```
 
 ---
@@ -1365,14 +1639,14 @@ backdrop-filter: blur(2px);
 
 ```css
 /* 信封外壳 */
-max-width: 420px;             /* 不是 600px */
-padding: 56px 36px var(--lottery-h, 160px);   /* 顶/侧 56px+36px；底部预留抽奖券高度 */
+max-width: 420px; /* 不是 600px */
+padding: 56px 36px var(--lottery-h, 160px); /* 顶/侧 56px+36px；底部预留抽奖券高度 */
 border-radius: 16px;
 
 /* 多层背景：径向渐变 + 图片，不是单色 #FAF6E8 */
 background:
-  radial-gradient(...)         /* 多层 spotlight */,
-  url(envelope-texture.png);
+    radial-gradient(...) /* 多层 spotlight */,
+    url(envelope-texture.png);
 
 /* 阴影通过 filter 实现（drop-shadow），便于配合不规则裁切 */
 filter: drop-shadow(0 10px 24px rgba(61, 52, 40, 0.18));
@@ -1381,46 +1655,54 @@ box-shadow: inset 0 0 0 2px rgba(114, 93, 66, 0.12);
 
 /* 顶层细点纹理 */
 &::before {
-  background: radial-gradient(circle, ... 14px 14px);
-  opacity: 0.55;
+    background: radial-gradient(circle, ... 14px 14px);
+    opacity: 0.55;
 }
 
 /* 内虚线边框（有机不规则圆角） */
 &::after {
-  border: 1.5px dashed rgba(114, 93, 66, 0.35);
-  border-radius: 22px 20px 24px 22px / 20px 24px 22px 20px;
+    border: 1.5px dashed rgba(114, 93, 66, 0.35);
+    border-radius: 22px 20px 24px 22px / 20px 24px 22px 20px;
 }
 
 /* 底部抽奖券（160px 撕条）*/
 .animal-wedding__lottery {
-  height: 160px;               /* --lottery-h */
-  padding: 38px 36px 18px;
-  background: rgb(247, 243, 223);
-  /* 1.6px 棕色点阵 10×5px */
-  background-image: radial-gradient(circle, rgba(114, 93, 66, 0.7) 1.6px, transparent 1.6px);
-  background-size: 10px 5px;
-  /* 撕痕阴影 */
-  box-shadow: inset 0 4px 6px -3px rgba(61, 52, 40, 0.18);
-  /* 圆形冲孔（信封与撕条接缝处） */
-  --notch: 14px;
+    height: 160px; /* --lottery-h */
+    padding: 38px 36px 18px;
+    background: rgb(247, 243, 223);
+    /* 1.6px 棕色点阵 10×5px */
+    background-image: radial-gradient(circle, rgba(114, 93, 66, 0.7) 1.6px, transparent 1.6px);
+    background-size: 10px 5px;
+    /* 撕痕阴影 */
+    box-shadow: inset 0 4px 6px -3px rgba(61, 52, 40, 0.18);
+    /* 圆形冲孔（信封与撕条接缝处） */
+    --notch: 14px;
 }
 
 /* 4 角叶子：drop-shadow + ±25° / ±115° rotation */
-.animal-wedding__corner-leaf { filter: drop-shadow(0 2px 3px rgba(61, 52, 40, 0.15)); }
+.animal-wedding__corner-leaf {
+    filter: drop-shadow(0 2px 3px rgba(61, 52, 40, 0.15));
+}
 
 /* 浮动小装饰 */
 @keyframes float {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50%      { transform: translateY(-6px) rotate(8deg); }
+    0%,
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-6px) rotate(8deg);
+    }
 }
 animation: float 4.5s ease-in-out infinite;
 /* 多个装饰用错位 delay：0s / 0.6s / 1.2s / 0.3s / 1s */
 
 /* banner 分隔线 */
 .animal-wedding__banner-line {
-  width: 64px; height: 2px;
-  background: linear-gradient(to right, #725d42, transparent);
-  background: linear-gradient(to right, transparent, #725d42, transparent);
+    width: 64px;
+    height: 2px;
+    background: linear-gradient(to right, #725d42, transparent);
+    background: linear-gradient(to right, transparent, #725d42, transparent);
 }
 ```
 
@@ -1436,11 +1718,16 @@ animation: float 4.5s ease-in-out infinite;
 
 ```css
 /* 页面背景 */
-/* 首页 */ background: url(home_bg.svg) center/cover no-repeat, #7DC395;
-/* 组件页 */ background: url(content_bg_pc.jpg) center fixed;
+/* 首页 */
+background:
+    url(home_bg.svg) center/cover no-repeat,
+    #7dc395;
+/* 组件页 */
+background: url(content_bg_pc.jpg) center fixed;
 
 /* Sidebar */
-width: 220px; min-width: 220px;
+width: 220px;
+min-width: 220px;
 background: url(menu_bg.svg) center/cover no-repeat;
 ```
 
@@ -1450,32 +1737,45 @@ background: url(menu_bg.svg) center/cover no-repeat;
 /* 顶部 Logo 区 */
 padding: 20px 16px 12px;
 border-bottom: 1px solid #e8e2d6;
-font-weight: 700; font-size: 15px;
-color: #725d42; letter-spacing: -0.3px;
+font-weight: 700;
+font-size: 15px;
+color: #725d42;
+letter-spacing: -0.3px;
 
 /* Logo 图片 */
-width: 24px; height: 24px; margin-right: 8px;
+width: 24px;
+height: 24px;
+margin-right: 8px;
 
 /* 菜单列表 */
 padding: 8px 0;
 
 /* 分类标题 */
 padding: 12px 16px 4px;
-font-size: 11px; color: #a0936e;
-font-weight: 600; letter-spacing: 0.5px;
+font-size: 11px;
+color: #a0936e;
+font-weight: 600;
+letter-spacing: 0.5px;
 text-transform: uppercase;
 
 /* 菜单项 */
 margin: 1px 5px;
-height: 40px; padding: 0 16px;
+height: 40px;
+padding: 0 16px;
 padding-left: 26px;
-font-weight: 600; font-size: 14px;
+font-weight: 600;
+font-size: 14px;
 border-radius: 12px;
 transition: all 0.15s;
 
-/* inactive */ color: #8a7b66; background: transparent;
-/* inactive hover */ background: #d6dff0;
-/* active */ color: #fff; background: #B7C6E5;
+/* inactive */
+color: #8a7b66;
+background: transparent;
+/* inactive hover */
+background: #d6dff0;
+/* active */
+color: #fff;
+background: #b7c6e5;
 ```
 
 ### 主内容区
@@ -1487,7 +1787,8 @@ padding: 32px 40px;
 /* 底部装饰图（桌面端，固定定位）*/
 left: 220px;
 width: calc(100% - 220px);
-z-index: 0; pointer-events: none;
+z-index: 0;
+pointer-events: none;
 ```
 
 ### 移动端适配
@@ -1520,32 +1821,47 @@ padding: 60px 40px 40px;
 min-height: 80vh;
 
 /* 主标题 */
-font-size: 50px; font-weight: 700;
-color: #FFF9E6;
+font-size: 50px;
+font-weight: 700;
+color: #fff9e6;
 text-shadow: 0px 4px 1px rgba(0, 0, 0, 0.4);
 margin: 0 0 12px;
 
 /* 版本 Badge */
-font-size: 12px; font-weight: 600;
-padding: 2px 10px; border-radius: 10px;
-background: #e6f9f6; color: #19c8b9;
+font-size: 12px;
+font-weight: 600;
+padding: 2px 10px;
+border-radius: 10px;
+background: #e6f9f6;
+color: #19c8b9;
 margin-left: 8px;
 
 /* 副标题 */
-font-size: 17px; color: #7c5734; line-height: 1.7;
-margin: 0 0 28px; max-width: 520px;
+font-size: 17px;
+color: #7c5734;
+line-height: 1.7;
+margin: 0 0 28px;
+max-width: 520px;
 
 /* Logo 图片 */
-width: 172px; height: 172px;
+width: 172px;
+height: 172px;
 
 /* Section */
-padding: 48px 40px; max-width: 960px; margin: 0 auto;
+padding: 48px 40px;
+max-width: 960px;
+margin: 0 auto;
 
 /* Section 标题 */
-font-size: 24px; font-weight: 700; color: #725d42; margin: 0 0 8px;
+font-size: 24px;
+font-weight: 700;
+color: #725d42;
+margin: 0 0 8px;
 
 /* Section 描述 */
-font-size: 14px; color: #7c5734; margin-bottom: 32px;
+font-size: 14px;
+color: #7c5734;
+margin-bottom: 32px;
 
 /* Feature 网格 */
 grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -1559,29 +1875,32 @@ box-shadow: 0 8px 24px rgba(114, 93, 66, 0.15);
 transform: scale(1.1) rotate(-4deg);
 
 /* 代码块 */
-max-width: 600px; margin: 0 auto;
+max-width: 600px;
+margin: 0 auto;
 padding: 20px 28px;
 background: #2b2118;
 border: 1px solid #3d3028;
 border-radius: 20px;
-font-size: 13px; font-weight: 600;
-color: #e8d5bc; line-height: 1.8;
+font-size: 13px;
+font-weight: 600;
+color: #e8d5bc;
+line-height: 1.8;
 ```
 
 **代码高亮配色：**
 
-| Token 类型 | 颜色 |
-|---|---|
-| 注释 | `#6b5e50`（italic, weight 400）|
-| 字符串 | `#a8d4a0` |
-| Vue 模板标签 | `#f0a870` |
-| 关键字 / npm/pnpm | `#f0a870` |
-| 命令动词（install/add）| `#a8d4a0` |
-| 括号 `{}` | `#d4b896` |
-| 箭头 `=>` | `#d4a0e0` |
-| CSS 变量名 | `#e8c87a` |
-| `:root` | `#f0a870` |
-| 十六进制色值 | `#8ab8e0` |
+| Token 类型              | 颜色                            |
+| ----------------------- | ------------------------------- |
+| 注释                    | `#6b5e50`（italic, weight 400） |
+| 字符串                  | `#a8d4a0`                       |
+| Vue 模板标签            | `#f0a870`                       |
+| 关键字 / npm/pnpm       | `#f0a870`                       |
+| 命令动词（install/add） | `#a8d4a0`                       |
+| 括号 `{}`               | `#d4b896`                       |
+| 箭头 `=>`               | `#d4a0e0`                       |
+| CSS 变量名              | `#e8c87a`                       |
+| `:root`                 | `#f0a870`                       |
+| 十六进制色值            | `#8ab8e0`                       |
 
 ---
 
@@ -1591,59 +1910,58 @@ color: #e8d5bc; line-height: 1.8;
 
 ```css
 :root {
-  /* 字体 */
-  --animal-font: Nunito, 'Noto Sans SC',
-    -apple-system, 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+    /* 字体 */
+    --animal-font: Nunito, 'Noto Sans SC', -apple-system, 'PingFang SC', 'Hiragino Sans GB', sans-serif;
 
-  /* 主色 */
-  --animal-primary:        #19c8b9;
-  --animal-primary-hover:  #3dd4c6;
-  --animal-primary-active: #11a89b;
-  --animal-primary-bg:     #e6f9f6;
+    /* 主色 */
+    --animal-primary: #19c8b9;
+    --animal-primary-hover: #3dd4c6;
+    --animal-primary-active: #11a89b;
+    --animal-primary-bg: #e6f9f6;
 
-  /* 文字 */
-  --animal-text:           #794f27;
-  --animal-text-body:      #725d42;
-  --animal-text-secondary: #9f927d;
-  --animal-text-muted:     #8a7b66;
-  --animal-text-disabled:  #c4b89e;
+    /* 文字 */
+    --animal-text: #794f27;
+    --animal-text-body: #725d42;
+    --animal-text-secondary: #9f927d;
+    --animal-text-muted: #8a7b66;
+    --animal-text-disabled: #c4b89e;
 
-  /* 背景 */
-  --animal-bg:             #f8f8f0;
-  --animal-bg-content:     rgb(247, 243, 223);
-  --animal-bg-disabled:    #f0ece2;
+    /* 背景 */
+    --animal-bg: #f8f8f0;
+    --animal-bg-content: rgb(247, 243, 223);
+    --animal-bg-disabled: #f0ece2;
 
-  /* 边框 */
-  --animal-border:         #c4b89e;
-  --animal-border-hover:   #a89878;
+    /* 边框 */
+    --animal-border: #c4b89e;
+    --animal-border-hover: #a89878;
 
-  /* 圆角 */
-  --animal-radius-sm:      12px;
-  --animal-radius:         18px;
-  --animal-radius-lg:      24px;
-  --animal-radius-pill:    50px;
+    /* 圆角 */
+    --animal-radius-sm: 12px;
+    --animal-radius: 18px;
+    --animal-radius-lg: 24px;
+    --animal-radius-pill: 50px;
 
-  /* 3D 阴影 */
-  --animal-shadow-btn:     #bdaea0;
-  --animal-shadow-input:   #d4c9b4;
-  --animal-shadow-switch:  #5a9e1e;
+    /* 3D 阴影 */
+    --animal-shadow-btn: #bdaea0;
+    --animal-shadow-input: #d4c9b4;
+    --animal-shadow-switch: #5a9e1e;
 
-  /* 游戏特殊色 */
-  --animal-focus-yellow:   #ffcc00;
-  --animal-focus-yellow-d: #e0b800;
-  --animal-sidebar-active: #B7C6E5;
-  --animal-sidebar-hover:  #d6dff0;
+    /* 游戏特殊色 */
+    --animal-focus-yellow: #ffcc00;
+    --animal-focus-yellow-d: #e0b800;
+    --animal-sidebar-active: #b7c6e5;
+    --animal-sidebar-hover: #d6dff0;
 
-  /* 状态 */
-  --animal-success:        #6fba2c;
-  --animal-warning:        #f5c31c;
-  --animal-error:          #e05a5a;
+    /* 状态 */
+    --animal-success: #6fba2c;
+    --animal-warning: #f5c31c;
+    --animal-error: #e05a5a;
 
-  /* 动效 */
-  --animal-ease:           cubic-bezier(0.4, 0, 0.2, 1);
-  --animal-duration-fast:  0.15s;
-  --animal-duration:       0.25s;
-  --animal-duration-slow:  0.35s;
+    /* 动效 */
+    --animal-ease: cubic-bezier(0.4, 0, 0.2, 1);
+    --animal-duration-fast: 0.15s;
+    --animal-duration: 0.25s;
+    --animal-duration-slow: 0.35s;
 }
 ```
 
@@ -1671,12 +1989,14 @@ src/components/MyComponent/
 ```
 
 `src/components/MyComponent/index.ts`：
+
 ```ts
 export { default as MyComponent } from './MyComponent.vue';
 export type { MyComponentProps } from './types';
 ```
 
 `src/index.ts` 追加：
+
 ```ts
 export { MyComponent } from './components/MyComponent';
 export type { MyComponentProps } from './components/MyComponent';
@@ -1690,41 +2010,42 @@ Less / BEM 模板（直接使用设计 token）：
 @import '@/styles/variables.less';
 
 .animal-mycomp {
-  background: @bg-color-content;      // rgb(247,243,223)
-  color: @text-color-body;            // #725d42
-  border: @border-width solid @border-color-light;  // 2px solid #c4b89e
-  border-radius: @border-radius-base; // 18px
-  font-family: @font-family;
-  font-weight: 500;
-  letter-spacing: 0.01em;
-  transition: all @motion-duration-base @motion-ease;
-  box-shadow: 0 3px 0 0 @shadow-input; // #d4c9b4
+    background: @bg-color-content; // rgb(247,243,223)
+    color: @text-color-body; // #725d42
+    border: @border-width solid @border-color-light; // 2px solid #c4b89e
+    border-radius: @border-radius-base; // 18px
+    font-family: @font-family;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    transition: all @motion-duration-base @motion-ease;
+    box-shadow: 0 3px 0 0 @shadow-input; // #d4c9b4
 
-  &:hover:not(.animal-mycomp--disabled) {
-    border-color: @border-color-hover; // #a89878
-    transform: translateY(-1px);
-    box-shadow: 0 4px 0 0 @shadow-input;
-  }
+    &:hover:not(.animal-mycomp--disabled) {
+        border-color: @border-color-hover; // #a89878
+        transform: translateY(-1px);
+        box-shadow: 0 4px 0 0 @shadow-input;
+    }
 
-  &:focus-within {
-    border-color: @focus-yellow;       // #ffcc00
-    box-shadow: 0 3px 0 0 @focus-yellow-dark,
-                0 0 0 3px rgba(255, 204, 0, 0.15);
-  }
+    &:focus-within {
+        border-color: @focus-yellow; // #ffcc00
+        box-shadow:
+            0 3px 0 0 @focus-yellow-dark,
+            0 0 0 3px rgba(255, 204, 0, 0.15);
+    }
 
-  &--disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    background: @bg-color-disabled;
-    color: @text-color-disabled;
-    border-color: @shadow-input;
-    box-shadow: none;
-  }
+    &--disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        background: @bg-color-disabled;
+        color: @text-color-disabled;
+        border-color: @shadow-input;
+        box-shadow: none;
+    }
 
-  &__icon {
-    display: inline-flex;
-    align-items: center;
-  }
+    &__icon {
+        display: inline-flex;
+        align-items: center;
+    }
 }
 ```
 
@@ -1735,15 +2056,15 @@ Vue SFC 模板：
 import type { MyComponentSize } from './types';
 
 interface Props {
-  /** 尺寸 */
-  size?: MyComponentSize;
-  /** 禁用 */
-  disabled?: boolean;
+    /** 尺寸 */
+    size?: MyComponentSize;
+    /** 禁用 */
+    disabled?: boolean;
 }
 
 withDefaults(defineProps<Props>(), {
-  size: 'middle',
-  disabled: false,
+    size: 'middle',
+    disabled: false,
 });
 
 defineEmits<{ (e: 'click', event: MouseEvent): void }>();
@@ -1751,65 +2072,80 @@ defineSlots<{ default?: () => unknown; icon?: () => unknown }>();
 </script>
 
 <template>
-  <div
-    class="animal-mycomp"
-    :class="[
-      `animal-mycomp--${size}`,
-      { 'animal-mycomp--disabled': disabled },
-    ]"
-    @click="$emit('click', $event)"
-  >
-    <span v-if="$slots.icon" class="animal-mycomp__icon">
-      <slot name="icon" />
-    </span>
-    <slot />
-  </div>
+    <div
+        class="animal-mycomp"
+        :class="[`animal-mycomp--${size}`, { 'animal-mycomp--disabled': disabled }]"
+        @click="$emit('click', $event)"
+    >
+        <span v-if="$slots.icon" class="animal-mycomp__icon">
+            <slot name="icon" />
+        </span>
+        <slot />
+    </div>
 </template>
 
 <style lang="less" scoped>
 @import '@/styles/variables.less';
 
 .animal-mycomp {
-  font-family: @font-family;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  line-height: 1;
-  background: @bg-color-input;
-  color: @warm-color-soft;
-  border: 2px solid @border-color-light;
-  border-radius: 50px;
-  box-shadow: 0 3px 0 0 @shadow-soft;
-  transition: all @motion-duration-base @motion-ease;
+    font-family: @font-family;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    background: @bg-color-input;
+    color: @warm-color-soft;
+    border: 2px solid @border-color-light;
+    border-radius: 50px;
+    box-shadow: 0 3px 0 0 @shadow-soft;
+    transition: all @motion-duration-base @motion-ease;
 
-  &:hover:not(.animal-mycomp--disabled) {
-    border-color: @border-color-hover;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 0 0 @shadow-soft-hover;
-  }
+    &:hover:not(.animal-mycomp--disabled) {
+        border-color: @border-color-hover;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 0 0 @shadow-soft-hover;
+    }
 
-  &:focus-within {
-    border-color: #ffcc00;
-    box-shadow: 0 3px 0 0 #e0b800, 0 0 0 3px rgba(255, 204, 0, 0.15);
-  }
+    &:focus-within {
+        border-color: #ffcc00;
+        box-shadow:
+            0 3px 0 0 #e0b800,
+            0 0 0 3px rgba(255, 204, 0, 0.15);
+    }
 
-  &--disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    background: @bg-color-disabled;
-    color: @text-color-disabled;
-    box-shadow: none;
-  }
+    &--disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        background: @bg-color-disabled;
+        color: @text-color-disabled;
+        box-shadow: none;
+    }
 
-  &--small  { height: 32px; padding: 0 16px; font-size: @font-size-sm; }
-  &--middle { height: 45px; padding: 0 20px; font-size: @font-size-base; }
-  &--large  { height: 48px; padding: 0 32px; font-size: @font-size-lg; }
+    &--small {
+        height: 32px;
+        padding: 0 16px;
+        font-size: @font-size-sm;
+    }
+    &--middle {
+        height: 45px;
+        padding: 0 20px;
+        font-size: @font-size-base;
+    }
+    &--large {
+        height: 48px;
+        padding: 0 32px;
+        font-size: @font-size-lg;
+    }
 
-  &__icon { display: inline-flex; align-items: center; }
+    &__icon {
+        display: inline-flex;
+        align-items: center;
+    }
 }
 </style>
 ```
 
 > Less / BEM 提示：
+>
 > - 顶部 `@import '@/styles/variables.less';` 引入全局 token，组件内统一用 `@xxx` 语法。
 > - 状态样式用 BEM 修饰符（`&--disabled`、`&--checked`）而非堆叠工具类，便于阅读和覆盖。
 > - 子元素一律用 `&__name`，避免出现孤立的 `.foo .bar` 选择器，scoped 编译后 BEM 命名足以隔离。
@@ -1826,18 +2162,16 @@ defineSlots<{ default?: () => unknown; icon?: () => unknown }>();
 import { MyComponent } from '../../src';
 import { CodeBlock, ApiTable } from '../tools';
 
-const props = [
-  { name: 'size', type: "'small' | 'middle' | 'large'", default: "'middle'", description: '尺寸' },
-];
+const props = [{ name: 'size', type: "'small' | 'middle' | 'large'", default: "'middle'", description: '尺寸' }];
 </script>
 
 <template>
-  <div>
-    <h2>MyComponent</h2>
-    <MyComponent size="large">内容</MyComponent>
-    <CodeBlock :code="`<MyComponent size=&quot;large&quot;>内容</MyComponent>`" />
-    <ApiTable :data="props" />
-  </div>
+    <div>
+        <h2>MyComponent</h2>
+        <MyComponent size="large">内容</MyComponent>
+        <CodeBlock :code="`<MyComponent size=&quot;large&quot;>内容</MyComponent>`" />
+        <ApiTable :data="props" />
+    </div>
 </template>
 ```
 
@@ -1846,29 +2180,29 @@ const props = [
 ```ts
 // demo/pageInfo.ts — 供 App 静态导入的轻量元信息
 export const PAGE_INFO: Record<string, { title: string; desc: string }> = {
-  button:         { title: 'Button 按钮',       desc: '...' },
-  input:          { title: 'Input 输入框',      desc: '...' },
-  switch:         { title: 'Switch 开关',       desc: '...' },
-  card:           { title: 'Card 卡片',         desc: '...' },
-  collapse:       { title: 'Collapse 折叠面板', desc: '...' },
-  cursor:         { title: 'Cursor 光标',       desc: '...' },
-  time:           { title: 'Time 时间',         desc: '...' },
-  phone:          { title: 'Phone 手机',        desc: '...' },
-  footer:         { title: 'Footer 底部装饰',   desc: '...' },
-  modal:               { title: 'Modal 弹窗',         desc: '...' },
-  typewriter:          { title: 'Typewriter 打字机',   desc: '...' },
-  'divider-comp':      { title: 'Divider 分割线',      desc: '...' },
-  icon:                { title: 'Icon 图标',           desc: '...' },
-  select:              { title: 'Select 选择器',       desc: '...' },
-  checkbox:            { title: 'Checkbox 多选框',     desc: '...' },
-  radio:               { title: 'Radio 单选框',        desc: '...' },
-  tooltip:             { title: 'Tooltip 文字提示',    desc: '...' },
-  tabs:                { title: 'Tabs 标签页',         desc: '...' },
-  title:               { title: 'Title 章节标题',      desc: '...' },
-  loading:             { title: 'Loading 加载',        desc: '...' },
-  table:               { title: 'Table 表格',          desc: '...' },
-  'wedding-invitation':{ title: 'WeddingInvitation 邀请函', desc: '...' },
-  codeblock:           { title: 'CodeBlock 代码高亮',  desc: '...' },
+    button: { title: 'Button 按钮', desc: '...' },
+    input: { title: 'Input 输入框', desc: '...' },
+    switch: { title: 'Switch 开关', desc: '...' },
+    card: { title: 'Card 卡片', desc: '...' },
+    collapse: { title: 'Collapse 折叠面板', desc: '...' },
+    cursor: { title: 'Cursor 光标', desc: '...' },
+    time: { title: 'Time 时间', desc: '...' },
+    phone: { title: 'Phone 手机', desc: '...' },
+    footer: { title: 'Footer 底部装饰', desc: '...' },
+    modal: { title: 'Modal 弹窗', desc: '...' },
+    typewriter: { title: 'Typewriter 打字机', desc: '...' },
+    'divider-comp': { title: 'Divider 分割线', desc: '...' },
+    icon: { title: 'Icon 图标', desc: '...' },
+    select: { title: 'Select 选择器', desc: '...' },
+    checkbox: { title: 'Checkbox 多选框', desc: '...' },
+    radio: { title: 'Radio 单选框', desc: '...' },
+    tooltip: { title: 'Tooltip 文字提示', desc: '...' },
+    tabs: { title: 'Tabs 标签页', desc: '...' },
+    title: { title: 'Title 章节标题', desc: '...' },
+    loading: { title: 'Loading 加载', desc: '...' },
+    table: { title: 'Table 表格', desc: '...' },
+    'wedding-invitation': { title: 'WeddingInvitation 邀请函', desc: '...' },
+    codeblock: { title: 'CodeBlock 代码高亮', desc: '...' },
 };
 ```
 

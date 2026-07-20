@@ -23,7 +23,9 @@ const modeClass = computed(() => (props.forceAll ? 'animal-cursor--force' : 'ani
 /* ============ force 模式（默认）：全覆盖所有后代 ============ */
 .animal-cursor--force,
 .animal-cursor--force * {
-    cursor: url('../../assets/img/cursor/cursor-icon.png') 4 0, default !important;
+    cursor:
+        url('../../assets/img/cursor/cursor-icon.png') 4 0,
+        default !important;
 }
 
 /* ============ scoped 模式：保留交互语义 ============
@@ -33,7 +35,9 @@ const modeClass = computed(() => (props.forceAll ? 'animal-cursor--force' : 'ani
 
 /* 容器自身：使用自定义光标（双类提升特异性 (0,2,0) > 祖先 (0,1,1)） */
 .animal-cursor.animal-cursor--scoped {
-    cursor: url('../../assets/img/cursor/cursor-icon.png') 4 0, default !important;
+    cursor:
+        url('../../assets/img/cursor/cursor-icon.png') 4 0,
+        default !important;
 }
 
 /* scoped 内的普通后代：恢复为浏览器默认（避免被祖先 force 强制成自定义光标） */

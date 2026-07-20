@@ -36,9 +36,7 @@ import { Divider } from 'animal-island-vue';
 
 <template>
     <div :style="sectionStyle">
-        <div :style="sectionTitleStyle">
-            Divider <span :style="tagStyle">9 types</span>
-        </div>
+        <div :style="sectionTitleStyle">Divider <span :style="tagStyle">9 types</span></div>
         <div :style="labelStyle">line-brown</div>
         <Divider type="line-brown" />
         <div :style="labelStyle">line-teal</div>

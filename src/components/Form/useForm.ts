@@ -366,9 +366,7 @@ function createFormInstance(options: FormOptions): FormInstance {
  * 与 React 版对齐：每次调用返回一个稳定的 form 实例。Vue 中 setup() 只执行一次，
  * 因此直接 newInstance 等价于 React 的 useRef 模式。
  */
-export function useForm<T = Record<string, unknown>>(
-    options?: Omit<FormOptions, 'submit'>
-): [FormInstance<T>] {
+export function useForm<T = Record<string, unknown>>(options?: Omit<FormOptions, 'submit'>): [FormInstance<T>] {
     const inst = createFormInstance({
         ...(options as FormOptions | undefined),
         submit: () => inst.submit(),

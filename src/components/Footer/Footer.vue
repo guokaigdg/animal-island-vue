@@ -10,10 +10,7 @@ withDefaults(defineProps<Props>(), { type: 'tree', seamless: false });
 </script>
 
 <template>
-    <div
-        class="animal-footer"
-        :class="[`animal-footer--${type}`, { 'animal-footer--seamless': seamless }]"
-    />
+    <div class="animal-footer" :class="[`animal-footer--${type}`, { 'animal-footer--seamless': seamless }]" />
 </template>
 
 <style lang="less" scoped>

@@ -229,18 +229,14 @@ describe('Drawer', () => {
                     const open = ref(false);
                     return () =>
                         h('div', [
-                            h(
-                                'button',
-                                { 'data-testid': 'trigger', onClick: () => (open.value = true) },
-                                'open',
-                            ),
+                            h('button', { 'data-testid': 'trigger', onClick: () => (open.value = true) }, 'open'),
                             h(
                                 Drawer,
                                 {
                                     open: open.value,
-                                    'onClose': () => (open.value = false),
+                                    onClose: () => (open.value = false),
                                 },
-                                () => h('button', { 'data-testid': 'inside' }, 'inside'),
+                                () => h('button', { 'data-testid': 'inside' }, 'inside')
                             ),
                         ]);
                 },
@@ -262,18 +258,14 @@ describe('Drawer', () => {
                     const open = ref(false);
                     return () =>
                         h('div', [
-                            h(
-                                'button',
-                                { 'data-testid': 'trigger', onClick: () => (open.value = true) },
-                                'open',
-                            ),
+                            h('button', { 'data-testid': 'trigger', onClick: () => (open.value = true) }, 'open'),
                             h(
                                 Drawer,
                                 {
                                     open: open.value,
-                                    'onClose': () => (open.value = false),
+                                    onClose: () => (open.value = false),
                                 },
-                                () => h('button', { 'data-testid': 'inside' }, 'inside'),
+                                () => h('button', { 'data-testid': 'inside' }, 'inside')
                             ),
                         ]);
                 },

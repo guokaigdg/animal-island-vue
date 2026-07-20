@@ -66,30 +66,37 @@ const open = ref(false);
 
 <template>
     <div :style="sectionStyle">
-        <div :style="sectionTitleStyle">
-            Modal <span :style="tagStyle">弹窗</span>
-        </div>
+        <div :style="sectionTitleStyle">Modal <span :style="tagStyle">弹窗</span></div>
 
         <div :style="demoBodyStyle">
             <div :style="labelStyle">基础弹窗</div>
             <div :style="rowStyle">
-                <Button type="primary" @click="modalOpen = true">基础 Modal</Button>
-                <Button @click="titleModalOpen = true">带标题 Modal</Button>
-                <Button type="dashed" @click="customFooterOpen = true">自定义 Footer</Button>
+                <Button type="primary" @click="modalOpen = true"> 基础 Modal </Button>
+                <Button @click="titleModalOpen = true"> 带标题 Modal </Button>
+                <Button type="dashed" @click="customFooterOpen = true"> 自定义 Footer </Button>
             </div>
             <div :style="labelStyle">关闭打字机效果</div>
             <div :style="rowStyle">
-                <Button type="primary" @click="noTypewriterOpen = true">关闭打字机效果</Button>
+                <Button type="primary" @click="noTypewriterOpen = true"> 关闭打字机效果 </Button>
             </div>
             <div :style="labelStyle">自定义遮罩样式</div>
             <div :style="rowStyle">
-                <Button type="primary" @click="lightMaskOpen = true">浅色遮罩</Button>
-                <Button type="primary" @click="darkMaskOpen = true">深色遮罩</Button>
+                <Button type="primary" @click="lightMaskOpen = true"> 浅色遮罩 </Button>
+                <Button type="primary" @click="darkMaskOpen = true"> 深色遮罩 </Button>
             </div>
         </div>
 
         <Modal v-model:open="modalOpen" @ok="modalOpen = false">
-            <div :style="{ textAlign: 'center', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }">
+            <div
+                :style="{
+                    textAlign: 'center',
+                    width: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '8px',
+                }"
+            >
                 <span>钓到<span :style="{ color: '#FD9303' }">石头</span>了!</span>
                 <span>竟然连这种都能钓起来...</span>
             </div>
@@ -102,8 +109,8 @@ const open = ref(false);
         <Modal v-model:open="customFooterOpen" title="确认操作">
             确定要让这位居民搬走吗？这个操作不可撤销。
             <template #footer>
-                <Button @click="customFooterOpen = false">再想想</Button>
-                <Button type="primary" danger @click="customFooterOpen = false">确认搬家</Button>
+                <Button @click="customFooterOpen = false"> 再想想 </Button>
+                <Button type="primary" danger @click="customFooterOpen = false"> 确认搬家 </Button>
             </template>
         </Modal>
 

@@ -69,26 +69,24 @@ Notification.destroy();
 
 <template>
     <div :style="sectionStyle">
-        <div :style="sectionTitleStyle">
-            Notification <span :style="tagStyle">通知提醒</span>
-        </div>
+        <div :style="sectionTitleStyle">Notification <span :style="tagStyle">通知提醒</span></div>
 
         <div :style="demoBodyStyle">
             <div :style="labelStyle">4 种类型</div>
             <div :style="demoBoxStyle">
                 <div :style="rowStyle">
-                    <Button type="primary" @click="Notification.success('操作成功！')">Success</Button>
-                    <Button @click="Notification.info('这是一条信息提醒')">Info</Button>
-                    <Button @click="Notification.warning('请注意风险')">Warning</Button>
-                    <Button danger @click="Notification.error('操作失败，请重试')">Error</Button>
+                    <Button type="primary" @click="Notification.success('操作成功！')"> Success </Button>
+                    <Button @click="Notification.info('这是一条信息提醒')"> Info </Button>
+                    <Button @click="Notification.warning('请注意风险')"> Warning </Button>
+                    <Button danger @click="Notification.error('操作失败，请重试')"> Error </Button>
                 </div>
             </div>
 
             <div :style="labelStyle">字符串配置（仅 message）</div>
             <div :style="demoBoxStyle">
                 <div :style="rowStyle">
-                    <Button @click="Notification('直接调用：纯字符串')">字符串通知</Button>
-                    <Button @click="Notification.open('open 方法：纯字符串')">open</Button>
+                    <Button @click="Notification('直接调用：纯字符串')"> 字符串通知 </Button>
+                    <Button @click="Notification.open('open 方法：纯字符串')"> open </Button>
                 </div>
             </div>
 
@@ -97,7 +95,12 @@ Notification.destroy();
                 <div :style="rowStyle">
                     <Button
                         type="primary"
-                        @click="Notification.success({ message: '钓到鱼了！', description: '这是一条鲈鱼，可以卖 300 铃钱。' })"
+                        @click="
+                            Notification.success({
+                                message: '钓到鱼了！',
+                                description: '这是一条鲈鱼，可以卖 300 铃钱。',
+                            })
+                        "
                     >
                         带描述
                     </Button>
@@ -112,27 +115,42 @@ Notification.destroy();
             <div :style="labelStyle">position 6 个位置</div>
             <div :style="demoBoxStyle">
                 <div :style="rowStyle">
-                    <Button size="small" @click="Notification.info({ message: 'top', position: 'top' })">top</Button>
-                    <Button size="small" @click="Notification.info({ message: 'topLeft', position: 'topLeft' })">topLeft</Button>
-                    <Button size="small" @click="Notification.info({ message: 'topRight', position: 'topRight' })">topRight</Button>
-                    <Button size="small" @click="Notification.info({ message: 'bottom', position: 'bottom' })">bottom</Button>
-                    <Button size="small" @click="Notification.info({ message: 'bottomLeft', position: 'bottomLeft' })">bottomLeft</Button>
-                    <Button size="small" @click="Notification.info({ message: 'bottomRight', position: 'bottomRight' })">bottomRight</Button>
+                    <Button size="small" @click="Notification.info({ message: 'top', position: 'top' })"> top </Button>
+                    <Button size="small" @click="Notification.info({ message: 'topLeft', position: 'topLeft' })">
+                        topLeft
+                    </Button>
+                    <Button size="small" @click="Notification.info({ message: 'topRight', position: 'topRight' })">
+                        topRight
+                    </Button>
+                    <Button size="small" @click="Notification.info({ message: 'bottom', position: 'bottom' })">
+                        bottom
+                    </Button>
+                    <Button size="small" @click="Notification.info({ message: 'bottomLeft', position: 'bottomLeft' })">
+                        bottomLeft
+                    </Button>
+                    <Button
+                        size="small"
+                        @click="Notification.info({ message: 'bottomRight', position: 'bottomRight' })"
+                    >
+                        bottomRight
+                    </Button>
                 </div>
             </div>
 
             <div :style="labelStyle">duration 自定义时长（0 = 不自动关闭）</div>
             <div :style="demoBoxStyle">
                 <div :style="rowStyle">
-                    <Button @click="Notification.warning({ message: '2 秒后关闭', duration: 2 })">2s</Button>
-                    <Button @click="Notification.warning({ message: '不自动关闭，需手动关闭', duration: 0 })">duration=0</Button>
+                    <Button @click="Notification.warning({ message: '2 秒后关闭', duration: 2 })"> 2s </Button>
+                    <Button @click="Notification.warning({ message: '不自动关闭，需手动关闭', duration: 0 })">
+                        duration=0
+                    </Button>
                 </div>
             </div>
 
             <div :style="labelStyle">destroy all 销毁全部</div>
             <div :style="demoBoxStyle">
                 <div :style="rowStyle">
-                    <Button danger @click="Notification.destroy()">销毁全部通知</Button>
+                    <Button danger @click="Notification.destroy()"> 销毁全部通知 </Button>
                 </div>
             </div>
         </div>

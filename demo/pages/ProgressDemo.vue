@@ -59,9 +59,7 @@ const percent = ref(60);
 
 <template>
     <div :style="sectionStyle">
-        <div :style="sectionTitleStyle">
-            Progress <span :style="tagStyle">进度条</span>
-        </div>
+        <div :style="sectionTitleStyle">Progress <span :style="tagStyle">进度条</span></div>
 
         <div :style="demoBodyStyle">
             <div :style="labelStyle">基础用法 — 60%</div>
@@ -90,8 +88,8 @@ const percent = ref(60);
             <div :style="labelStyle">动画控制 — 按钮 +/- 调整百分比</div>
             <div :style="demoBoxStyle">
                 <div :style="rowStyle">
-                    <Button size="small" @click="decrease">- 10</Button>
-                    <Button size="small" type="primary" @click="increase">+ 10</Button>
+                    <Button size="small" @click="decrease"> - 10 </Button>
+                    <Button size="small" type="primary" @click="increase"> + 10 </Button>
                     <span :style="hintStyle">当前：{{ percent }}%</span>
                 </div>
                 <div :style="{ marginTop: '12px' }">
