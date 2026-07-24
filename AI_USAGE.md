@@ -29,7 +29,7 @@ vue >= 3.4.0
 
 ---
 
-## 1. Full API (24 named exports)
+## 1. Full API (29 named exports)
 
 All named exports from `animal-island-vue`:
 
@@ -57,6 +57,15 @@ import {
     Loading,
     Table,
     CodeBlock,
+    Tag,
+    Progress,
+    Drawer,
+    Notification,
+    NotificationContainer,
+    Wallet,
+    Form,
+    FormItem,
+    FormProvider,
     WeddingInvitation,
     WeddingInvitationExportButton,
 } from 'animal-island-vue';
@@ -110,6 +119,45 @@ import type {
     TableProps,
     TableColumn,
     CodeBlockProps,
+    TagProps,
+    TagSize,
+    TagVariant,
+    TagColor,
+    ProgressProps,
+    ProgressSize,
+    ProgressInfoPosition,
+    DrawerProps,
+    DrawerPlacement,
+    NotificationConfig,
+    NotificationItem,
+    NotificationPosition,
+    NotificationPlacement,
+    NotificationStatic,
+    NotificationType,
+    WalletProps,
+    WalletSize,
+    FormProps,
+    FormLayout,
+    FormSize,
+    FormLabelAlign,
+    FormItemProps,
+    FormItemLayout,
+    ValidateStatus,
+    ValidateError,
+    ValidateInfo,
+    FormInstance,
+    FieldData,
+    NamePath,
+    RuleObject,
+    RuleRender,
+    RuleType,
+    Rules,
+    StoreValue,
+    ColProps,
+    RequiredMark,
+    FormContextValue,
+    FormProviderProps,
+    ScrollOptions,
     WeddingInvitationProps,
     WeddingInvitationExpose,
     WeddingInvitationExportButtonProps,
@@ -972,6 +1020,351 @@ const card = ref<WeddingInvitationExpose | null>(null);
 
 ---
 
+### 1.24 Tag
+
+```ts
+type TagSize = 'small' | 'medium' | 'large';
+type TagVariant = 'solid' | 'outlined' | 'dashed';
+type TagColor =
+    | 'default'
+    | 'app-pink'
+    | 'purple'
+    | 'app-blue'
+    | 'app-yellow'
+    | 'app-orange'
+    | 'app-teal'
+    | 'app-green'
+    | 'app-red'
+    | 'lime-green'
+    | 'yellow-green'
+    | 'brown'
+    | 'warm-peach-pink';
+
+interface TagProps {
+    size?: TagSize; // default 'medium'
+    variant?: TagVariant; // default 'solid'
+    color?: TagColor; // default 'default'
+    closable?: boolean; // default false
+    disabled?: boolean; // default false
+}
+// Emits: (e: 'close', event: MouseEvent)
+// Slots: default (label content)
+```
+
+```vue
+<Tag>Default</Tag>
+<Tag color="app-pink" closable @close="handleClose">Pink</Tag>
+<Tag variant="outlined" color="app-teal">Outlined</Tag>
+<Tag variant="dashed" color="purple">Dashed</Tag>
+<Tag disabled color="app-yellow">Disabled</Tag>
+```
+
+> Pill-shaped label (border-radius 999px). 3 variants × 13 NookPhone colors. Clickable when `@click` is bound (Enter/Space keyboard support). `closable` renders an × button that emits `close`. Solid variant: warm parchment bg; colored solid variant: uses the palette hue as bg. Not supported: no `icon` slot, no `avatar` / `avatarSrc` prop, no `onClose` (use `@close` instead).
+
+---
+
+### 1.25 Progress
+
+```ts
+type ProgressSize = 'small' | 'middle' | 'large';
+type ProgressInfoPosition = 'inside' | 'right' | 'top';
+
+interface ProgressProps {
+    percent: number; // REQUIRED, 0–100
+    size?: ProgressSize; // default 'middle'
+    showInfo?: boolean; // default true
+    infoPosition?: ProgressInfoPosition; // default 'inside'
+    infoFormat?: (percent: number) => string; // custom text formatter
+    duration?: number; // default 0.6 — fill width animation seconds; 0 = no animation
+}
+```
+
+```vue
+<Progress :percent="65" />
+<Progress :percent="80" size="large" info-position="right" />
+<Progress :percent="30" :show-info="false" />
+<Progress :percent="42" :info-format="(p) => `${p} / 100`" />
+```
+
+> Linear progress bar with mint-teal diagonal-stripe fill animation. Info text can be inside the fill (white text), to the right, or on top. The fill animates width via `transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1)`. Set `duration: 0` to disable animation. Respects `prefers-reduced-motion: reduce`. Not supported: no `status` (success/exception), no `trailColor`, no `strokeLinecap`, no `steps` / `format` (use `infoFormat`).
+
+---
+
+### 1.26 Drawer
+
+```ts
+type DrawerPlacement = 'left' | 'right' | 'top' | 'bottom';
+
+interface DrawerProps {
+    open: boolean; // REQUIRED, supports v-model:open
+    title?: string; // heading text
+    placement?: DrawerPlacement; // default 'right'
+    width?: number | string; // default 378 — for left/right placement
+    height?: number | string; // default 300 — for top/bottom placement
+    maskClosable?: boolean; // default true
+    pushBackground?: boolean; // default true — depth-of-field effect on background
+    footer?: string; // when set, renders a footer bar with the text
+    maskStyle?: CSSProperties; // custom mask styles
+}
+// Emits: close
+// Slots: default (body), footer (rich footer override)
+```
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import { Drawer } from 'animal-island-vue';
+const open = ref(false);
+</script>
+
+<template>
+    <Button @click="open = true">Open</Button>
+    <Drawer v-model:open="open" title="Settings" placement="right" @close="open = false">
+        <p>Drawer content here</p>
+        <template #footer>
+            <Button @click="open = false">Close</Button>
+        </template>
+    </Drawer>
+</template>
+```
+
+> Slide-in panel with focus trap (Tab cycle, ESC to close, focus restoration on close). Body scroll locked when open. `pushBackground` applies `scale(0.94) + blur(1px) + borderRadius(14px)` to background elements. Not supported: no `closable` toggle (always shows close button), no `zIndex` prop, no `getContainer`, no `afterOpenChange` / `afterClose` callbacks.
+
+---
+
+### 1.27 Notification
+
+Command-style API (NOT a template component). Push notifications imperatively.
+
+```ts
+type NotificationType = 'success' | 'info' | 'warning' | 'error';
+type NotificationPosition = 'top' | 'topLeft' | 'topRight' | 'bottom' | 'bottomLeft' | 'bottomRight';
+
+interface NotificationConfig {
+    message: string; // REQUIRED — notification title
+    description?: string; // optional body text
+    duration?: number; // default 4.5 (seconds); 0 = no auto-close
+    position?: NotificationPosition; // default 'top'
+    type?: NotificationType; // default 'info'
+    icon?: VNode; // custom icon (overrides type default)
+    btn?: VNode; // custom action button(s)
+    key?: string; // deduplication key
+    onClose?: () => void;
+    onClick?: () => void;
+    closeIcon?: VNode;
+    className?: string;
+    style?: CSSProperties;
+}
+
+interface NotificationStatic {
+    (config: NotificationConfig | string): void;
+    open: (config: NotificationConfig | string) => void;
+    success: (config: NotificationConfig | string) => void;
+    info: (config: NotificationConfig | string) => void;
+    warning: (config: NotificationConfig | string) => void;
+    error: (config: NotificationConfig | string) => void;
+    destroy: (key?: string) => void;
+}
+
+// Runtime constants:
+declare const NOTIFICATION_DEFAULT_DURATION: number; // 4.5
+```
+
+```vue
+<script setup lang="ts">
+import { Notification, NotificationContainer } from 'animal-island-vue';
+
+function showSuccess() {
+    Notification.success({
+        message: 'Saved',
+        description: 'Your island data has been saved.',
+        position: 'topRight',
+    });
+}
+
+function showError() {
+    Notification.error({ message: 'Failed to save', duration: 0 });
+}
+
+function destroyAll() {
+    Notification.destroy();
+}
+</script>
+
+<template>
+    <!-- Mount once in app root -->
+    <NotificationContainer />
+    <Button @click="showSuccess">Save</Button>
+    <Button @click="showError">Trigger Error</Button>
+    <Button @click="destroyAll">Clear All</Button>
+</template>
+```
+
+> Place `<NotificationContainer />` once in the app root (it renders nothing visible until notifications are pushed). Each notification card shows: left colored border (success=green, info=teal, warning=yellow, error=red), type icon, title, optional description, optional action buttons, close button. Slide-in entrance / slide-out exit animation. Auto-dismiss after `duration` seconds. Not supported: no `top` / `bottom` (use `position`), no `placement` (derived from `position`), no `maxCount`, no `getContainer`.
+
+---
+
+### 1.28 Wallet
+
+```ts
+type WalletSize = 'small' | 'medium' | 'large';
+
+interface WalletProps {
+    value?: number | string; // default '00,000' — number auto-formatted with thousand separator
+    icon?: string; // custom image URL (default: bag icon)
+    size?: WalletSize; // default 'medium'
+    thousandSeparator?: string; // default ','
+}
+// Slots: icon (replaces default bag icon)
+```
+
+```vue
+<Wallet :value="12500" />
+<Wallet :value="999999" size="large" />
+<Wallet :value="500" size="small" thousand-separator="." />
+<Wallet :value="0" size="large">
+    <template #icon><img src="./custom-coin.png" alt="" /></template>
+</Wallet>
+```
+
+> NookPhone-style currency display: bag icon on top, pill-shaped value label below. Olive-yellow `#b3a046` pill with cream glow halo, white text with brown text-shadow. 3 sizes: small (96px pill / 12px text), medium (132px / 17px), large (168px / 22px). Number values are automatically formatted with thousand separators; strings pass through as-is. Not supported: no `prefix` / `suffix` slots, no `currency` symbol prop, no `editable` mode.
+
+---
+
+### 1.29 Form
+
+Declarative form system with validation. 3 sub-components + 1 hook: `<Form>`, `<FormItem>`, `<FormProvider>`, `useForm()`.
+
+```ts
+// ====== Form ======
+type FormLayout = 'horizontal' | 'vertical' | 'inline';
+type FormLabelAlign = 'left' | 'right';
+type FormSize = 'small' | 'middle' | 'large';
+type RequiredMark = boolean | 'optional';
+
+interface ColProps {
+    span?: number;
+    offset?: number;
+}
+
+interface FormProps<T = Record<string, unknown>> {
+    form?: FormInstance<T>; // from useForm()
+    initialValues?: Partial<T>;
+    layout?: FormLayout; // default 'horizontal'
+    labelAlign?: FormLabelAlign;
+    labelCol?: ColProps;
+    wrapperCol?: ColProps;
+    size?: FormSize; // default 'middle'
+    disabled?: boolean; // default false
+    colon?: boolean; // default true
+    requiredMark?: RequiredMark; // default false
+    onFinish?: (values: T) => void;
+    onFinishFailed?: (info: ValidateInfo) => void;
+    onValuesChange?: (changedValues: Partial<T>, allValues: T) => void;
+    onReset?: (e: Event) => void;
+}
+// Emits: finish, finishFailed, reset
+
+// ====== FormItem ======
+type FormItemLayout = 'horizontal' | 'vertical';
+type ValidateStatus = 'success' | 'warning' | 'error' | 'validating' | '';
+
+interface FormItemProps {
+    name?: NamePath; // field name (supports nested 'user.name')
+    label?: string;
+    rules?: RuleObject[];
+    required?: boolean;
+    dependencies?: NamePath[];
+    valuePropName?: string; // default 'modelValue'
+    trigger?: string; // default 'onUpdate:modelValue'
+    getValueFromEvent?: (event: unknown) => unknown;
+    normalize?: (value: unknown, prevValue: unknown, prevAllValues: Record<string, unknown>) => unknown;
+    hidden?: boolean;
+    hasFeedback?: boolean;
+    validateStatus?: ValidateStatus;
+    help?: string;
+    noStyle?: boolean;
+    labelCol?: ColProps;
+    wrapperCol?: ColProps;
+    colon?: boolean | null;
+    requiredMark?: RequiredMark | null;
+    layout?: FormItemLayout;
+    initialValue?: unknown;
+}
+
+// ====== RuleObject ======
+type RuleType = 'string' | 'number' | 'boolean' | 'integer' | 'float' | 'array' | 'object' | 'email' | 'url' | 'date';
+
+interface RuleObject {
+    required?: boolean;
+    message?: string;
+    min?: number;
+    max?: number;
+    len?: number;
+    pattern?: RegExp;
+    whitespace?: boolean;
+    type?: RuleType;
+    validator?: (rule: RuleObject, value: unknown) => Promise<void | string> | void | string;
+}
+
+// ====== FormInstance (from useForm()) ======
+interface FormInstance<T = Record<string, unknown>> {
+    getFieldValue: (name: NamePath) => unknown;
+    getFieldsValue: (nameList?: NamePath[] | true) => T;
+    setFieldValue: (name: NamePath, value: unknown) => void;
+    setFieldsValue: (values: Partial<T>) => void;
+    resetFields: (nameList?: NamePath[]) => void;
+    validateFields: (nameList?: NamePath[]) => Promise<T>;
+    submit: () => void;
+    setFields: (fields: FieldData[]) => void;
+    isFieldTouched: (name: NamePath) => boolean;
+    isFieldValidating: (name: NamePath) => boolean;
+    getFieldError: (name: NamePath) => string[] | undefined;
+    scrollToField: (name: NamePath, options?: ScrollOptions) => void;
+}
+```
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import { Form, FormItem, useForm, Input, Button, Select, type RuleObject } from 'animal-island-vue';
+
+const [form] = useForm();
+const email = ref('');
+const lang = ref('');
+
+const emailRules: RuleObject[] = [
+    { required: true, message: 'Please enter your email' },
+    { type: 'email', message: 'Invalid email format' },
+];
+
+function handleFinish(values: Record<string, unknown>) {
+    console.log('Submitted:', values);
+}
+</script>
+
+<template>
+    <Form :form="form" layout="horizontal" @finish="handleFinish">
+        <FormItem name="email" label="Email" :rules="emailRules">
+            <Input v-model="email" />
+        </FormItem>
+        <FormItem name="language" label="Language">
+            <Select v-model="lang" :options="[
+                { key: 'zh', label: '中文' },
+                { key: 'en', label: 'English' },
+            ]" />
+        </FormItem>
+        <FormItem>
+            <Button type="primary" html-type="submit">Submit</Button>
+        </FormItem>
+    </Form>
+</template>
+```
+
+> Form uses Vue's provide/inject for context propagation. `FormItem` must be a direct child of `<Form>` or `<FormProvider>`. Rules support synchronous and async validators. Nested fields via dot-separated `name` (e.g. `user.address.city`). `useForm()` creates a standalone form instance; pass it via `:form` prop for imperative control. Not supported: no `shouldUpdate`, no `noStyle` cascading, no `List` (use `v-for` with separate `FormItem` instances).
+
+---
+
 ## 2. Common Recipes
 
 ### 2.1 Form row
@@ -1119,7 +1512,7 @@ Follow these strictly; violations are bugs:
 
 Shipped inside the npm package (available under `node_modules/animal-island-vue/`):
 
-- `AI_USAGE.md` — this file (AI-optimized API reference for all 24 named exports — 23 components + 1 companion export button)
+- `AI_USAGE.md` — this file (AI-optimized API reference for all 29 named exports)
 - `README.md` — project overview & screenshots
 - `dist/types/index.d.ts` — machine-readable TypeScript types for every exported component / prop / enum
 

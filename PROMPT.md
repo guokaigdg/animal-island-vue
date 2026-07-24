@@ -420,6 +420,57 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 - Export PNG via `WeddingInvitationExportButton` (uses `modern-screenshot`); the component injects @font-face into the screenshot root because Chromium does not read document.fonts.
 - Vue exposes `defineExpose({ exportAsImage, getElement })` so the export button can grab the node + trigger export through a template `ref` (`<WeddingInvitation ref="cardRef" /> <WeddingInvitationExportButton :target="cardRef" filename="invite" />`). Props include `groomName`, `brideName`, `date`, `weekday`, `time`, `venue`, `address`, `title`, `subtitle`, `message`, `showLotteryNumber`, `lotteryNumber`, `lotteryLabel`, `lotteryHint`. Rich content can be passed via `#title` / `#subtitle` / `#message` slots.
 
+### Drawer (slide-in panel)
+
+- Props: `open` (required, boolean), `title` (string), `placement` (`'left' | 'right' | 'top' | 'bottom'`, default `'right'`), `width` (number|string, default 378), `height` (number|string, default 300), `maskClosable` (boolean, default true), `pushBackground` (boolean, default true — applies depth-of-field effect to background content), `footer` (string), `maskStyle` (CSSProperties).
+- Emits: `close` (when mask clicked or ESC pressed).
+- Slots: `default` (body), `footer` (rich footer override).
+- Focus trap: ESC to close, Tab cycle within the drawer, focus restoration on close.
+- Body scroll lock when open. Push-background effect: siblings get scale+blur+rounded corners.
+- Vue API: `<Drawer v-model:open="open" title="Settings" placement="right">...</Drawer>`.
+
+### Notification (imperative toast API)
+
+- Not a component — it's a **command-style API** (like antd's `message`). `NotificationContainer` mounts the DOM layer; `Notification.open()`, `.success()`, `.info()`, `.warning()`, `.error()` push items.
+- Config: `message` (string, required), `description` (string), `duration` (number, seconds, default 4.5; 0 = no auto-close), `position` (`'top' | 'topLeft' | 'topRight' | 'bottom' | 'bottomLeft' | 'bottomRight'`, default `'top'`), `icon` (VNode), `btn` (VNode), `key` (string), `onClose` (fn), `onClick` (fn), `closeIcon` (VNode), `className`, `style` (CSSProperties).
+- `.destroy(key?)` — removes a specific notification or all.
+- NotificationView styling: colored left border per type (success green, info teal, warning yellow, error red), warm parchment bg, rounded 16px, 4.5s auto-dismiss, slide-in entrance animation.
+- Vue API: `import { Notification } from 'animal-island-vue'; Notification.success({ message: 'Saved', description: 'Your island is safe.' });`. Mount `<NotificationContainer />` once in the app root.
+
+### Progress (linear progress bar)
+
+- Props: `percent` (number, 0–100, required), `size` (`'small' | 'middle' | 'large'`, default `'middle'`), `showInfo` (boolean, default true), `infoPosition` (`'inside' | 'right' | 'top'`, default `'inside'`), `infoFormat` (fn: `(percent) => string`), `duration` (number, default 0.6 — fill width animation seconds; 0 = no animation).
+- Track: bg `#f8f8f0`, border `2px solid #e8dcc8`, inset shadow, border-radius 999px. Fill: mint teal `#19c8b9` with 3D bottom shadow, height 12/16/20px (small/middle/large).
+- Info text: font-weight 700, color `#725d42`. Inside the fill (white text on fill) or to the right or top.
+- Vue API: `<Progress :percent="65" size="middle" info-position="right" />`.
+
+### Tag (pill-shaped label)
+
+- Props: `size` (`'small' | 'medium' | 'large'`, default `'medium'`), `variant` (`'solid' | 'outlined' | 'dashed'`, default `'solid'`), `color` (13 NookPhone colors: `'default' | 'app-pink' | 'purple' | 'app-blue' | 'app-yellow' | 'app-orange' | 'app-teal' | 'app-green' | 'app-red' | 'lime-green' | 'yellow-green' | 'brown' | 'warm-peach-pink'`, default `'default'`), `closable` (boolean, default false), `disabled` (boolean, default false).
+- Emits: `close` (when close button clicked).
+- Slots: `default` (label content).
+- Visual: pill shape (border-radius 999px), font-weight 600, 1.5px border. Solid variant uses warm parchment bg + brown border. Outlined = transparent bg. Dashed = dashed border. Color variants tint the background/border with the NookPhone palette hue.
+- Sizes: small 24px/12px, medium 29px/13px, large 34px/15px (height/font-size).
+- Interaction: when `@click` is bound, acts as a clickable button with Enter/Space keyboard support. `disabled` removes interaction.
+- Vue API: `<Tag color="app-pink" closable @close="removeTag">Hello</Tag>`.
+
+### Wallet (NookPhone-style currency display)
+
+- Props: `value` (number|string, default `'00,000'` — numbers auto-formatted with thousand separator), `icon` (string — custom image URL, default is a bag icon), `size` (`'small' | 'medium' | 'large'`, default `'medium'`), `thousandSeparator` (string, default `','`; set `''` to disable).
+- Slots: `icon` (replaces the default bag icon image).
+- Visual: stacked layout — bag icon on top, pill-shaped value label below. Pill has olive-yellow `#b3a046` bg cream glow, white text with brown shadow. Sizes: small 96px/12px, medium 132px/17px, large 168px/22px (pill width/text-size).
+- Vue API: `<Wallet :value="12500" size="large" />`.
+
+### Form (declarative form with validation)
+
+- 3 sub-components + 1 hook: `<Form>`, `<FormItem>`, `<FormProvider>`, `useForm()`.
+- **Form props**: `form` (FormInstance from useForm), `initialValues`, `layout` (`'horizontal' | 'vertical' | 'inline'`, default `'horizontal'`), `labelAlign` (`'left' | 'right'`), `labelCol` / `wrapperCol` (grid `{ span, offset }`), `size` (`'small' | 'middle' | 'large'`), `disabled`, `colon` (boolean, default true), `requiredMark` (boolean | `'optional'`), `onFinish`, `onFinishFailed`, `onValuesChange`, `onReset`.
+- **FormItem props**: `name` (NamePath — string | number | array, supports nested `"user.name"`), `label` (string), `rules` (RuleObject[]), `required` (boolean), `dependencies` (NamePath[]), `valuePropName` (default `'modelValue'`), `trigger` (default `'onUpdate:modelValue'`), `getValueFromEvent` (fn), `normalize` (fn), `hidden`, `hasFeedback`, `validateStatus`, `help`, `noStyle`, `labelCol`, `wrapperCol`, `colon`, `requiredMark`, `layout`, `initialValue`.
+- **RuleObject**: `required`, `message`, `min`, `max`, `len`, `pattern` (RegExp), `whitespace`, `type` (`'string' | 'number' | 'boolean' | 'integer' | 'float' | 'array' | 'object' | 'email' | 'url' | 'date'`), `validator` (async fn).
+- **FormInstance methods** (from `useForm()`): `getFieldValue`, `getFieldsValue`, `setFieldValue`, `setFieldsValue`, `resetFields`, `validateFields`, `submit`, `setFields`, `isFieldTouched`, `isFieldValidating`, `getFieldError`, `scrollToField`.
+- Visual: horizontal layout by default — label left, control right. Vertical stacks them. Inline places them in a row. Error state shows red border + message. HasFeedback adds status icon.
+- Vue API: `const [form] = useForm();` then `<Form :form="form" @finish="onSave"><FormItem name="email" label="Email" :rules="[{ required: true, type: 'email' }]"><Input v-model="email" /></FormItem></Form>`.
+
 ## HARD RULES (must obey — disqualifies the output if violated)
 
 1. Never use pure black (#000) or near-black (#111) text. Use #794f27 / #725d42 / #8a7b66.

@@ -1710,6 +1710,442 @@ animation: float 4.5s ease-in-out infinite;
 
 ---
 
+### Select
+
+源码：`src/components/Select/Select.vue`（scoped Less + BEM）。受控选择器，触发区非 Input 样式。
+
+```css
+/* 触发按钮 */
+.animal-select__trigger {
+    background: #fff;
+    border: 2px solid #e8dcc8;
+    border-radius: 12px;
+    padding: 8px 13px;
+    color: #725d42;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 1;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.animal-select__trigger:hover {
+    border-color: #d4c4a8;
+    background: #fffdf7;
+}
+.animal-select__trigger--open {
+    border-color: #19c8b9;
+    color: #19c8b9;
+}
+.animal-select__trigger--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* 下拉面板 */
+.animal-select__dropdown {
+    background: #ffeea0; /* 香蕉黄 */
+    border-radius: 28px;
+    padding: 12px 0;
+    z-index: 100;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+.animal-select__dropdown--open {
+    opacity: 1;
+}
+
+/* 选项 */
+.animal-select__option {
+    display: flex;
+    align-items: center;
+    padding: 10px 30px 10px 14px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #725d42;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+.animal-select__option:hover {
+    background: rgba(25, 200, 185, 0.08);
+}
+.animal-select__option--selected {
+    font-weight: 700;
+}
+```
+
+Props: `modelValue`（受控，必填）、`options`（`{ key, label }[]`，必填）、`placeholder`（默认 '请选择'）、`disabled`、`ariaLabel`、`ariaLabelledBy`。Options 迭代用 `v-for` + `:key`。
+
+---
+
+### Icon
+
+源码：`src/components/Icon/Icon.vue`（scoped Less + BEM）。10 个内置 SVG 图标，通过 `background-image` 渲染。
+
+```css
+.animal-icon {
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+.animal-icon--bounce:hover {
+    animation: animal-icon-bounce 0.3s ease-in-out forwards;
+}
+@keyframes animal-icon-bounce {
+    0% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.2) rotate(-5deg); }
+    100% { transform: scale(1.1) rotate(-4deg); }
+}
+```
+
+10 个图标名：`icon-miles`, `icon-camera`, `icon-chat`, `icon-critterpedia`, `icon-design`, `icon-diy`, `icon-helicopter`, `icon-map`, `icon-shopping`, `icon-variant`。运行时导出 `ICON_LIST`（`{ name, label }[]`）。Props: `name`（IconName，必填）、`size`（number|string，默认 24）、`bounce`（boolean，默认 false）、`src`（string — 自定义图片 URL，与 `name` 互斥）。
+
+---
+
+### Tag
+
+源码：`src/components/Tag/Tag.vue`（scoped Less + BEM）。Pill 形标签，支持 3 种变体 × 13 色。
+
+```css
+/* 基础 */
+.animal-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    line-height: 1;
+    font-weight: 600;
+    border-radius: 999px;
+    border: 1.5px solid transparent;
+    transition: all 0.2s ease;
+    user-select: none;
+    white-space: nowrap;
+}
+/* 尺寸 */
+.animal-tag--small  { height: 24px; padding: 0 10px; font-size: 12px; }
+.animal-tag--medium { height: 29px; padding: 0 12px; font-size: 13px; }
+.animal-tag--large  { height: 34px; padding: 0 16px; font-size: 15px; }
+
+/* 变体 */
+.animal-tag--solid   { background: rgb(247,243,223); color: #8f734f; border-color: #d4c4a8; }
+.animal-tag--outlined { background: transparent; color: #8f734f; border-color: #c4b89e; }
+.animal-tag--dashed   { background: transparent; color: #8f734f; border-style: dashed; border-color: #c4b89e; }
+
+/* 彩色（13 色 NookPhone 调色板） */
+.animal-tag--colored.animal-tag--solid {
+    background: var(--animal-tag-color);
+    border-color: var(--animal-tag-color);
+    color: #fff;
+}
+.animal-tag--colored.animal-tag--outlined,
+.animal-tag--colored.animal-tag--dashed {
+    color: var(--animal-tag-color);
+    border-color: var(--animal-tag-color);
+    background: transparent;
+}
+
+/* 关闭按钮 */
+.animal-tag__close {
+    width: 16px; height: 16px;
+    border: none; border-radius: 50%;
+    background: rgba(0,0,0,0.08);
+    color: inherit; font-size: 14px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+.animal-tag__close:hover { background: rgba(0,0,0,0.18); }
+
+/* 可交互态 */
+.animal-tag--clickable { cursor: pointer; }
+.animal-tag--clickable:hover { transform: translateY(-1px); box-shadow: 0 2px 6px rgba(61,52,40,0.12); }
+.animal-tag--clickable:focus-visible { outline: 2px solid #f5c31c; outline-offset: 2px; }
+
+/* 禁用 */
+.animal-tag--disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+```
+
+Props: `size`（`'small' | 'medium' | 'large'`，默认 `'medium'`）、`variant`（`'solid' | 'outlined' | 'dashed'`，默认 `'solid'`）、`color`（13 色，默认 `'default'`）、`closable`、`disabled`。Emits: `close`。默认插槽标签内容。
+
+---
+
+### Progress
+
+源码：`src/components/Progress/Progress.vue`（scoped Less + BEM）。线性进度条，条纹动画 fill。
+
+```css
+.animal-progress {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    line-height: 1;
+    user-select: none;
+}
+.animal-progress__row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+.animal-progress__info {
+    font-weight: 700;
+    color: #725d42;
+    white-space: nowrap;
+    flex-shrink: 0;
+    letter-spacing: 0.02em;
+}
+.animal-progress__track {
+    flex: 1;
+    min-width: 80px;
+    background: #f8f8f0;
+    border: 2px solid #e8dcc8;
+    box-shadow: inset 0 2px 4px rgba(114, 93, 66, 0.08);
+    overflow: hidden;
+    border-radius: 999px;
+}
+.animal-progress__track--small  { height: 12px; border-width: 1.5px; }
+.animal-progress__track--middle { height: 20px; }
+.animal-progress__track--large  { height: 28px; }
+
+.animal-progress__fill {
+    position: absolute; top: 0; left: 0; bottom: 0;
+    border-radius: 999px;
+    background: #0ec4b6;
+    background-image: repeating-linear-gradient(-45deg, #0ec4b6 0, #0ec4b6 10px, #01b0a7 10px, #01b0a7 20px);
+    background-size: 28.28px 28.28px;
+    animation: animal-progress-stripe 1s linear infinite;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.animal-progress__fill--no-transition { transition: none; }
+@keyframes animal-progress-stripe {
+    0% { background-position: 0 0; }
+    100% { background-position: -28.28px 0; }
+}
+
+.animal-progress__info-inside {
+    position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+    color: #fff; font-weight: 800; font-size: 11px;
+    letter-spacing: 0.02em; text-shadow: 0 1px 1px rgba(0,0,0,0.15);
+    white-space: nowrap; z-index: 1;
+}
+```
+
+Props: `percent`（0–100，必填）、`size`（`'small' | 'middle' | 'large'`，默认 `'middle'`）、`showInfo`（默认 true）、`infoPosition`（`'inside' | 'right' | 'top'`，默认 `'inside'`）、`infoFormat`（fn）、`duration`（秒，默认 0.6，0 为不动画）。受 `prefers-reduced-motion: reduce` 影响。
+
+---
+
+### Notification
+
+命令式 API 通知系统。源码：`src/components/Notification/`（`Notification.ts` + `NotificationContainer.vue` + `NotificationView.vue`）。
+
+```css
+/* 固定定位容器 */
+.animal-notification-root {
+    position: fixed; inset: 0; pointer-events: none; z-index: 2000;
+}
+.animal-notification__position {
+    position: fixed; display: flex; flex-direction: column; gap: 12px;
+    pointer-events: none; max-width: calc(100vw - 32px);
+}
+.animal-notification__position--top       { top: 20px; left: 50%; transform: translateX(-50%); }
+.animal-notification__position--topLeft   { top: 20px; left: 20px; }
+.animal-notification__position--topRight  { top: 20px; right: 20px; }
+.animal-notification__position--bottom    { bottom: 20px; left: 50%; transform: translateX(-50%); }
+.animal-notification__position--bottomLeft { bottom: 20px; left: 20px; }
+.animal-notification__position--bottomRight { bottom: 20px; right: 20px; }
+
+/* 通知卡片 */
+.animal-notification {
+    pointer-events: auto;
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 16px 20px;
+    background: rgb(247, 243, 223);
+    border-radius: 16px;
+    border-left: 5px solid #19c8b9;
+    box-shadow: 0 3px 14px rgba(61, 52, 40, 0.12);
+    max-width: 400px;
+    animation: animal-notification-slide-in 0.3s ease;
+}
+.animal-notification--leaving {
+    animation: animal-notification-slide-out 0.25s ease forwards;
+}
+@keyframes animal-notification-slide-in {
+    from { opacity: 0; transform: translateY(-12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes animal-notification-slide-out {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(-12px); }
+}
+
+/* 类型颜色 */
+.animal-notification--type-success { border-left-color: #6fba2c; }
+.animal-notification--type-info    { border-left-color: #19c8b9; }
+.animal-notification--type-warning { border-left-color: #f5c31c; }
+.animal-notification--type-error   { border-left-color: #e05a5a; }
+
+/* 图标 */
+.animal-notification__icon-wrap { width: 24px; height: 24px; flex-shrink: 0; font-size: 20px; }
+.animal-notification--type-success .animal-notification__icon-wrap { color: #6fba2c; }
+.animal-notification--type-info    .animal-notification__icon-wrap { color: #19c8b9; }
+.animal-notification--type-warning .animal-notification__icon-wrap { color: #f5c31c; }
+.animal-notification--type-error   .animal-notification__icon-wrap { color: #e05a5a; }
+
+/* 标题/描述 */
+.animal-notification__title { font-size: 14px; font-weight: 600; color: #725d42; line-height: 1.4; }
+.animal-notification__description { margin-top: 4px; font-size: 12px; font-weight: 500; color: #8a7b66; line-height: 1.5; }
+
+/* 关闭按钮 */
+.animal-notification__close {
+    flex-shrink: 0; width: 20px; height: 20px;
+    border: none; background: transparent;
+    color: #c4b89e; font-size: 16px; cursor: pointer;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s ease;
+}
+.animal-notification__close:hover { background: rgba(114,93,66,0.1); color: #725d42; }
+```
+
+API：`Notification.open(config)`、`.success()`、`.info()`、`.warning()`、`.error()`、`.destroy(key?)`。Config 字段：`message`（必填）、`description`、`duration`（默认 4.5s，0=不自动关闭）、`position`（6 种）、`icon`（VNode）、`btn`（VNode）、`key`、`onClose`、`onClick`、`closeIcon`、`className`、`style`。需在 App 根节点放置 `<NotificationContainer />`。
+
+---
+
+### Drawer
+
+源码：`src/components/Drawer/Drawer.vue`（scoped Less + BEM）。侧边/顶部/底部滑出面板，带焦点陷阱、背景景深效果。
+
+```css
+/* 遮罩 */
+.animal-drawer__mask {
+    position: fixed; inset: 0; z-index: 999;
+    background: rgba(0, 0, 0, 0.35);
+    animation: animal-fade-in 0.25s ease;
+}
+/* 面板 */
+.animal-drawer__panel {
+    position: fixed; z-index: 1000;
+    background: rgb(247, 243, 223);
+    display: flex; flex-direction: column;
+    box-shadow: 0 8px 32px rgba(61, 52, 40, 0.18);
+    transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1);
+}
+.animal-drawer__panel--right  { top: 0; right: 0; bottom: 0; transform: translateX(0); }
+.animal-drawer__panel--left   { top: 0; left: 0; bottom: 0; transform: translateX(0); }
+.animal-drawer__panel--top    { top: 0; left: 0; right: 0; transform: translateY(0); }
+.animal-drawer__panel--bottom { bottom: 0; left: 0; right: 0; transform: translateY(0); }
+.animal-drawer__panel--enter  { transform: translateX(0) translateY(0); }
+.animal-drawer__panel--leave  { transform: translateX(100%); }
+
+/* 头部 */
+.animal-drawer__header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px 0; flex-shrink: 0;
+}
+.animal-drawer__title { font-size: 20px; font-weight: 700; color: #794f27; }
+.animal-drawer__close {
+    width: 28px; height: 28px; border: none; background: transparent;
+    font-size: 20px; color: #c4b89e; cursor: pointer; border-radius: 50%;
+    transition: all 0.15s ease;
+}
+.animal-drawer__close:hover { background: rgba(114,93,66,0.1); color: #725d42; }
+
+/* 内容区 */
+.animal-drawer__body { flex: 1; overflow-y: auto; padding: 20px 24px; }
+.animal-drawer__footer { flex-shrink: 0; padding: 16px 24px; border-top: 1px solid #e8e2d6; }
+```
+
+Props: `open`（必填）、`title`、`placement`（`'left' | 'right' | 'top' | 'bottom'`，默认 `'right'`）、`width`（默认 378）、`height`（默认 300）、`maskClosable`（默认 true）、`pushBackground`（默认 true）、`footer`、`maskStyle`。Emits: `close`。焦点陷阱：Tab 循环、ESC 关闭、关闭后恢复焦点。打开时锁定 body 滚动。`pushBackground` 对背景元素施加 `scale(0.94) + blur(1px) + borderRadius(14px)`。
+
+---
+
+### Wallet
+
+源码：`src/components/Wallet/Wallet.vue`（scoped Less + BEM）。钱袋 + 金额 pill 的 NookPhone 风格货币展示。
+
+```less
+.animal-wallet {
+    --wallet-pill-w: 132px;
+    --wallet-pill-h: 42px;
+    --wallet-bag: 50px;
+    --wallet-text-size: 17px;
+    --wallet-halo: 4px;
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    width: var(--wallet-pill-w);
+    padding-top: calc(var(--wallet-bag) * 0.7);
+    user-select: none;
+    line-height: 1;
+}
+.animal-wallet--small  { --wallet-pill-w: 96px; --wallet-pill-h: 32px; --wallet-bag: 38px; --wallet-text-size: 12px; --wallet-halo: 3px; }
+.animal-wallet--large  { --wallet-pill-w: 168px; --wallet-pill-h: 52px; --wallet-bag: 62px; --wallet-text-size: 22px; --wallet-halo: 5px; }
+
+.animal-wallet__bag-slot {
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: var(--wallet-bag); height: var(--wallet-bag);
+    z-index: 1;
+}
+.animal-wallet__bag-img { width: 100%; height: 100%; object-fit: contain; }
+
+.animal-wallet__pill {
+    width: var(--wallet-pill-w); height: var(--wallet-pill-h);
+    background: #b3a046; /* 橄榄黄 */
+    border-radius: 999px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 0 var(--wallet-halo) #fffbe7;
+}
+.animal-wallet__value {
+    color: #fff;
+    font-size: var(--wallet-text-size);
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    text-shadow: 0 1px 2px rgba(91, 78, 30, 0.55);
+}
+```
+
+Props: `value`（number|string，默认 `'00,000'`，数字自动千分位格式化）、`icon`（string — 自定义图片 URL）、`size`（`'small' | 'medium' | 'large'`，默认 `'medium'`）、`thousandSeparator`（string，默认 `','`）。插槽 `#icon` 替换默认钱袋图标。
+
+---
+
+### Form（表单系统）
+
+源码：`src/components/Form/`（`Form.vue` + `FormItem.vue` + `FormProvider.vue` + `context.ts` + `useForm.ts` + `validators.ts` + `types.ts`）。声明式表单 + 校验，支持嵌套字段。
+
+**Form 组件：**
+
+```less
+.animal-form {
+    font-family: @font-family;
+    &--horizontal { .animal-form-item { display: flex; align-items: center; gap: 12px; } }
+    &--vertical   { .animal-form-item { display: flex; flex-direction: column; gap: 4px; } }
+    &--inline     { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+}
+```
+
+**FormItem 样式：**
+
+```less
+.animal-form-item {
+    width: 100%;
+    &__label { font-size: 14px; font-weight: 600; color: #725d42; white-space: nowrap; }
+    &__required { color: #e05a5a; margin-left: 2px; }
+    &__control { flex: 1; }
+    &__help { font-size: 12px; font-weight: 500; margin-top: 4px; line-height: 1.4; }
+    &__help--error { color: #e05a5a; }
+    &__help--warning { color: #dba90e; }
+    &--has-error .animal-form-item__control :deep(input) { border-color: #e05a5a; }
+}
+```
+
+**Form Props**: `form`（FormInstance）、`initialValues`、`layout`（`'horizontal' | 'vertical' | 'inline'`，默认 `'horizontal'`）、`labelAlign`、`labelCol`/`wrapperCol`（`{ span, offset }`）、`size`（`'small' | 'middle' | 'large'`）、`disabled`、`colon`（默认 true）、`requiredMark`（`boolean | 'optional'`）、`onFinish`、`onFinishFailed`、`onValuesChange`、`onReset`。
+
+**FormItem Props**: `name`（NamePath — 支持 `'user.name'` 嵌套）、`label`、`rules`（RuleObject[]）、`required`、`dependencies`、`valuePropName`（默认 `'modelValue'`）、`trigger`（默认 `'onUpdate:modelValue'`）、`getValueFromEvent`、`normalize`、`hidden`、`hasFeedback`、`validateStatus`、`help`、`noStyle`、`labelCol`、`wrapperCol`、`colon`、`requiredMark`、`layout`、`initialValue`。
+
+**RuleObject**: `required`、`message`、`min`、`max`、`len`、`pattern`（RegExp）、`whitespace`、`type`（`'string' | 'number' | 'boolean' | 'integer' | 'float' | 'array' | 'object' | 'email' | 'url' | 'date'`）、`validator`（async fn → `void | string`）。
+
+**FormInstance 方法**（`useForm()` 产出）：`getFieldValue`、`getFieldsValue`、`setFieldValue`、`setFieldsValue`、`resetFields`、`validateFields`（返回 Promise）、`submit`、`setFields`、`isFieldTouched`、`isFieldValidating`、`getFieldError`、`scrollToField`。
+
+---
+
 ## 3. Demo 布局精确规范
 
 这是 Demo 站（`demo/App.vue`）的实际布局数值，用于还原完整页面效果：
