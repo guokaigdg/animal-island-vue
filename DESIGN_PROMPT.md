@@ -379,10 +379,11 @@ Float decorations: 4.5s ease-in-out infinite "float" (Y: 0 → -6px, rot: 0 → 
 Banner divider: 64px × 2px linear-gradient(to right, transparent, #725d42, transparent)
 
 === COMPONENT INVENTORY (24 named exports from src/index.ts) ===
-Interactive:           Button, Input, Switch, Modal, Collapse, Select, Tabs, Checkbox, Radio
-Container / Heading:   Card (13 colors + 13 dot patterns), Title (ribbon banner — 13 schemes), Table
-Feedback:              Tooltip, Loading
-Decorative:            Time, Phone, Footer, Divider, Cursor, Typewriter, Icon
+Interactive:           Button, Input, Switch, Modal, Collapse, Select, Tabs, Checkbox, Radio, Drawer
+Container / Heading:   Card (13 colors + 13 dot patterns), Title (ribbon banner — 13 schemes), Table, Tag
+Feedback:              Tooltip, Loading, Notification, Progress
+Form:                  Form, FormItem, FormProvider
+Decorative:            Time, Phone, Footer, Divider, Cursor, Typewriter, Icon, Wallet
 Content display:       CodeBlock
 Specialty:             WeddingInvitation (+ WeddingInvitationExportButton companion — only export not a component)
 
