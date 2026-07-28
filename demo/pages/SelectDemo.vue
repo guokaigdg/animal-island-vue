@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Select } from '../../src';
-import type { SelectOption } from '../../src';
+import { Select } from '@';
+import type { SelectOption } from '@';
 import {
     sectionStyle,
     sectionTitleStyle,

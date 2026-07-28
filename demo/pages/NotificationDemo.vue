@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Notification, NotificationContainer, Button } from '../../src';
+import { Notification, NotificationContainer, Button } from '@';
 import {
     sectionStyle,
     sectionTitleStyle,

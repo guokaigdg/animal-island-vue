@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Phone } from '../../src';
+import { Phone } from '@';
 import { sectionStyle, sectionTitleStyle, tagStyle, labelStyle, demoBodyStyle, ApiTable, CodeBlock } from '../tools';
 import type { ApiRow } from '../tools';
 

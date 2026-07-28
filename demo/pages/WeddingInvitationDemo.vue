@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, useTemplateRef } from 'vue';
-import { Input, Switch } from '../../src';
+import { Input, Switch } from '@';
 import {
     WeddingInvitation,
     WeddingInvitationExportButton,

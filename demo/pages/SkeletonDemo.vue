@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Skeleton, SkeletonButton, SkeletonInput, SkeletonAvatar, Switch, Button } from '../src';
+import { Skeleton, SkeletonButton, SkeletonInput, SkeletonAvatar, Switch, Button } from '@';
 import { sectionStyle, sectionTitleStyle, tagStyle, labelStyle, demoBodyStyle, ApiTable, CodeBlock } from '../tools';
 import type { ApiRow } from '../tools';
 
@@ -203,7 +203,7 @@ const code = `import { Skeleton, SkeletonButton, SkeletonInput, SkeletonAvatar }
                         fontWeight: 600,
                     }"
                 >
-                    ✅ 内容已加载，骨架屏自动隐藏
+                    内容已加载，骨架屏自动隐藏
                 </div>
             </Skeleton>
         </div>

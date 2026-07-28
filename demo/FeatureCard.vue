@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Card } from '../src';
+import { Card } from '@';
 
 defineProps<{
     feature: { icon: string; title: string; desc: string };

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Wallet } from '../../src';
+import { Wallet } from '@';
 import {
     sectionStyle,
     sectionTitleStyle,
@@ -11,7 +11,7 @@ import {
     CodeBlock,
 } from '../tools';
 import type { ApiRow } from '../tools';
-import leafIcon from '../../src/assets/img/icons/icon-leaf.png';
+import leafIcon from '@/assets/img/icons/icon-leaf.png';
 
 const WALLET_API: ApiRow[] = [
     {

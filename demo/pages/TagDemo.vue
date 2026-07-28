@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Tag } from '../../src';
+import { Tag } from '@';
 import {
     sectionStyle,
     sectionTitleStyle,

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Switch } from '../../src';
+import { Switch } from '@';
 import { sectionStyle, sectionTitleStyle, tagStyle, labelStyle, demoBodyStyle, ApiTable, CodeBlock } from '../tools';
 import type { ApiRow } from '../tools';
 
@@ -51,6 +51,10 @@ const checked = ref(false);
                 <Switch default-checked>
                     <template #checked> 开 </template>
                     <template #unchecked> 关 </template>
+                </Switch>
+                <Switch default-checked>
+                    <template #checked> ☀️ </template>
+                    <template #unchecked> 🌙 </template>
                 </Switch>
             </div>
             <div :style="labelStyle">size 尺寸</div>

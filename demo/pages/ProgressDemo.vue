@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Progress, Button } from '../../src';
+import { Progress, Button } from '@';
 import {
     sectionStyle,
     sectionTitleStyle,

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Form, FormItem, useForm, Input, Button, Radio, Checkbox, Card } from '../../src';
-import type { FormInstance } from '../../src';
-import type { CardPattern } from '../../src/components/Card/types';
+import { Form, FormItem, useForm, Input, Button, Radio, Checkbox, Card } from '@';
+import type { FormInstance } from '@';
+import type { CardPattern } from '@/components/Card/types';
 import { sectionStyle, sectionTitleStyle, tagStyle, labelStyle, ApiTable, CodeBlock } from '../tools';
 import type { ApiRow } from '../tools';
 

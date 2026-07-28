@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Card } from '../../src';
+import { Card } from '@';
 import { sectionStyle, sectionTitleStyle, tagStyle, labelStyle, demoBodyStyle, ApiTable, CodeBlock } from '../tools';
 import type { ApiRow } from '../tools';
 
