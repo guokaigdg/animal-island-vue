@@ -27,7 +27,7 @@ animal-island-vue 是一套受《集合啦！动物森友会》启发的 Vue 3 +
 - 构建：Vite (library mode) + `vite.config.ts`（库）/ `vite.config.docs.ts`（Demo）
 - 样式系统：**scoped `<style lang="less" scoped>` + BEM** + `src/styles/variables.less` 设计 token（**不使用 CSS Modules**）
 
-### 全量导出清单（24 个 named exports = 23 个组件 + 1 个伴生导出按钮）
+### 全量导出清单（28 个 named exports = 27 个组件 + 1 个伴生导出按钮）
 
 从 `src/index.ts` 导出：
 
@@ -41,6 +41,7 @@ animal-island-vue 是一套受《集合啦！动物森友会》启发的 Vue 3 +
 | `Title`             | 章节标题，飘带横幅（swallowtail clip-path 燕尾 + 折角阴影 + 微透视正面），13 种配色（替代旧 `Card type="title"`） |      | ✓             |
 | `Collapse`          | 手风琴（动画用 CSS Grid 0fr↔1fr 实现，无 JS 动画）                                                                | ✓    |               |
 | `Select`            | 下拉选择器（受控）                                                                                                | ✓    |               |
+| `Skeleton`          | 加载占位骨架屏（SkeletonButton、SkeletonInput、SkeletonAvatar）                                                   |      | ✓             |
 | `Checkbox`          | 多选框组，水平/垂直，3 种尺寸                                                                                     | ✓    |               |
 | `Radio`             | 单选框组，3 种尺寸，键盘 roving tabindex                                                                          | ✓    |               |
 | `Tooltip`           | 12 种 placement，`hover`/`focus`/`click` 触发，`default`/`island` 形态                                            | ✓    |               |
@@ -57,7 +58,7 @@ animal-island-vue 是一套受《集合啦！动物森友会》启发的 Vue 3 +
 | `Table`             | 数据表格，固定列、空状态、loading                                                                                 | ✓    |               |
 | `WeddingInvitation` | 婚礼邀请函（含 `WeddingInvitationExportButton` 导出 PNG —— 这是清单里**唯一非组件的伴生导出按钮**）               |      | ✓             |
 
-类型导出：`ButtonProps/ButtonType/ButtonSize/ButtonHTMLType`、`InputProps/InputSize`、`SwitchProps/SwitchSize`、`ModalProps`、`CardProps/CardType/CardColor`、`TitleProps/TitleSize/TitleColor`、`FooterProps/FooterType`、`CollapseProps`、`CursorProps`、`TimeProps`、`PhoneProps`、`DividerProps/DividerType`、`TypewriterProps`、`SelectProps/SelectOption`、`IconProps/IconName`、`TabsProps/TabItem`、`CheckboxProps/CheckboxOption/CheckboxSize/CheckboxValue`、`RadioProps/RadioOption/RadioSize/RadioValue`、`TooltipProps/TooltipPlacement/TooltipTrigger/TooltipVariant`、`CodeBlockProps`、`LoadingProps`、`TableProps/TableColumn/TableRecord`、`WeddingInvitationProps/WeddingInvitationExpose/WeddingInvitationExportButtonProps`。运行时值：`ICON_LIST`。
+类型导出：`ButtonProps/ButtonType/ButtonSize/ButtonHTMLType`、`InputProps/InputSize`、`SwitchProps/SwitchSize`、`ModalProps`、`CardProps/CardType/CardColor`、`TitleProps/TitleSize/TitleColor`、`FooterProps/FooterType`、`CollapseProps`、`CursorProps`、`TimeProps`、`PhoneProps`、`DividerProps/DividerType`、`TypewriterProps`、`SelectProps/SelectOption`、`SkeletonProps/SkeletonVariant`、`IconProps/IconName`、`TabsProps/TabItem`、`CheckboxProps/CheckboxOption/CheckboxSize/CheckboxValue`、`RadioProps/RadioOption/RadioSize/RadioValue`、`TooltipProps/TooltipPlacement/TooltipTrigger/TooltipVariant`、`CodeBlockProps`、`LoadingProps`、`TableProps/TableColumn/TableRecord`、`WeddingInvitationProps/WeddingInvitationExpose/WeddingInvitationExportButtonProps`。运行时值：`ICON_LIST`。
 
 > Vue 端约定：
 >
@@ -1777,6 +1778,67 @@ Props: `modelValue`（受控，必填）、`options`（`{ key, label }[]`，必�
 
 ---
 
+### Skeleton
+
+源码：`src/components/Skeleton/Skeleton.vue`（scoped Less + BEM）。加载占位骨架屏，4 个子组件：Skeleton、SkeletonButton、SkeletonInput、SkeletonAvatar。
+
+```css
+/* 容器 */
+.animal-skeleton {
+    display: block;
+    width: 100%;
+}
+/* 骨架占位块 */
+.animal-skeleton__block {
+    background: #e8e2d6;
+    border-radius: 8px;
+    animation: animal-skeleton-pulse 1.5s ease-in-out infinite;
+}
+@keyframes animal-skeleton-pulse {
+    0%,
+    100% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+/* variant */
+.animal-skeleton__block--text {
+    height: 16px;
+    border-radius: 8px;
+}
+.animal-skeleton__block--circle {
+    border-radius: 50%;
+}
+.animal-skeleton__block--rect {
+    border-radius: 8px;
+}
+.animal-skeleton__block--paragraph {
+    margin-bottom: 12px;
+}
+/* SkeletonButton */
+.animal-skeleton-btn {
+    height: 45px;
+    border-radius: 50px;
+}
+/* SkeletonInput */
+.animal-skeleton-input {
+    height: 40px;
+    border-radius: 50px;
+}
+/* SkeletonAvatar */
+.animal-skeleton-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+```
+
+Props: `loading`（boolean，默认 true）、`variant`（`'text' | 'circle' | 'rect' | 'paragraph'`，默认 `'text'`）、`active`（boolean，默认 true）、`rows`（number，默认 3）、`width`（number|string）、`rowWidths`（`(number|string)[]`）、`widthValue`（number|string）、`heightValue`（number|string）。默认插槽：loading=false 时渲染的内容。
+
+---
+
 ### Icon
 
 源码：`src/components/Icon/Icon.vue`（scoped Less + BEM）。10 个内置 SVG 图标，通过 `background-image` 渲染。
@@ -1792,9 +1854,15 @@ Props: `modelValue`（受控，必填）、`options`（`{ key, label }[]`，必�
     animation: animal-icon-bounce 0.3s ease-in-out forwards;
 }
 @keyframes animal-icon-bounce {
-    0% { transform: scale(1) rotate(0deg); }
-    50% { transform: scale(1.2) rotate(-5deg); }
-    100% { transform: scale(1.1) rotate(-4deg); }
+    0% {
+        transform: scale(1) rotate(0deg);
+    }
+    50% {
+        transform: scale(1.2) rotate(-5deg);
+    }
+    100% {
+        transform: scale(1.1) rotate(-4deg);
+    }
 }
 ```
 
@@ -1821,14 +1889,39 @@ Props: `modelValue`（受控，必填）、`options`（`{ key, label }[]`，必�
     white-space: nowrap;
 }
 /* 尺寸 */
-.animal-tag--small  { height: 24px; padding: 0 10px; font-size: 12px; }
-.animal-tag--medium { height: 29px; padding: 0 12px; font-size: 13px; }
-.animal-tag--large  { height: 34px; padding: 0 16px; font-size: 15px; }
+.animal-tag--small {
+    height: 24px;
+    padding: 0 10px;
+    font-size: 12px;
+}
+.animal-tag--medium {
+    height: 29px;
+    padding: 0 12px;
+    font-size: 13px;
+}
+.animal-tag--large {
+    height: 34px;
+    padding: 0 16px;
+    font-size: 15px;
+}
 
 /* 变体 */
-.animal-tag--solid   { background: rgb(247,243,223); color: #8f734f; border-color: #d4c4a8; }
-.animal-tag--outlined { background: transparent; color: #8f734f; border-color: #c4b89e; }
-.animal-tag--dashed   { background: transparent; color: #8f734f; border-style: dashed; border-color: #c4b89e; }
+.animal-tag--solid {
+    background: rgb(247, 243, 223);
+    color: #8f734f;
+    border-color: #d4c4a8;
+}
+.animal-tag--outlined {
+    background: transparent;
+    color: #8f734f;
+    border-color: #c4b89e;
+}
+.animal-tag--dashed {
+    background: transparent;
+    color: #8f734f;
+    border-style: dashed;
+    border-color: #c4b89e;
+}
 
 /* 彩色（13 色 NookPhone 调色板） */
 .animal-tag--colored.animal-tag--solid {
@@ -1845,22 +1938,39 @@ Props: `modelValue`（受控，必填）、`options`（`{ key, label }[]`，必�
 
 /* 关闭按钮 */
 .animal-tag__close {
-    width: 16px; height: 16px;
-    border: none; border-radius: 50%;
-    background: rgba(0,0,0,0.08);
-    color: inherit; font-size: 14px;
+    width: 16px;
+    height: 16px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.08);
+    color: inherit;
+    font-size: 14px;
     cursor: pointer;
     transition: background 0.15s ease;
 }
-.animal-tag__close:hover { background: rgba(0,0,0,0.18); }
+.animal-tag__close:hover {
+    background: rgba(0, 0, 0, 0.18);
+}
 
 /* 可交互态 */
-.animal-tag--clickable { cursor: pointer; }
-.animal-tag--clickable:hover { transform: translateY(-1px); box-shadow: 0 2px 6px rgba(61,52,40,0.12); }
-.animal-tag--clickable:focus-visible { outline: 2px solid #f5c31c; outline-offset: 2px; }
+.animal-tag--clickable {
+    cursor: pointer;
+}
+.animal-tag--clickable:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(61, 52, 40, 0.12);
+}
+.animal-tag--clickable:focus-visible {
+    outline: 2px solid #f5c31c;
+    outline-offset: 2px;
+}
 
 /* 禁用 */
-.animal-tag--disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+.animal-tag--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
 ```
 
 Props: `size`（`'small' | 'medium' | 'large'`，默认 `'medium'`）、`variant`（`'solid' | 'outlined' | 'dashed'`，默认 `'solid'`）、`color`（13 色，默认 `'default'`）、`closable`、`disabled`。Emits: `close`。默认插槽标签内容。
@@ -1901,12 +2011,22 @@ Props: `size`（`'small' | 'medium' | 'large'`，默认 `'medium'`）、`variant
     overflow: hidden;
     border-radius: 999px;
 }
-.animal-progress__track--small  { height: 12px; border-width: 1.5px; }
-.animal-progress__track--middle { height: 20px; }
-.animal-progress__track--large  { height: 28px; }
+.animal-progress__track--small {
+    height: 12px;
+    border-width: 1.5px;
+}
+.animal-progress__track--middle {
+    height: 20px;
+}
+.animal-progress__track--large {
+    height: 28px;
+}
 
 .animal-progress__fill {
-    position: absolute; top: 0; left: 0; bottom: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
     border-radius: 999px;
     background: #0ec4b6;
     background-image: repeating-linear-gradient(-45deg, #0ec4b6 0, #0ec4b6 10px, #01b0a7 10px, #01b0a7 20px);
@@ -1914,17 +2034,30 @@ Props: `size`（`'small' | 'medium' | 'large'`，默认 `'medium'`）、`variant
     animation: animal-progress-stripe 1s linear infinite;
     transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.animal-progress__fill--no-transition { transition: none; }
+.animal-progress__fill--no-transition {
+    transition: none;
+}
 @keyframes animal-progress-stripe {
-    0% { background-position: 0 0; }
-    100% { background-position: -28.28px 0; }
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: -28.28px 0;
+    }
 }
 
 .animal-progress__info-inside {
-    position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
-    color: #fff; font-weight: 800; font-size: 11px;
-    letter-spacing: 0.02em; text-shadow: 0 1px 1px rgba(0,0,0,0.15);
-    white-space: nowrap; z-index: 1;
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #fff;
+    font-weight: 800;
+    font-size: 11px;
+    letter-spacing: 0.02em;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+    white-space: nowrap;
+    z-index: 1;
 }
 ```
 
@@ -1939,23 +2072,52 @@ Props: `percent`（0–100，必填）、`size`（`'small' | 'middle' | 'large'`
 ```css
 /* 固定定位容器 */
 .animal-notification-root {
-    position: fixed; inset: 0; pointer-events: none; z-index: 2000;
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2000;
 }
 .animal-notification__position {
-    position: fixed; display: flex; flex-direction: column; gap: 12px;
-    pointer-events: none; max-width: calc(100vw - 32px);
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    pointer-events: none;
+    max-width: calc(100vw - 32px);
 }
-.animal-notification__position--top       { top: 20px; left: 50%; transform: translateX(-50%); }
-.animal-notification__position--topLeft   { top: 20px; left: 20px; }
-.animal-notification__position--topRight  { top: 20px; right: 20px; }
-.animal-notification__position--bottom    { bottom: 20px; left: 50%; transform: translateX(-50%); }
-.animal-notification__position--bottomLeft { bottom: 20px; left: 20px; }
-.animal-notification__position--bottomRight { bottom: 20px; right: 20px; }
+.animal-notification__position--top {
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.animal-notification__position--topLeft {
+    top: 20px;
+    left: 20px;
+}
+.animal-notification__position--topRight {
+    top: 20px;
+    right: 20px;
+}
+.animal-notification__position--bottom {
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.animal-notification__position--bottomLeft {
+    bottom: 20px;
+    left: 20px;
+}
+.animal-notification__position--bottomRight {
+    bottom: 20px;
+    right: 20px;
+}
 
 /* 通知卡片 */
 .animal-notification {
     pointer-events: auto;
-    display: flex; align-items: flex-start; gap: 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
     padding: 16px 20px;
     background: rgb(247, 243, 223);
     border-radius: 16px;
@@ -1968,40 +2130,95 @@ Props: `percent`（0–100，必填）、`size`（`'small' | 'middle' | 'large'`
     animation: animal-notification-slide-out 0.25s ease forwards;
 }
 @keyframes animal-notification-slide-in {
-    from { opacity: 0; transform: translateY(-12px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(-12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 @keyframes animal-notification-slide-out {
-    from { opacity: 1; transform: translateY(0); }
-    to { opacity: 0; transform: translateY(-12px); }
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-12px);
+    }
 }
 
 /* 类型颜色 */
-.animal-notification--type-success { border-left-color: #6fba2c; }
-.animal-notification--type-info    { border-left-color: #19c8b9; }
-.animal-notification--type-warning { border-left-color: #f5c31c; }
-.animal-notification--type-error   { border-left-color: #e05a5a; }
+.animal-notification--type-success {
+    border-left-color: #6fba2c;
+}
+.animal-notification--type-info {
+    border-left-color: #19c8b9;
+}
+.animal-notification--type-warning {
+    border-left-color: #f5c31c;
+}
+.animal-notification--type-error {
+    border-left-color: #e05a5a;
+}
 
 /* 图标 */
-.animal-notification__icon-wrap { width: 24px; height: 24px; flex-shrink: 0; font-size: 20px; }
-.animal-notification--type-success .animal-notification__icon-wrap { color: #6fba2c; }
-.animal-notification--type-info    .animal-notification__icon-wrap { color: #19c8b9; }
-.animal-notification--type-warning .animal-notification__icon-wrap { color: #f5c31c; }
-.animal-notification--type-error   .animal-notification__icon-wrap { color: #e05a5a; }
+.animal-notification__icon-wrap {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    font-size: 20px;
+}
+.animal-notification--type-success .animal-notification__icon-wrap {
+    color: #6fba2c;
+}
+.animal-notification--type-info .animal-notification__icon-wrap {
+    color: #19c8b9;
+}
+.animal-notification--type-warning .animal-notification__icon-wrap {
+    color: #f5c31c;
+}
+.animal-notification--type-error .animal-notification__icon-wrap {
+    color: #e05a5a;
+}
 
 /* 标题/描述 */
-.animal-notification__title { font-size: 14px; font-weight: 600; color: #725d42; line-height: 1.4; }
-.animal-notification__description { margin-top: 4px; font-size: 12px; font-weight: 500; color: #8a7b66; line-height: 1.5; }
+.animal-notification__title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #725d42;
+    line-height: 1.4;
+}
+.animal-notification__description {
+    margin-top: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #8a7b66;
+    line-height: 1.5;
+}
 
 /* 关闭按钮 */
 .animal-notification__close {
-    flex-shrink: 0; width: 20px; height: 20px;
-    border: none; background: transparent;
-    color: #c4b89e; font-size: 16px; cursor: pointer;
-    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    border: none;
+    background: transparent;
+    color: #c4b89e;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transition: all 0.15s ease;
 }
-.animal-notification__close:hover { background: rgba(114,93,66,0.1); color: #725d42; }
+.animal-notification__close:hover {
+    background: rgba(114, 93, 66, 0.1);
+    color: #725d42;
+}
 ```
 
 API：`Notification.open(config)`、`.success()`、`.info()`、`.warning()`、`.error()`、`.destroy(key?)`。Config 字段：`message`（必填）、`description`、`duration`（默认 4.5s，0=不自动关闭）、`position`（6 种）、`icon`（VNode）、`btn`（VNode）、`key`、`onClose`、`onClick`、`closeIcon`、`className`、`style`。需在 App 根节点放置 `<NotificationContainer />`。
@@ -2015,41 +2232,93 @@ API：`Notification.open(config)`、`.success()`、`.info()`、`.warning()`、`.
 ```css
 /* 遮罩 */
 .animal-drawer__mask {
-    position: fixed; inset: 0; z-index: 999;
+    position: fixed;
+    inset: 0;
+    z-index: 999;
     background: rgba(0, 0, 0, 0.35);
     animation: animal-fade-in 0.25s ease;
 }
 /* 面板 */
 .animal-drawer__panel {
-    position: fixed; z-index: 1000;
+    position: fixed;
+    z-index: 1000;
     background: rgb(247, 243, 223);
-    display: flex; flex-direction: column;
+    display: flex;
+    flex-direction: column;
     box-shadow: 0 8px 32px rgba(61, 52, 40, 0.18);
     transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1);
 }
-.animal-drawer__panel--right  { top: 0; right: 0; bottom: 0; transform: translateX(0); }
-.animal-drawer__panel--left   { top: 0; left: 0; bottom: 0; transform: translateX(0); }
-.animal-drawer__panel--top    { top: 0; left: 0; right: 0; transform: translateY(0); }
-.animal-drawer__panel--bottom { bottom: 0; left: 0; right: 0; transform: translateY(0); }
-.animal-drawer__panel--enter  { transform: translateX(0) translateY(0); }
-.animal-drawer__panel--leave  { transform: translateX(100%); }
+.animal-drawer__panel--right {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    transform: translateX(0);
+}
+.animal-drawer__panel--left {
+    top: 0;
+    left: 0;
+    bottom: 0;
+    transform: translateX(0);
+}
+.animal-drawer__panel--top {
+    top: 0;
+    left: 0;
+    right: 0;
+    transform: translateY(0);
+}
+.animal-drawer__panel--bottom {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    transform: translateY(0);
+}
+.animal-drawer__panel--enter {
+    transform: translateX(0) translateY(0);
+}
+.animal-drawer__panel--leave {
+    transform: translateX(100%);
+}
 
 /* 头部 */
 .animal-drawer__header {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 20px 24px 0; flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px 0;
+    flex-shrink: 0;
 }
-.animal-drawer__title { font-size: 20px; font-weight: 700; color: #794f27; }
+.animal-drawer__title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #794f27;
+}
 .animal-drawer__close {
-    width: 28px; height: 28px; border: none; background: transparent;
-    font-size: 20px; color: #c4b89e; cursor: pointer; border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: transparent;
+    font-size: 20px;
+    color: #c4b89e;
+    cursor: pointer;
+    border-radius: 50%;
     transition: all 0.15s ease;
 }
-.animal-drawer__close:hover { background: rgba(114,93,66,0.1); color: #725d42; }
+.animal-drawer__close:hover {
+    background: rgba(114, 93, 66, 0.1);
+    color: #725d42;
+}
 
 /* 内容区 */
-.animal-drawer__body { flex: 1; overflow-y: auto; padding: 20px 24px; }
-.animal-drawer__footer { flex-shrink: 0; padding: 16px 24px; border-top: 1px solid #e8e2d6; }
+.animal-drawer__body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 24px;
+}
+.animal-drawer__footer {
+    flex-shrink: 0;
+    padding: 16px 24px;
+    border-top: 1px solid #e8e2d6;
+}
 ```
 
 Props: `open`（必填）、`title`、`placement`（`'left' | 'right' | 'top' | 'bottom'`，默认 `'right'`）、`width`（默认 378）、`height`（默认 300）、`maskClosable`（默认 true）、`pushBackground`（默认 true）、`footer`、`maskStyle`。Emits: `close`。焦点陷阱：Tab 循环、ESC 关闭、关闭后恢复焦点。打开时锁定 body 滚动。`pushBackground` 对背景元素施加 `scale(0.94) + blur(1px) + borderRadius(14px)`。
@@ -2076,21 +2345,44 @@ Props: `open`（必填）、`title`、`placement`（`'left' | 'right' | 'top' | 
     user-select: none;
     line-height: 1;
 }
-.animal-wallet--small  { --wallet-pill-w: 96px; --wallet-pill-h: 32px; --wallet-bag: 38px; --wallet-text-size: 12px; --wallet-halo: 3px; }
-.animal-wallet--large  { --wallet-pill-w: 168px; --wallet-pill-h: 52px; --wallet-bag: 62px; --wallet-text-size: 22px; --wallet-halo: 5px; }
+.animal-wallet--small {
+    --wallet-pill-w: 96px;
+    --wallet-pill-h: 32px;
+    --wallet-bag: 38px;
+    --wallet-text-size: 12px;
+    --wallet-halo: 3px;
+}
+.animal-wallet--large {
+    --wallet-pill-w: 168px;
+    --wallet-pill-h: 52px;
+    --wallet-bag: 62px;
+    --wallet-text-size: 22px;
+    --wallet-halo: 5px;
+}
 
 .animal-wallet__bag-slot {
-    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-    width: var(--wallet-bag); height: var(--wallet-bag);
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: var(--wallet-bag);
+    height: var(--wallet-bag);
     z-index: 1;
 }
-.animal-wallet__bag-img { width: 100%; height: 100%; object-fit: contain; }
+.animal-wallet__bag-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
 
 .animal-wallet__pill {
-    width: var(--wallet-pill-w); height: var(--wallet-pill-h);
+    width: var(--wallet-pill-w);
+    height: var(--wallet-pill-h);
     background: #b3a046; /* 橄榄黄 */
     border-radius: 999px;
-    display: flex; align-items: center; justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     box-shadow: 0 0 0 var(--wallet-halo) #fffbe7;
 }
 .animal-wallet__value {
@@ -2115,9 +2407,26 @@ Props: `value`（number|string，默认 `'00,000'`，数字自动千分位格式
 ```less
 .animal-form {
     font-family: @font-family;
-    &--horizontal { .animal-form-item { display: flex; align-items: center; gap: 12px; } }
-    &--vertical   { .animal-form-item { display: flex; flex-direction: column; gap: 4px; } }
-    &--inline     { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+    &--horizontal {
+        .animal-form-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+    }
+    &--vertical {
+        .animal-form-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+    }
+    &--inline {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+    }
 }
 ```
 
@@ -2126,13 +2435,34 @@ Props: `value`（number|string，默认 `'00,000'`，数字自动千分位格式
 ```less
 .animal-form-item {
     width: 100%;
-    &__label { font-size: 14px; font-weight: 600; color: #725d42; white-space: nowrap; }
-    &__required { color: #e05a5a; margin-left: 2px; }
-    &__control { flex: 1; }
-    &__help { font-size: 12px; font-weight: 500; margin-top: 4px; line-height: 1.4; }
-    &__help--error { color: #e05a5a; }
-    &__help--warning { color: #dba90e; }
-    &--has-error .animal-form-item__control :deep(input) { border-color: #e05a5a; }
+    &__label {
+        font-size: 14px;
+        font-weight: 600;
+        color: #725d42;
+        white-space: nowrap;
+    }
+    &__required {
+        color: #e05a5a;
+        margin-left: 2px;
+    }
+    &__control {
+        flex: 1;
+    }
+    &__help {
+        font-size: 12px;
+        font-weight: 500;
+        margin-top: 4px;
+        line-height: 1.4;
+    }
+    &__help--error {
+        color: #e05a5a;
+    }
+    &__help--warning {
+        color: #dba90e;
+    }
+    &--has-error .animal-form-item__control :deep(input) {
+        border-color: #e05a5a;
+    }
 }
 ```
 

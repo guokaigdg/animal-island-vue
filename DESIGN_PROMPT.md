@@ -378,10 +378,10 @@ Float decorations: 4.5s ease-in-out infinite "float" (Y: 0 → -6px, rot: 0 → 
                    stagger delays 0s / 0.6s / 1.2s / 0.3s / 1s
 Banner divider: 64px × 2px linear-gradient(to right, transparent, #725d42, transparent)
 
-=== COMPONENT INVENTORY (24 named exports from src/index.ts) ===
+=== COMPONENT INVENTORY (28 named exports from src/index.ts) ===
 Interactive:           Button, Input, Switch, Modal, Collapse, Select, Tabs, Checkbox, Radio, Drawer
 Container / Heading:   Card (13 colors + 13 dot patterns), Title (ribbon banner — 13 schemes), Table, Tag
-Feedback:              Tooltip, Loading, Notification, Progress
+Feedback:              Tooltip, Loading, Notification, Progress, Skeleton (SkeletonButton, SkeletonInput, SkeletonAvatar)
 Form:                  Form, FormItem, FormProvider
 Decorative:            Time, Phone, Footer, Divider, Cursor, Typewriter, Icon, Wallet
 Content display:       CodeBlock

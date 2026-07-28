@@ -111,6 +111,10 @@ export const PAGE_INFO: Record<string, { title: string; desc: string }> = {
         title: 'Notification 通知',
         desc: '命令式通知组件 — 4 种类型、6 个位置、自动关闭、可点击关闭',
     },
+    skeleton: {
+        title: 'Skeleton 骨架屏',
+        desc: '骨架屏加载占位组件 — 支持 text / circle / rect / paragraph 四种变体，银白流光动画，Skeleton.Button / Input / Avatar 子组件',
+    },
     wallet: {
         title: 'Wallet 钱包',
         desc: '钱包组件 — 动森风格钱袋 + 胶囊数字显示，三种尺寸，千分位格式化',
