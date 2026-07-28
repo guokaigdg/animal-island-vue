@@ -29,7 +29,7 @@ vue >= 3.4.0
 
 ---
 
-## 1. Full API (29 named exports)
+## 1. Full API (33 named exports)
 
 All named exports from `animal-island-vue`:
 
@@ -51,6 +51,10 @@ import {
     Tabs,
     Icon,
     Select,
+    Skeleton,
+    SkeletonAvatar,
+    SkeletonButton,
+    SkeletonInput,
     Checkbox,
     Radio,
     Tooltip,
@@ -103,6 +107,8 @@ import type {
     IconName,
     SelectProps,
     SelectOption,
+    SkeletonProps,
+    SkeletonVariant,
     CheckboxProps,
     CheckboxOption,
     CheckboxSize,
@@ -705,7 +711,37 @@ Notes:
 
 ---
 
-### 1.17 Checkbox
+### 1.17 Skeleton
+
+```ts
+type SkeletonVariant = 'text' | 'circle' | 'rect' | 'paragraph';
+
+interface SkeletonProps {
+    loading?: boolean; // default true
+    variant?: SkeletonVariant; // default 'text'
+    active?: boolean; // default true — pulse animation
+    rows?: number; // default 3 — for paragraph variant
+    width?: number | string;
+    rowWidths?: (number | string)[];
+    widthValue?: number | string;
+    heightValue?: number | string;
+}
+// Slots: default (content to show when loading=false)
+```
+
+Canonical usage:
+
+```vue
+<Skeleton :loading="loading" variant="paragraph" :rows="4" active />
+<SkeletonButton />
+<SkeletonInput />
+<SkeletonAvatar />
+<Skeleton :loading="false">Content here</Skeleton>
+```
+
+---
+
+### 1.18 Checkbox
 
 ```ts
 type CheckboxSize = 'small' | 'middle' | 'large';
@@ -762,7 +798,7 @@ const picks = ref<(string | number)[]>(['beach']);
 
 ---
 
-### 1.18 Radio
+### 1.19 Radio
 
 ```ts
 type RadioSize = 'small' | 'middle' | 'large';
@@ -808,7 +844,7 @@ const v = ref<string | number>('zh');
 
 ---
 
-### 1.19 Tooltip
+### 1.20 Tooltip
 
 ```ts
 type TooltipPlacement =
@@ -861,7 +897,7 @@ interface TooltipProps {
 
 ---
 
-### 1.20 Loading
+### 1.21 Loading
 
 ```ts
 interface LoadingProps {
@@ -881,7 +917,7 @@ interface LoadingProps {
 
 ---
 
-### 1.21 Table
+### 1.22 Table
 
 ```ts
 import type { CSSProperties, VNode } from 'vue';
@@ -943,7 +979,7 @@ const items: Item[] = [];
 
 ---
 
-### 1.22 CodeBlock
+### 1.23 CodeBlock
 
 ```ts
 interface CodeBlockProps {
@@ -959,7 +995,7 @@ interface CodeBlockProps {
 
 ---
 
-### 1.23 WeddingInvitation
+### 1.24 WeddingInvitation
 
 ```ts
 import type { CSSProperties } from 'vue';
@@ -1020,7 +1056,7 @@ const card = ref<WeddingInvitationExpose | null>(null);
 
 ---
 
-### 1.24 Tag
+### 1.25 Tag
 
 ```ts
 type TagSize = 'small' | 'medium' | 'large';
@@ -1063,7 +1099,7 @@ interface TagProps {
 
 ---
 
-### 1.25 Progress
+### 1.26 Progress
 
 ```ts
 type ProgressSize = 'small' | 'middle' | 'large';
@@ -1090,7 +1126,7 @@ interface ProgressProps {
 
 ---
 
-### 1.26 Drawer
+### 1.27 Drawer
 
 ```ts
 type DrawerPlacement = 'left' | 'right' | 'top' | 'bottom';
@@ -1132,7 +1168,7 @@ const open = ref(false);
 
 ---
 
-### 1.27 Notification
+### 1.28 Notification
 
 Command-style API (NOT a template component). Push notifications imperatively.
 
@@ -1204,7 +1240,7 @@ function destroyAll() {
 
 ---
 
-### 1.28 Wallet
+### 1.29 Wallet
 
 ```ts
 type WalletSize = 'small' | 'medium' | 'large';
@@ -1231,7 +1267,7 @@ interface WalletProps {
 
 ---
 
-### 1.29 Form
+### 1.30 Form
 
 Declarative form system with validation. 3 sub-components + 1 hook: `<Form>`, `<FormItem>`, `<FormProvider>`, `useForm()`.
 
@@ -1512,7 +1548,7 @@ Follow these strictly; violations are bugs:
 
 Shipped inside the npm package (available under `node_modules/animal-island-vue/`):
 
-- `AI_USAGE.md` — this file (AI-optimized API reference for all 29 named exports)
+- `AI_USAGE.md` — this file (AI-optimized API reference for all 33 named exports)
 - `README.md` — project overview & screenshots
 - `dist/types/index.d.ts` — machine-readable TypeScript types for every exported component / prop / enum
 

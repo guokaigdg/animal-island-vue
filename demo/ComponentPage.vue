@@ -32,10 +32,12 @@ import ProgressDemo from './pages/ProgressDemo.vue';
 import DrawerDemo from './pages/DrawerDemo.vue';
 import NotificationDemo from './pages/NotificationDemo.vue';
 import WalletDemo from './pages/WalletDemo.vue';
+import SkeletonDemo from './pages/SkeletonDemo.vue';
 
 const props = defineProps<{ activeKey: string }>();
 
 const PAGES: Record<string, unknown> = {
+    skeleton: SkeletonDemo,
     button: ButtonDemo,
     title: TitleDemo,
     input: InputDemo,

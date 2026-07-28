@@ -44,6 +44,7 @@ const MENU_ITEMS: MenuItem[] = [
             { key: 'cursor', label: 'Cursor 光标' },
             { key: 'codeblock', label: 'CodeBlock 代码高亮' },
             { key: 'footer', label: 'Footer 页脚' },
+            { key: 'skeleton', label: 'Skeleton 骨架屏', isNew: true },
         ],
     },
     {

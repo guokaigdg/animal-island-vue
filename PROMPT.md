@@ -27,7 +27,7 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 - Inject the Modal SVG `<defs>` clip-path block (see Modal section) once at the top of `<body>` so `clip-path: url(#animal-modal-clip)` resolves.
 - Every value below is exact. Do NOT round, approximate, or substitute "close" colors.
 - The npm package `animal-island-vue` is NOT available via UMD CDN in this offline-HTML mode, so you must **hand-roll the library's components inline as Vue 3 components that mirror the real library's API** (component names, prop names, prop values, `v-model` semantics, slot names). **Always prefer the library API over raw HTML.** Concretely:
-    - At the top of the `<script>` block, define inline Vue components with the EXACT names the library exports: `Button`, `Input`, `Switch`, `Checkbox`, `Radio`, `Card`, `Title`, `Tabs`, `Collapse`, `Modal`, `Select`, `Tooltip`, `Loading`, `Table`, `Time`, `Divider`, `Footer`, `Phone`, `Cursor`, `Typewriter`, `Icon`, `CodeBlock`, `WeddingInvitation`. Each component must accept the documented props (e.g. `<Card color="default">`, `<Button type="primary" size="large">`, `<Title color="app-teal" size="large">`, `<Switch v-model="checked" />`).
+    - At the top of the `<script>` block, define inline Vue components with the EXACT names the library exports: `Button`, `Input`, `Switch`, `Checkbox`, `Radio`, `Card`, `Title`, `Tabs`, `Collapse`, `Modal`, `Select`, `Skeleton`, `SkeletonAvatar`, `SkeletonButton`, `SkeletonInput`, `Tooltip`, `Loading`, `Table`, `Time`, `Divider`, `Footer`, `Phone`, `Cursor`, `Typewriter`, `Icon`, `CodeBlock`, `WeddingInvitation`. Each component must accept the documented props (e.g. `<Card color="default">`, `<Button type="primary" size="large">`, `<Title color="app-teal" size="large">`, `<Switch v-model="checked" />`).
     - In the page (root `App` component), **compose the UI exclusively with these components in the `template` string** — do NOT write `<div class="card">` / `<button class="btn">` etc. inline. The page should read like real animal-island-vue usage.
     - Only fall back to raw HTML (`<div>`, `<span>`, `<h1>`, `<img>`, layout helpers, page-specific decorations, app-specific widgets) when no library component covers the use case (e.g. page layout, header bar, two-column grid, custom illustration). In that case, still use the design tokens (`var(--text-body)`, `var(--bg-content)` …) instead of raw colors.
     - Forbidden: native `<button>`, native `<input>`, native `<select>`, native checkbox/radio used as visible UI. They MUST be wrapped by the inline `Button` / `Input` / `Select` / `Checkbox` / `Radio` components defined above.
@@ -122,7 +122,7 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 - Cards have NO box-shadow. They float on hover with `transform: translateY(-2px);` only. Pattern variants add a 1.5px solid border in the palette hue.
 - Switch handle stays vertically centered via `transform: translateY(-50%);` and has a 2.5px border but NO `box-shadow` of its own. Track has only inset shadow (see SHADOW SYSTEM above).
 
-## COMPONENT SPECS (24 named exports = 23 components + 1 export-button companion)
+## COMPONENT SPECS (28 named exports = 27 components + 1 export-button companion)
 
 ### Button (3 sizes × 5 types)
 
@@ -285,6 +285,23 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
   hover: subtle highlight (no opaque teal tint).
 - Placeholder color `#a09080`; arrow color `#a09080`.
 - Vue API: `<Select v-model="value" :options="[{ key: 'a', label: 'Apple' }, { key: 'b', label: 'Banana' }]" placeholder="..." :disabled="false" />`. Options use `{ key, label }` shape (the lib uses `key` rather than `value` for option identity). Options rendered via `v-for` with `:key="opt.key"`.
+
+### Skeleton (placeholder loading — 4 sub-components)
+
+- **Main component**: `<Skeleton>` — renders placeholder shapes while content is loading.
+- **Sub-components**: `<SkeletonButton>`, `<SkeletonInput>`, `<SkeletonAvatar>` — shape-specific skeleton variants.
+- Variants: `text` (default), `circle`, `rect`, `paragraph`.
+- Props: `loading` (boolean, default true — when false, shows default slot content), `variant` (`'text' | 'circle' | 'rect' | 'paragraph'`, default `'text'`), `active` (boolean, default true — pulse animation), `rows` (number, default 3 — for paragraph variant), `width` (number|string), `rowWidths` ((number|string)[]), `widthValue` (number|string), `heightValue` (number|string).
+- Default slot: content to render when `loading=false`.
+- Visual: warm parchment bg `rgb(247,243,223)` for the skeleton container; placeholder shapes use `#e8e2d6` with a subtle pulse animation (opacity 0.5→1) to indicate loading state. Border-radius matches the component type: pill 50px for SkeletonButton, 50px for SkeletonInput, 50% for SkeletonAvatar, 8px for Skeleton rect.
+- Vue API:
+  ```vue
+  <Skeleton :loading="loading" variant="paragraph" :rows="4" active />
+  <SkeletonButton />
+  <SkeletonInput />
+  <SkeletonAvatar />
+  <Skeleton :loading="false">Content loaded</Skeleton>
+  ```
 
 ### Checkbox (square box, sizes 18 / 22 / 28 px)
 
@@ -557,7 +574,8 @@ Structure the script like this:
   `,
     };
 
-    // ... Title, Tabs, Collapse, Modal, Switch, Input, Checkbox, Radio, Select, Tooltip, Loading,
+    // ... Title, Tabs, Collapse, Modal, Switch, Input, Checkbox, Radio, Select, Skeleton,
+    //     SkeletonAvatar, SkeletonButton, SkeletonInput, Tooltip, Loading,
     //     Table, Time, Divider, Footer, Phone, Cursor, Typewriter, Icon, CodeBlock, WeddingInvitation
 
     // 2) Page composition uses ONLY those components (plus layout divs)

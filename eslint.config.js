@@ -132,6 +132,11 @@ export default tseslint.config(
     // 脚本目录 (Node ESM) —— 放行未用参数 / 显式 any
     {
         files: ['scripts/**/*.{js,mjs,cjs,ts}'],
+        languageOptions: {
+            globals: {
+                ...globals.node,
+            },
+        },
         rules: {
             '@typescript-eslint/no-unused-vars': 'off',
             '@typescript-eslint/no-explicit-any': 'off',
