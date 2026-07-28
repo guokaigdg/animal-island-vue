@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { CSSProperties } from 'vue';
-import { Tooltip, Button } from '../../src';
+import { Tooltip, Button } from '@';
 import { sectionStyle, sectionTitleStyle, tagStyle, labelStyle, demoBoxStyle, ApiTable, CodeBlock } from '../tools';
 import type { ApiRow } from '../tools';
 

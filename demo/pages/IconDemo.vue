@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Icon, ICON_LIST } from '../../src';
+import { Icon, ICON_LIST } from '@';
 import { sectionStyle, sectionTitleStyle, tagStyle, labelStyle, ApiTable, CodeBlock } from '../tools';
 import type { ApiRow } from '../tools';
 

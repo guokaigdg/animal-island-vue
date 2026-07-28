@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { Typewriter, Title } from '../src';
-import type { TitleColor } from '../src';
+import { Typewriter, Title } from '@';
+import type { TitleColor } from '@';
 import { PAGE_INFO } from './pageInfo';
 import ButtonDemo from './pages/ButtonDemo.vue';
 import TitleDemo from './pages/TitleDemo.vue';

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Tabs } from '../../src';
-import type { TabItem } from '../../src';
+import { Tabs } from '@';
+import type { TabItem } from '@';
 import { sectionStyle, sectionTitleStyle, tagStyle, labelStyle, demoBoxStyle, ApiTable, CodeBlock } from '../tools';
 import type { ApiRow } from '../tools';
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Divider } from '../../src';
+import { Divider } from '@';
 import { sectionStyle, sectionTitleStyle, tagStyle, labelStyle, ApiTable, CodeBlock } from '../tools';
 import type { ApiRow } from '../tools';
 

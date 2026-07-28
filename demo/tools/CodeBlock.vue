@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CodeBlock as CodeBlockBase } from '../../src';
+import { CodeBlock as CodeBlockBase } from '@';
 defineProps<{ code: string }>();
 </script>
 

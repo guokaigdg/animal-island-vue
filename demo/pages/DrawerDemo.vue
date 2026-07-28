@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Drawer, Button } from '../../src';
+import { Drawer, Button } from '@';
 import {
     sectionStyle,
     sectionTitleStyle,

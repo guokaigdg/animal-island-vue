@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { Cursor, Loading } from '../src';
+import { Cursor, Loading } from '@';
 import HomePage from './HomePage.vue';
 import ComponentPage from './ComponentPage.vue';
 import { PAGE_INFO } from './pageInfo';

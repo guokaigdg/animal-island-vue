@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Button, Typewriter } from '../../src';
+import { Button, Typewriter } from '@';
 import {
     sectionStyle,
     sectionTitleStyle,

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Card, Divider, Button, Typewriter } from '../src';
+import { Card, Divider, Button, Typewriter } from '@';
 import { useIsMobile } from './router';
 import FeatureCard from './FeatureCard.vue';
 

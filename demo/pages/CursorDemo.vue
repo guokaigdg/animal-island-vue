@@ -10,7 +10,7 @@ import {
     CodeBlock,
 } from '../tools';
 import type { ApiRow } from '../tools';
-import { Cursor } from '../../src';
+import { Cursor } from '@';
 
 const CURSOR_API: ApiRow[] = [
     {

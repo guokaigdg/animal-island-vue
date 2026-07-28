@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Footer } from '../../src';
+import { Footer } from '@';
 import { sectionStyle, sectionTitleStyle, tagStyle, labelStyle, demoBodyStyle, ApiTable, CodeBlock } from '../tools';
 import type { ApiRow } from '../tools';
 
