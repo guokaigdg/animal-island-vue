@@ -71,13 +71,8 @@ const paragraphWidths = computed<(number | string)[]>(() => {
             aria-hidden="true"
         >
             <template v-if="isParagraph">
-            <!-- paragraph 段落模式：在 div 内部渲染多行 -->
-                <div
-                    v-for="(w, i) in paragraphWidths"
-                    :key="i"
-                    class="animal-skeleton--line"
-                    :style="{ width: w }"
-                />
+                <!-- paragraph 段落模式：在 div 内部渲染多行 -->
+                <div v-for="(w, i) in paragraphWidths" :key="i" class="animal-skeleton--line" :style="{ width: w }" />
             </template>
         </div>
     </template>

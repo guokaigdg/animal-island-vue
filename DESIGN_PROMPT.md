@@ -2,7 +2,7 @@
 
 > 本文件目标：给 **AI 设计 / 出图工具**（v0、Figma AI、Framer AI、Locofy、Midjourney、DALL·E、SD）喂可以一次成型的视觉风格描述。
 >
-> - 描述对象是 `animal-island-vue` 组件库本身的视觉风格（v0.9.5，24 个具名导出 = 23 个组件 + 1 个伴生导出按钮）。
+> - 描述对象是 `animal-island-vue` 组件库本身的视觉风格（v0.9.5，25 个具名导出 = 24 个组件 + 1 个伴生导出按钮）。
 > - 文件中提到的 **侧边栏 / 页面背景图（home_bg.svg / content_bg_pc.jpg / menu_bg.svg）** 属于 **demo 文档站**，库本身不附带，仅作为整体风格参考保留。
 > - 配套文档：消费侧 API 看 [`AI_USAGE.md`](./AI_USAGE.md)；源码内部规范看 [`skill/SKILL.md`](./skill/SKILL.md)；贡献流程看 [`CONTRIBUTING.md`](./CONTRIBUTING.md)。
 
@@ -378,8 +378,8 @@ Float decorations: 4.5s ease-in-out infinite "float" (Y: 0 → -6px, rot: 0 → 
                    stagger delays 0s / 0.6s / 1.2s / 0.3s / 1s
 Banner divider: 64px × 2px linear-gradient(to right, transparent, #725d42, transparent)
 
-=== COMPONENT INVENTORY (28 named exports from src/index.ts) ===
-Interactive:           Button, Input, Switch, Modal, Collapse, Select, Tabs, Checkbox, Radio, Drawer
+=== COMPONENT INVENTORY (29 named exports from src/index.ts) ===
+Interactive:           BackTop, Button, Input, Switch, Modal, Collapse, Select, Tabs, Checkbox, Radio, Drawer
 Container / Heading:   Card (13 colors + 13 dot patterns), Title (ribbon banner — 13 schemes), Table, Tag
 Feedback:              Tooltip, Loading, Notification, Progress, Skeleton (SkeletonButton, SkeletonInput, SkeletonAvatar)
 Form:                  Form, FormItem, FormProvider

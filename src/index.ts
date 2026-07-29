@@ -136,6 +136,10 @@ export type {
 export { Wallet } from './components/Wallet';
 export type { WalletProps, WalletSize } from './components/Wallet';
 
+// Phase 5 — 返回顶部
+export { BackTop } from './components/BackTop';
+export type { BackTopProps } from './components/BackTop';
+
 // Phase 6 — 骨架屏
 export { Skeleton, SkeletonButton, SkeletonInput, SkeletonAvatar } from './components/Skeleton';
 export type {

@@ -27,12 +27,13 @@ animal-island-vue 是一套受《集合啦！动物森友会》启发的 Vue 3 +
 - 构建：Vite (library mode) + `vite.config.ts`（库）/ `vite.config.docs.ts`（Demo）
 - 样式系统：**scoped `<style lang="less" scoped>` + BEM** + `src/styles/variables.less` 设计 token（**不使用 CSS Modules**）
 
-### 全量导出清单（28 个 named exports = 27 个组件 + 1 个伴生导出按钮）
+### 全量导出清单（29 个 named exports = 28 个组件 + 1 个伴生导出按钮）
 
 从 `src/index.ts` 导出：
 
 | 组件                | 职责                                                                                                              | 交互 | 装饰 / 纯展示 |
 | ------------------- | ----------------------------------------------------------------------------------------------------------------- | ---- | ------------- |
+| `BackTop`           | 返回顶部按钮，Nook 袋图标浮窗，支持自定义滚动容器、动画时长和可见高度                                             | ✓    |               |
 | `Button`            | 按钮，5 种类型 × 3 种尺寸                                                                                         | ✓    |               |
 | `Input`             | 输入框，3 种尺寸 + clear/prefix/suffix                                                                            | ✓    |               |
 | `Switch`            | 开关，默认/小号                                                                                                   | ✓    |               |
@@ -58,7 +59,7 @@ animal-island-vue 是一套受《集合啦！动物森友会》启发的 Vue 3 +
 | `Table`             | 数据表格，固定列、空状态、loading                                                                                 | ✓    |               |
 | `WeddingInvitation` | 婚礼邀请函（含 `WeddingInvitationExportButton` 导出 PNG —— 这是清单里**唯一非组件的伴生导出按钮**）               |      | ✓             |
 
-类型导出：`ButtonProps/ButtonType/ButtonSize/ButtonHTMLType`、`InputProps/InputSize`、`SwitchProps/SwitchSize`、`ModalProps`、`CardProps/CardType/CardColor`、`TitleProps/TitleSize/TitleColor`、`FooterProps/FooterType`、`CollapseProps`、`CursorProps`、`TimeProps`、`PhoneProps`、`DividerProps/DividerType`、`TypewriterProps`、`SelectProps/SelectOption`、`SkeletonProps/SkeletonVariant`、`IconProps/IconName`、`TabsProps/TabItem`、`CheckboxProps/CheckboxOption/CheckboxSize/CheckboxValue`、`RadioProps/RadioOption/RadioSize/RadioValue`、`TooltipProps/TooltipPlacement/TooltipTrigger/TooltipVariant`、`CodeBlockProps`、`LoadingProps`、`TableProps/TableColumn/TableRecord`、`WeddingInvitationProps/WeddingInvitationExpose/WeddingInvitationExportButtonProps`。运行时值：`ICON_LIST`。
+类型导出：`BackTopProps`、`ButtonProps/ButtonType/ButtonSize/ButtonHTMLType`、`InputProps/InputSize`、`SwitchProps/SwitchSize`、`ModalProps`、`CardProps/CardType/CardColor`、`TitleProps/TitleSize/TitleColor`、`FooterProps/FooterType`、`CollapseProps`、`CursorProps`、`TimeProps`、`PhoneProps`、`DividerProps/DividerType`、`TypewriterProps`、`SelectProps/SelectOption`、`SkeletonProps/SkeletonVariant`、`IconProps/IconName`、`TabsProps/TabItem`、`CheckboxProps/CheckboxOption/CheckboxSize/CheckboxValue`、`RadioProps/RadioOption/RadioSize/RadioValue`、`TooltipProps/TooltipPlacement/TooltipTrigger/TooltipVariant`、`CodeBlockProps`、`LoadingProps`、`TableProps/TableColumn/TableRecord`、`WeddingInvitationProps/WeddingInvitationExpose/WeddingInvitationExportButtonProps`。运行时值：`ICON_LIST`。
 
 > Vue 端约定：
 >
@@ -277,6 +278,27 @@ transform: translateY(2px); /* 按钮 active */
 ---
 
 ## 2. 组件精确样式规范
+
+### BackTop
+
+返回顶部按钮，Nook 袋图标浮窗，固定在右下角（`position: fixed`），滚动超过 `visibilityHeight` px 后出现。
+
+| 属性               | 说明               | 默认值         |
+| ------------------ | ------------------ | -------------- |
+| `visibilityHeight` | 滚动多少 px 后显示 | `400`          |
+| `duration`         | 滚动动画时长(ms)   | `300`          |
+| `target`           | 滚动容器函数       | `() => window` |
+| `onClick`          | 点击回调           | `-`            |
+| `className`        | 自定义类名         | `-`            |
+| `style`            | 自定义样式         | `-`            |
+
+```vue
+<BackTop :visibilityHeight="400" />
+<BackTop :duration="800" />
+<BackTop :target="() => containerRef" :visibilityHeight="200" />
+```
+
+---
 
 ### Button
 

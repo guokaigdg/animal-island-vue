@@ -27,7 +27,7 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 - Inject the Modal SVG `<defs>` clip-path block (see Modal section) once at the top of `<body>` so `clip-path: url(#animal-modal-clip)` resolves.
 - Every value below is exact. Do NOT round, approximate, or substitute "close" colors.
 - The npm package `animal-island-vue` is NOT available via UMD CDN in this offline-HTML mode, so you must **hand-roll the library's components inline as Vue 3 components that mirror the real library's API** (component names, prop names, prop values, `v-model` semantics, slot names). **Always prefer the library API over raw HTML.** Concretely:
-    - At the top of the `<script>` block, define inline Vue components with the EXACT names the library exports: `Button`, `Input`, `Switch`, `Checkbox`, `Radio`, `Card`, `Title`, `Tabs`, `Collapse`, `Modal`, `Select`, `Skeleton`, `SkeletonAvatar`, `SkeletonButton`, `SkeletonInput`, `Tooltip`, `Loading`, `Table`, `Time`, `Divider`, `Footer`, `Phone`, `Cursor`, `Typewriter`, `Icon`, `CodeBlock`, `WeddingInvitation`. Each component must accept the documented props (e.g. `<Card color="default">`, `<Button type="primary" size="large">`, `<Title color="app-teal" size="large">`, `<Switch v-model="checked" />`).
+    - At the top of the `<script>` block, define inline Vue components with the EXACT names the library exports: `BackTop`, `Button`, `Input`, `Switch`, `Checkbox`, `Radio`, `Card`, `Title`, `Tabs`, `Collapse`, `Modal`, `Select`, `Skeleton`, `SkeletonAvatar`, `SkeletonButton`, `SkeletonInput`, `Tooltip`, `Loading`, `Table`, `Time`, `Divider`, `Footer`, `Phone`, `Cursor`, `Typewriter`, `Icon`, `CodeBlock`, `WeddingInvitation`. Each component must accept the documented props (e.g. `<Card color="default">`, `<Button type="primary" size="large">`, `<Title color="app-teal" size="large">`, `<Switch v-model="checked" />`).
     - In the page (root `App` component), **compose the UI exclusively with these components in the `template` string** — do NOT write `<div class="card">` / `<button class="btn">` etc. inline. The page should read like real animal-island-vue usage.
     - Only fall back to raw HTML (`<div>`, `<span>`, `<h1>`, `<img>`, layout helpers, page-specific decorations, app-specific widgets) when no library component covers the use case (e.g. page layout, header bar, two-column grid, custom illustration). In that case, still use the design tokens (`var(--text-body)`, `var(--bg-content)` …) instead of raw colors.
     - Forbidden: native `<button>`, native `<input>`, native `<select>`, native checkbox/radio used as visible UI. They MUST be wrapped by the inline `Button` / `Input` / `Select` / `Checkbox` / `Radio` components defined above.
@@ -122,7 +122,13 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 - Cards have NO box-shadow. They float on hover with `transform: translateY(-2px);` only. Pattern variants add a 1.5px solid border in the palette hue.
 - Switch handle stays vertically centered via `transform: translateY(-50%);` and has a 2.5px border but NO `box-shadow` of its own. Track has only inset shadow (see SHADOW SYSTEM above).
 
-## COMPONENT SPECS (28 named exports = 27 components + 1 export-button companion)
+## COMPONENT SPECS (29 named exports = 28 components + 1 export-button companion)
+
+### BackTop (返回顶部)
+
+- Nook 袋图标浮窗，滚动到 `visibilityHeight` 时显示
+- Props: `target` (() => HTMLElement | Window), `visibilityHeight` (number, default 400), `onClick` (() => void), `className` (string), `style` (CSSProperties | string), `duration` (number, default 300)
+- Vue API: `<BackTop />` — 无子组件，无额外类型导出
 
 ### Button (3 sizes × 5 types)
 
@@ -502,7 +508,7 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 10. Never use weight < 400 anywhere. Body 500, headings 600–900.
 11. Never animate with hard cubic transitions; always use `cubic-bezier(0.4, 0, 0.2, 1)` over 0.15–0.35s.
 12. The `title` prop on `<Modal>` and `<WeddingInvitation>` is the literal string heading — do NOT confuse it with the `<Title>` ribbon component.
-13. **Always reach for the library component first.** If a feature exists as an animal-island-vue component (Card, Button, Input, Switch, Checkbox, Radio, Title, Tabs, Collapse, Modal, Select, Tooltip, Loading, Table, Time, Divider, Footer, Phone, Cursor, Typewriter, Icon, CodeBlock, WeddingInvitation), use the inline-defined component with documented props in the `template`. Only hand-roll raw HTML when the library has no equivalent (page layout, app-specific composition, decorative blocks).
+13. **Always reach for the library component first.** If a feature exists as an animal-island-vue component (BackTop, Card, Button, Input, Switch, Checkbox, Radio, Title, Tabs, Collapse, Modal, Select, Tooltip, Loading, Table, Time, Divider, Footer, Phone, Cursor, Typewriter, Icon, CodeBlock, WeddingInvitation), use the inline-defined component with documented props in the `template`. Only hand-roll raw HTML when the library has no equivalent (page layout, app-specific composition, decorative blocks).
 14. **NO REACT-ISMS — DISQUALIFYING.** This is Vue 3, not React. The following are forbidden in the output:
     - `className="..."` → use `class="..."`.
     - `onClick={fn}` / `onChange={fn}` / `onInput={fn}` → use `@click="fn"` / `@change="fn"` / `@input="fn"`.
