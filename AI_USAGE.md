@@ -29,12 +29,13 @@ vue >= 3.4.0
 
 ---
 
-## 1. Full API (33 named exports)
+## 1. Full API (34 named exports)
 
 All named exports from `animal-island-vue`:
 
 ```ts
 import {
+    BackTop,
     Button,
     Input,
     Switch,
@@ -78,6 +79,7 @@ import {
 import { ICON_LIST } from 'animal-island-vue';
 
 import type {
+    BackTopProps,
     ButtonProps,
     ButtonType,
     ButtonSize,
@@ -174,7 +176,30 @@ import type {
 
 ---
 
-### 1.1 Button
+### 1.1 BackTop
+
+```ts
+interface BackTopProps {
+    target?: () => HTMLElement | Window;
+    visibilityHeight?: number; // default 400
+    onClick?: () => void;
+    className?: string;
+    style?: CSSProperties | string;
+    duration?: number; // default 300
+}
+```
+
+```vue
+<BackTop />
+<!-- Nook 袋图标浮窗，滚动到 visibilityHeight 时显示 -->
+<BackTop :visibility-height="200" :duration="500" @click="handleBackTop" />
+```
+
+> 返回顶部按钮，Nook 袋图标浮窗，支持自定义滚动容器、动画时长和可见高度。无子组件或额外类型导出。
+
+---
+
+### 1.2 Button
 
 ```ts
 type ButtonType = 'primary' | 'default' | 'dashed' | 'text' | 'link';
@@ -209,7 +234,7 @@ Canonical usage:
 
 ---
 
-### 1.2 Input
+### 1.3 Input
 
 ```ts
 type InputSize = 'small' | 'middle' | 'large';
@@ -243,7 +268,7 @@ interface InputProps {
 
 ---
 
-### 1.3 Switch
+### 1.4 Switch
 
 ```ts
 type SwitchSize = 'small' | 'default';
@@ -270,7 +295,7 @@ interface SwitchProps {
 
 ---
 
-### 1.4 Modal
+### 1.5 Modal
 
 ```ts
 interface ModalProps {
@@ -323,7 +348,7 @@ Notes:
 
 ---
 
-### 1.5 Card
+### 1.6 Card
 
 ```ts
 type CardType = 'default' | 'dashed';
@@ -379,7 +404,7 @@ interface CardProps {
 
 ---
 
-### 1.6 Title
+### 1.7 Title
 
 ```ts
 type TitleSize = 'small' | 'middle' | 'large';
@@ -416,7 +441,7 @@ interface TitleProps {
 
 ---
 
-### 1.7 Collapse
+### 1.8 Collapse
 
 ```ts
 interface CollapseProps {
@@ -442,7 +467,7 @@ interface CollapseProps {
 
 ---
 
-### 1.8 Cursor
+### 1.9 Cursor
 
 ```ts
 interface CursorProps {
@@ -469,7 +494,7 @@ Wrap the region where you want a game-style finger cursor:
 
 ---
 
-### 1.9 Time
+### 1.10 Time
 
 ```ts
 interface TimeProps {}
@@ -484,7 +509,7 @@ interface TimeProps {}
 
 ---
 
-### 1.10 Phone (decorative NookPhone)
+### 1.11 Phone (decorative NookPhone)
 
 ```ts
 interface PhoneProps {}
@@ -498,7 +523,7 @@ interface PhoneProps {}
 
 ---
 
-### 1.11 Footer
+### 1.12 Footer
 
 ```ts
 type FooterType = 'sea' | 'tree';
@@ -519,7 +544,7 @@ interface FooterProps {
 
 ---
 
-### 1.12 Divider
+### 1.13 Divider
 
 ```ts
 type DividerType =
@@ -547,7 +572,7 @@ interface DividerProps {
 
 ---
 
-### 1.13 Typewriter
+### 1.14 Typewriter
 
 ```ts
 interface TypewriterProps {
@@ -574,7 +599,7 @@ interface TypewriterProps {
 
 ---
 
-### 1.14 Tabs
+### 1.15 Tabs
 
 ```ts
 interface TabItem {
@@ -630,7 +655,7 @@ const items = [
 
 ---
 
-### 1.15 Icon
+### 1.16 Icon
 
 ```ts
 type IconName =
@@ -668,7 +693,7 @@ declare const ICON_LIST: { name: IconName; label: string }[];
 
 ---
 
-### 1.16 Select
+### 1.17 Select
 
 ```ts
 type SelectOption = { key: string; label: string };
@@ -711,7 +736,7 @@ Notes:
 
 ---
 
-### 1.17 Skeleton
+### 1.18 Skeleton
 
 ```ts
 type SkeletonVariant = 'text' | 'circle' | 'rect' | 'paragraph';
@@ -741,7 +766,7 @@ Canonical usage:
 
 ---
 
-### 1.18 Checkbox
+### 1.19 Checkbox
 
 ```ts
 type CheckboxSize = 'small' | 'middle' | 'large';
@@ -798,7 +823,7 @@ const picks = ref<(string | number)[]>(['beach']);
 
 ---
 
-### 1.19 Radio
+### 1.20 Radio
 
 ```ts
 type RadioSize = 'small' | 'middle' | 'large';
@@ -844,7 +869,7 @@ const v = ref<string | number>('zh');
 
 ---
 
-### 1.20 Tooltip
+### 1.21 Tooltip
 
 ```ts
 type TooltipPlacement =
@@ -897,7 +922,7 @@ interface TooltipProps {
 
 ---
 
-### 1.21 Loading
+### 1.22 Loading
 
 ```ts
 interface LoadingProps {
@@ -917,7 +942,7 @@ interface LoadingProps {
 
 ---
 
-### 1.22 Table
+### 1.23 Table
 
 ```ts
 import type { CSSProperties, VNode } from 'vue';
@@ -979,7 +1004,7 @@ const items: Item[] = [];
 
 ---
 
-### 1.23 CodeBlock
+### 1.24 CodeBlock
 
 ```ts
 interface CodeBlockProps {
@@ -995,7 +1020,7 @@ interface CodeBlockProps {
 
 ---
 
-### 1.24 WeddingInvitation
+### 1.25 WeddingInvitation
 
 ```ts
 import type { CSSProperties } from 'vue';
@@ -1056,7 +1081,7 @@ const card = ref<WeddingInvitationExpose | null>(null);
 
 ---
 
-### 1.25 Tag
+### 1.26 Tag
 
 ```ts
 type TagSize = 'small' | 'medium' | 'large';
@@ -1099,7 +1124,7 @@ interface TagProps {
 
 ---
 
-### 1.26 Progress
+### 1.27 Progress
 
 ```ts
 type ProgressSize = 'small' | 'middle' | 'large';
@@ -1126,7 +1151,7 @@ interface ProgressProps {
 
 ---
 
-### 1.27 Drawer
+### 1.28 Drawer
 
 ```ts
 type DrawerPlacement = 'left' | 'right' | 'top' | 'bottom';
@@ -1168,7 +1193,7 @@ const open = ref(false);
 
 ---
 
-### 1.28 Notification
+### 1.29 Notification
 
 Command-style API (NOT a template component). Push notifications imperatively.
 
@@ -1240,7 +1265,7 @@ function destroyAll() {
 
 ---
 
-### 1.29 Wallet
+### 1.30 Wallet
 
 ```ts
 type WalletSize = 'small' | 'medium' | 'large';
@@ -1267,7 +1292,7 @@ interface WalletProps {
 
 ---
 
-### 1.30 Form
+### 1.31 Form
 
 Declarative form system with validation. 3 sub-components + 1 hook: `<Form>`, `<FormItem>`, `<FormProvider>`, `useForm()`.
 
@@ -1548,7 +1573,7 @@ Follow these strictly; violations are bugs:
 
 Shipped inside the npm package (available under `node_modules/animal-island-vue/`):
 
-- `AI_USAGE.md` — this file (AI-optimized API reference for all 33 named exports)
+- `AI_USAGE.md — this file (AI-optimized API reference for all 34 named exports)
 - `README.md` — project overview & screenshots
 - `dist/types/index.d.ts` — machine-readable TypeScript types for every exported component / prop / enum
 

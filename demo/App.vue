@@ -44,7 +44,8 @@ const MENU_ITEMS: MenuItem[] = [
             { key: 'cursor', label: 'Cursor 光标' },
             { key: 'codeblock', label: 'CodeBlock 代码高亮' },
             { key: 'footer', label: 'Footer 页脚' },
-            { key: 'skeleton', label: 'Skeleton 骨架屏', isNew: true },
+            { key: 'backtop', label: 'BackTop 返回顶部', isNew: true },
+            { key: 'skeleton', label: 'Skeleton 骨架屏'},
         ],
     },
     {
@@ -158,23 +159,14 @@ const menuBgImage = `url("${menuBgUrl}")`;
                             <div class="cat-label">
                                 {{ item.label }}
                             </div>
-                            <div
-                                v-for="child in item.children"
-                                :key="child.key"
-                                class="menu-item"
-                                :class="{ active: activeKey === child.key }"
-                                @click="handleNavigate(`/${child.key}`)"
-                            >
+                            <div v-for="child in item.children" :key="child.key" class="menu-item"
+                                :class="{ active: activeKey === child.key }" @click="handleNavigate(`/${child.key}`)">
                                 <span>{{ child.label }}</span>
                                 <span v-if="child.isNew" class="menu-badge">NEW</span>
                             </div>
                         </div>
-                        <div
-                            v-else
-                            class="menu-item"
-                            :class="{ active: activeKey === item.key }"
-                            @click="handleNavigate(`/${item.key}`)"
-                        >
+                        <div v-else class="menu-item" :class="{ active: activeKey === item.key }"
+                            @click="handleNavigate(`/${item.key}`)">
                             <span>{{ item.label }}</span>
                         </div>
                     </template>
@@ -202,13 +194,9 @@ const menuBgImage = `url("${menuBgUrl}")`;
                                 <div class="cat-label">
                                     {{ item.label }}
                                 </div>
-                                <div
-                                    v-for="child in item.children"
-                                    :key="child.key"
-                                    class="menu-item"
+                                <div v-for="child in item.children" :key="child.key" class="menu-item"
                                     :class="{ active: activeKey === child.key }"
-                                    @click="handleNavigate(`/${child.key}`)"
-                                >
+                                    @click="handleNavigate(`/${child.key}`)">
                                     <span>{{ child.label }}</span>
                                     <span v-if="child.isNew" class="menu-badge">NEW</span>
                                 </div>
@@ -218,14 +206,10 @@ const menuBgImage = `url("${menuBgUrl}")`;
                 </aside>
             </template>
 
-            <main
-                ref="mainRef"
-                class="main"
-                :style="{
-                    padding: isMobile ? '16px' : '32px 40px',
-                    paddingTop: isMobile ? '68px' : '32px',
-                }"
-            >
+            <main ref="mainRef" class="main" :style="{
+                padding: isMobile ? '16px' : '32px 40px',
+                paddingTop: isMobile ? '68px' : '32px',
+            }">
                 <ComponentPage :active-key="activeKey" />
             </main>
 
@@ -377,6 +361,7 @@ const menuBgImage = `url("${menuBgUrl}")`;
 }
 
 @keyframes badgePulse {
+
     0%,
     100% {
         transform: scale(1);

@@ -111,6 +111,10 @@ export const PAGE_INFO: Record<string, { title: string; desc: string }> = {
         title: 'Notification 通知',
         desc: '命令式通知组件 — 4 种类型、6 个位置、自动关闭、可点击关闭',
     },
+    backtop: {
+        title: 'BackTop 返回顶部',
+        desc: 'Nook 袋图标返回顶部按钮 — 支持自定义滚动容器、动画时长和可见高度，Nook 袋图标浮窗设计',
+    },
     skeleton: {
         title: 'Skeleton 骨架屏',
         desc: '骨架屏加载占位组件 — 支持 text / circle / rect / paragraph 四种变体，银白流光动画，Skeleton.Button / Input / Avatar 子组件',

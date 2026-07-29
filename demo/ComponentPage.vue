@@ -33,10 +33,12 @@ import DrawerDemo from './pages/DrawerDemo.vue';
 import NotificationDemo from './pages/NotificationDemo.vue';
 import WalletDemo from './pages/WalletDemo.vue';
 import SkeletonDemo from './pages/SkeletonDemo.vue';
+import BackTopDemo from './pages/BackTopDemo.vue';
 
 const props = defineProps<{ activeKey: string }>();
 
 const PAGES: Record<string, unknown> = {
+    backtop: BackTopDemo,
     skeleton: SkeletonDemo,
     button: ButtonDemo,
     title: TitleDemo,
