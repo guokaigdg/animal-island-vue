@@ -45,7 +45,7 @@ const MENU_ITEMS: MenuItem[] = [
             { key: 'codeblock', label: 'CodeBlock 代码高亮' },
             { key: 'footer', label: 'Footer 页脚' },
             { key: 'backtop', label: 'BackTop 返回顶部', isNew: true },
-            { key: 'skeleton', label: 'Skeleton 骨架屏'},
+            { key: 'skeleton', label: 'Skeleton 骨架屏' },
         ],
     },
     {
