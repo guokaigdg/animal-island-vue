@@ -100,14 +100,9 @@ function handleClear() {
     display: inline-flex;
     align-items: center;
     width: 100%;
-    border: 2px solid @shadow-soft-hover;
+    background: @bg-color-input;
     border-radius: 50px;
-    background: rgb(247, 243, 223);
     transition: all @motion-duration-base @motion-ease;
-
-    &:hover {
-        border-color: @shadow-soft-strong;
-    }
 
     &__inner {
         flex: 1;
@@ -186,33 +181,22 @@ function handleClear() {
         padding: 0 22px;
         font-size: @font-size-lg;
         border-radius: 50px;
-        border-width: 2.5px;
     }
 
     // Status
     &--error {
-        border-color: @error-color;
-        &:hover {
-            border-color: @error-color-hover;
-        }
+        box-shadow: 0 3px 0 0 @error-color-active;
     }
     &--warning {
-        border-color: @warning-color;
-        &:hover {
-            border-color: @warning-color-hover;
-        }
+        box-shadow: 0 3px 0 0 @warning-color-active;
     }
 
     // Disabled
     &--disabled {
         background: #ece8dc;
-        border-color: @shadow-soft;
+        box-shadow: none;
         opacity: 0.6;
         cursor: not-allowed;
-
-        &:hover {
-            border-color: @shadow-soft;
-        }
     }
 
     // Shadow (varies by size + status)
@@ -224,12 +208,6 @@ function handleClear() {
     }
     &--shadow.animal-input--large {
         box-shadow: 0 4px 0 0 @shadow-soft;
-    }
-    &--shadow.animal-input--error {
-        box-shadow: 0 3px 0 0 @error-color-active;
-    }
-    &--shadow.animal-input--warning {
-        box-shadow: 0 3px 0 0 @warning-color-active;
     }
 }
 </style>
