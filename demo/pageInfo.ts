@@ -113,7 +113,7 @@ export const PAGE_INFO: Record<string, { title: string; desc: string }> = {
     },
     backtop: {
         title: 'BackTop 返回顶部',
-        desc: 'Nook 袋图标返回顶部按钮 — 支持自定义滚动容器、动画时长和可见高度，Nook 袋图标浮窗设计',
+        desc: '返回顶部按钮 — 支持自定义滚动容器、动画时长和可见高度，无浮窗设计',
     },
     skeleton: {
         title: 'Skeleton 骨架屏',

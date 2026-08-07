@@ -135,8 +135,8 @@ const code = `import { BackTop } from 'animal-island-vue';
                     :style="{
                         background: '#f0e8d8',
                         padding: '2px 8px',
-                        borderRadius: 6,
-                        fontSize: 12,
+                        borderRadius: '6px',
+                        fontSize: '12px',
                     }"
                 >
                     visibilityHeight=400
@@ -162,14 +162,14 @@ const code = `import { BackTop } from 'animal-island-vue';
                     >
                         <div
                             :style="{
-                                width: 48,
-                                height: 48,
+                                width: '48px',
+                                height: '48px',
                                 borderRadius: '50%',
                                 background: 'rgba(255,255,255,0.45)',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                fontSize: 20,
+                                fontSize: '20px',
                                 fontWeight: 700,
                                 color: '#725d42',
                                 flexShrink: 0,
