@@ -34,6 +34,7 @@ import NotificationDemo from './pages/NotificationDemo.vue';
 import WalletDemo from './pages/WalletDemo.vue';
 import SkeletonDemo from './pages/SkeletonDemo.vue';
 import BackTopDemo from './pages/BackTopDemo.vue';
+import ImageDemo from './pages/ImageDemo.vue';
 
 const props = defineProps<{ activeKey: string }>();
 
@@ -69,6 +70,7 @@ const PAGES: Record<string, unknown> = {
     drawer: DrawerDemo,
     notification: NotificationDemo,
     wallet: WalletDemo,
+    image: ImageDemo,
 };
 
 // 与 React 版同款：根据 activeKey 哈希固定映射颜色，同页面不抖动

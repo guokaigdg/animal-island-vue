@@ -56,6 +56,7 @@ const components = [
     { key: 'loading', name: 'Loading', desc: '动森风格小岛加载动画' },
     { key: 'table', name: 'Table', desc: '泛型表格、悬浮动画、加载/空态' },
     { key: 'form', name: 'Form', desc: '完整校验、三种布局、命令式 API' },
+    { key: 'image', name: 'Image', desc: '相框图片、14 种底色、懒加载、点击预览' },
 ];
 
 const installCode = `// 使用 npm 安装\nnpm install animal-island-vue`;
