@@ -123,4 +123,8 @@ export const PAGE_INFO: Record<string, { title: string; desc: string }> = {
         title: 'Wallet 钱包',
         desc: '钱包组件 — 动森风格钱袋 + 胶囊数字显示，三种尺寸，千分位格式化',
     },
+    image: {
+        title: 'Image 图片',
+        desc: '图片组件 — 白色衬板相框、14 种 Card 底色、懒加载、加载失败占位、点击预览大图（ESC / 遮罩 / 关闭按钮）',
+    },
 };
