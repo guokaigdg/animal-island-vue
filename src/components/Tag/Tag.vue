@@ -14,7 +14,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
     size: 'medium',
-    variant: 'solid',
+    variant: 'soft',
     color: 'default',
     closable: false,
     disabled: false,
@@ -110,21 +110,18 @@ function handleClose(event: MouseEvent) {
     // ---------- Size ----------
     &--small {
         height: 24px;
-        line-height: 21px;
         padding: 0 10px;
         font-size: 12px;
     }
     &--medium {
-        height: 29px;
-        line-height: 26px;
+        height: 32px;
         padding: 0 12px;
-        font-size: 13px;
+        font-size: 14px;
     }
     &--large {
-        height: 34px;
-        line-height: 31px;
+        height: 40px;
         padding: 0 16px;
-        font-size: 15px;
+        font-size: 16px;
     }
 
     // ---------- Variant ----------
@@ -144,43 +141,72 @@ function handleClose(event: MouseEvent) {
         border-style: dashed;
         border-color: #c4b89e;
     }
+    &--soft {
+        background: #f5f0e6;
+        color: #8f734f;
+        border-color: transparent;
+    }
 
     // ---------- Color tokens ----------
     &--app-pink {
         --animal-tag-color: #f8a6b2;
+        --animal-tag-soft-bg: #fce4ec;
+        --animal-tag-soft-text: #c2185b;
     }
     &--purple {
         --animal-tag-color: #b77dee;
+        --animal-tag-soft-bg: #f3e5f5;
+        --animal-tag-soft-text: #7b1fa2;
     }
     &--app-blue {
         --animal-tag-color: #889df0;
+        --animal-tag-soft-bg: #e6f0ff;
+        --animal-tag-soft-text: #1565c0;
     }
     &--app-yellow {
         --animal-tag-color: #f7cd67;
+        --animal-tag-soft-bg: #fff8e1;
+        --animal-tag-soft-text: #f9a825;
     }
     &--app-orange {
         --animal-tag-color: #e59266;
+        --animal-tag-soft-bg: #fff3e0;
+        --animal-tag-soft-text: #e65100;
     }
     &--app-teal {
         --animal-tag-color: #82d5bb;
+        --animal-tag-soft-bg: #e0f2f1;
+        --animal-tag-soft-text: #00695c;
     }
     &--app-green {
         --animal-tag-color: #8ac68a;
+        --animal-tag-soft-bg: #e8f5e9;
+        --animal-tag-soft-text: #2e7d32;
     }
     &--app-red {
         --animal-tag-color: #fc736d;
+        --animal-tag-soft-bg: #ffebee;
+        --animal-tag-soft-text: #c62828;
     }
     &--lime-green {
         --animal-tag-color: #d1da49;
+        --animal-tag-soft-bg: #f1f8e9;
+        --animal-tag-soft-text: #558b2f;
     }
     &--yellow-green {
         --animal-tag-color: #ecdf52;
+        --animal-tag-soft-bg: #f9fbe7;
+        --animal-tag-soft-text: #827717;
     }
     &--brown {
         --animal-tag-color: #9a835a;
+        --animal-tag-soft-bg: #efebe9;
+        --animal-tag-soft-text: #4e342e;
     }
     &--warm-peach-pink {
         --animal-tag-color: #e18c6f;
+        --animal-tag-soft-bg: #fbe9e7;
+        --animal-tag-soft-text: #bf360c;
     }
 
     // ---------- Color applied per variant ----------
@@ -199,6 +225,11 @@ function handleClose(event: MouseEvent) {
         border-color: var(--animal-tag-color);
         background: transparent;
     }
+    &--colored.animal-tag--soft {
+        background: var(--animal-tag-soft-bg);
+        color: var(--animal-tag-soft-text);
+        border-color: transparent;
+    }
 
     // ---------- Text ----------
     &__text {
@@ -216,7 +247,7 @@ function handleClose(event: MouseEvent) {
         height: 16px;
         padding: 0;
         border: none;
-        background: rgba(0, 0, 0, 0.08);
+        background: rgb(149 143 143 / 8%);
         color: inherit;
         font-size: 14px;
         line-height: 1;

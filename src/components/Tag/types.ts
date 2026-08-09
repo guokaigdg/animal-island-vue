@@ -1,5 +1,5 @@
 export type TagSize = 'small' | 'medium' | 'large';
-export type TagVariant = 'solid' | 'outlined' | 'dashed';
+export type TagVariant = 'solid' | 'outlined' | 'dashed' | 'soft';
 export type TagColor =
     | 'default'
     | 'app-pink'

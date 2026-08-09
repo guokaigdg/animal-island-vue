@@ -9,11 +9,11 @@ describe('Tag', () => {
             expect(wrapper.text()).toContain('hello');
         });
 
-        it('默认应用基础 tag 类与 medium/solid 尺寸', () => {
+        it('默认应用基础 tag 类与 medium/soft 尺寸', () => {
             const wrapper = mount(Tag, { slots: { default: 'x' } });
             expect(wrapper.classes()).toContain('animal-tag');
             expect(wrapper.classes()).toContain('animal-tag--medium');
-            expect(wrapper.classes()).toContain('animal-tag--solid');
+            expect(wrapper.classes()).toContain('animal-tag--soft');
         });
 
         it('支持 className 与 style', () => {
@@ -48,6 +48,11 @@ describe('Tag', () => {
             const wrapper = mount(Tag, { props: { variant: 'dashed' }, slots: { default: 'x' } });
             expect(wrapper.classes()).toContain('animal-tag--dashed');
         });
+
+        it('variant=soft 应用对应类', () => {
+            const wrapper = mount(Tag, { props: { variant: 'soft' }, slots: { default: 'x' } });
+            expect(wrapper.classes()).toContain('animal-tag--soft');
+        });
     });
 
     describe('color', () => {
@@ -78,6 +83,26 @@ describe('Tag', () => {
                 slots: { default: 'x' },
             });
             expect(wrapper.classes()).toContain('animal-tag--app-blue');
+        });
+
+        it('color=app-pink + soft 应用 color-app-pink-soft 类', () => {
+            const wrapper = mount(Tag, {
+                props: { color: 'app-pink', variant: 'soft' },
+                slots: { default: 'x' },
+            });
+            expect(wrapper.classes()).toContain('animal-tag--app-pink');
+            expect(wrapper.classes()).toContain('animal-tag--soft');
+            expect(wrapper.classes()).toContain('animal-tag--colored');
+        });
+
+        it('color=app-green + soft 应用 color-app-green-soft 类', () => {
+            const wrapper = mount(Tag, {
+                props: { color: 'app-green', variant: 'soft' },
+                slots: { default: 'x' },
+            });
+            expect(wrapper.classes()).toContain('animal-tag--app-green');
+            expect(wrapper.classes()).toContain('animal-tag--soft');
+            expect(wrapper.classes()).toContain('animal-tag--colored');
         });
     });
 
