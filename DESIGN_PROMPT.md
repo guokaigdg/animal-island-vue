@@ -384,7 +384,7 @@ Container / Heading:   Card (13 colors + 13 dot patterns), Title (ribbon banner 
 Feedback:              Tooltip, Loading, Notification, Progress, Skeleton (SkeletonButton, SkeletonInput, SkeletonAvatar)
 Form:                  Form, FormItem, FormProvider
 Decorative:            Time, Phone, Footer, Divider, Cursor, Typewriter, Icon, Wallet
-Content display:       CodeBlock
+Content display:       CodeBlock, Image
 Specialty:             WeddingInvitation (+ WeddingInvitationExportButton companion — only export not a component)
 
 === CODE BLOCK (dark theme, Vue SFC / TS only) ===

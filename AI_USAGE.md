@@ -29,7 +29,7 @@ vue >= 3.4.0
 
 ---
 
-## 1. Full API (34 named exports)
+## 1. Full API (35 named exports)
 
 All named exports from `animal-island-vue`:
 
@@ -68,6 +68,7 @@ import {
     Notification,
     NotificationContainer,
     Wallet,
+    Image,
     Form,
     FormItem,
     FormProvider,
@@ -144,6 +145,8 @@ import type {
     NotificationType,
     WalletProps,
     WalletSize,
+    ImageProps,
+    ImageColor,
     FormProps,
     FormLayout,
     FormSize,
@@ -1423,6 +1426,59 @@ function handleFinish(values: Record<string, unknown>) {
 ```
 
 > Form uses Vue's provide/inject for context propagation. `FormItem` must be a direct child of `<Form>` or `<FormProvider>`. Rules support synchronous and async validators. Nested fields via dot-separated `name` (e.g. `user.address.city`). `useForm()` creates a standalone form instance; pass it via `:form` prop for imperative control. Not supported: no `shouldUpdate`, no `noStyle` cascading, no `List` (use `v-for` with separate `FormItem` instances).
+
+---
+
+### 1.32 Image
+
+```ts
+type ImageColor =
+    | 'white'
+    | 'default'
+    | 'app-pink'
+    | 'purple'
+    | 'app-blue'
+    | 'app-yellow'
+    | 'app-orange'
+    | 'app-teal'
+    | 'app-green'
+    | 'app-red'
+    | 'lime-green'
+    | 'yellow-green'
+    | 'brown'
+    | 'warm-peach-pink';
+
+interface ImageProps {
+    src: string; // required
+    alt?: string; // default ''
+    width?: number | string;
+    height?: number | string;
+    color?: ImageColor; // default 'white'
+    lazy?: boolean; // default false
+    preview?: boolean; // default true
+}
+// Emits: load (Event), error (Event)
+```
+
+Canonical usage:
+
+```vue
+<Image src="/photo.png" alt="岛屿风景" :width="200" :height="150" />
+
+<!-- 懒加载（原生 loading="lazy"） -->
+<Image src="/photo.png" alt="懒加载" :width="240" :height="150" lazy />
+
+<!-- 点击预览：弹出大图（默认开启；ESC / 遮罩 / 关闭按钮均可关闭） -->
+<Image src="/photo.png" alt="预览" :width="200" :height="130" preview />
+
+<!-- 失败占位：加载失败自动显示错误占位 -->
+<Image src="/broken.png" alt="失败" :width="140" :height="140" />
+
+<!-- Card 底色（14 种，无花纹） -->
+<Image src="/photo.png" alt="粉色相框" :width="200" :height="130" color="app-pink" />
+```
+
+> White frame (`color="white"`) is the default — pure `#fff` background. Other colors reuse the Card pattern palette (solid background, no dot pattern). `preview` defaults to `true`: the frame is rendered as a `<button>` (native Enter/Space activation), and the large preview is teleported to `document.body` via `<Teleport>`. Preview supports ESC close, mask-click close, close-button close, and focus restoration. `width`/`height` as numbers get `px` appended. `load`/`error` emits pass through the native `Event`.
 
 ---
 

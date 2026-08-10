@@ -2498,6 +2498,90 @@ Props: `value`（number|string，默认 `'00,000'`，数字自动千分位格式
 
 ---
 
+### Image
+
+源码：`src/components/Image/Image.vue`（非 scoped Less + BEM，全局样式与 Drawer 一致以便 Teleport 预览弹层命中）。白色衬板相框图片组件，支持懒加载、加载失败占位、点击预览大图。
+
+```css
+/* 相框 */
+.animal-image {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: #fff;
+    padding: 12px;
+    border-radius: 8px;
+    box-shadow: 0 8px 14px 0 rgba(0, 0, 0, 0.08);
+    line-height: 0;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.animal-image__img {
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+.animal-image--loaded .animal-image__img {
+    opacity: 1;
+}
+/* 错误占位 */
+.animal-image--error {
+    flex-direction: column;
+    gap: 8px;
+    color: #c4b89e;
+    font-size: 13px;
+    line-height: 1.5;
+}
+/* 预览触发（相框升格为 button） */
+.animal-image--preview {
+    cursor: zoom-in;
+    appearance: none;
+}
+/* 14 种 Card 底色（无花纹） */
+.animal-image--default {
+    background: rgb(247, 243, 223);
+    color: #725d42;
+}
+.animal-image--app-pink {
+    background: #fde4e8;
+    color: #a85565;
+}
+/* ... 其余 12 种同 Card pattern 底色 */
+/* 大图预览遮罩（Teleport 到 body） */
+.animal-image__mask {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.55);
+    animation: animal-image-fade-in 0.2s ease;
+}
+.animal-image__preview-img {
+    max-width: min(88vw, 1100px);
+    max-height: 86vh;
+    border-radius: 20px;
+    object-fit: contain;
+    box-shadow: 0 12px 40px rgba(43, 33, 24, 0.55);
+}
+.animal-image__close-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(216, 220, 226, 0.9);
+    border: 1.5px solid rgba(255, 255, 255, 0.75);
+}
+```
+
+Props：`src`（string，必填）、`alt`（string，默认 `''`）、`width`/`height`（number|string，数字自动加 px）、`color`（`ImageColor`，默认 `'white'`，14 种 Card 底色）、`lazy`（boolean，默认 false → 原生 `loading="lazy"`）、`preview`（boolean，默认 true）。Emits：`load`（Event）、`error`（Event）。`preview=true` 时相框渲染为 `<button>`（原生 Enter/Space 激活），预览弹层经 `<Teleport to="body">` 挂载，支持 ESC / 遮罩点击 / 关闭按钮关闭，关闭后焦点归还触发元素。
+
+---
+
 ## 3. Demo 布局精确规范
 
 这是 Demo 站（`demo/App.vue`）的实际布局数值，用于还原完整页面效果：

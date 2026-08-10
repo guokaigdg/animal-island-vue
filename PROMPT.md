@@ -494,6 +494,15 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 - Visual: horizontal layout by default — label left, control right. Vertical stacks them. Inline places them in a row. Error state shows red border + message. HasFeedback adds status icon.
 - Vue API: `const [form] = useForm();` then `<Form :form="form" @finish="onSave"><FormItem name="email" label="Email" :rules="[{ required: true, type: 'email' }]"><Input v-model="email" /></FormItem></Form>`.
 
+### Image (framed photo with click-to-preview)
+
+- **Props**: `src` (string, required), `alt` (string, default `''` — empty = decorative), `width` / `height` (number | string; numbers get `px` appended), `color` (`ImageColor`, default `'white'` — 14 Card-pattern palette colors without dots: `'white' | 'default' | 'app-pink' | 'purple' | 'app-blue' | 'app-yellow' | 'app-orange' | 'app-teal' | 'app-green' | 'app-red' | 'lime-green' | 'yellow-green' | 'brown' | 'warm-peach-pink'`), `lazy` (boolean, default false → native `loading="lazy"`), `preview` (boolean, default true).
+- **Emits**: `load` (native Event), `error` (native Event).
+- Visual: white padded frame (`#fff`, 12px padding, 8px radius, soft shadow) wraps the `<img>`. Image fades in (opacity 0→1) on load. On error: frame shows camera icon + "图片加载失败" text, `role="img"` with `aria-label` (falls back to alt or the failure text).
+- `preview=true` (default): frame is a `<button>` (native Enter/Space activation, `cursor: zoom-in`). Click opens a full-size preview teleported to `document.body` via `<Teleport>` — dark mask + centered `<img>` (max 88vw/86vh, 20px radius). Close via ESC, mask click, or close button (top-right, 40px circle). Focus trap: close button auto-focused on open, Tab cycles within, focus restored to trigger on close.
+- `preview=false`: frame is a `<span>`, no click handler.
+- Non-scoped global Less + BEM (`.animal-image*`), matching Drawer convention so Teleport content is styled.
+
 ## HARD RULES (must obey — disqualifies the output if violated)
 
 1. Never use pure black (#000) or near-black (#111) text. Use #794f27 / #725d42 / #8a7b66.
