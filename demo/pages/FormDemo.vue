@@ -185,7 +185,7 @@ const [form] = useForm();
 <template>
     <div :style="sectionStyle">
         <div :style="sectionTitleStyle">
-            Form <span :style="tagStyle">表单</span> <span :style="tagStyle">useForm</span>{' '}
+            Form <span :style="tagStyle">表单</span> <span :style="tagStyle">useForm</span>
             <span :style="tagStyle">校验</span>
         </div>
 
