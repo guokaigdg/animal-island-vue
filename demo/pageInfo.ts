@@ -127,4 +127,12 @@ export const PAGE_INFO: Record<string, { title: string; desc: string }> = {
         title: 'Image 图片',
         desc: '图片组件 — 白色衬板相框、14 种 Card 底色、懒加载、加载失败占位、点击预览大图（ESC / 遮罩 / 关闭按钮）',
     },
+    datepicker: {
+        title: 'DatePicker 日期选择',
+        desc: '日期选择器 — 日历网格、范围选择、月份/年份切换、禁用日期、今天快捷按钮',
+    },
+    timepicker: {
+        title: 'TimePicker 时间选择',
+        desc: '时间选择器 — 时/分/秒滚动列、此刻快捷按钮、步进控制、可清空',
+    },
 };
