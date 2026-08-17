@@ -154,6 +154,13 @@ export type {
 export { Image } from './components/Image';
 export type { ImageProps, ImageColor } from './components/Image';
 
+// Phase 8 — 日期/时间选择
+export { DatePicker } from './components/DatePicker';
+export type { DatePickerProps, DatePickerSize, DatePickerStatus, DatePickerValue } from './components/DatePicker';
+
+export { TimePicker } from './components/TimePicker';
+export type { TimePickerProps, TimePickerSize, TimePickerStatus, TimePart } from './components/TimePicker';
+
 // 注：WeddingInvitation 是「Demo-only」演示组件 —— 仅用于站点展示，
 // 不打入对外发布的 npm 包。源码已迁移到 `demo/components/WeddingInvitation/`。
 // 用户可参考 demo 实现自行接入项目。

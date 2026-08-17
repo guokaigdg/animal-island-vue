@@ -35,6 +35,8 @@ import WalletDemo from './pages/WalletDemo.vue';
 import SkeletonDemo from './pages/SkeletonDemo.vue';
 import BackTopDemo from './pages/BackTopDemo.vue';
 import ImageDemo from './pages/ImageDemo.vue';
+import DatePickerDemo from './pages/DatePickerDemo.vue';
+import TimePickerDemo from './pages/TimePickerDemo.vue';
 
 const props = defineProps<{ activeKey: string }>();
 
@@ -71,6 +73,8 @@ const PAGES: Record<string, unknown> = {
     notification: NotificationDemo,
     wallet: WalletDemo,
     image: ImageDemo,
+    datepicker: DatePickerDemo,
+    timepicker: TimePickerDemo,
 };
 
 // 与 React 版同款：根据 activeKey 哈希固定映射颜色，同页面不抖动
