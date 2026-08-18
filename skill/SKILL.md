@@ -2498,6 +2498,174 @@ Props: `value`（number|string，默认 `'00,000'`，数字自动千分位格式
 
 ---
 
+### DatePicker
+
+源码：`src/components/DatePicker/DatePicker.vue`（scoped Less + BEM，`animal-date-picker*`）。日历选择器，触发区视觉对齐 Input。
+
+```less
+/* 触发区 —— 奶油底、胶囊圆角、无边框 */
+.animal-date-picker__trigger {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    background: #fffbe7;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.animal-date-picker__trigger--small  { height: 32px; padding: 0 14px; font-size: 12px; }
+.animal-date-picker__trigger--middle { height: 40px; padding: 0 18px; font-size: 14px; }
+.animal-date-picker__trigger--large  { height: 48px; padding: 0 22px; font-size: 16px; }
+.animal-date-picker__trigger:hover   { box-shadow: 0 3px 0 0 #c4b89e; }
+.animal-date-picker__trigger--open {
+    box-shadow: 0 3px 0 0 #e0b800, 0 0 0 3px rgba(255, 204, 0, 0.15);
+}
+.animal-date-picker__trigger--error   { box-shadow: 0 3px 0 0 #c94444; }
+.animal-date-picker__trigger--warning { box-shadow: 0 3px 0 0 #dba90e; }
+
+/* 弹出面板 */
+.animal-date-picker__panel {
+    position: absolute;
+    width: 288px;
+    padding: 16px;
+    background: #fffdf7;
+    border: 1.5px solid #e8dcc8;
+    border-radius: 20px;
+    box-shadow: 0 6px 18px rgba(61, 52, 40, 0.12);
+    z-index: 1000;
+}
+
+/* 星期表头 + 日期格 */
+.animal-date-picker__week-cell {
+    width: 36px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: #a09080;
+}
+.animal-date-picker__day-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 32px;
+    border: none;
+    background: transparent;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #725d42;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+.animal-date-picker__day-cell--selected   { background: #ffb400; color: #fff; font-weight: 700; }
+.animal-date-picker__day-cell--today      { color: #19c8b9; font-weight: 700; }
+.animal-date-picker__day-cell--outside    { color: #d4c9b4; }
+.animal-date-picker__day-cell--disabled   { color: #c4b89e; cursor: not-allowed; }
+.animal-date-picker__day-cell--in-range   { background: rgba(255, 180, 0, 0.15); }
+.animal-date-picker__day-cell--range-start,
+.animal-date-picker__day-cell--range-end  { background: #ffb400; color: #fff; font-weight: 700; }
+
+/* footer：今天 / 确定 */
+.animal-date-picker__confirm-btn {
+    padding: 6px 16px;
+    border: none;
+    background: rgba(114, 93, 66, 0.1);
+    border-radius: 12px;
+    color: #8a7b66;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+.animal-date-picker__confirm-btn:hover { background: #8a7b66; color: #fff; }
+```
+
+Props / Emits：见 `AI_USAGE.md` §1.30。交互：点击外部关闭（document mousedown）、面板视口不足向上翻转 / 右侧不足右对齐、ESC 关闭、Enter 确定、方向键网格导航。模式切换：date（42 格日历）/ month / year（3×4 网格）。
+
+---
+
+### TimePicker
+
+源码：`src/components/TimePicker/TimePicker.vue`（scoped Less + BEM，`animal-time-picker*`）。时/分/秒滚动列选择。
+
+```less
+/* 触发区 —— 与 DatePicker 同款 Input 对齐视觉 */
+.animal-time-picker__trigger {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    background: #fffbe7;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.animal-time-picker__trigger--small  { height: 32px; padding: 0 14px; font-size: 12px; }
+.animal-time-picker__trigger--middle { height: 40px; padding: 0 18px; font-size: 14px; }
+.animal-time-picker__trigger--large  { height: 48px; padding: 0 22px; font-size: 16px; }
+.animal-time-picker__trigger--open   { box-shadow: 0 3px 0 0 #e0b800, 0 0 0 3px rgba(255, 204, 0, 0.15); }
+
+/* 弹出面板（含秒 248px / 无秒 172px） */
+.animal-time-picker__panel {
+    position: absolute;
+    width: 248px;
+    padding: 14px;
+    background: #fffdf7;
+    border: 1.5px solid #e8dcc8;
+    border-radius: 20px;
+    box-shadow: 0 6px 18px rgba(61, 52, 40, 0.12);
+    z-index: 1000;
+}
+.animal-time-picker__panel--no-seconds { width: 172px; }
+
+/* 三列滚动 */
+.animal-time-picker__column-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    max-height: 232px;
+    overflow-y: auto;
+    padding: 2px;
+}
+.animal-time-picker__option {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0; /* 禁止 flex 压缩，否则选项被压扁 */
+    height: 28px;
+    border: none;
+    background: transparent;
+    border-radius: 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #725d42;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+.animal-time-picker__option:hover { background: #ffd54f; color: #725d42; }
+.animal-time-picker__option--selected { background: #ffb400; color: #fff; font-weight: 700; }
+
+/* footer：此刻 / 确定 */
+.animal-time-picker__confirm-btn {
+    padding: 6px 16px;
+    border: none;
+    background: rgba(114, 93, 66, 0.1);
+    border-radius: 12px;
+    color: #8a7b66;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+.animal-time-picker__confirm-btn:hover { background: #8a7b66; color: #fff; }
+```
+
+Props / Emits：见 `AI_USAGE.md` §1.31。交互：打开时选中项滚动居中（`index×38 − clientHeight/2 + 19`）、点击外部关闭、面板向上翻转 / 右对齐、ESC 关闭、Enter 确定。
+
+---
+
 ### Image
 
 源码：`src/components/Image/Image.vue`（非 scoped Less + BEM，全局样式与 Drawer 一致以便 Teleport 预览弹层命中）。白色衬板相框图片组件，支持懒加载、加载失败占位、点击预览大图。
