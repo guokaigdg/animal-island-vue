@@ -1480,6 +1480,104 @@ Canonical usage:
 
 > White frame (`color="white"`) is the default — pure `#fff` background. Other colors reuse the Card pattern palette (solid background, no dot pattern). `preview` defaults to `true`: the frame is rendered as a `<button>` (native Enter/Space activation), and the large preview is teleported to `document.body` via `<Teleport>`. Preview supports ESC close, mask-click close, close-button close, and focus restoration. `width`/`height` as numbers get `px` appended. `load`/`error` emits pass through the native `Event`.
 
+### 1.30 DatePicker
+
+```ts
+type DatePickerSize = 'small' | 'middle' | 'large';
+type DatePickerStatus = 'error' | 'warning';
+type DatePickerValue = string | [string, string] | null;
+
+interface DatePickerProps {
+    modelValue?: DatePickerValue; // v-model；日期模式 YYYY-MM-DD，范围模式 [开始, 结束]
+    defaultValue?: string | [string, string]; // 非受控初值
+    range?: boolean; // default false — 范围选择模式
+    picker?: 'date' | 'month'; // default 'date' — month 直接打开月份网格
+    placeholder?: string; // default '请选择日期'
+    disabled?: boolean; // default false
+    allowClear?: boolean; // default false
+    size?: DatePickerSize; // default 'middle'
+    status?: DatePickerStatus;
+    format?: string; // default 'YYYY-MM-DD'；支持 YYYY/MM/DD/M/D
+    disabledDate?: (date: Date) => boolean; // 返回 true 的日期不可选
+    open?: boolean; // v-model:open 受控展开
+    showToday?: boolean; // default true — footer 显示「今天」快捷按钮
+    ariaLabel?: string;
+    ariaLabelledBy?: string;
+}
+// Emits: update:modelValue(value), change(value), update:open(open)
+```
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import { DatePicker } from 'animal-island-vue';
+const date = ref<string | null>(null);
+const range = ref<[string, string] | null>(null);
+</script>
+
+<template>
+    <!-- 基础用法（v-model） -->
+    <DatePicker v-model="date" />
+
+    <!-- 范围选择 -->
+    <DatePicker v-model="range" range />
+
+    <!-- 月份选择 -->
+    <DatePicker picker="month" />
+
+    <!-- 禁用周末 -->
+    <DatePicker :disabled-date="(d: Date) => d.getDay() === 0 || d.getDay() === 6" />
+</template>
+```
+
+> 日历网格：星期表头（日一二三四五六）+ 42 格（上下月补位）；头部点击年份/月份可切换 3×4 网格（year/month mode）；footer「今天」+「确定」。范围模式联动选择开始/结束，hover 预览 in-range 高亮，确认提交 `[start, end]`。面板点击外部关闭、ESC 关闭、Enter 确定，支持方向键导航。**Not supported:** 无 `showTime`（时间联动）、无 `disabledTime`、无 `locale`/`format` 国际化配置。
+
+---
+
+### 1.31 TimePicker
+
+```ts
+type TimePickerSize = 'small' | 'middle' | 'large';
+type TimePickerStatus = 'error' | 'warning';
+type TimePart = { h: number; m: number; s: number };
+
+interface TimePickerProps {
+    modelValue?: string | null; // v-model，格式 HH:mm:ss
+    defaultValue?: string | null; // 非受控初值
+    placeholder?: string; // default '请选择时间'
+    disabled?: boolean; // default false
+    allowClear?: boolean; // default false
+    size?: TimePickerSize; // default 'middle'
+    status?: TimePickerStatus;
+    format?: string; // default 'HH:mm:ss'；含 'ss' 时面板显示秒列，支持 HH/mm/ss/H/m/s
+    hourStep?: number; // default 1
+    minuteStep?: number; // default 1
+    secondStep?: number; // default 1
+    open?: boolean; // v-model:open 受控展开
+    ariaLabel?: string;
+    ariaLabelledBy?: string;
+}
+// Emits: update:modelValue(value), change(value), update:open(open)
+```
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import { TimePicker } from 'animal-island-vue';
+const time = ref<string | null>(null);
+</script>
+
+<template>
+    <TimePicker v-model="time" />
+    <!-- 不含秒：面板只有时/分两列 -->
+    <TimePicker format="HH:mm" />
+    <!-- 分钟步进 15 -->
+    <TimePicker :minute-step="15" allow-clear />
+</template>
+```
+
+> 时/分/秒三列滚动列表，打开时选中项滚动到列中央；hover 黄色 `#ffd54f`、选中琥珀黄 `#ffb400` 白字。footer「此刻」（设为当前时间）+「确定」。面板点击外部关闭、ESC 关闭、Enter 确定。format 不含 `ss` 时面板收窄为两列（172px，含秒 248px）。**Not supported:** 无 `disabledHours/disabledMinutes/disabledSeconds`、无 `use12Hours`、无 `showNow` 开关（固定「此刻」）。
+
 ---
 
 ## 2. Common Recipes
