@@ -77,6 +77,20 @@ const open = ref(false);
 </template>
 ```
 
+## 组件清单
+
+本库当前已发布 30+ 组件，按用途分类如下（详见各组件的 Demo 页与 [`AI_USAGE.md`](./AI_USAGE.md) 中的 props 表）。
+
+| 分类         | 组件                                                                                                                  |
+| ------------ | --------------------------------------------------------------------------------------------------------------------- |
+| 基础原子     | `Icon` · `Button` · `Divider` · `Cursor` · `Loading` · `Title`                                                        |
+| 表单         | `Input` · `Switch` · `Checkbox` · `Radio` · `Select` · `Tabs` · `Tooltip` · `Form`（含 `FormItem` / `FormProvider` / `useForm`） |
+| 容器 / 反馈  | `Card` · `Collapse` · `Modal` · `Drawer` · `Notification` · `Footer`                                                  |
+| 数据展示     | `Table` · `Tag` · `Progress` · `Skeleton`（含 `SkeletonButton` / `SkeletonInput` / `SkeletonAvatar`） · `Image` · `Time` · `Typewriter` · `CodeBlock` · `Phone` · `Wallet` · `BackTop` |
+| 日期 / 时间  | `DatePicker` · `TimePicker`                                                                                            |
+
+> 此外 `demo/components/WeddingInvitation/` 是「演示专用」组件，不打入对外发布的 npm 包，可参考 demo 自行接入项目。
+
 ## 文档
 
 面向不同场景的完整参考：
