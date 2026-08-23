@@ -503,6 +503,20 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 - `preview=false`: frame is a `<span>`, no click handler.
 - Non-scoped global Less + BEM (`.animal-image*`), matching Drawer convention so Teleport content is styled.
 
+### DatePicker (calendar date picker)
+
+- Props: `modelValue` (`string | [string, string] | null`, v-model — date `YYYY-MM-DD` / range `[start, end]`), `defaultValue` (non-controlled), `range` (boolean — linked range selection), `picker` (`'date' | 'month'`), `placeholder`, `disabled`, `allowClear`, `size` (`'small' | 'middle' | 'large'`), `status` (`'error' | 'warning'`), `format` (default `'YYYY-MM-DD'`, tokens `YYYY/MM/DD/M/D`), `disabledDate` (fn → true = disabled), `showToday` (default true), `open` (`v-model:open`).
+- Emits: `update:modelValue`, `change`, `update:open`.
+- Visual: white capsule trigger (`#fffbe7`, 50px radius) matching Input; popup panel `#fffdf7`, 20px radius, 1.5px `#e8dcc8` border. Calendar grid: weekday header + 42 cells; header year/month clicks switch to 3×4 grids; selected day amber `#ffb400`, today teal `#19c8b9`, outside cells muted, disabled grey. Footer: 「今天」+「确定」. Click-outside closes; ESC closes; Enter confirms.
+- Vue API: `<DatePicker v-model="date" />`, `<DatePicker v-model="range" range />`, `<DatePicker picker="month" />`.
+
+### TimePicker (rolling time picker)
+
+- Props: `modelValue` (`string | null`, v-model, `HH:mm:ss`), `defaultValue`, `placeholder` (default '请选择时间'), `disabled`, `allowClear`, `size`, `status`, `format` (default `'HH:mm:ss'`; tokens `HH/mm/ss/H/m/s`; contains `ss` → seconds column), `hourStep`/`minuteStep`/`secondStep` (default 1), `open` (`v-model:open`).
+- Emits: `update:modelValue`, `change`, `update:open`.
+- Visual: hour/minute/second scroll columns (28px options, selected centered on open); hover `#ffd54f`, selected amber `#ffb400` white text; footer 「此刻」(set to now) + 「确定」. Panel width 248px (172px without seconds). Click-outside closes; ESC closes; Enter confirms.
+- Vue API: `<TimePicker v-model="time" />`, `<TimePicker format="HH:mm" :minute-step="15" />`.
+
 ## HARD RULES (must obey — disqualifies the output if violated)
 
 1. Never use pure black (#000) or near-black (#111) text. Use #794f27 / #725d42 / #8a7b66.
