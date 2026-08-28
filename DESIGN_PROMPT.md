@@ -2,8 +2,9 @@
 
 > 本文件目标：给 **AI 设计 / 出图工具**（v0、Figma AI、Framer AI、Locofy、Midjourney、DALL·E、SD）喂可以一次成型的视觉风格描述。
 >
-> - 描述对象是 `animal-island-vue` 组件库本身的视觉风格（v0.9.5，25 个具名导出 = 24 个组件 + 1 个伴生导出按钮）。
+> - 描述对象是 `animal-island-vue` 组件库本身的视觉风格（v1.0.0，41 个具名导出 = 38 个组件 + Notification 命令式 API + useForm Hook + ICON_LIST 常量）。
 > - 文件中提到的 **侧边栏 / 页面背景图（home_bg.svg / content_bg_pc.jpg / menu_bg.svg）** 属于 **demo 文档站**，库本身不附带，仅作为整体风格参考保留。
+> - **WeddingInvitation 已移出 npm 包**（v1.0.0 起）：源码迁移至 `demo/components/WeddingInvitation/`，仅作文档站演示用途。
 > - 配套文档：消费侧 API 看 [`AI_USAGE.md`](./AI_USAGE.md)；源码内部规范看 [`skill/SKILL.md`](./skill/SKILL.md)；贡献流程看 [`CONTRIBUTING.md`](./CONTRIBUTING.md)。
 
 ## 一键提示词
@@ -19,7 +20,8 @@ Reproduce every detail below as precisely as possible.
 === FONTS (REQUIRED — load from Google Fonts if not installed) ===
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700&display=swap');
 
-font-family: Nunito, 'Noto Sans SC', -apple-system, 'PingFang SC', sans-serif;
+font-family: Nunito, 'Noto Sans SC', 'Zen Maru Gothic', 'HarmonyOS Sans SC', 'MiSans',
+             -apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
 
 Font weights:
 - Body text:           500
@@ -44,7 +46,9 @@ Text colors:
   Placeholder:               #c4b89e
 
 Primary accent (mint teal):
-  Default: #19c8b9 | Hover: #3dd4c6 | Active: #11a89b | Light bg: #e6f9f6
+  Default: #19c8b9 | Hover: #3dd4c6 | Active: #50b9ab | Light bg: #e6f9f6
+
+Input / DatePicker / TimePicker trigger background: #fffbe7 (cream-yellow capsule — input is borderless)
 
 Status:
   Success: #6fba2c (active: #5a9e1e)
@@ -54,14 +58,14 @@ Status:
   Switch OFF gray: #d4c9b4 (border: #c4b89e)
 
 Game-special:
-  Focus yellow:        #ffcc00 (darker: #e0b800) — input focus highlight, NOT blue
+  Focus yellow:        #ffcc00 (darker: #e0b800) — Switch/Checkbox/Radio/BackTop focus highlight, NOT blue
   [Demo-site only] Sidebar selected bg: #B7C6E5
   [Demo-site only] Sidebar hover bg:    #d6dff0
   Modal confirm btn (custom footer): background #ffcc00, color #725d42
 
 Borders:
-  Standard:       2px solid #9f927d
-  Input (normal): 2.5px solid #c4b89e | hover: #a89878 | large: 3px
+  Standard:       2px solid #aaa69d (Button default/dashed, Collapse container) | hover: #827157
+  Input:          NONE — borderless cream-yellow capsule (bg #fffbe7), no border at any state
   Time component: 3px solid #d4cfc3
 
 3D shadow colors (bottom box-shadow only — NO elevation shadow):
@@ -79,7 +83,7 @@ Borders:
   Feature card hover: 0 8px 24px rgba(114, 93, 66, 0.15)
 
 === SHAPE & RADIUS ===
-Buttons and inputs:        border-radius: 50px  (full pill/capsule — most important)
+Buttons and inputs:        border-radius: 50px (full pill/capsule — most important; Input small 40px, Button small 16px / large 24px)
 Default cards:             border-radius: 20px
 Title heading (ribbon):    swallowtail clip-path banner with 3D fold (use <Title>, NOT <Card>)
 Modals:                    SVG blob clip-path (see path below)
@@ -125,7 +129,7 @@ Primary / danger-primary buttons + Switch get a bottom 3D pixel-stack shadow tha
   Default: box-shadow: 0 5px 0 0 #bdaea0; transform: none;
   Hover:   box-shadow: 0 6px 0 0 #bdaea0; transform: translateY(-1px);
   Active:  box-shadow: 0 1px 0 0 #bdaea0; transform: translateY(2px);
-Input is shadow-less by default (`shadow` prop defaults to false). Only when opted in via `<Input :shadow="true" />` does it apply the 0 Npx 0 0 #d4c9b4 stack shown below. Status (error/warning) and focus rings render regardless.
+Input is shadow-less by default (`shadow` prop defaults to false). Only when opted in via `<Input :shadow="true" />` does it apply the 0 Npx 0 0 #d4c9b4 stack shown below. Status (error/warning) shadows render regardless. Input has NO border and NO focus ring — it is a borderless cream-yellow (#fffbe7) capsule.
 Default / dashed / text / link buttons use a softer elevation shadow only:
   Rest:    box-shadow: 0 2px 4px 0 rgba(61, 52, 40, 0.06);
   Hover:   box-shadow: 0 3px 10px 0 rgba(61, 52, 40, 0.10); transform: translateY(-1px);
@@ -135,11 +139,12 @@ Switch handle: vertically centered via transform: translateY(-50%) — NO outer 
 transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
 
 === FOCUS STATES ===
-Input focus:    border-color: #ffcc00; box-shadow: 0 0 0 3px rgba(255,204,0,0.15)  (if :shadow="true": also 0 3px 0 0 #e0b800)
+Input:          NO focus ring in current source (borderless capsule — focus is left to the native inner input, which is styled borderless/outline-less)
 Button focus:   outline: 2px solid #19c8b9; outline-offset: 2px
 Switch focus:   outline: 2px solid #ffcc00; outline-offset: 2px
 Radio focus:    outline: 2px solid #f5c31c; outline-offset: 2px
 Checkbox focus: outline: 2px solid #ffcc00; outline-offset: 2px
+BackTop / Image / Notification focus: outline: 2px solid #ffcc00; outline-offset: 2px
 
 === BUTTON SIZES (exact) ===
 small:  height 32px, padding 0 16px, font-size 12px, border-radius 16px
@@ -148,11 +153,14 @@ large:  height 48px, padding 0 32px, font-size 16px, border-radius 24px
 font-weight: 600, letter-spacing: 0.02em, line-height: 1
 
 === INPUT SIZES (exact) ===
-NOTE: shadow column applies ONLY when `:shadow="true"` is passed. Default rendering has NO box-shadow.
-small:  height 32px, padding 0 14px, font-size 12px, radius 40px,  border 2px, opt-in shadow: 0 2px 0 0 #d4c9b4
-middle: height 40px, padding 0 18px, font-size 14px, radius 50px,  border 2px, opt-in shadow: 0 3px 0 0 #d4c9b4
-large:  height 48px, padding 0 22px, font-size 16px, radius 50px,  border 2px, opt-in shadow: 0 4px 0 0 #d4c9b4
+NOTE: Input is BORDERLESS — background #fffbe7 (cream-yellow capsule), no border at any state.
+      Shadow column applies ONLY when `:shadow="true"` is passed. Default rendering has NO box-shadow.
+small:  height 32px, padding 0 14px, font-size 12px, radius 40px,  opt-in shadow: 0 2px 0 0 #d4c9b4
+middle: height 40px, padding 0 18px, font-size 14px, radius 50px,  opt-in shadow: 0 3px 0 0 #d4c9b4
+large:  height 48px, padding 0 22px, font-size 16px, radius 50px,  opt-in shadow: 0 4px 0 0 #d4c9b4
 Input text: color #725d42, font-weight 500, letter-spacing 0.01em
+Status shadows (always render): error 0 3px 0 0 #c94444 | warning 0 3px 0 0 #dba90e
+Disabled: background #ece8dc, opacity 0.6, cursor not-allowed
 
 === SWITCH SIZES (exact) ===
 default: min-width 52px, height 28px, border 2.5px
@@ -171,10 +179,20 @@ animation: animal-btn-loading 1s linear infinite;
 @keyframes animal-btn-loading { 0% { background-position: 0 0; } 100% { background-position: -28.28px 0; } }
 
 === ACCORDION (Collapse) — CSS-only animation ===
+Container: background #f8f8f0; border 2px solid #aaa69d; border-radius 18px
+Toggle icon: 28px circle bg #19c8b9 color #fff (expanded: bg #50b9ab, rotated 180deg)
 display: grid; grid-template-rows: 0fr;
 transition: grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 expanded: grid-template-rows: 1fr;
 inner wrapper: overflow: hidden;
+
+=== TABS ===
+Wrapper: background #f8f8f0; border 2px solid #e8e2d6; border-radius 24px; overflow hidden
+Tab list: padding 16px; gap 4px; background rgba(255,255,255,0.6); border-bottom 2px solid #e8e2d6
+Tab item: padding 8px 16px; border-radius 24px (pill); color #725d42; font-weight 500
+  hover:  background rgba(25,200,185,0.1)
+  active: background #0cc0b5 (solid teal); color #fff9e3 (cream); font-weight 600; icon scales 1.2
+  optional active shadow (default on): 0 3px 0 0 rgba(61,52,40,0.08)
 
 === TIME DISPLAY ===
 Container: padding 16px 36px, gap 24px, background linear-gradient(180deg, #fff 0%, #f8f8f0 100%),
@@ -203,7 +221,7 @@ brown #9a835a / warm-peach-pink #e18c6f
 === CARD ===
 Default container: background rgb(247, 243, 223); border-radius 20px;
                    NO box-shadow (cards rely on border / pattern, not elevation);
-                   padding 16px 20px; color #725d42
+                   padding 16px 24px; color #725d42
 13 solid color variants: see palette above. White text on dark variants (purple/app-blue/app-orange/app-red/brown/warm-peach-pink etc.), dark brown text on light variants (default/app-yellow/yellow-green).
 Hover: transform translateY(-2px); transition 0.25s cubic-bezier(0.4,0,0.2,1)
 NEW `pattern` prop (v0.9+) — pastel polka-dot wallpaper layer (REPLACES solid color):
@@ -244,7 +262,7 @@ Layer stack (z-index ascending):
 Outer button: heavily-rounded square (border-radius 12/14/16px), NOT a perfect circle
 Default:   background rgb(247,243,223); border 2px solid #c4b89e
 Hover:     border-color #19c8b9; transform translateY(-1px)
-Checked:   background #19c8b9; border-color #11a89b
+Checked:   background #19c8b9; border-color #50b9ab
 Checkmark dot inside: 10/12/16px, color #fff
 Pop animation (checkmark): 0.15s ease — 0% scale(0.4) opacity 0 → 60% scale(1.2) → 100% scale(1) opacity 1
 Label:     color #725d42 (checked: #794f27), font-weight 500, letter-spacing 0.01em
@@ -256,7 +274,7 @@ Group:     horizontal flex gap 12px / vertical column gap 8px
 === CHECKBOX (sizes small 18 / middle 22 / large 28 px) ===
 Unchecked box:  background rgb(247,243,223); border 2.5px solid #c4b89e; border-radius 8px
 Hover box:      border-color #19c8b9; transform translateY(-1px)
-Checked box:    background #19c8b9; border-color #11a89b
+Checked box:    background #19c8b9; border-color #50b9ab
 Checkmark ✓:    color #fff, font-weight 700, pop animation 0.15s
 Label:          color #725d42 (hover #794f27), font-weight 500, letter-spacing 0.01em
 Focus ring:     outline 2px solid #ffcc00; outline-offset 2px
@@ -359,7 +377,7 @@ Or template form:
     <span class="note">Welcome to <strong>animal-island-vue</strong>!</span>
   </Typewriter>
 
-=== WEDDING INVITATION (specialty card) ===
+=== [Demo-site only] WEDDING INVITATION (specialty card — NOT in the npm package since v1.0.0) ===
 Envelope container: max-width 420px; padding 56px 36px (top/sides);
                     padding-bottom var(--lottery-h, 160px) (reserves space for tear-off ticket stub);
                     border-radius 16px;
@@ -378,14 +396,15 @@ Float decorations: 4.5s ease-in-out infinite "float" (Y: 0 → -6px, rot: 0 → 
                    stagger delays 0s / 0.6s / 1.2s / 0.3s / 1s
 Banner divider: 64px × 2px linear-gradient(to right, transparent, #725d42, transparent)
 
-=== COMPONENT INVENTORY (31 named exports from src/index.ts) ===
+=== COMPONENT INVENTORY (41 named exports from src/index.ts) ===
 Interactive:           BackTop, Button, Input, Switch, Modal, Collapse, Select, Tabs, Checkbox, Radio, Drawer
 Container / Heading:   Card (13 colors + 13 dot patterns), Title (ribbon banner — 13 schemes), Table, Tag
-Feedback:              Tooltip, Loading, Notification, Progress, Skeleton (SkeletonButton, SkeletonInput, SkeletonAvatar)
-Form:                  Form, FormItem, FormProvider, DatePicker, TimePicker
-Decorative:            Time, Phone, Footer, Divider, Cursor, Typewriter, Icon, Wallet
+Feedback:              Tooltip, Loading, Notification (imperative API, with NotificationContainer), Progress, Skeleton (SkeletonButton, SkeletonInput, SkeletonAvatar)
+Form:                  Form, FormItem, FormProvider, useForm, DatePicker, TimePicker
+Decorative:            Time, Phone, Footer, Divider, Cursor, Typewriter, Icon (+ ICON_LIST), Wallet
 Content display:       CodeBlock, Image
-Specialty:             WeddingInvitation (+ WeddingInvitationExportButton companion — only export not a component)
+Non-component exports: Notification (command-style toast API), useForm (form hook), ICON_LIST (icon name list)
+[Demo-site only]       WeddingInvitation (+ WeddingInvitationExportButton companion) — moved out of the npm package in v1.0.0
 
 === CODE BLOCK (dark theme, Vue SFC / TS only) ===
 Container: padding 20px 24px; background #2b2118; border 1px solid #3d3028;
@@ -396,9 +415,9 @@ Token colors:
   comment   #6b5e50 (/* */, //, <!-- -->)
   string    #a8d4a0 (quoted strings, numeric literals)
   keyword   #d4a0e0 (import/export/const/return/true/false/null/async/await/type/interface...)
-  vue       #41b883 (ref, reactive, computed, watch, watchEffect, onMounted, onUnmounted,
-                    defineProps, defineEmits, defineExpose, defineComponent, withDefaults,
-                    v-model, v-if, v-else, v-for, v-show, v-bind, v-on, :slot, <script setup>...)
+  react     #e06c75 (React APIs: useState/useEffect/useRef/useContext/memo/forwardRef...
+                    AND Vue APIs: ref, reactive, computed, watch, defineComponent,
+                    defineProps, defineEmits, onMounted, onBeforeUnmount)
   component #80c0e0 (PascalCase identifiers — SFC tags / type names)
   func      #61afef (lowercase identifier followed by `(`)
   prop      #e8c87a (identifier followed by `=` — including `:prop` / `@event` bindings)
@@ -445,8 +464,8 @@ Interface details:
 - [Demo-site only] Sidebar 220px wide with leaf texture background, menu items highlight in
   light blue #B7C6E5
 - Nunito rounded font family (Google Fonts), weight 600-700, friendly chubby letterforms
-- Yellow focus highlight #ffcc00 on focused inputs (NOT blue)
-- Switch toggle with floating 3D handle, green #86d67a when ON
+- Yellow focus highlight #ffcc00 on focused switches / checkboxes (NOT blue)
+- Switch toggle with flat round handle, green #86d67a track when ON
 - Collapse accordion with teal circle icon, leaf SVG decoration
 - Time widget showing weekday in green #6fba2c, large 48px clock digits
 - Pastel parchment Table with dashed dotted row dividers and diagonal teal stripe hover
@@ -468,14 +487,15 @@ Interface details:
 | 主背景                 | `#f8f8f0`                                                                                                                | 按钮、通用背景                                      |
 | 正文文字               | `#725d42`                                                                                                                | 组件内正文                                          |
 | Header 文字            | `#794f27`                                                                                                                | 章节标题、checked label                             |
-| 主色调                 | `#19c8b9`                                                                                                                | 焦点环、Collapse 图标、Radio/Checkbox checked       |
+| 主色调                 | `#19c8b9`                                                                                                                | Button 焦点环、Collapse 图标、Radio/Checkbox checked |
 | Switch ON 绿           | `#86d67a`                                                                                                                | Switch 开启背景                                     |
 | 成功绿                 | `#6fba2c`                                                                                                                | 星期文字、成功状态                                  |
 | 按钮 3D 阴影           | `#bdaea0`                                                                                                                | **仅 primary** `0 5px 0 0`（hover 6 / active 1）    |
 | 默认按钮阴影           | `0 2px 4px 0 rgba(61,52,40,0.06)`                                                                                        | default / dashed / text / link 静止态               |
 | 默认按钮 hover         | `0 3px 10px 0 rgba(61,52,40,0.10)`                                                                                       | 同上，hover 时                                      |
+| 输入框底色             | `#fffbe7`                                                                                                                | Input / DatePicker / TimePicker 无描边胶囊触发器    |
 | 输入框 3D 阴影         | `#d4c9b4`                                                                                                                | 默认无阴影；`:shadow="true"` 时 `0 3px 0 0 #d4c9b4` |
-| 焦点黄                 | `#ffcc00`                                                                                                                | Input / Switch / Checkbox focus                     |
+| 焦点黄                 | `#ffcc00`                                                                                                                | Switch / Checkbox / BackTop / Image focus           |
 | Radio focus 黄         | `#f5c31c`                                                                                                                | Radio focus（暖一档黄）                             |
 | Modal 确认按钮         | bg `#ffcc00`, color `#725d42`                                                                                            | 游戏黄主操作                                        |
 | 按钮高度（中）         | `45px`                                                                                                                   | middle size                                         |
@@ -494,7 +514,7 @@ Interface details:
 | Table 圆角             | `20px` 外壳；hover 行 `inset(0 round 30px)`                                                                              | 表格                                                |
 | Table 行分隔           | `1px dashed`（6px on / 6px off）`rgb(240,232,216)`                                                                       | ::after 实现                                        |
 | Table hover 条纹       | `-45deg` teal `rgba(25,200,185,0.6)/rgba(14,196,182,0.6)` 28.28px                                                        | 对角条纹                                            |
-| 字体                   | `Nunito, 'Noto Sans SC'`                                                                                                 | Google Fonts 加载                                   |
+| 字体                   | `Nunito, 'Noto Sans SC', 'Zen Maru Gothic', ...`                                                                         | Google Fonts 加载 Nunito + Noto Sans SC             |
 | 按钮字重               | `600`                                                                                                                    | 按钮文字                                            |
 | 时间数字字重           | `900`                                                                                                                    | Time 组件                                           |
 | Title 字重             | `900`                                                                                                                    | 飘带文字                                            |
@@ -509,6 +529,6 @@ Interface details:
 | Divider                | `height: 12px`，5 种背景图                                                                                               | 装饰分割线                                          |
 | Cursor                 | `cursor: url(...) 4 0, auto !important`                                                                                  | 游戏手指光标                                        |
 | Typewriter 默认速度    | `90ms/字`                                                                                                                | 按字符打印，无包裹元素                              |
-| WeddingInvitation 外壳 | max-width 420px；filter drop-shadow；inset 软边                                                                          | 信封式特种卡                                        |
-| WeddingInvitation 票根 | bottom 160px tear-off + 14px 圆形冲孔 + 撕痕 inset 阴影                                                                  | 抽奖券效果                                          |
+| WeddingInvitation 外壳 | max-width 420px；filter drop-shadow；inset 软边                                                                          | [Demo-only] 信封式特种卡                            |
+| WeddingInvitation 票根 | bottom 160px tear-off + 14px 圆形冲孔 + 撕痕 inset 阴影                                                                  | [Demo-only] 抽奖券效果                              |
 | Google Fonts URL       | `fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700&display=swap` | 在线加载                                            |
