@@ -225,7 +225,6 @@ const wrapperStyle = computed<CSSProperties>(() => ({
 
     &__row {
         position: relative;
-        transition: all 0.25s @motion-ease;
 
         &--striped {
             background: rgba(248, 248, 240, 0.6);
@@ -240,7 +239,6 @@ const wrapperStyle = computed<CSSProperties>(() => ({
                 rgba(14, 196, 182, 0.6) 20px
             );
             background-size: 28.28px 28.28px;
-            clip-path: inset(0 0 0 0 round 30px);
 
             .animal-table__cell {
                 color: #3d2e1e;

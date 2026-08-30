@@ -45,15 +45,15 @@ const dataSource: Person[] = [
 ];
 
 const tagStyles: Record<string, { bg: string; color: string }> = {
-    音乐: { bg: 'rgba(147, 112, 219, 0.15)', color: '#9370db' },
-    运动: { bg: 'rgba(255, 140, 0, 0.15)', color: '#ff8c00' },
-    唱歌: { bg: 'rgba(255, 99, 71, 0.15)', color: '#ff6347' },
-    钓鱼: { bg: 'rgba(30, 144, 255, 0.15)', color: '#1e90ff' },
-    画画: { bg: 'rgba(255, 105, 180, 0.15)', color: '#ff69b4' },
+    音乐: { bg: '#f1ecfa', color: '#9370db' },
+    运动: { bg: '#fff1e0', color: '#ff8c00' },
+    唱歌: { bg: '#ffeae6', color: '#ff6347' },
+    钓鱼: { bg: '#e5f1ff', color: '#1e90ff' },
+    画画: { bg: '#ffe9f2', color: '#ff69b4' },
 };
 
 function hobbyStyle(hobby: string) {
-    const s = tagStyles[hobby] ?? { bg: 'rgba(25, 200, 185, 0.15)', color: '#19c8b9' };
+    const s = tagStyles[hobby] ?? { bg: '#e0f8f5', color: '#19c8b9' };
     return {
         padding: '4px 12px',
         background: s.bg,
