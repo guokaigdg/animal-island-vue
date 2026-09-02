@@ -1,8 +1,24 @@
 <script setup lang="ts" generic="T extends TableRecord">
-import { computed, useAttrs, type CSSProperties, type VNode } from 'vue';
+import { computed, ref, useAttrs, type CSSProperties, type VNode } from 'vue';
+import Pagination from '../Pagination/Pagination.vue';
 import type { TableColumn, TableRecord, TableRowAttributes } from './types';
 
 const attrs = useAttrs();
+
+// 分页配置类型必须内联声明（不可从 '../Pagination/types' 导入），
+// 否则 dev server（root=demo）下跨文件类型无法解析，运行时 props 声明会丢失字段
+interface TablePaginationConfig {
+    current?: number;
+    defaultCurrent?: number;
+    pageSize?: number;
+    defaultPageSize?: number;
+    showSizeChanger?: boolean;
+    pageSizeOptions?: number[];
+    showQuickJumper?: boolean;
+    showTotal?: boolean;
+    disabled?: boolean;
+    variant?: 'orange' | 'teal';
+}
 
 const props = withDefaults(
     defineProps<{
@@ -16,6 +32,8 @@ const props = withDefaults(
         loading?: boolean;
         emptyText?: string;
         scroll?: { x?: number | string; y?: number | string };
+        /** 分页配置；传入对象开启客户端分页，false 或缺省不分页（total 由 Table 内部按数据量计算，无需传入） */
+        pagination?: false | TablePaginationConfig;
     }>(),
     {
         columns: () => [] as TableColumn<T>[],
@@ -27,6 +45,10 @@ const props = withDefaults(
         emptyText: '暂无数据',
     }
 );
+
+const emit = defineEmits<{
+    (e: 'change', page: number, pageSize: number): void;
+}>();
 
 defineSlots<{
     [key: `cell-${string}`]: (scope: { value: unknown; record: T; index: number }) => unknown;
@@ -70,6 +92,31 @@ const wrapperStyle = computed<CSSProperties>(() => ({
     overflowY: props.scroll?.y ? 'auto' : undefined,
     maxHeight: typeof props.scroll?.y === 'number' ? `${props.scroll.y}px` : props.scroll?.y,
 }));
+
+// ---------- 客户端分页 ----------
+// pagination.current / pagination.pageSize 受控时优先，否则走内部状态（初值取 default*）
+const paginated = computed(() => props.pagination !== false && props.pagination !== undefined);
+const paginationConfig = computed<TablePaginationConfig>(() => (props.pagination ? props.pagination : {}));
+const innerPage = ref(props.pagination ? (props.pagination.defaultCurrent ?? 1) : 1);
+const innerPageSize = ref(props.pagination ? (props.pagination.defaultPageSize ?? 10) : 10);
+const pageSize = computed(() =>
+    paginated.value ? (paginationConfig.value.pageSize ?? innerPageSize.value) : props.dataSource.length
+);
+const pageCount = computed(() => Math.max(1, Math.ceil(props.dataSource.length / Math.max(1, pageSize.value))));
+const currentPage = computed(() =>
+    paginated.value ? Math.min(paginationConfig.value.current ?? innerPage.value, pageCount.value) : 1
+);
+const pageData = computed(() =>
+    paginated.value
+        ? props.dataSource.slice((currentPage.value - 1) * pageSize.value, currentPage.value * pageSize.value)
+        : props.dataSource
+);
+
+function handlePaginationChange(page: number, size: number) {
+    if (paginationConfig.value.current === undefined) innerPage.value = page;
+    if (paginationConfig.value.pageSize === undefined) innerPageSize.value = size;
+    emit('change', page, size);
+}
 </script>
 
 <template>
@@ -112,7 +159,7 @@ const wrapperStyle = computed<CSSProperties>(() => ({
                     </td>
                 </tr>
                 <tr
-                    v-for="(record, index) in dataSource"
+                    v-for="(record, index) in pageData"
                     v-else
                     :key="getRowKey(record, index)"
                     :class="getRowClassName(record, index)"
@@ -141,6 +188,15 @@ const wrapperStyle = computed<CSSProperties>(() => ({
                 </tr>
             </tbody>
         </table>
+        <div v-if="paginated" class="animal-table__pagination">
+            <Pagination
+                v-bind="paginationConfig"
+                :total="dataSource.length"
+                :current="currentPage"
+                :page-size="pageSize"
+                @change="handlePaginationChange"
+            />
+        </div>
         <div v-if="loading" class="animal-table__loader">
             <div class="animal-table__spinner">
                 <svg viewBox="0 0 50 50" width="40" height="40">
@@ -279,6 +335,12 @@ const wrapperStyle = computed<CSSProperties>(() => ({
         color: #725d42;
         line-height: 1.6;
         transition: all 0.25s @motion-ease;
+    }
+
+    &__pagination {
+        display: flex;
+        justify-content: flex-end;
+        padding: 10px 16px 8px;
     }
 
     &__loader {

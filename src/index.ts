@@ -108,7 +108,7 @@ export { CodeBlock } from './components/CodeBlock';
 export type { CodeBlockProps } from './components/CodeBlock';
 
 export { Table } from './components/Table';
-export type { TableProps, TableColumn, TableRecord } from './components/Table';
+export type { TableProps, TableColumn, TableRecord, TablePagination } from './components/Table';
 
 export { Pagination } from './components/Pagination';
 export type { PaginationProps, PaginationVariant } from './components/Pagination';
