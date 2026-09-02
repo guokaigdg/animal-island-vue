@@ -1,4 +1,5 @@
 import type { CSSProperties, VNode } from 'vue';
+import type { PaginationProps } from '../Pagination/types';
 
 export type TableRecord = Record<string, unknown>;
 
@@ -32,4 +33,9 @@ export interface TableProps<T extends TableRecord = TableRecord> {
     loading?: boolean;
     emptyText?: string;
     scroll?: { x?: number | string; y?: number | string };
+    /** 分页配置；传入对象开启客户端分页，false 或缺省不分页（total 由 Table 内部按数据量计算，无需传入） */
+    pagination?: false | TablePagination;
 }
+
+/** Table 分页配置（同 PaginationProps，但 total 由 Table 内部按 dataSource 长度计算） */
+export type TablePagination = Omit<PaginationProps, 'total'>;
