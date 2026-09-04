@@ -9,11 +9,9 @@ import InputDemo from './pages/InputDemo.vue';
 import SwitchDemo from './pages/SwitchDemo.vue';
 import CardDemo from './pages/CardDemo.vue';
 import CollapseDemo from './pages/CollapseDemo.vue';
-import CursorDemo from './pages/CursorDemo.vue';
 import ModalDemo from './pages/ModalDemo.vue';
 import TypewriterDemo from './pages/TypewriterDemo.vue';
 import DividerDemo from './pages/DividerDemo.vue';
-import IconDemo from './pages/IconDemo.vue';
 import SelectDemo from './pages/SelectDemo.vue';
 import CheckboxDemo from './pages/CheckboxDemo.vue';
 import RadioDemo from './pages/RadioDemo.vue';
@@ -21,17 +19,13 @@ import TooltipDemo from './pages/TooltipDemo.vue';
 import TabsDemo from './pages/TabsDemo.vue';
 import FooterDemo from './pages/FooterDemo.vue';
 import CodeBlockDemo from './pages/CodeBlockDemo.vue';
-import LoadingDemo from './pages/LoadingDemo.vue';
 import TableDemo from './pages/TableDemo.vue';
 import TimeDemo from './pages/TimeDemo.vue';
-import PhoneDemo from './pages/PhoneDemo.vue';
-import WeddingInvitationDemo from './pages/WeddingInvitationDemo.vue';
 import FormDemo from './pages/FormDemo.vue';
 import TagDemo from './pages/TagDemo.vue';
 import ProgressDemo from './pages/ProgressDemo.vue';
 import DrawerDemo from './pages/DrawerDemo.vue';
 import NotificationDemo from './pages/NotificationDemo.vue';
-import WalletDemo from './pages/WalletDemo.vue';
 import SkeletonDemo from './pages/SkeletonDemo.vue';
 import BackTopDemo from './pages/BackTopDemo.vue';
 import ImageDemo from './pages/ImageDemo.vue';
@@ -52,11 +46,9 @@ const PAGES: Record<string, unknown> = {
     switch: SwitchDemo,
     card: CardDemo,
     collapse: CollapseDemo,
-    cursor: CursorDemo,
     modal: ModalDemo,
     typewriter: TypewriterDemo,
     'divider-comp': DividerDemo,
-    icon: IconDemo,
     select: SelectDemo,
     checkbox: CheckboxDemo,
     radio: RadioDemo,
@@ -64,17 +56,13 @@ const PAGES: Record<string, unknown> = {
     tabs: TabsDemo,
     footer: FooterDemo,
     codeblock: CodeBlockDemo,
-    loading: LoadingDemo,
     table: TableDemo,
     time: TimeDemo,
-    phone: PhoneDemo,
-    'wedding-invitation': WeddingInvitationDemo,
     form: FormDemo,
     tag: TagDemo,
     progress: ProgressDemo,
     drawer: DrawerDemo,
     notification: NotificationDemo,
-    wallet: WalletDemo,
     image: ImageDemo,
     datepicker: DatePickerDemo,
     timepicker: TimePickerDemo,

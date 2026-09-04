@@ -98,7 +98,7 @@ Notification.destroy();
                         @click="
                             Notification.success({
                                 message: '钓到鱼了！',
-                                description: '这是一条鲈鱼，可以卖 300 铃钱。',
+                                description: '这是一条鲈鱼，可以卖 300 金币。',
                             })
                         "
                     >

@@ -50,7 +50,7 @@ function handleLoginFailed(info: { values: Record<string, unknown>; errorFields:
 
 function fillAll() {
     form.setFieldsValue({
-        name: '豆狸粒',
+        name: '小鹿兔',
         fruit: 'orange',
         hobby: ['fish', 'mine'],
     });
@@ -402,7 +402,7 @@ const [form] = useForm();
                     <Input placeholder="整数" />
                 </FormItem>
                 <FormItem label="邀请码" name="code" :rules="[{ pattern: /^[A-Z]{4}$/, message: '4 位大写字母' }]">
-                    <Input placeholder="如：ACNH" />
+                    <Input placeholder="如：ABCD" />
                 </FormItem>
                 <FormItem>
                     <div :style="{ marginTop: '8px' }">

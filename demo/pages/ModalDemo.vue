@@ -103,7 +103,7 @@ const open = ref(false);
         </Modal>
 
         <Modal v-model:open="titleModalOpen" title="博物馆捐赠" @ok="titleModalOpen = false">
-            是否愿意将这条鱼捐赠给博物馆呢？傅达会好好照顾它的！这可是博物馆的新展品哦~
+            是否愿意将这条鱼捐赠给博物馆呢？馆长会好好照顾它的！这可是博物馆的新展品哦~
         </Modal>
 
         <Modal v-model:open="customFooterOpen" title="确认操作">

@@ -37,10 +37,10 @@ const columns: TableColumn<Person>[] = [
 ];
 
 const dataSource: Person[] = [
-    { key: '1', name: '豆狸', age: 26, island: '彩虹岛', fruit: '苹果', hobby: '音乐' },
-    { key: '2', name: '粒狸', age: 24, island: '彩虹岛', fruit: '橘子', hobby: '运动' },
-    { key: '3', name: '西施惠', age: 28, island: '好评岛', fruit: '樱桃', hobby: '唱歌' },
-    { key: '4', name: '喻哥', age: 30, island: '无人岛', fruit: '梨', hobby: '钓鱼' },
+    { key: '1', name: '小鹿', age: 26, island: '彩虹岛', fruit: '苹果', hobby: '音乐' },
+    { key: '2', name: '小兔', age: 24, island: '彩虹岛', fruit: '橘子', hobby: '运动' },
+    { key: '3', name: '小樱', age: 28, island: '好评岛', fruit: '樱桃', hobby: '唱歌' },
+    { key: '4', name: '喻哥', age: 30, island: '月亮岛', fruit: '梨', hobby: '钓鱼' },
     { key: '5', name: '小润', age: 22, island: '摸鱼岛', fruit: '桃子', hobby: '画画' },
 ];
 
@@ -81,7 +81,7 @@ const columns: TableColumn[] = [
 ];
 
 const data = [
-    { key: '1', name: '豆狸', age: 26, hobby: '音乐' },
+    { key: '1', name: '小鹿', age: 26, hobby: '音乐' },
 ];
 
 const striped = ref(true);

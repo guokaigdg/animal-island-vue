@@ -3,22 +3,22 @@ import { Image, type ImageColor } from '@';
 import { sectionStyle, sectionTitleStyle, tagStyle, labelStyle, demoBodyStyle, ApiTable, CodeBlock } from '../tools';
 import type { ApiRow } from '../tools';
 
-/** 动森风格随机图片池（与 React 版一致） */
+/** 自然风格随机图片池（与 React 版一致） */
 const heroImages = [
-    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=animal%20crossing%20island%20landscape%20vibrant%20green%20grass%20blue%20sky%20cherry%20blossoms%20nintendo%20style&image_size=landscape_16_9',
-    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=animal%20crossing%20museum%20interior%20warm%20lighting%20fossils%20art%20gallery&image_size=landscape_16_9',
-    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=animal%20crossing%20beach%20sunset%20palm%20trees%20coconut%20nintendo%20cute&image_size=landscape_16_9',
-    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=animal%20crossing%20winter%20snow%20christmas%20lights%20cozy%20village&image_size=landscape_16_9',
-    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=animal%20crossing%20fishing%20river%20peaceful%20nature%20nintendo&image_size=landscape_16_9',
-    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=animal%20crossing%20villagers%20singing%20together%20happy%20nintendo%20cute&image_size=landscape_16_9',
-    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=animal%20crossing%20campfire%20night%20starry%20sky%20cozy%20tent%20nintendo%20style&image_size=landscape_16_9',
-    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=animal%20crossing%20flower%20garden%20tulips%20roses%20colorful%20hybrid%20flowers%20nintendo&image_size=landscape_16_9',
-    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=animal%20crossing%20wooden%20bridge%20over%20river%20waterfall%20lush%20forest%20nintendo&image_size=landscape_16_9',
-    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=animal%20crossing%20fruit%20orchard%20apple%20orange%20peach%20trees%20sunny%20nintendo&image_size=landscape_16_9',
-    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=animal%20crossing%20lighthouse%20ocean%20cliff%20seagulls%20blue%20sky%20nintendo%20cute&image_size=landscape_16_9',
-    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=animal%20crossing%20festival%20fireworks%20night%20sky%20lanterns%20celebration%20nintendo&image_size=landscape_16_9',
-    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=animal%20crossing%20cafe%20interior%20cozy%20coffee%20wooden%20furniture%20warm%20nintendo&image_size=landscape_16_9',
-    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=animal%20crossing%20hot%20air%20balloon%20sky%20adventure%20clouds%20colorful%20nintendo&image_size=landscape_16_9',
+    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=island%20landscape%20vibrant%20green%20grass%20blue%20sky%20cherry%20blossoms%20style&image_size=landscape_16_9',
+    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=museum%20interior%20warm%20lighting%20fossils%20art%20gallery&image_size=landscape_16_9',
+    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=beach%20sunset%20palm%20trees%20coconut%20cute&image_size=landscape_16_9',
+    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=winter%20snow%20christmas%20lights%20cozy%20village&image_size=landscape_16_9',
+    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=fishing%20river%20peaceful%20nature&image_size=landscape_16_9',
+    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=villagers%20singing%20together%20happy%20cute&image_size=landscape_16_9',
+    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=campfire%20night%20starry%20sky%20cozy%20tent%20style&image_size=landscape_16_9',
+    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=flower%20garden%20tulips%20roses%20colorful%20hybrid%20flowers&image_size=landscape_16_9',
+    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=wooden%20bridge%20over%20river%20waterfall%20lush%20forest&image_size=landscape_16_9',
+    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=fruit%20orchard%20apple%20orange%20peach%20trees%20sunny&image_size=landscape_16_9',
+    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=lighthouse%20ocean%20cliff%20seagulls%20blue%20sky%20cute&image_size=landscape_16_9',
+    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=festival%20fireworks%20night%20sky%20lanterns%20celebration&image_size=landscape_16_9',
+    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=cafe%20interior%20cozy%20coffee%20wooden%20furniture%20warm&image_size=landscape_16_9',
+    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=hot%20air%20balloon%20sky%20adventure%20clouds%20colorful&image_size=landscape_16_9',
 ];
 
 /** Fisher-Yates 洗牌，返回打乱后的新数组 */

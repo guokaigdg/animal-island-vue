@@ -1,0 +1,11 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Neutral paint palette icon (original design) -->
+    <path
+        d="M24 4C13 4 4 12.5 4 23c0 10.5 9 19 19 19 3.2 0 5-2.1 5-4.6 0-1.7-.9-3.1-2.2-4.1-1.2-1-1.8-2.1-1.8-3.3 0-2.4 2.1-4.5 4.9-4.5h4.4C40.6 25.5 44 21.8 44 16.6 44 9.5 35 4 24 4Z"
+        fill="#B77DEE"
+    />
+    <circle cx="14" cy="15" r="3.2" fill="#F7CD67" />
+    <circle cx="24" cy="11" r="3.2" fill="#8AC68A" />
+    <circle cx="33" cy="15" r="3.2" fill="#F8A6B2" />
+    <circle cx="12" cy="25" r="3.2" fill="#889DF0" />
+</svg>

@@ -1,16 +1,11 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { Cursor, Loading } from '@';
 import HomePage from './HomePage.vue';
 import ComponentPage from './ComponentPage.vue';
 import { PAGE_INFO } from './pageInfo';
 import { useHash, useIsMobile } from './router';
 
-import nook1Url from './img/nook-phone/nook1.svg';
-import contentBgUrl from './img/content_bg_pc.jpg';
 import menuBgUrl from './img/menu_bg.svg';
-import homeBgUrl from './img/home_bg.webp';
-import guideLineUrl from './img/guide-bg-line.webp';
 
 interface MenuChild {
     key: string;
@@ -25,11 +20,11 @@ interface MenuItem {
 
 // ============================================
 // Menu config — 5 categories (与 React 版一致):
-//   基础      → 无状态/纯展示 (Title, Button, Divider, Icon, Tag, Cursor, CodeBlock, Footer)
+//   基础      → 无状态/纯展示 (Title, Button, Divider, Tag, CodeBlock, Footer)
 //   表单      → 数据录入/校验 (Input, Switch, Select, Checkbox, Radio, Form)
-//   反馈      → 浮层/状态/异步反馈 (Notification, Modal, Drawer, Tooltip, Loading, Progress)
+//   反馈      → 浮层/状态/异步反馈 (Notification, Modal, Drawer, Tooltip, Progress)
 //   数据展示  → 容器/列表/排版 (Card, Collapse, Tabs, Table, Typewriter)
-//   主题      → 业务复合/主题专属 (Wallet, Time, Phone, Wedding)
+//   主题      → 业务复合/主题专属 (Time, Countdown)
 // ============================================
 const MENU_ITEMS: MenuItem[] = [
     {
@@ -38,12 +33,10 @@ const MENU_ITEMS: MenuItem[] = [
         children: [
             { key: 'title', label: 'Title 标题', isNew: true },
             { key: 'button', label: 'Button 按钮' },
-            { key: 'divider-comp', label: 'Divider 分割线' },
-            { key: 'icon', label: 'Icon 图标' },
-            { key: 'tag', label: 'Tag 标签' },
-            { key: 'cursor', label: 'Cursor 光标' },
-            { key: 'codeblock', label: 'CodeBlock 代码高亮' },
             { key: 'footer', label: 'Footer 页脚' },
+            { key: 'divider-comp', label: 'Divider 分割线' },
+            { key: 'tag', label: 'Tag 标签' },
+            { key: 'codeblock', label: 'CodeBlock 代码高亮' },
             { key: 'backtop', label: 'BackTop 返回顶部', isNew: true },
             { key: 'skeleton', label: 'Skeleton 骨架屏' },
         ],
@@ -70,7 +63,6 @@ const MENU_ITEMS: MenuItem[] = [
             { key: 'modal', label: 'Modal 弹窗' },
             { key: 'drawer', label: 'Drawer 抽屉', isNew: true },
             { key: 'tooltip', label: 'Tooltip 气泡提示' },
-            { key: 'loading', label: 'Loading 加载', isNew: true },
             { key: 'progress', label: 'Progress 进度条', isNew: true },
         ],
     },
@@ -92,11 +84,8 @@ const MENU_ITEMS: MenuItem[] = [
         key: 'cat-animal',
         label: '── 主题 ──',
         children: [
-            { key: 'wallet', label: 'Wallet 钱包', isNew: true },
             { key: 'time', label: 'Time 时间' },
-            { key: 'phone', label: 'Phone 手机' },
             { key: 'countdown', label: 'Countdown 倒计时', isNew: true },
-            { key: 'wedding-invitation', label: 'Wedding 婚礼请柬', isNew: true },
         ],
     },
 ];
@@ -104,8 +93,6 @@ const MENU_ITEMS: MenuItem[] = [
 const { hash, navigate } = useHash();
 const isMobile = useIsMobile();
 const drawerOpen = ref(false);
-const loadingActive = ref(false);
-const loadingMounted = ref(false);
 const mainRef = ref<HTMLElement | null>(null);
 
 const activeKey = computed(() => {
@@ -127,27 +114,16 @@ function handleNavigate(path: string) {
     drawerOpen.value = false;
 }
 function handleHomeNavigate(path: string) {
-    loadingMounted.value = true;
-    loadingActive.value = true;
     navigate(path);
-    window.setTimeout(() => {
-        loadingActive.value = false;
-    }, 2000);
-    window.setTimeout(() => {
-        loadingMounted.value = false;
-    }, 3500);
 }
 
 // 包装为完整 url() 值，避免 url(v-bind(...)) 被 css minifier 解析失败
-const contentBgImage = `url("${contentBgUrl}")`;
-const homeBgImage = `url("${homeBgUrl}")`;
 const menuBgImage = `url("${menuBgUrl}")`;
 </script>
 
 <template>
-    <Cursor>
-        <!-- Home page — full screen, no sidebar -->
-        <div v-if="isHomePage" class="layout home-bg" :style="{ justifyContent: 'center' }">
+    <!-- Home page — full screen, no sidebar -->
+    <div v-if="isHomePage" class="layout home-bg" :style="{ justifyContent: 'center' }">
             <HomePage @navigate="handleHomeNavigate" />
         </div>
 
@@ -156,44 +132,42 @@ const menuBgImage = `url("${menuBgUrl}")`;
             <!-- Desktop sidebar -->
             <aside v-if="!isMobile" class="sidebar">
                 <div class="sidebar-header" @click="handleNavigate('/')">
-                    <img :src="nook1Url" class="sidebar-logo" alt="nook" />
-                    集合啦！Animal
-                </div>
-                <nav class="menu-list">
-                    <template v-for="item in MENU_ITEMS" :key="item.key">
-                        <div v-if="item.children">
-                            <div class="cat-label">
-                                {{ item.label }}
-                            </div>
-                            <div v-for="child in item.children" :key="child.key" class="menu-item"
-                                :class="{ active: activeKey === child.key }" @click="handleNavigate(`/${child.key}`)">
-                                <span>{{ child.label }}</span>
-                                <span v-if="child.isNew" class="menu-badge">NEW</span>
-                            </div>
-                        </div>
-                        <div v-else class="menu-item" :class="{ active: activeKey === item.key }"
-                            @click="handleNavigate(`/${item.key}`)">
-                            <span>{{ item.label }}</span>
-                        </div>
-                    </template>
-                </nav>
-            </aside>
-
-            <!-- Mobile top bar -->
-            <div v-if="isMobile" class="mobile-bar">
-                <button class="icon-btn" @click="navigate('/')">←</button>
-                <span class="mobile-title">{{ PAGE_INFO[activeKey]?.title ?? '组件文档' }}</span>
-                <button class="icon-btn" @click="drawerOpen = true">☰</button>
+                Animal Island
             </div>
-
-            <!-- Mobile drawer -->
-            <template v-if="isMobile && drawerOpen">
-                <div class="drawer-mask" @click="drawerOpen = false" />
-                <aside class="sidebar drawer">
-                    <div class="sidebar-header" @click="handleNavigate('/')">
-                        <img :src="nook1Url" class="sidebar-logo" alt="nook" />
-                        集合啦！Animal
+            <nav class="menu-list">
+                <template v-for="item in MENU_ITEMS" :key="item.key">
+                    <div v-if="item.children">
+                        <div class="cat-label">
+                            {{ item.label }}
+                        </div>
+                        <div v-for="child in item.children" :key="child.key" class="menu-item"
+                            :class="{ active: activeKey === child.key }" @click="handleNavigate(`/${child.key}`)">
+                            <span>{{ child.label }}</span>
+                            <span v-if="child.isNew" class="menu-badge">NEW</span>
+                        </div>
                     </div>
+                    <div v-else class="menu-item" :class="{ active: activeKey === item.key }"
+                        @click="handleNavigate(`/${item.key}`)">
+                        <span>{{ item.label }}</span>
+                    </div>
+                </template>
+            </nav>
+        </aside>
+
+        <!-- Mobile top bar -->
+        <div v-if="isMobile" class="mobile-bar">
+            <button class="icon-btn" @click="navigate('/')">←</button>
+            <span class="mobile-title">{{ PAGE_INFO[activeKey]?.title ?? '组件文档' }}</span>
+            <button class="icon-btn" @click="drawerOpen = true">☰</button>
+        </div>
+
+        <!-- Mobile drawer -->
+        <template v-if="isMobile && drawerOpen">
+            <div class="drawer-mask" @click="drawerOpen = false" />
+            <aside class="sidebar drawer">
+                <div class="sidebar-header" @click="handleNavigate('/')">
+                    Animal Island
+                </div>
                     <nav class="menu-list">
                         <template v-for="item in MENU_ITEMS" :key="item.key">
                             <div v-if="item.children">
@@ -219,27 +193,12 @@ const menuBgImage = `url("${menuBgUrl}")`;
                 <ComponentPage :active-key="activeKey" />
             </main>
 
-            <img v-if="!isMobile" :src="guideLineUrl" alt="" loading="lazy" decoding="async" class="guide-line" />
+            <!-- 原装饰条图片已因版权原因移除，改为 Card 调色板纯色带（app-teal） -->
+            <div v-if="!isMobile" class="guide-line" />
         </div>
-
-        <!-- Loading transition -->
-        <div v-if="loadingMounted" class="loading-overlay" :style="{ pointerEvents: loadingActive ? 'auto' : 'none' }">
-            <Loading :active="loadingActive" />
-        </div>
-    </Cursor>
 </template>
 
 <style scoped>
-@keyframes bgScroll {
-    0% {
-        background-position: 100% 0%;
-    }
-
-    100% {
-        background-position: 0% 100%;
-    }
-}
-
 .layout {
     display: flex;
     height: 100dvh;
@@ -253,19 +212,19 @@ const menuBgImage = `url("${menuBgUrl}")`;
         'Hiragino Sans GB',
         'Microsoft YaHei',
         sans-serif;
-    background-image: v-bind(contentBgImage);
-    background-position: center;
-    background-size: auto;
-    background-repeat: repeat;
+    background:
+        radial-gradient(circle, rgba(138, 198, 138, 0.28) 1.5px, transparent 1.5px),
+        radial-gradient(circle, rgba(180, 220, 180, 0.2) 1px, transparent 1px),
+        #cfe9cf;
+    background-size: 28px 28px, 20px 20px, auto;
 }
 
 .home-bg {
-    background-image: v-bind(homeBgImage);
-    background-color: #7dc395;
-    background-position: 0 0;
-    background-size: auto;
-    background-repeat: repeat;
-    animation: bgScroll 80s linear infinite;
+    background:
+        radial-gradient(circle, rgba(138, 198, 138, 0.28) 1.5px, transparent 1.5px),
+        radial-gradient(circle, rgba(180, 220, 180, 0.2) 1px, transparent 1px),
+        #cfe9cf;
+    background-size: 28px 28px, 20px 20px, auto;
 }
 
 .sidebar {
@@ -290,12 +249,6 @@ const menuBgImage = `url("${menuBgUrl}")`;
     display: flex;
     align-items: center;
     cursor: pointer;
-}
-
-.sidebar-logo {
-    width: 24px;
-    height: 24px;
-    margin-right: 8px;
 }
 
 .menu-list {
@@ -441,13 +394,10 @@ const menuBgImage = `url("${menuBgUrl}")`;
     right: 0;
     bottom: 0;
     width: calc(100% - 220px);
+    height: 14px;
+    background: #82d5bb;
+    border-radius: 14px 14px 0 0;
     pointer-events: none;
     z-index: 0;
-}
-
-.loading-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
 }
 </style>

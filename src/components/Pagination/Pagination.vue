@@ -462,7 +462,7 @@ function jump() {
     }
 }
 
-// hover 出现动森手指光标（同 Select option:hover::before），浮在弹窗外侧不遮文字
+// hover 出现手指光标（同 Select option:hover::before），浮在弹窗外侧不遮文字
 .animal-pagination__size-option:hover::before {
     content: '';
     position: absolute;

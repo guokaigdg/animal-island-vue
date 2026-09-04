@@ -1,0 +1,78 @@
+<svg width="506" height="1078" viewBox="0 0 506 1078" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Neutral hand-drawn island tile background: slender pointed leaves, dots and berries -->
+    <rect width="506" height="1078" fill="#EAF3F7" />
+    <!-- leaves: slender pointed shapes with center vein (original design) -->
+    <g fill="#C3DAE8">
+        <path d="M60 120 C 78 88, 110 70, 150 66 C 142 102, 116 128, 78 136 C 70 132, 64 126, 60 120 Z" />
+        <path d="M60 120 C 82 112, 108 96, 150 66" stroke="#EAF3F7" stroke-width="4" />
+    </g>
+    <g fill="#B7D2E2">
+        <path d="M330 210 C 348 178, 380 160, 420 156 C 412 192, 386 218, 348 226 C 340 222, 334 216, 330 210 Z" />
+        <path d="M330 210 C 352 202, 378 186, 420 156" stroke="#EAF3F7" stroke-width="4" />
+    </g>
+    <g fill="#C9DEEA">
+        <path d="M150 480 C 168 448, 200 430, 240 426 C 232 462, 206 488, 168 496 C 160 492, 154 486, 150 480 Z" />
+        <path d="M150 480 C 172 472, 198 456, 240 426" stroke="#EAF3F7" stroke-width="4" />
+    </g>
+    <g fill="#B7D2E2">
+        <path d="M380 600 C 398 568, 430 550, 470 546 C 462 582, 436 608, 398 616 C 390 612, 384 606, 380 600 Z" />
+        <path d="M380 600 C 402 592, 428 576, 470 546" stroke="#EAF3F7" stroke-width="4" />
+    </g>
+    <g fill="#C3DAE8">
+        <path d="M90 760 C 108 728, 140 710, 180 706 C 172 742, 146 768, 108 776 C 100 772, 94 766, 90 760 Z" />
+        <path d="M90 760 C 112 752, 138 736, 180 706" stroke="#EAF3F7" stroke-width="4" />
+    </g>
+    <g fill="#C9DEEA">
+        <path d="M300 930 C 318 898, 350 880, 390 876 C 382 912, 356 938, 318 946 C 310 942, 304 936, 300 930 Z" />
+        <path d="M300 930 C 322 922, 348 906, 390 876" stroke="#EAF3F7" stroke-width="4" />
+    </g>
+    <!-- mirrored leaves -->
+    <g fill="#CBDFEA">
+        <path d="M240 340 C 222 308, 190 290, 150 286 C 158 322, 184 348, 222 356 C 230 352, 236 346, 240 340 Z" />
+        <path d="M240 340 C 218 332, 192 316, 150 286" stroke="#EAF3F7" stroke-width="4" />
+    </g>
+    <g fill="#BED6E5">
+        <path d="M440 790 C 422 758, 390 740, 350 736 C 358 772, 384 798, 422 806 C 430 802, 436 796, 440 790 Z" />
+        <path d="M440 790 C 418 782, 392 766, 350 736" stroke="#EAF3F7" stroke-width="4" />
+    </g>
+    <g fill="#CBDFEA">
+        <path d="M200 1040 C 182 1008, 150 990, 110 986 C 118 1022, 144 1048, 182 1056 C 190 1052, 196 1046, 200 1040 Z" />
+        <path d="M200 1040 C 178 1032, 152 1016, 110 986" stroke="#EAF3F7" stroke-width="4" />
+    </g>
+    <!-- small berries -->
+    <g fill="#AFCDDF">
+        <circle cx="240" cy="150" r="10" />
+        <circle cx="270" cy="175" r="7" />
+        <circle cx="90" cy="330" r="9" />
+        <circle cx="118" cy="356" r="6" />
+        <circle cx="460" cy="300" r="10" />
+        <circle cx="488" cy="326" r="6" />
+        <circle cx="290" cy="560" r="9" />
+        <circle cx="318" cy="586" r="6" />
+        <circle cx="60" cy="580" r="9" />
+        <circle cx="88" cy="606" r="6" />
+        <circle cx="430" cy="880" r="10" />
+        <circle cx="458" cy="906" r="6" />
+        <circle cx="250" cy="790" r="9" />
+        <circle cx="278" cy="816" r="6" />
+        <circle cx="350" cy="30" r="9" />
+        <circle cx="378" cy="56" r="6" />
+        <circle cx="60" cy="950" r="9" />
+        <circle cx="88" cy="976" r="6" />
+    </g>
+    <!-- tiny accent dots -->
+    <g fill="#D8E8F0">
+        <circle cx="180" cy="230" r="5" />
+        <circle cx="400" cy="430" r="5" />
+        <circle cx="160" cy="650" r="5" />
+        <circle cx="330" cy="700" r="5" />
+        <circle cx="60" cy="450" r="5" />
+        <circle cx="470" cy="60" r="5" />
+        <circle cx="430" cy="1020" r="5" />
+        <circle cx="230" cy="920" r="5" />
+        <circle cx="40" cy="40" r="5" />
+        <circle cx="300" cy="300" r="5" />
+        <circle cx="500" cy="500" r="5" />
+        <circle cx="130" cy="880" r="5" />
+    </g>
+</svg>

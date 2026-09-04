@@ -54,7 +54,7 @@ const checkStrict = (text, name, file) => {
     const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     let re;
     if (file === 'AI_USAGE.md') {
-        // ### 1.1 Button / ### 1.10 Phone (decorative NookPhone)
+        // ### 1.1 Button / ### 1.10 Phone (decorative widget)
         re = new RegExp(`^#{1,6}\\s+\\d+\\.\\d+\\s+${escaped}\\b`, 'm');
     } else {
         re = new RegExp(`^#{1,6}\\s+${escaped}\\b`, 'm');

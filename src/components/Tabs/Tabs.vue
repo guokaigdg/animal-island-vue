@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, useAttrs, watch } from 'vue';
-import leafIcon from '../../assets/img/icons/icon-leaf.png';
+import leafIcon from '../../assets/img/icons/icon-leaf.svg';
 import type { TabItem } from './types';
 
 const attrs = useAttrs();

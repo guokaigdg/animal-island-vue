@@ -92,8 +92,7 @@ import { Card } from 'animal-island-vue';
                 <Card><p>基础卡片</p></Card>
                 <Card :style="{ maxWidth: '560px', width: '100%' }">
                     <p>
-                        在 Nintendo 3DS《Animal Island: New Leaf》和《Happy Home Designer》中製作的「我的設計」QR
-                        Code，以智慧型裝置讀取就能下載至《集合啦！動物森友會》。
+                        欢迎来到小岛！这里是一个自然风格组件库的卡片示例，展示较长的文本内容在卡片中的排版效果。
                     </p>
                 </Card>
             </div>
@@ -103,7 +102,7 @@ import { Card } from 'animal-island-vue';
                     <p>虚线边框卡片</p>
                 </Card>
                 <Card type="dashed" :style="{ maxWidth: '360px', width: '100%' }">
-                    <p>欢迎来到无人岛！虚线边框适合用于轻量提示或次要信息展示。</p>
+                    <p>欢迎来到小岛！虚线边框适合用于轻量提示或次要信息展示。</p>
                 </Card>
             </div>
         </div>

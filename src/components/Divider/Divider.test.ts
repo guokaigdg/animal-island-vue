@@ -3,9 +3,10 @@ import { mount } from '@vue/test-utils';
 import Divider from './Divider.vue';
 
 describe('Divider', () => {
-    it('默认 type=line-brown：仅应用基础 divider 类（line-brown 由默认背景实现）', () => {
+    it('默认 type=dashed-brown', () => {
         const wrapper = mount(Divider);
         expect(wrapper.classes()).toContain('animal-divider');
+        expect(wrapper.classes()).toContain('animal-divider--dashed-brown');
     });
 
     it('支持自定义 type', () => {

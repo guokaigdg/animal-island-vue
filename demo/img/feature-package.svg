@@ -1,0 +1,7 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Neutral package/box icon (original design) -->
+    <path d="M24 4 6 12v24l18 8 18-8V12L24 4Z" fill="#E59266" />
+    <path d="M24 4 6 12l18 8 18-8L24 4Z" fill="#F2A87F" />
+    <path d="M24 20v24" stroke="#C97B4F" stroke-width="2" />
+    <path d="M15 8.5 33 16.5" stroke="#F7F3DF" stroke-width="2" stroke-linecap="round" />
+</svg>

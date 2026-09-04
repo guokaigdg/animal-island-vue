@@ -105,7 +105,7 @@ onMounted(() => {
 
 const code = `import { BackTop } from 'animal-island-vue';
 
-// 基础用法 — 右下角 Nook 袋返回顶部
+// 基础用法 — 右下角钱袋返回顶部
 <BackTop :visibilityHeight="400" />
 
 // 自定义动画时长
@@ -118,7 +118,7 @@ const code = `import { BackTop } from 'animal-island-vue';
 <template>
     <div :style="sectionStyle">
         <div :style="sectionTitleStyle">
-            BackTop <span :style="tagStyle">返回顶部</span> <span :style="tagStyle">Nook 袋</span>
+            BackTop <span :style="tagStyle">返回顶部</span> <span :style="tagStyle">钱袋</span>
         </div>
         <div :style="demoBodyStyle">
             <div
@@ -129,7 +129,7 @@ const code = `import { BackTop } from 'animal-island-vue';
                     lineHeight: 1.6,
                 }"
             >
-                页面已自动滚动到底部，点击右下角的 Nook 袋图标返回顶部。
+                页面已自动滚动到底部，点击右下角的钱袋图标返回顶部。
                 <br />
                 <code
                     :style="{

@@ -23,21 +23,13 @@ export const PAGE_INFO: Record<string, { title: string; desc: string }> = {
         title: 'Collapse 折叠面板',
         desc: '折叠面板组件 — 支持展开/收起、默认展开、禁用状态',
     },
-    cursor: {
-        title: 'Cursor 光标',
-        desc: '光标组件 — 自定义手指光标，支持自定义尺寸、点击动画',
-    },
     time: {
         title: 'Time 时间',
         desc: '经典 HUD 风格的时间显示组件，实时更新时间',
     },
-    phone: {
-        title: 'Phone 手机',
-        desc: '动森风格手机界面，包含对话框和背包功能',
-    },
     footer: {
         title: 'Footer 底部装饰',
-        desc: '页面底部装饰图片，支持树和海两种类型',
+        desc: '页面底部圣诞树装饰，一行 🎄 居中排列，支持无缝铺满',
     },
     modal: {
         title: 'Modal 弹窗',
@@ -50,10 +42,6 @@ export const PAGE_INFO: Record<string, { title: string; desc: string }> = {
     'divider-comp': {
         title: 'Divider 分割线',
         desc: '分割线组件 — 装饰性分割线',
-    },
-    icon: {
-        title: 'Icon 图标',
-        desc: '图标组件 — 动森风格图标集，包含 10 个可爱图标，支持自定义尺寸',
     },
     select: {
         title: 'Select 选择器',
@@ -79,17 +67,9 @@ export const PAGE_INFO: Record<string, { title: string; desc: string }> = {
         title: 'CodeBlock 代码高亮',
         desc: '代码高亮组件 — 语法高亮显示，支持自定义样式和类名',
     },
-    loading: {
-        title: 'Loading 加载',
-        desc: '动森风格小岛 Loading 动画组件，支持自定义样式和类名',
-    },
     table: {
         title: 'Table 表格',
         desc: '表格组件 — 支持泛型、列定义、悬浮动画、加载、空态',
-    },
-    'wedding-invitation': {
-        title: 'WeddingInvitation 婚礼请柬',
-        desc: '动森风婚礼请柬 — 设计 → 导出图片 → 分享/打印；支持双向编辑、PNG 导出，自带票根撕扯效果',
     },
     form: {
         title: 'Form 表单',
@@ -118,10 +98,6 @@ export const PAGE_INFO: Record<string, { title: string; desc: string }> = {
     skeleton: {
         title: 'Skeleton 骨架屏',
         desc: '骨架屏加载占位组件 — 支持 text / circle / rect / paragraph 四种变体，银白流光动画，Skeleton.Button / Input / Avatar 子组件',
-    },
-    wallet: {
-        title: 'Wallet 钱包',
-        desc: '钱包组件 — 动森风格钱袋 + 胶囊数字显示，三种尺寸，千分位格式化',
     },
     image: {
         title: 'Image 图片',

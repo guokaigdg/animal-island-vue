@@ -7,8 +7,8 @@ const DIVIDER_API: ApiRow[] = [
     {
         prop: 'type',
         desc: '分隔线类型',
-        type: `'line-brown' | 'line-teal' | 'line-white' | 'line-yellow' | 'wave-yellow' | 'dashed-brown' | 'dashed-teal' | 'dashed-white' | 'dashed-yellow'`,
-        defaultVal: "'line-brown'",
+        type: `'dashed-brown' | 'dashed-teal' | 'dashed-white' | 'dashed-yellow'`,
+        defaultVal: "'dashed-brown'",
     },
     { prop: 'class', desc: '自定义类名', type: 'string', defaultVal: '-' },
     { prop: 'style', desc: '自定义样式', type: 'string | object', defaultVal: '-' },
@@ -19,13 +19,6 @@ import { Divider } from 'animal-island-vue';
 <\/script>
 
 <template>
-    <!-- 实线 -->
-    <Divider type="line-brown" />
-    <Divider type="line-teal" />
-    <Divider type="line-white" />
-    <Divider type="line-yellow" />
-    <!-- 波浪 -->
-    <Divider type="wave-yellow" />
     <!-- 虚线 -->
     <Divider type="dashed-brown" />
     <Divider type="dashed-teal" />
@@ -36,20 +29,7 @@ import { Divider } from 'animal-island-vue';
 
 <template>
     <div :style="sectionStyle">
-        <div :style="sectionTitleStyle">Divider <span :style="tagStyle">9 types</span></div>
-        <div :style="labelStyle">line-brown</div>
-        <Divider type="line-brown" />
-        <div :style="labelStyle">line-teal</div>
-        <Divider type="line-teal" />
-        <div :style="labelStyle">line-white</div>
-        <div :style="{ background: '#333', padding: '10px' }">
-            <Divider type="line-white" />
-        </div>
-        <div :style="labelStyle">line-yellow</div>
-        <Divider type="line-yellow" />
-        <div :style="labelStyle">wave-yellow</div>
-        <Divider type="wave-yellow" />
-
+        <div :style="sectionTitleStyle">Divider <span :style="tagStyle">4 types</span></div>
         <div :style="labelStyle">dashed-brown</div>
         <Divider type="dashed-brown" />
         <div :style="labelStyle">dashed-teal</div>

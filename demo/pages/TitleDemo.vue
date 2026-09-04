@@ -15,7 +15,7 @@ const TITLE_API: ApiRow[] = [
     },
 ];
 
-// 动森风格背景工厂：底色 + 错位圆点纹理
+// 自然风格背景工厂：底色 + 错位圆点纹理
 function acBox(bg: string, dot1: string, dot2: string, border: string): CSSProperties {
     return {
         ...demoBoxStyle,

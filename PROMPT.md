@@ -12,7 +12,7 @@
 ---
 
 ````markdown
-You are a senior Vue 3 engineer. Generate a **single self-contained `index.html` file** that the user can save to disk and double-click to preview in a browser. It must PERFECTLY match the visual style of the npm package "animal-island-vue" (an Animal Crossing-inspired Vue 3 component library, v0.9.5).
+You are a senior Vue 3 engineer. Generate a **single self-contained `index.html` file** that the user can save to disk and double-click to preview in a browser. It must PERFECTLY match the visual style of the npm package "animal-island-vue" (a natural, cute island-style Vue 3 component library, v0.9.5).
 
 ## OUTPUT REQUIREMENTS
 
@@ -27,7 +27,7 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 - Inject the Modal SVG `<defs>` clip-path block (see Modal section) once at the top of `<body>` so `clip-path: url(#animal-modal-clip)` resolves.
 - Every value below is exact. Do NOT round, approximate, or substitute "close" colors.
 - The npm package `animal-island-vue` is NOT available via UMD CDN in this offline-HTML mode, so you must **hand-roll the library's components inline as Vue 3 components that mirror the real library's API** (component names, prop names, prop values, `v-model` semantics, slot names). **Always prefer the library API over raw HTML.** Concretely:
-    - At the top of the `<script>` block, define inline Vue components with the EXACT names the library exports: `BackTop`, `Button`, `Input`, `Switch`, `Checkbox`, `Radio`, `Card`, `Title`, `Tabs`, `Collapse`, `Modal`, `Select`, `Skeleton`, `SkeletonAvatar`, `SkeletonButton`, `SkeletonInput`, `Tooltip`, `Loading`, `Table`, `Time`, `Divider`, `Footer`, `Phone`, `Cursor`, `Typewriter`, `Icon`, `CodeBlock`, `WeddingInvitation`. Each component must accept the documented props (e.g. `<Card color="default">`, `<Button type="primary" size="large">`, `<Title color="app-teal" size="large">`, `<Switch v-model="checked" />`).
+    - At the top of the `<script>` block, define inline Vue components with the EXACT names the library exports: `BackTop`, `Button`, `Input`, `Switch`, `Checkbox`, `Radio`, `Card`, `Title`, `Tabs`, `Collapse`, `Modal`, `Select`, `Skeleton`, `SkeletonAvatar`, `SkeletonButton`, `SkeletonInput`, `Tooltip`, `Loading`, `Table`, `Time`, `Divider`, `Footer`, `Cursor`, `Typewriter`, `CodeBlock`. Each component must accept the documented props (e.g. `<Card color="default">`, `<Button type="primary" size="large">`, `<Title color="app-teal" size="large">`, `<Switch v-model="checked" />`).
     - In the page (root `App` component), **compose the UI exclusively with these components in the `template` string** — do NOT write `<div class="card">` / `<button class="btn">` etc. inline. The page should read like real animal-island-vue usage.
     - Only fall back to raw HTML (`<div>`, `<span>`, `<h1>`, `<img>`, layout helpers, page-specific decorations, app-specific widgets) when no library component covers the use case (e.g. page layout, header bar, two-column grid, custom illustration). In that case, still use the design tokens (`var(--text-body)`, `var(--bg-content)` …) instead of raw colors.
     - Forbidden: native `<button>`, native `<input>`, native `<select>`, native checkbox/radio used as visible UI. They MUST be wrapped by the inline `Button` / `Input` / `Select` / `Checkbox` / `Radio` components defined above.
@@ -126,7 +126,7 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 
 ### BackTop (返回顶部)
 
-- Nook 袋图标浮窗，滚动到 `visibilityHeight` 时显示
+- 钱袋图标浮窗，滚动到 `visibilityHeight` 时显示
 - Props: `target` (() => HTMLElement | Window), `visibilityHeight` (number, default 400), `onClick` (() => void), `className` (string), `style` (CSSProperties | string), `duration` (number, default 300)
 - Vue API: `<BackTop />` — 无子组件，无额外类型导出
 
@@ -379,32 +379,19 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 - Colon blink: animation blink 1s step-end infinite; @keyframes blink { 50% { opacity: 0; } }.
 - Vue: drive the clock with `Vue.ref(new Date())` + `setInterval` inside `Vue.onMounted` (clear in `Vue.onBeforeUnmount`).
 
-### Phone (NookPhone decorative widget)
-
-- Shell: 527×788; border-radius 136px (capsule); bg #F8F4E8; overflow hidden.
-- Home: padding-top 40px; bg #F8F4E8 with 100% 200% size; animation grasswave 8s ease-in-out infinite.
-- Top bar: wifi icon (79×29) | time 32px/800/letter-spacing 2px color #DDDBCC | location icon (36×36).
-- Welcome: 48px / 800 / #725C4E / letter-spacing 2px / margin-top 20px.
-- Apps grid: grid-template-columns repeat(3, 1fr); gap 32px; padding 8px.
-- App tile: 123×123; border-radius 45px; flex center.
-- App icon: background-size 70% auto.
-- Badge dot: 28×28 circle; bg #FF544A; border 5px solid #F8F4E8; top 0 left 0.
-- App palette: camera #B77DEE, app #889DF0, critterpedia #F7CD67, diy #E59266, shopping #F8A6B2, variant #82D5BB, design #8AC68A, map #FC736D, chat #D1DA49.
-
 ### Footer (decoration)
 
-- type="sea": width 100%; height 80px; bg url(footer-sea.svg) center/contain no-repeat. Coral #EC7175, ocean #327A93/#98D2E3/#008077.
-- type="tree" (default): width 100%; height 60px; bg url(footer-tree.webp) bottom center/cover.
+- No `type` prop. width 100%; height 80px; centered row of 14 🎄 emoji (font-size 28px, letter-spacing 12px, flex center); `seamless` (default false) spreads them full-width via space-between.
 
 ### Divider
 
 - 9 types, all height 12px; background center/contain no-repeat:
-  line-brown (default, SVG fill #D8D0C3), line-teal (SVG), line-white (PNG), line-yellow (SVG), wave-yellow (SVG),
+  line-brown (default, SVG fill #D8D0C3), line-teal (SVG), line-white (SVG), line-yellow (SVG), wave-yellow (SVG),
   dashed-brown, dashed-teal, dashed-white, dashed-yellow.
 
 ### Cursor (wrapper)
 
-- Wraps default-slot content, applies: cursor: url(cursor-icon.png) 4 0, auto !important; (and same on all descendants via .animal-cursor *). Hotspot (4, 0). `forceAll` prop (default true) controls whether the override cascades to all descendants.
+- Wraps default-slot content, applies: cursor: url(cursor-icon.svg) 4 0, auto !important; (and same on all descendants via .animal-cursor *). The cursor image is an original hand-drawn SVG (49×48, cream hand + brown outline + mint cuff). Hotspot (4, 0). `forceAll` prop (default true) controls whether the override cascades to all descendants.
 - Vue API: `<Cursor :force-all="true">...</Cursor>` — wraps the app or a region via the default slot.
 
 ### Typewriter
@@ -412,10 +399,6 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 - Recursively truncates the default slot's vnode tree by character count, preserves element structure, class, inline styles. Returns a fragment (no extra wrapping div/span — zero layout impact).
 - Default speed 90ms/char. Restart by changing the `trigger` prop (any value).
 - Vue API: `<Typewriter :speed="90" :trigger="key" :auto-play="true">...rich text...</Typewriter>`. Also accepts a `text="..."` prop instead of slot content. Emits `done` when the animation finishes.
-
-### Icon (10 named icons)
-
-- SVG-based, single-color. Pass via `<Icon name="..." :size="20" :bounce="false" />`. Names: `icon-miles`, `icon-camera`, `icon-chat`, `icon-critterpedia`, `icon-design`, `icon-diy`, `icon-helicopter`, `icon-map`, `icon-shopping`, `icon-variant` (defer to ICON_LIST runtime export).
 
 ### CodeBlock (dark JSX/TS only, with copy button)
 
@@ -432,20 +415,6 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
   bg rgba(61,48,40,0.94), text #e8d5bc 12px/700); copies code via Clipboard API with
   execCommand fallback; states 复制 → 已复制 / 复制失败, auto-reset 2s; `@copy` event on success.
   Hide via `:copyable="false"`. When visible and padding not customised, pre gets padding-right 96px.
-
-### WeddingInvitation (specialty card + companion export button)
-
-- Envelope: max-width 420px; padding 56px 36px (top/sides) + var(--lottery-h, 160px) bottom; border-radius 16px.
-- Background: multi-layer radial-gradient + image (NOT a single solid color).
-- filter: drop-shadow(0 10px 24px rgba(61,52,40,0.18)); inset shadow 0 0 0 2px rgba(114,93,66,0.12).
-- ::before texture overlay: radial-gradient dot pattern at 14×14 px; opacity 0.55.
-- ::after dashed inner border: 1.5px dashed rgba(114,93,66,0.35); border-radius 22px 20px 24px 22px / 20px 24px 22px 20px.
-- Bottom 160px lottery / tear-off section: bg rgb(247,243,223); 1.6px dot at 10×5px rgba(114,93,66,0.7); inset shadow 0 4px 6px -3px rgba(61,52,40,0.18); 14px circular notches at the seam.
-- 4 corner leaves: drop-shadow 0 2px 3px rgba(61,52,40,0.15); rotated ±25° / ±115°.
-- Float decorations: animation float 4.5s ease-in-out infinite; Y 0→-6px, rot 0→8deg; stagger delays 0s/0.6s/1.2s/0.3s/1s.
-- Banner divider line: 64×2px linear-gradient(to right, transparent, #725d42, transparent).
-- Export PNG via `WeddingInvitationExportButton` (uses `modern-screenshot`); the component injects @font-face into the screenshot root because Chromium does not read document.fonts.
-- Vue exposes `defineExpose({ exportAsImage, getElement })` so the export button can grab the node + trigger export through a template `ref` (`<WeddingInvitation ref="cardRef" /> <WeddingInvitationExportButton :target="cardRef" filename="invite" />`). Props include `groomName`, `brideName`, `date`, `weekday`, `time`, `venue`, `address`, `title`, `subtitle`, `message`, `showLotteryNumber`, `lotteryNumber`, `lotteryLabel`, `lotteryHint`. Rich content can be passed via `#title` / `#subtitle` / `#message` slots.
 
 ### Drawer (slide-in panel)
 
@@ -473,20 +442,13 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 
 ### Tag (pill-shaped label)
 
-- Props: `size` (`'small' | 'medium' | 'large'`, default `'medium'`), `variant` (`'solid' | 'outlined' | 'dashed'`, default `'solid'`), `color` (13 NookPhone colors: `'default' | 'app-pink' | 'purple' | 'app-blue' | 'app-yellow' | 'app-orange' | 'app-teal' | 'app-green' | 'app-red' | 'lime-green' | 'yellow-green' | 'brown' | 'warm-peach-pink'`, default `'default'`), `closable` (boolean, default false), `disabled` (boolean, default false).
+- Props: `size` (`'small' | 'medium' | 'large'`, default `'medium'`), `variant` (`'solid' | 'outlined' | 'dashed'`, default `'solid'`), `color` (13 palette colors: `'default' | 'app-pink' | 'purple' | 'app-blue' | 'app-yellow' | 'app-orange' | 'app-teal' | 'app-green' | 'app-red' | 'lime-green' | 'yellow-green' | 'brown' | 'warm-peach-pink'`, default `'default'`), `closable` (boolean, default false), `disabled` (boolean, default false).
 - Emits: `close` (when close button clicked).
 - Slots: `default` (label content).
-- Visual: pill shape (border-radius 999px), font-weight 600, 1.5px border. Solid variant uses warm parchment bg + brown border. Outlined = transparent bg. Dashed = dashed border. Color variants tint the background/border with the NookPhone palette hue.
+- Visual: pill shape (border-radius 999px), font-weight 600, 1.5px border. Solid variant uses warm parchment bg + brown border. Outlined = transparent bg. Dashed = dashed border. Color variants tint the background/border with the palette hue.
 - Sizes: small 24px/12px, medium 29px/13px, large 34px/15px (height/font-size).
 - Interaction: when `@click` is bound, acts as a clickable button with Enter/Space keyboard support. `disabled` removes interaction.
 - Vue API: `<Tag color="app-pink" closable @close="removeTag">Hello</Tag>`.
-
-### Wallet (NookPhone-style currency display)
-
-- Props: `value` (number|string, default `'00,000'` — numbers auto-formatted with thousand separator), `icon` (string — custom image URL, default is a bag icon), `size` (`'small' | 'medium' | 'large'`, default `'medium'`), `thousandSeparator` (string, default `','`; set `''` to disable).
-- Slots: `icon` (replaces the default bag icon image).
-- Visual: stacked layout — bag icon on top, pill-shaped value label below. Pill has olive-yellow `#b3a046` bg cream glow, white text with brown shadow. Sizes: small 96px/12px, medium 132px/17px, large 168px/22px (pill width/text-size).
-- Vue API: `<Wallet :value="12500" size="large" />`.
 
 ### Form (declarative form with validation)
 
@@ -543,7 +505,7 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 
 - Props: `total` (number, required), `current` (v-model:current, controlled page), `defaultCurrent` (default 1), `pageSize` (v-model:pageSize, controlled size), `defaultPageSize` (default 10), `showSizeChanger` (default false), `pageSizeOptions` (default `[10, 20, 50, 100]`), `showQuickJumper` (default false), `showTotal` (default false), `disabled` (default false), `variant` (`'orange' | 'teal'`, default 'orange').
 - Emits: `update:current` (page), `update:pageSize` (size), `change` (page, pageSize), `showSizeChange` (current, size).
-- Visual: ghost circular 32px page cells (transparent bg); orange variant hover `#ffd54f` / active `#ffc107` (hover `#ffb400`); teal variant hover `#e6f9f6` + text `#19c8b9` / active `#19c8b9` (hover `#3dd4c6`); active = white text weight 700, default cursor; ellipsis `#c4b89e` weight 900; total text 13px 600 `#a09080`; size changer = Select-style white 34px trigger with 2px `#e8dcc8` border + 12px radius, caret rotates 180° when open, `#ffeea0` 28px-radius listbox popping UP with gold pill bar (`#ffcc00`, 30% opacity) + Animal Crossing finger cursor on hover; quick jumper = 52×32px cream `#fffbe7` pill input, no border, no focus emphasis.
+- Visual: ghost circular 32px page cells (transparent bg); orange variant hover `#ffd54f` / active `#ffc107` (hover `#ffb400`); teal variant hover `#e6f9f6` + text `#19c8b9` / active `#19c8b9` (hover `#3dd4c6`); active = white text weight 700, default cursor; ellipsis `#c4b89e` weight 900; total text 13px 600 `#a09080`; size changer = Select-style white 34px trigger with 2px `#e8dcc8` border + 12px radius, caret rotates 180° when open, `#ffeea0` 28px-radius listbox popping UP with gold pill bar (`#ffcc00`, 30% opacity) + finger cursor on hover; quick jumper = 52×32px cream `#fffbe7` pill input, no border, no focus emphasis.
 - Behavior: ≤7 pages render all; >7 pages render first/last + current±1 + ellipses; prev/next disabled at boundaries; size change clamps current page into new page count; jumper accepts digits only, jumps on Enter/blur, clamps to bounds and clears.
 - A11y: `nav[aria-label="分页"]`; active page `aria-current="page"`; prev/next `aria-label="上一页/下一页"`; size trigger `aria-haspopup="listbox"` + `aria-expanded`; options `role="option"` + `aria-selected`; jumper input `aria-label="跳转到指定页"`; ellipses `aria-hidden`.
 - Vue API: `<Pagination v-model:current="page" v-model:page-size="pageSize" :total="500" show-total show-quick-jumper />`; Table integration: `<Table :pagination="{ defaultPageSize: 5, showTotal: true, showSizeChanger: true }" />` (total computed from dataSource).
@@ -561,8 +523,8 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 9. Never use system fonts. Always include the Nunito + Noto Sans SC Google Fonts link.
 10. Never use weight < 400 anywhere. Body 500, headings 600–900.
 11. Never animate with hard cubic transitions; always use `cubic-bezier(0.4, 0, 0.2, 1)` over 0.15–0.35s.
-12. The `title` prop on `<Modal>` and `<WeddingInvitation>` is the literal string heading — do NOT confuse it with the `<Title>` ribbon component.
-13. **Always reach for the library component first.** If a feature exists as an animal-island-vue component (BackTop, Card, Button, Input, Switch, Checkbox, Radio, Title, Tabs, Collapse, Modal, Select, Tooltip, Loading, Table, Time, Divider, Footer, Phone, Cursor, Typewriter, Icon, CodeBlock, WeddingInvitation), use the inline-defined component with documented props in the `template`. Only hand-roll raw HTML when the library has no equivalent (page layout, app-specific composition, decorative blocks).
+12. The `title` prop on `<Modal>` is the literal string heading — do NOT confuse it with the `<Title>` ribbon component.
+13. **Always reach for the library component first.** If a feature exists as an animal-island-vue component (BackTop, Card, Button, Input, Switch, Checkbox, Radio, Title, Tabs, Collapse, Modal, Select, Tooltip, Loading, Table, Time, Divider, Footer, Cursor, Typewriter, CodeBlock), use the inline-defined component with documented props in the `template`. Only hand-roll raw HTML when the library has no equivalent (page layout, app-specific composition, decorative blocks).
 14. **NO REACT-ISMS — DISQUALIFYING.** This is Vue 3, not React. The following are forbidden in the output:
     - `className="..."` → use `class="..."`.
     - `onClick={fn}` / `onChange={fn}` / `onInput={fn}` → use `@click="fn"` / `@change="fn"` / `@input="fn"`.
@@ -636,7 +598,7 @@ Structure the script like this:
 
     // ... Title, Tabs, Collapse, Modal, Switch, Input, Checkbox, Radio, Select, Skeleton,
     //     SkeletonAvatar, SkeletonButton, SkeletonInput, Tooltip, Loading,
-    //     Table, Time, Divider, Footer, Phone, Cursor, Typewriter, Icon, CodeBlock, WeddingInvitation
+    //     Table, Time, Divider, Footer, Cursor, Typewriter, CodeBlock
 
     // 2) Page composition uses ONLY those components (plus layout divs)
     const App = {

@@ -1,34 +1,39 @@
 <script setup lang="ts">
-import type { FooterType } from './types';
-
 interface Props {
-    type?: FooterType;
     seamless?: boolean;
 }
 
-withDefaults(defineProps<Props>(), { type: 'tree', seamless: false });
+withDefaults(defineProps<Props>(), { seamless: false });
 </script>
 
 <template>
-    <div class="animal-footer" :class="[`animal-footer--${type}`, { 'animal-footer--seamless': seamless }]" />
+    <div
+        class="animal-footer"
+        :class="{ 'animal-footer--seamless': seamless }"
+        aria-hidden="true"
+    >
+        🎄🎄🎄🎄🎄🎄🎄🎄🎄🎄🎄🎄🎄🎄
+    </div>
 </template>
 
 <style lang="less" scoped>
 .animal-footer {
     width: 100%;
     height: 80px;
-    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    line-height: 1;
+    letter-spacing: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    user-select: none;
 
-    &--sea {
-        background: url('../../assets/img/footer/footer-sea.svg') center / contain no-repeat;
-    }
-    &--tree {
-        background: url('../../assets/img/footer/footer-tree.webp') bottom center / cover no-repeat;
-    }
     &--seamless {
-        background-repeat: repeat-x;
-        background-size: auto 100%;
-        background-position: left bottom;
+        justify-content: space-between;
+        padding: 0 8px;
+        letter-spacing: 0;
     }
 }
 </style>

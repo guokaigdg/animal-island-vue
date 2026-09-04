@@ -105,11 +105,11 @@ const active = ref('tab1');
         <div :style="demoBox">
             <Tabs v-model="activeKey" :items="items">
                 <template #tab1>
-                    <p :style="{ marginBottom: '12px' }">这里是一座无人岛，环境优美，气候宜人。</p>
+                    <p :style="{ marginBottom: '12px' }">这里是一座小岛，环境优美，气候宜人。</p>
                     <p>可以钓鱼、捉虫、种植各种植物。</p>
                 </template>
                 <template #tab2>
-                    <p :style="{ marginBottom: '12px' }">狸然超市营业中！</p>
+                    <p :style="{ marginBottom: '12px' }">小岛超市营业中！</p>
                     <p>各种商品应有尽有，价格实惠。</p>
                 </template>
                 <template #tab3>

@@ -14,7 +14,7 @@ export type TooltipPlacement =
 
 export type TooltipTrigger = 'hover' | 'focus' | 'click';
 
-/** default 标准矩形；island 动森不规则有机气泡 */
+/** default 标准矩形；island 不规则有机气泡 */
 export type TooltipVariant = 'default' | 'island';
 
 export interface TooltipProps {

@@ -24,7 +24,7 @@ const modeClass = computed(() => (props.forceAll ? 'animal-cursor--force' : 'ani
 .animal-cursor--force,
 .animal-cursor--force * {
     cursor:
-        url('../../assets/img/cursor/cursor-icon.png') 4 0,
+        url('../../assets/img/cursor/cursor-icon.svg') 4 0,
         default !important;
 }
 
@@ -36,7 +36,7 @@ const modeClass = computed(() => (props.forceAll ? 'animal-cursor--force' : 'ani
 /* 容器自身：使用自定义光标（双类提升特异性 (0,2,0) > 祖先 (0,1,1)） */
 .animal-cursor.animal-cursor--scoped {
     cursor:
-        url('../../assets/img/cursor/cursor-icon.png') 4 0,
+        url('../../assets/img/cursor/cursor-icon.svg') 4 0,
         default !important;
 }
 

@@ -18,9 +18,6 @@ import '@fontsource/noto-sans-sc/chinese-simplified-700.css';
 // 组件导出（随迁移进度逐步追加）
 // ============================================
 // Phase 1 — 基础原子组件
-export { Icon, ICON_LIST } from './components/Icon';
-export type { IconProps, IconName } from './components/Icon';
-
 export { Button } from './components/Button';
 export type { ButtonProps, ButtonType, ButtonSize, ButtonHTMLType } from './components/Button';
 
@@ -95,7 +92,6 @@ export { Modal } from './components/Modal';
 export type { ModalProps } from './components/Modal';
 
 export { Footer } from './components/Footer';
-export type { FooterProps, FooterType } from './components/Footer';
 
 // Phase 4 — 内容/数据展示组件
 export { Time } from './components/Time';
@@ -112,9 +108,6 @@ export type { TableProps, TableColumn, TableRecord, TablePagination } from './co
 
 export { Pagination } from './components/Pagination';
 export type { PaginationProps, PaginationVariant } from './components/Pagination';
-
-export { Phone } from './components/Phone';
-export type { PhoneProps } from './components/Phone';
 
 // Phase 5 — 补全组件
 export { Tag } from './components/Tag';
@@ -135,9 +128,6 @@ export type {
     NotificationStatic,
     NotificationType,
 } from './components/Notification';
-
-export { Wallet } from './components/Wallet';
-export type { WalletProps, WalletSize } from './components/Wallet';
 
 // Phase 5 — 返回顶部
 export { BackTop } from './components/BackTop';
@@ -170,9 +160,5 @@ export type { CarouselProps } from './components/Carousel';
 
 export { Countdown } from './components/Countdown';
 export type { CountdownProps, CountdownSize, CountdownVariant } from './components/Countdown';
-
-// 注：WeddingInvitation 是「Demo-only」演示组件 —— 仅用于站点展示，
-// 不打入对外发布的 npm 包。源码已迁移到 `demo/components/WeddingInvitation/`。
-// 用户可参考 demo 实现自行接入项目。
 
 // ...（后续阶段陆续启用）

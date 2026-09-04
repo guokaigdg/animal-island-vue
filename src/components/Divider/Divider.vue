@@ -2,7 +2,7 @@
 import type { DividerType } from './types';
 
 withDefaults(defineProps<{ type?: DividerType }>(), {
-    type: 'line-brown',
+    type: 'dashed-brown',
 });
 </script>
 
@@ -15,24 +15,7 @@ withDefaults(defineProps<{ type?: DividerType }>(), {
     width: 100%;
     height: 12px;
     background-position: center;
-    background-size: contain;
     background-repeat: no-repeat;
-
-    &--line-brown {
-        background-image: url('../../assets/img/dividers/divider-line-brown.svg');
-    }
-    &--line-teal {
-        background-image: url('../../assets/img/dividers/divider-line-teal.svg');
-    }
-    &--line-white {
-        background-image: url('../../assets/img/dividers/divider-line-white.png');
-    }
-    &--line-yellow {
-        background-image: url('../../assets/img/dividers/divider-line-yellow.svg');
-    }
-    &--wave-yellow {
-        background-image: url('../../assets/img/dividers/wave-yellow.svg');
-    }
 
     // ---------- Dashed (CSS-only, no asset) ----------
     // 12px 节奏 + 6px dash + 6px gap，居中绘制 2px 粗细的破折线

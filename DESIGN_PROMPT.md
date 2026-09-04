@@ -2,9 +2,8 @@
 
 > 本文件目标：给 **AI 设计 / 出图工具**（v0、Figma AI、Framer AI、Locofy、Midjourney、DALL·E、SD）喂可以一次成型的视觉风格描述。
 >
-> - 描述对象是 `animal-island-vue` 组件库本身的视觉风格（v1.0.0，41 个具名导出 = 38 个组件 + Notification 命令式 API + useForm Hook + ICON_LIST 常量）。
+> - 描述对象是 `animal-island-vue` 组件库本身的视觉风格（v1.0.0，40 个具名导出 = 38 个组件 + Notification 命令式 API + useForm Hook）。
 > - 文件中提到的 **侧边栏 / 页面背景图（home_bg.svg / content_bg_pc.jpg / menu_bg.svg）** 属于 **demo 文档站**，库本身不附带，仅作为整体风格参考保留。
-> - **WeddingInvitation 已移出 npm 包**（v1.0.0 起）：源码迁移至 `demo/components/WeddingInvitation/`，仅作文档站演示用途。
 > - 配套文档：消费侧 API 看 [`AI_USAGE.md`](./AI_USAGE.md)；源码内部规范看 [`skill/SKILL.md`](./skill/SKILL.md)；贡献流程看 [`CONTRIBUTING.md`](./CONTRIBUTING.md)。
 
 ## 一键提示词
@@ -14,7 +13,7 @@
 ## UI 工具提示词（适用于 v0 / Figma AI / Framer AI / Locofy）
 
 ```
-Design a UI in the style of "animal-island-vue" — an Animal Crossing-inspired Vue 3 component library.
+Design a UI in the style of "animal-island-vue" — a natural, cute island-style Vue 3 component library.
 Reproduce every detail below as precisely as possible.
 
 === FONTS (REQUIRED — load from Google Fonts if not installed) ===
@@ -124,7 +123,7 @@ Minimum anywhere:          12px — NO sharp right-angle interactive elements
 </svg>
 Modal content: clip-path: url(#animal-modal-clip); padding: 48px 48px 32px 48px;
 
-=== DEPTH & INTERACTION (Nintendo button press — defining feature for primary buttons) ===
+=== DEPTH & INTERACTION (game-button press — defining feature for primary buttons) ===
 Primary / danger-primary buttons + Switch get a bottom 3D pixel-stack shadow that simulates a game button:
   Default: box-shadow: 0 5px 0 0 #bdaea0; transform: none;
   Hover:   box-shadow: 0 6px 0 0 #bdaea0; transform: translateY(-1px);
@@ -211,7 +210,7 @@ Menu items: height 40px, padding-left 26px, font-size 14px, font-weight 600
   inactive: color #8a7b66 | hover: background #d6dff0 | active: background #B7C6E5, color #fff
   border-radius: 12px, margin: 1px 5px, transition: all 0.15s
 
-=== NOOKPHONE 13-COLOR PALETTE (shared by Card.color, Card.pattern, Title.color) ===
+=== 13-COLOR PALETTE (shared by Card.color, Card.pattern, Title.color) ===
 default rgb(247,243,223) (#725d42 text) /
 app-pink #f8a6b2 / purple #b77dee / app-blue #889df0 / app-yellow #f7cd67 (#725d42 text) /
 app-orange #e59266 / app-teal #82d5bb / app-green #8ac68a / app-red #fc736d /
@@ -253,7 +252,7 @@ Layer stack (z-index ascending):
        transform: perspective(11.5em) rotateX(3deg),
        inset shadow 0 -0.06em 0 rgba(0,0,0,0.05)
   4. Text (--rt): on top of front
-13 color schemes (same 13 NookPhone names): each defines --rf (front) / --rb (back tail) / --rk (fold shadow) / --rt (text).
+13 color schemes (same 13 palette names): each defines --rf (front) / --rb (back tail) / --rk (fold shadow) / --rt (text).
   Example "Default Green":  --rf #27d039  --rb #20992a  --rk #115017  --rt #fff
   Example "app-yellow":     --rf #f7cd67  --rb #d4a030  --rk #8a6010  --rt #725d42
   Example "purple":         --rf #b77dee  --rb #9050d0  --rk #5a1a9a  --rt #fff
@@ -319,44 +318,26 @@ Row hover:      diagonal teal stripe pattern,
 Empty state:    padding 60px 20px; text-align center; color #9f927d; icon opacity 0.5
 Loading overlay: rgba(247,243,223,0.8) + backdrop-filter blur(2px); spinner #19c8b9
 
-=== TIME / NOOKPHONE / FOOTER / DIVIDER / CURSOR / TYPEWRITER (decorative widgets) ===
+=== TIME / FOOTER / DIVIDER / CURSOR / TYPEWRITER (decorative widgets) ===
 [See dedicated blocks below]
 
-=== NOOKPHONE DEVICE (decorative widget) ===
-Phone shell:   width 527px, height 788px, background #F8F4E8,
-               border-radius 136px (almost capsule), overflow hidden
-Home screen:   padding-top 40px, background #F8F4E8,
-               background-size 100% 200%, animation grasswave 8s ease-in-out infinite
-               (@keyframes grasswave { 0%,100% { background-position: 0% 0%; } 50% { background-position: 0% 100%; } })
-Top bar:       wifi icon (79×29) ← time 32px/800/letter-spacing 2px color #DDDBCC → location icon (36×36)
-Colon blink:   animation blink 1s steps(1) infinite (0–50% opacity 1, 51–100% opacity 0)
-Welcome text:  48px / 800 / color #725C4E / letter-spacing 2px / margin-top 20px
-Apps grid:     grid-template-columns: repeat(3, 1fr); gap 32px; padding 8px
-App tile:      123×123px, border-radius 45px, flex center
-App icon:      background-size 70% auto (iconApp only: 100% auto)
-Hover bounce:  @keyframes iconBounce (0% scale 1 rotate 0, 50% scale 1.2 rotate -5deg, 100% scale 1.1 rotate -4deg), 0.3s ease-in-out forwards
-Badge dot:     28×28 circle, top 0 left 0, background #FF544A, border 5px solid #F8F4E8
-Page indicator: page svg 65×32, margin-top 74px
-App palette:   camera #B77DEE, app #889DF0 (with offset), critterpedia #F7CD67, diy #E59266,
-               shopping #F8A6B2, variant #82D5BB, design #8AC68A, map #FC736D, chat #D1DA49
-
 === FOOTER DECORATION ===
-<Footer type="sea" />   width 100%, height 80px, background url(footer-sea.svg) center/contain no-repeat
-                        (SVG viewBox 0 0 1440 186, coral #EC7175 / ocean #327A93 / #98D2E3 / #008077)
-<Footer type="tree" />  (default) width 100%, height 60px, background url(footer-tree.webp) bottom center/cover
+<Footer />              width 100%, height 80px, centered row of 14 🎄 emoji
+                        (font-size 28px, letter-spacing 12px, flex center; seamless = space-between)
 
 === DIVIDER DECORATION ===
 9 types — all width 100%, height 12px, background center/contain no-repeat:
   line-brown  (default, SVG viewBox 0 0 297 14, fill #D8D0C3)
   line-teal   (SVG)
-  line-white  (PNG)
+  line-white  (SVG)
   line-yellow (SVG)
   wave-yellow (SVG)
   dashed-brown / dashed-teal / dashed-white / dashed-yellow (dashed variants)
 
 === CURSOR WRAPPER ===
-<Cursor><slot/></Cursor> — applies ".animal-cursor, .animal-cursor * { cursor: url(cursor-icon.png) 4 0, auto !important; }"
+<Cursor><slot/></Cursor> — applies ".animal-cursor, .animal-cursor * { cursor: url(cursor-icon.svg) 4 0, auto !important; }"
 Hotspot coordinates: (4, 0). Uses !important to override all child cursors.
+Cursor image: original hand-drawn SVG (49×48, cream hand + brown outline + mint cuff).
 
 === TYPEWRITER (no markup wrapper) ===
 Props: default slot (VNode tree) or `text` prop, speed=90ms, trigger (any unknown; change to restart),
@@ -377,34 +358,14 @@ Or template form:
     <span class="note">Welcome to <strong>animal-island-vue</strong>!</span>
   </Typewriter>
 
-=== [Demo-site only] WEDDING INVITATION (specialty card — NOT in the npm package since v1.0.0) ===
-Envelope container: max-width 420px; padding 56px 36px (top/sides);
-                    padding-bottom var(--lottery-h, 160px) (reserves space for tear-off ticket stub);
-                    border-radius 16px;
-                    multi-layer radial-gradient + image background;
-                    drop-shadow 0 10px 24px rgba(61,52,40,0.18) (via filter, NOT box-shadow);
-                    inset shadow 0 0 0 2px rgba(114,93,66,0.12) for soft inner border
-Texture overlay (::before): radial-gradient dot pattern at 14×14px, opacity 0.55
-Dashed inner border (::after): 1.5px dashed rgba(114,93,66,0.35);
-                    border-radius 22px 20px 24px 22px / 20px 24px 22px 20px (organic)
-Lottery / tear-off bottom (160px tall): bg rgb(247,243,223);
-                    1.6px brown dot pattern (rgba(114,93,66,0.7)) at 10×5px;
-                    inset shadow 0 4px 6px -3px rgba(61,52,40,0.18) for tear-line emphasis;
-                    notch radius 14px (circular punches at the seam)
-Corner leaves: drop-shadow 0 2px 3px rgba(61,52,40,0.15); rotated ±25° / ±115°
-Float decorations: 4.5s ease-in-out infinite "float" (Y: 0 → -6px, rot: 0 → 8°);
-                   stagger delays 0s / 0.6s / 1.2s / 0.3s / 1s
-Banner divider: 64px × 2px linear-gradient(to right, transparent, #725d42, transparent)
-
-=== COMPONENT INVENTORY (44 named exports from src/index.ts) ===
+=== COMPONENT INVENTORY (40 named exports from src/index.ts) ===
 Interactive:           BackTop, Button, Input, Switch, Modal, Collapse, Select, Tabs, Checkbox, Radio, Drawer, Carousel
 Container / Heading:   Card (13 colors + 13 dot patterns), Title (ribbon banner — 13 schemes), Table, Tag, Pagination (ghost circular cells, orange/teal variants, built into Table via pagination prop)
 Feedback:              Tooltip, Loading, Notification (imperative API, with NotificationContainer), Progress, Skeleton (SkeletonButton, SkeletonInput, SkeletonAvatar)
 Form:                  Form, FormItem, FormProvider, useForm, DatePicker, TimePicker
-Decorative:            Time, Phone, Footer, Divider, Cursor, Typewriter, Icon (+ ICON_LIST), Wallet, Countdown (odometer countdown)
+Decorative:            Time, Footer, Divider, Cursor, Typewriter, Countdown (odometer countdown)
 Content display:       CodeBlock, Image
-Non-component exports: Notification (command-style toast API), useForm (form hook), ICON_LIST (icon name list)
-[Demo-site only]       WeddingInvitation (+ WeddingInvitationExportButton companion) — moved out of the npm package in v1.0.0
+Non-component exports: Notification (command-style toast API), useForm (form hook)
 
 === CODE BLOCK (dark theme, Vue SFC / TS only) ===
 Container: padding 20px 24px; background #2b2118; border 1px solid #3d3028;
@@ -443,20 +404,20 @@ Token colors:
 
 ```
 Pixel-perfect UI screenshot of "animal-island-vue" Vue 3 component library website,
-Animal Crossing Nintendo Switch life-sim game aesthetic,
+natural cute hand-drawn island life aesthetic,
 
 Interface details:
 - Warm parchment background rgb(247,243,223), NEVER pure white
 - Pill-shaped buttons (border-radius 50px); the **primary** action button has a 3D
   pixel-stack bottom shadow in warm taupe #bdaea0 (5px tall) and presses down on
-  click like a Nintendo game button. Secondary (default / dashed) buttons sit
+  click like a playful game button. Secondary (default / dashed) buttons sit
   flatter, with only a soft 2px elevation shadow.
 - Organic blob-shaped modal dialog with irregular soft SVG silhouette
 - Ribbon-banner section headings (Title component): swallowtail clip-path ends like a
   flat heraldic ribbon, with darker fold-shadow triangles tucked behind, and a slightly
-  3D-tilted front face — comes in 13 NookPhone color schemes (green/pink/purple/blue/
+  3D-tilted front face — comes in 13 palette color schemes (green/pink/purple/blue/
   yellow/orange/teal/red/brown etc.). NOT a blob, NOT a Card.
-- Pastel NookPhone app icon color cards: pink #f8a6b2, lavender #b77dee, sky blue #889df0,
+- Pastel app icon color cards: pink #f8a6b2, lavender #b77dee, sky blue #889df0,
   sunshine yellow #f7cd67, coral #e59266, seafoam #82d5bb, sage green #8ac68a
 - Polka-dot pastel "wallpaper" Card variants: light tinted bg with two layered radial-gradient
   dot grids (28px and 14px) and a 1.5px solid colored border in the matching palette hue
@@ -502,7 +463,7 @@ Interface details:
 | pill 圆角              | `50px`                                                                                                                   | 按钮、输入框                                        |
 | Title 飘带             | swallowtail clip-path + fold 三角阴影 + 3deg X 透视                                                                      | `<Title>` 章节标题                                  |
 | Title 字号             | small 14 / middle 20 / large 28 px                                                                                       | em 缩放，含 padding-top 0.11em                      |
-| Title 13 色变量        | `--rf` 正面 / `--rb` 背面燕尾 / `--rk` 折角 / `--rt` 文字                                                                | 13 套 NookPhone 配色                                |
+| Title 13 色变量        | `--rf` 正面 / `--rb` 背面燕尾 / `--rk` 折角 / `--rt` 文字                                                                | 13 套调色板配色                                     |
 | Card 圆角              | `20px`                                                                                                                   | 默认卡片                                            |
 | Card pattern           | 双层径向渐变点 (1.5px@28px + 1px@14px offset 7,7)                                                                        | 13 色波点墙纸                                       |
 | Card pattern border    | `1.5px solid` 同色调                                                                                                     | 配 pastel 浅底                                      |
@@ -521,14 +482,8 @@ Interface details:
 | 过渡                   | `0.25s cubic-bezier(0.4,0,0.2,1)`                                                                                        | 通用动画                                            |
 | Loading stripe         | `28.28px` step, `-45deg`, `#0ec4b6/#01b0a7`                                                                              | 按钮 inline loading                                 |
 | Loading 全屏           | mint `#19c8b9` SVG spinner，1s 旋转 + 1.5s dash                                                                          | `<Loading>` 全屏遮罩                                |
-| Phone 外壳             | `527 × 788px`，`border-radius: 136px`                                                                                    | NookPhone 容器                                      |
-| Phone app tile         | `123 × 123px`，`border-radius: 45px`                                                                                     | 3×3 网格                                            |
-| Phone 新消息点         | 28px 红圆 `#FF544A` + 5px 奶油描边 `#F8F4E8`                                                                             | badge                                               |
-| Footer sea             | `height: 80px`，SVG `contain`                                                                                            | 海浪底部                                            |
-| Footer tree            | `height: 60px`，webp `cover bottom`                                                                                      | 森林底部                                            |
+| Footer                 | `height: 80px`，14 个 🎄 emoji 居中（28px / 间距 12px），非图片                                                          | 圣诞树底部                                          |
 | Divider                | `height: 12px`，5 种背景图                                                                                               | 装饰分割线                                          |
-| Cursor                 | `cursor: url(...) 4 0, auto !important`                                                                                  | 游戏手指光标                                        |
+| Cursor                 | `cursor: url(...) 4 0, auto !important`                                                                                  | 原创手绘指向光标（奶油手背 + 棕描边 + 薄荷袖口）    |
 | Typewriter 默认速度    | `90ms/字`                                                                                                                | 按字符打印，无包裹元素                              |
-| WeddingInvitation 外壳 | max-width 420px；filter drop-shadow；inset 软边                                                                          | [Demo-only] 信封式特种卡                            |
-| WeddingInvitation 票根 | bottom 160px tear-off + 14px 圆形冲孔 + 撕痕 inset 阴影                                                                  | [Demo-only] 抽奖券效果                              |
 | Google Fonts URL       | `fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700&display=swap` | 在线加载                                            |

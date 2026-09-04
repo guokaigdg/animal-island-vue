@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, watch, nextTick, computed, useAttrs } from 'vue';
 import type { CSSProperties } from 'vue';
-import { Icon } from '../Icon';
 import type { ImageColor } from './types';
 
 interface Props {
@@ -142,7 +141,23 @@ const errorAriaLabel = computed(() => props.alt || '图片加载失败');
 <template>
     <!-- 加载失败：错误占位 -->
     <span v-if="failed" :class="frameClasses" :style="frameStyles" role="img" :aria-label="errorAriaLabel">
-        <Icon name="icon-camera" :size="32" />
+        <svg
+            class="animal-image__error-icon"
+            width="32"
+            height="32"
+            viewBox="0 0 85 66"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+        >
+            <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M30.585 0H54.7227C56.8954 0.0509226 61.251 1.72121 61.2917 7.99496C61.2917 10.9719 62.9303 12.1182 64.1666 12.4312H70.5935C78.4581 12.4312 84.8336 18.8067 84.8336 26.6712V51.0976C84.8336 58.9622 78.4581 65.3377 70.5935 65.3377H14.2401C6.37551 65.3377 0 58.9622 0 51.0976V26.6712C0 18.8067 6.37549 12.4312 14.2401 12.4312H21.3539C22.5467 12.1169 24.1915 11.0856 24.1915 8.63043C24.1915 4.37225 26.5803 0 30.585 0Z"
+                fill="currentColor"
+            />
+            <ellipse cx="42.9035" cy="39.4683" rx="19.7658" ry="19.7652" fill="#F9F6E5" />
+        </svg>
         <span>图片加载失败</span>
     </span>
     <!-- 点击预览：相框升格为按钮（原生支持 Enter / Space），预览弹层经 Teleport 挂到 body -->

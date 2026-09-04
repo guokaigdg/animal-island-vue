@@ -59,7 +59,7 @@ import { Tooltip, Button } from 'animal-island-vue';
         <Button>Hover 我</Button>
     </Tooltip>
 
-    <!-- 动森 island 风格 -->
+    <!-- island 风格 -->
     <Tooltip variant="island" bordered title="有边框有机气泡">
         <Button>Island</Button>
     </Tooltip>
@@ -99,7 +99,7 @@ import { Tooltip, Button } from 'animal-island-vue';
             </div>
         </div>
 
-        <div :style="labelStyle">风格 — island 动森不规则气泡</div>
+        <div :style="labelStyle">风格 — island 不规则气泡</div>
         <div :style="{ ...demoBoxStyle, overflow: 'visible' }">
             <div :style="{ display: 'flex', gap: '24px', alignItems: 'center', flexWrap: 'wrap' }">
                 <Tooltip title="标准矩形气泡" placement="top">

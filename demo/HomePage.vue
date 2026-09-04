@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Card, Divider, Button, Typewriter } from '@';
+import { Card, Button, Typewriter } from '@';
 import { useIsMobile } from './router';
 import FeatureCard from './FeatureCard.vue';
 
-import animalIconUrl from './img/animal_icon.png';
-import nook1Url from './img/nook-phone/nook1.svg';
-import shoppingUrl from './img/nook-phone/Property-Shopping.svg';
-import cameraUrl from './img/nook-phone/Property-Camera.svg';
-import recipesUrl from './img/nook-phone/Property-Recipes.svg';
+import animalIconUrl from './img/logo.svg';
+import componentsUrl from './img/feature-components.svg';
+import themeUrl from './img/feature-theme.svg';
+import packageUrl from './img/feature-package.svg';
 
 const emit = defineEmits<{ navigate: [path: string] }>();
 const isMobile = useIsMobile();
@@ -25,14 +24,14 @@ function openGithub() {
 }
 
 const features = [
-    { icon: nook1Url, title: 'Animal风格', desc: 'SVG 有机形状裁切，3D 按压按钮，温暖质朴的自然 UI 质感' },
+    { icon: animalIconUrl, title: '自然风格', desc: 'SVG 有机形状裁切，3D 按压按钮，温暖质朴的自然 UI 质感' },
     {
-        icon: shoppingUrl,
-        title: '19 个组件',
-        desc: 'Button / Input / Switch / Modal / Typewriter / Card / Collapse / Cursor / Divider / Time / Phone / Footer / Icon / Checkbox / Select / Tabs / CodeBlock / Loading / Table',
+        icon: componentsUrl,
+        title: '30+ 组件',
+        desc: 'Button / Input / Switch / Modal / Typewriter / Card / Collapse / Divider / Time / Footer / Checkbox / Select / Tabs / CodeBlock / Table',
     },
-    { icon: cameraUrl, title: '主题定制', desc: '基于 Less 变量 + CSS 自定义属性，40+ 设计令牌运行时换肤无需重新构建' },
-    { icon: recipesUrl, title: '开箱即用', desc: 'ESM + CJS 双格式输出，TypeScript 类型声明完整' },
+    { icon: themeUrl, title: '主题定制', desc: '基于 Less 变量 + CSS 自定义属性，40+ 设计令牌运行时换肤无需重新构建' },
+    { icon: packageUrl, title: '开箱即用', desc: 'ESM + CJS 双格式输出，TypeScript 类型声明完整' },
 ];
 
 const components = [
@@ -46,14 +45,10 @@ const components = [
     { key: 'typewriter', name: 'Typewriter', desc: '逐字打字机效果，支持多行与富内容' },
     { key: 'card', name: 'Card', desc: '默认/标题两种卡片风格' },
     { key: 'collapse', name: 'Collapse', desc: 'FAQ 折叠面板、平滑展开动画' },
-    { key: 'cursor', name: 'Cursor', desc: '自定义手指光标，支持多种尺寸' },
     { key: 'divider-comp', name: 'Divider', desc: '装饰性水平分割线' },
-    { key: 'icon', name: 'Icon', desc: 'SVG 图标库' },
     { key: 'footer', name: 'Footer', desc: '页脚组件' },
     { key: 'time', name: 'Time', desc: '可爱风格时间显示' },
-    { key: 'phone', name: 'Phone', desc: 'Phone 模拟器' },
     { key: 'codeblock', name: 'CodeBlock', desc: '代码语法高亮组件' },
-    { key: 'loading', name: 'Loading', desc: '动森风格小岛加载动画' },
     { key: 'table', name: 'Table', desc: '泛型表格、悬浮动画、加载/空态' },
     { key: 'form', name: 'Form', desc: '完整校验、三种布局、命令式 API' },
     { key: 'image', name: 'Image', desc: '相框图片、14 种底色、懒加载、点击预览' },
@@ -133,16 +128,16 @@ function highlight(code: string): Seg[][] {
                         <span class="hero-version">v1.0.0</span>
                     </h1>
                     <Typewriter :speed="60">
-                        <p class="hero-subtitle" :style="{ fontSize: isMobile ? '14px' : '17px' }">
+                        <p
+                            class="hero-subtitle"
+                            :style="{ fontSize: isMobile ? '14px' : '17px', color: 'rgb(124, 87, 52)' }"
+                        >
                             Animal 风格的 Vue 3 组件库，基于 TypeScript + Vite + Less 构建，让 Web 应用充满温暖质感
                         </p>
                     </Typewriter>
                     <div class="hero-actions" :style="{ justifyContent: isMobile ? 'center' : 'flex-start' }">
                         <Button type="primary" size="large" @click="emit('navigate', '/button')"> 开始使用 → </Button>
                     </div>
-                </div>
-                <div v-if="!isMobile" style="text-align: center">
-                    <img :src="animalIconUrl" style="width: 320px; height: 200px" alt="logo" decoding="async" />
                 </div>
             </div>
         </div>
@@ -176,8 +171,6 @@ function highlight(code: string): Seg[][] {
             </div>
         </div>
 
-        <Divider :style="{ width: isMobile ? '90%' : '800px', margin: '0 auto' }" />
-
         <!-- Components -->
         <div class="section" :style="{ padding: isMobile ? '32px 16px' : '48px 40px' }">
             <div class="section-title">组件一览</div>
@@ -199,8 +192,6 @@ function highlight(code: string): Seg[][] {
             </div>
         </div>
 
-        <Divider :style="{ width: isMobile ? '90%' : '800px', margin: '0 auto' }" />
-
         <!-- Install -->
         <div class="section" :style="{ padding: isMobile ? '32px 16px' : '48px 40px' }">
             <div class="section-title">安装</div>
@@ -210,8 +201,6 @@ function highlight(code: string): Seg[][] {
             ><template v-for="(line, li) in highlight(installCode)" :key="li"><span v-for="(seg, si) in line" :key="si" :style="seg.color ? { color: seg.color } : undefined">{{ seg.text }}</span><br v-if="li < highlight(installCode).length - 1" /></template></pre>
         </div>
 
-        <Divider :style="{ width: isMobile ? '90%' : '800px', margin: '0 auto' }" />
-
         <!-- Quick Start -->
         <div class="section" :style="{ padding: isMobile ? '32px 16px' : '48px 40px' }">
             <div class="section-title">快速上手</div>
@@ -220,8 +209,6 @@ function highlight(code: string): Seg[][] {
                 class="code-box"
             ><template v-for="(line, li) in highlight(usageCode)" :key="li"><span v-for="(seg, si) in line" :key="si" :style="seg.color ? { color: seg.color } : undefined">{{ seg.text }}</span><br v-if="li < highlight(usageCode).length - 1" /></template></pre>
         </div>
-
-        <Divider :style="{ width: isMobile ? '90%' : '800px', margin: '0 auto' }" />
 
         <!-- Theme -->
         <div class="section" :style="{ padding: isMobile ? '32px 16px' : '48px 40px' }">
@@ -259,11 +246,15 @@ function highlight(code: string): Seg[][] {
     min-height: 100vh;
     padding: 60px 40px 40px;
     position: relative;
+    background:
+        radial-gradient(circle, rgba(138, 198, 138, 0.28) 1.5px, transparent 1.5px),
+        radial-gradient(circle, rgba(180, 220, 180, 0.2) 1px, transparent 1px),
+        #cfe9cf;
+    background-size: 28px 28px, 20px 20px, auto;
 }
 .hero-content {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 150px;
+    grid-template-columns: 1fr;
     align-items: center;
     max-width: 880px;
     width: 100%;

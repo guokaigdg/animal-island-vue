@@ -1,10 +1,7 @@
 # 🏝 Animal-Island-Vue
 
 <div align="center">
-    <img src="img/readme-home.png" alt="animal-island-vue" style="border-radius: 12px; width: 40%; display: block; margin: 0 auto;" />
-</div>
-<div align="center">
-A Vue 3 UI component library inspired by Animal Crossing: New Horizons
+A Vue 3 UI component library with a natural, cute island style
 </div>
 <br/>
 <div align="center">
@@ -25,9 +22,9 @@ A Vue 3 UI component library inspired by Animal Crossing: New Horizons
 
 ## Introduction
 
-This project is a lightweight UI component library built with Vue 3 + TypeScript + Less. It is the Vue port of [animal-island-ui](https://github.com/guokaigdg/animal-island-ui), with a design style inspired by Nintendo's "Animal Crossing: New Horizons" game interface, created for personal front-end technical practice and component development learning.
+This project is a lightweight UI component library built with Vue 3 + TypeScript + Less. It is the Vue port of [animal-island-ui](https://github.com/guokaigdg/animal-island-ui), featuring a natural, cute hand-drawn island visual style, created for personal front-end technical practice and component development learning.
 
-All visual elements, layouts, icons, and animations are independently designed and implemented, without directly using any official Nintendo art materials, code, or resource files.
+All visual elements, layouts, icons, and animations are independently designed and implemented, without using any third-party copyrighted art materials, code, or resource files.
 
 ## 🎉 React Version
 
@@ -69,7 +66,7 @@ const open = ref(false);
 </script>
 
 <template>
-    <Title color="green">Welcome to the Deserted Island</Title>
+    <Title color="green">Welcome to the Island</Title>
     <Card>
         <Button type="primary" @click="open = true">Start Adventure</Button>
     </Card>
@@ -111,62 +108,6 @@ npm run build
 npm run build:docs
 ```
 
-## Usage Cases
-
-<table>
-<tr valign="top">
-  <td align="center" width="33%">
-    <br/>
-    <img src="img/animal-island-new-tab.png" alt="animal-island-new-tab" style="border-radius: 8px; width: 90%; display: block; margin: 8px auto 0;" />
-    <br/><a href="https://ashleycry.github.io/AnimalIslandNewTab/">Animal Island New Tab</a><br/><sub>Animal Crossing style new tab page</sub>
-  </td>
-  <td align="center" width="33%">
-    <br/>
-    <img src="img/ac-site-template.png" alt="ac-site-template" style="border-radius: 8px; width: 90%; display: block; margin: 8px auto 0;" />
-    <br/><a href="https://github.com/yunxinz/ac-site-template">ac-site-template</a><br/><sub>Animal Crossing themed personal website template</sub>
-  </td>
-  <td align="center" width="33%">
-    <br/>
-    <img src="img/hi-kid.png" alt="HiKid" style="border-radius: 8px; width: 90%; display: block; margin: 8px auto 0;" />
-    <br/><a href="https://github.com/xiaochong/hi-kid">HiKid</a><br/><sub>English learning app for children</sub>
-  </td>
-</tr>
-<tr valign="top">
-  <td align="center" width="33%">
-    <br/>
-    <img src="img/android-ui.png" alt="android-ui" style="border-radius: 8px; width: 90%; display: block; margin: 8px auto 0;" />
-    <br/><a href="https://github.com/liuyuhong0324/AnimalIslandUI">AnimalIslandUI</a><br/><sub>Animal Crossing style Android UI library</sub>
-  </td>
-  <td align="center" width="33%">
-    <br/>
-    <img src="img/itbug-shop.png" alt="ItbugShop" style="border-radius: 8px; width: 90%; display: block; margin: 8px auto 0;" />
-    <br/><a href="https://itbug.shop/">ItbugShop</a><br/><sub>Liang Diandian's Blog</sub>
-  </td>
-  <td align="center" width="33%">
-    <br/>
-    <img src="img/KidsMathQuest.jpeg" alt="KidsMathQuest" style="border-radius: 8px; width: 90%; display: block; margin: 8px auto 0;" />
-    <br/><a href="https://github.com/bk4ice/KidsMathQuest">KidsMathQuest</a><br/><sub>Math practice for elementary school</sub>
-  </td>
-</tr>
-<tr valign="top">
-  <td align="center" width="33%">
-    <br/>
-    <img src="img/flutter-ui.jpeg" alt="animal_island_flutter" style="border-radius: 8px; width: 90%; display: block; margin: 8px auto 0;" />
-    <br/><a href="https://github.com/ohmangocat/animal_island_flutter">animal_island_flutter</a><br/><sub>Animal Crossing style Flutter UI library</sub>
-  </td>
-  <td align="center" width="33%">
-    <br/>
-    <img src="img/case-animal-blog.png" alt="animal-island-blog" style="border-radius: 8px; width: 90%; display: block; margin: 8px auto 0;" />
-    <br/><a href="https://github.com/guokaigdg/animal-island-blog">animal-island-blog</a><br/><sub>Animal Crossing style blog</sub>
-  </td>
-  <td align="center" width="33%">
-    <br/>
-    <img src="img/island-life-journal.png" alt="island-life-journal" style="border-radius: 8px; width: 90%; display: block; margin: 8px auto 0;" />
-    <br/><a href="https://github.com/TIUCSIB/animal-island-blog">Island Life Journal</a><br/><sub>Island Life Photo Journal</sub>
-  </td>
-</tr>
-</table>
-
 ## Notes
 
 - This project is for personal learning, research, and non-commercial demonstration only. Any form of commercial use, resale, or profit-making activities is prohibited.
@@ -175,9 +116,7 @@ npm run build:docs
 
 ## Copyright and Disclaimer
 
-- This project is not an official Nintendo product and has no association, authorization, or cooperation with Nintendo Co., Ltd.
-- The game name included in the project name is only a descriptive reference to the style and does not constitute trademark use or brand association.
-- All interface styles are merely design inspiration references and do not constitute reproduction or infringement of the original work.
+- All visual elements, interface designs, icons, and animations in this project are independently original designs and do not copy any copyrighted materials from third-party games or products.
 - If the copyright holder believes that related content is suspected of infringement, they can contact via email, and I will make rectifications or deletions immediately.
 
 ## Contact
