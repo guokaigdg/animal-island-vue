@@ -130,7 +130,7 @@ function highlight(code: string): Seg[][] {
                             Animal <br />
                             Island UI
                         </template>
-                        <span class="hero-version">v0.1.0</span>
+                        <span class="hero-version">v1.0.0</span>
                     </h1>
                     <Typewriter :speed="60">
                         <p class="hero-subtitle" :style="{ fontSize: isMobile ? '14px' : '17px' }">
