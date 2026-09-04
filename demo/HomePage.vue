@@ -47,7 +47,6 @@ const components = [
     { key: 'collapse', name: 'Collapse', desc: 'FAQ 折叠面板、平滑展开动画' },
     { key: 'divider-comp', name: 'Divider', desc: '装饰性水平分割线' },
     { key: 'footer', name: 'Footer', desc: '页脚组件' },
-    { key: 'time', name: 'Time', desc: '可爱风格时间显示' },
     { key: 'codeblock', name: 'CodeBlock', desc: '代码语法高亮组件' },
     { key: 'table', name: 'Table', desc: '泛型表格、悬浮动画、加载/空态' },
     { key: 'form', name: 'Form', desc: '完整校验、三种布局、命令式 API' },

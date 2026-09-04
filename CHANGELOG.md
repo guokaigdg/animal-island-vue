@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-09-05
+
+### Removed
+
+- 移除 `Loading`、`Time` 组件（版权整改，详见 README）
+- 移除 `icon-leaf.svg` 叶子图标及 demo 位图 favicon，改为内联 SVG / 纯 CSS 实现
+
+### Security
+
+- 建议所有用户从 1.0.0 及以下版本升级至 1.1.0+
+
 ## [Unreleased]
 
 ### Changed

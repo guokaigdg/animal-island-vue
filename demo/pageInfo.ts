@@ -23,10 +23,6 @@ export const PAGE_INFO: Record<string, { title: string; desc: string }> = {
         title: 'Collapse 折叠面板',
         desc: '折叠面板组件 — 支持展开/收起、默认展开、禁用状态',
     },
-    time: {
-        title: 'Time 时间',
-        desc: '经典 HUD 风格的时间显示组件，实时更新时间',
-    },
     footer: {
         title: 'Footer 底部装饰',
         desc: '页面底部圣诞树装饰，一行 🎄 居中排列，支持无缝铺满',

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, ref, useAttrs, watch } from 'vue';
-import leafIcon from '../../assets/img/icons/icon-leaf.svg';
 import type { TabItem } from './types';
 
 const attrs = useAttrs();
@@ -124,13 +123,12 @@ function handleClick(key: string) {
                     {{ item.key === activeKey ? '●' : '○' }}
                 </span>
                 <span class="animal-tabs__label">{{ item.label }}</span>
-                <img
+                <span
                     v-if="item.key === activeKey"
-                    :src="leafIcon"
-                    alt=""
+                    aria-hidden="true"
                     class="animal-tabs__leaf"
                     :class="{ 'animal-tabs__leaf--static': !leafAnimation }"
-                />
+                ></span>
             </button>
         </div>
         <div
@@ -223,10 +221,13 @@ function handleClick(key: string) {
 
     &__leaf {
         position: absolute;
-        right: -5px;
+        right: -4px;
         top: -4px;
-        width: 18px;
-        height: 18px;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #ffd166;
+        box-shadow: 0 0 0 2px #fff9e3;
         animation: animal-tabs-leaf-wiggle 2s ease-in-out infinite;
 
         &--static {

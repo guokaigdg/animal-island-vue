@@ -481,7 +481,6 @@ Interface details:
 | Title 字重             | `900`                                                                                                                    | 飘带文字                                            |
 | 过渡                   | `0.25s cubic-bezier(0.4,0,0.2,1)`                                                                                        | 通用动画                                            |
 | Loading stripe         | `28.28px` step, `-45deg`, `#0ec4b6/#01b0a7`                                                                              | 按钮 inline loading                                 |
-| Loading 全屏           | mint `#19c8b9` SVG spinner，1s 旋转 + 1.5s dash                                                                          | `<Loading>` 全屏遮罩                                |
 | Footer                 | `height: 80px`，14 个 🎄 emoji 居中（28px / 间距 12px），非图片                                                          | 圣诞树底部                                          |
 | Divider                | `height: 12px`，5 种背景图                                                                                               | 装饰分割线                                          |
 | Cursor                 | `cursor: url(...) 4 0, auto !important`                                                                                  | 原创手绘指向光标（奶油手背 + 棕描边 + 薄荷袖口）    |

@@ -343,18 +343,6 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 - Placements (12): `top` / `bottom` / `left` / `right` + each with `-start` / `-end` (e.g. `top-start`, `bottom-end`).
 - Vue API: `<Tooltip title="Tip text" placement="top" trigger="hover" variant="default" :bordered="true"><Button>Hover me</Button></Tooltip>`. The default slot is the trigger; pass tip content via the `title` prop OR `<template #title>...</template>` slot for rich content. Triggers: `'hover' | 'focus' | 'click'`.
 
-### Loading (full-screen overlay — NOT button stripe)
-
-- Container: position absolute; inset 0; bg black; overflow hidden.
-- Reveal mask: mask: radial-gradient(circle at center, transparent var(--mask-r), black calc(var(--mask-r) + 1px));
-  Animate --mask-r outward to fade in/out content.
-- SVG spinner: color #19c8b9; rotate 1s linear infinite; circle stroke-dasharray animation 1.5s ease-in-out:
-  0% stroke-dasharray 1, 150; stroke-dashoffset 0;
-  50% stroke-dasharray 90, 150; stroke-dashoffset -35;
-  100% stroke-dasharray 90, 150; stroke-dashoffset -124.
-- The diagonal-stripe loading at -45deg #0ec4b6/#01b0a7 28.28px is for Button only — do not put it here.
-- Vue API: `<Loading :active="isLoading" />`. Default slot wraps the content the overlay reveals.
-
 ### Table
 
 - Wrapper: bg rgb(247,243,223); border-radius 20px; padding 6px (NO border).
@@ -368,16 +356,6 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 - Empty: padding 60px 20px; text-align center; color #9f927d; icon opacity 0.5.
 - Loading overlay: rgba(247,243,223,0.8) + backdrop-filter blur(2px); spinner #19c8b9.
 - Vue API: `<Table :columns="cols" :data-source="rows" row-key="id" :striped="true" :show-header="true" :loading="false" empty-text="暂无数据" />`. `cols` items: `{ title, dataIndex, render?, width?, align?, style? }`. For rich cell rendering, prefer the `cell-{dataIndex}` named slot over `render`. Both `cols` and `rows` arrays are iterated with `v-for` + `:key` internally — never `.map(...)` in the template.
-
-### Time (HUD clock)
-
-- Container: padding 16px 36px; gap 24px; bg linear-gradient(180deg, #fff 0%, #f8f8f0 100%); border 3px solid #d4cfc3; border-radius 18px.
-- Date section right border 3px solid rgba(159,146,125,0.35); padding-right 24px.
-- Weekday: color #6fba2c; weight 900; font-size 14px; letter-spacing 1.5px; UPPERCASE.
-- Month/day: color #8b7355; weight 800; font-size 22px.
-- Time digits: color #8b7355; weight 900; font-size 48px; letter-spacing 2px.
-- Colon blink: animation blink 1s step-end infinite; @keyframes blink { 50% { opacity: 0; } }.
-- Vue: drive the clock with `Vue.ref(new Date())` + `setInterval` inside `Vue.onMounted` (clear in `Vue.onBeforeUnmount`).
 
 ### Footer (decoration)
 

@@ -20,7 +20,6 @@ import TabsDemo from './pages/TabsDemo.vue';
 import FooterDemo from './pages/FooterDemo.vue';
 import CodeBlockDemo from './pages/CodeBlockDemo.vue';
 import TableDemo from './pages/TableDemo.vue';
-import TimeDemo from './pages/TimeDemo.vue';
 import FormDemo from './pages/FormDemo.vue';
 import TagDemo from './pages/TagDemo.vue';
 import ProgressDemo from './pages/ProgressDemo.vue';
@@ -57,7 +56,6 @@ const PAGES: Record<string, unknown> = {
     footer: FooterDemo,
     codeblock: CodeBlockDemo,
     table: TableDemo,
-    time: TimeDemo,
     form: FormDemo,
     tag: TagDemo,
     progress: ProgressDemo,

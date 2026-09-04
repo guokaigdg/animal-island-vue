@@ -26,6 +26,16 @@ This project is a lightweight UI component library built with Vue 3 + TypeScript
 
 All visual elements, layouts, icons, and animations are independently designed and implemented, without using any third-party copyrighted art materials, code, or resource files.
 
+## ⚠️ Git History Rewritten — Re-clone Required
+
+In September 2026, the entire git history of this repository was rewritten to remove content that infringed Nintendo's copyright (per a DMCA takedown notice). All previous commits, tags, and releases were replaced with a clean history.
+
+**If you cloned or forked this repository before the rewrite:**
+
+- Do NOT pull or merge — doing so would reintroduce the removed content into your copy.
+- Delete your old clone/fork, then re-clone or re-fork from this repository.
+- Only pull requests based on the new history can be accepted.
+
 ## 🎉 React Version
 
 - [animal-island-ui](https://github.com/guokaigdg/animal-island-ui)

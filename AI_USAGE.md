@@ -96,7 +96,6 @@ import type {
     TitleColor,
     CollapseProps,
     CursorProps,
-    TimeProps,
     DividerProps,
     TypewriterProps,
     TabsProps,
@@ -120,7 +119,6 @@ import type {
     TooltipPlacement,
     TooltipTrigger,
     TooltipVariant,
-    LoadingProps,
     TableProps,
     TableColumn,
     TableRecord,
@@ -507,19 +505,6 @@ Wrap the region where you want a game-style finger cursor:
 
 ***
 
-### 1.10 Time
-
-```ts
-interface TimeProps {}
-```
-
-```vue
-<Time />
-<!-- auto-updates every second, shows weekday + date + clock -->
-```
-
-> No configurable props — it is a self-contained HUD widget. No `format`, no `value`, no timezone — uses the browser's local clock.
-
 ***
 
 ### 1.12 Footer
@@ -884,24 +869,6 @@ interface TooltipProps {
 > **Not supported:** no `open` / `defaultOpen` (uncontrolled visibility only — driven by `trigger`), no `onOpenChange`, no `mouseEnterDelay` / `mouseLeaveDelay`, no arrow toggle, no `getPopupContainer`, no `color`. The bubble color is fixed by `variant`.
 
 ***
-
-### 1.22 Loading
-
-```ts
-interface LoadingProps {
-    active?: boolean; // default true
-}
-```
-
-```vue
-<Loading />
-<!-- full-bleed loading scene -->
-<Loading :active="isLoading" />
-```
-
-> Self-contained illustrated loading scene (no configurable content). When `:active="false"`, the scene fades out via a CSS mask radius transition.
->
-> **Not supported:** no `tip` / `text`, no `size`, no `spinning`, no `delay`, no `indicator`, no default slot (this is NOT antd's `Spin` — do not wrap content with it). Use it as a sibling overlay element controlled via `active`.
 
 ***
 

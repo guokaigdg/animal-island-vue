@@ -27,9 +27,6 @@ export type { DividerProps, DividerType } from './components/Divider';
 export { Cursor } from './components/Cursor';
 export type { CursorProps } from './components/Cursor';
 
-export { Loading } from './components/Loading';
-export type { LoadingProps } from './components/Loading';
-
 export { Title } from './components/Title';
 export type { TitleProps, TitleSize, TitleColor } from './components/Title';
 
@@ -94,9 +91,6 @@ export type { ModalProps } from './components/Modal';
 export { Footer } from './components/Footer';
 
 // Phase 4 — 内容/数据展示组件
-export { Time } from './components/Time';
-export type { TimeProps } from './components/Time';
-
 export { Typewriter } from './components/Typewriter';
 export type { TypewriterProps } from './components/Typewriter';
 
