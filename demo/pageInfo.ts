@@ -139,6 +139,10 @@ export const PAGE_INFO: Record<string, { title: string; desc: string }> = {
         title: 'Carousel 轮播图',
         desc: '轮播组件 — 自动播放、悬停/聚焦暂停、箭头与圆点切换、键盘导航（方向键 / Home / End）',
     },
+    countdown: {
+        title: 'Countdown 倒计时',
+        desc: '倒计时组件 — 里程表式单向滚动数字、DD/HH/mm/ss 格式模板、三种尺寸、default/island 风格',
+    },
     pagination: {
         title: 'Pagination 分页',
         desc: '分页组件 — 页码/条数受控与非受控、每页条数切换、快速跳转、orange/teal 双配色，可内置于 Table',

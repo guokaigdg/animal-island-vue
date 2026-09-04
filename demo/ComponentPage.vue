@@ -38,6 +38,7 @@ import ImageDemo from './pages/ImageDemo.vue';
 import DatePickerDemo from './pages/DatePickerDemo.vue';
 import TimePickerDemo from './pages/TimePickerDemo.vue';
 import CarouselDemo from './pages/CarouselDemo.vue';
+import CountdownDemo from './pages/CountdownDemo.vue';
 import PaginationDemo from './pages/PaginationDemo.vue';
 
 const props = defineProps<{ activeKey: string }>();
@@ -78,6 +79,7 @@ const PAGES: Record<string, unknown> = {
     datepicker: DatePickerDemo,
     timepicker: TimePickerDemo,
     carousel: CarouselDemo,
+    countdown: CountdownDemo,
     pagination: PaginationDemo,
 };
 

@@ -95,6 +95,7 @@ const MENU_ITEMS: MenuItem[] = [
             { key: 'wallet', label: 'Wallet 钱包', isNew: true },
             { key: 'time', label: 'Time 时间' },
             { key: 'phone', label: 'Phone 手机' },
+            { key: 'countdown', label: 'Countdown 倒计时', isNew: true },
             { key: 'wedding-invitation', label: 'Wedding 婚礼请柬', isNew: true },
         ],
     },

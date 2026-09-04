@@ -168,6 +168,9 @@ export type { TimePickerProps, TimePickerSize, TimePickerStatus, TimePart } from
 export { Carousel } from './components/Carousel';
 export type { CarouselProps } from './components/Carousel';
 
+export { Countdown } from './components/Countdown';
+export type { CountdownProps, CountdownSize, CountdownVariant } from './components/Countdown';
+
 // 注：WeddingInvitation 是「Demo-only」演示组件 —— 仅用于站点展示，
 // 不打入对外发布的 npm 包。源码已迁移到 `demo/components/WeddingInvitation/`。
 // 用户可参考 demo 实现自行接入项目。
