@@ -85,6 +85,7 @@ const MENU_ITEMS: MenuItem[] = [
             { key: 'pagination', label: 'Pagination 分页', isNew: true },
             { key: 'typewriter', label: 'Typewriter 打字机' },
             { key: 'image', label: 'Image 图片', isNew: true },
+            { key: 'carousel', label: 'Carousel 轮播图', isNew: true },
         ],
     },
     {

@@ -135,6 +135,10 @@ export const PAGE_INFO: Record<string, { title: string; desc: string }> = {
         title: 'TimePicker 时间选择',
         desc: '时间选择器 — 时/分/秒滚动列、此刻快捷按钮、步进控制、可清空',
     },
+    carousel: {
+        title: 'Carousel 轮播图',
+        desc: '轮播组件 — 自动播放、悬停/聚焦暂停、箭头与圆点切换、键盘导航（方向键 / Home / End）',
+    },
     pagination: {
         title: 'Pagination 分页',
         desc: '分页组件 — 页码/条数受控与非受控、每页条数切换、快速跳转、orange/teal 双配色，可内置于 Table',

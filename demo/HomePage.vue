@@ -57,6 +57,7 @@ const components = [
     { key: 'table', name: 'Table', desc: '泛型表格、悬浮动画、加载/空态' },
     { key: 'form', name: 'Form', desc: '完整校验、三种布局、命令式 API' },
     { key: 'image', name: 'Image', desc: '相框图片、14 种底色、懒加载、点击预览' },
+    { key: 'carousel', name: 'Carousel', desc: '自动播放轮播、箭头/圆点切换、键盘导航' },
     { key: 'pagination', name: 'Pagination', desc: '分页组件，支持条数切换与快速跳转' },
 ];
 
