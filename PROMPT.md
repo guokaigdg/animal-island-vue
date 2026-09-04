@@ -417,7 +417,7 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 
 - SVG-based, single-color. Pass via `<Icon name="..." :size="20" :bounce="false" />`. Names: `icon-miles`, `icon-camera`, `icon-chat`, `icon-critterpedia`, `icon-design`, `icon-diy`, `icon-helicopter`, `icon-map`, `icon-shopping`, `icon-variant` (defer to ICON_LIST runtime export).
 
-### CodeBlock (dark JSX/TS only)
+### CodeBlock (dark JSX/TS only, with copy button)
 
 - Container: padding 20px 24px; bg #2b2118; border 1px solid #3d3028; border-radius 20px;
   font-size 14px; line-height 1.7; tab-size 4;
@@ -428,6 +428,10 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
   component #80c0e0 func #61afef prop #e8c87a jsx #f0a870
   operator #d4b896
 - Vue API: `<CodeBlock :code="codeString" />`.
+- Copy button (default on): top-right pill (top 12px / right 12px, 32px height, 50px radius,
+  bg rgba(61,48,40,0.94), text #e8d5bc 12px/700); copies code via Clipboard API with
+  execCommand fallback; states 复制 → 已复制 / 复制失败, auto-reset 2s; `@copy` event on success.
+  Hide via `:copyable="false"`. When visible and padding not customised, pre gets padding-right 96px.
 
 ### WeddingInvitation (specialty card + companion export button)
 
@@ -516,6 +520,33 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 - Emits: `update:modelValue`, `change`, `update:open`.
 - Visual: hour/minute/second scroll columns (28px options, selected centered on open); hover `#ffd54f`, selected amber `#ffb400` white text; footer 「此刻」(set to now) + 「确定」. Panel width 248px (172px without seconds). Click-outside closes; ESC closes; Enter confirms.
 - Vue API: `<TimePicker v-model="time" />`, `<TimePicker format="HH:mm" :minute-step="15" />`.
+
+### Carousel (accessible image carousel)
+
+- Props: `modelValue` (number, v-model — active index), `defaultActiveIndex` (default 0), `autoplay` (default false), `interval` (ms, default 3000, clamped to ≥ 1000), `loop` (default true), `showArrows` / `showDots` (default true), `pauseOnHover` (default true — keyboard focus always pauses), `ariaLabel` (default '轮播图').
+- Emits: `update:modelValue`, `change` (index).
+- Content: default slot — each direct child element is one slide.
+- Visual: viewport `rgb(247,243,223)` bg, 20px radius, min-height 180px; slides fade + 18px translateX over 0.3s `cubic-bezier(0.4,0,0.2,1)`; 42px circular white arrows (9×9 chevron via ::before borders) 14px from edges (36px / 8px on ≤480px); pill dot bar (white 85%, 50px radius) with 10px dots, active stretches to 24px teal `#19c8b9`; top-right 58×32 pill play/pause button (autoplay only).
+- A11y: `role="region"` + `aria-roledescription="carousel"` + focusable; slides are `role="group"` with `第 N 张，共 M 张` labels and `aria-hidden`; dots/arrows labelled; ArrowLeft/ArrowRight/Home/End keyboard nav; non-loop disables boundary arrows; single slide renders no controls.
+- Vue API: `<Carousel v-model="active" autoplay :interval="3500">` with slide children.
+
+### Countdown (odometer-style countdown)
+
+- Props: `value` (number | Date, required — deadline), `format` (default `'HH:mm:ss'`, tokens DD/HH/mm/ss, literals rendered as separators), `size` (`'small' | 'middle' | 'large'`, default 'middle'), `variant` (`'default' | 'island'`), `bordered` (default false — 1.5px `#d4c9b4` border on digit units).
+- Emits: `change` (remaining ms), `finish` (fires once at zero; timer cleared afterwards; value change restarts).
+- Slot: `#prefix` (label before the countdown).
+- Visual: default = white bg + soft shadow, island = `rgb(247,243,223)` + 2px dashed `#d4c4a8`; digit units = 12px-radius gradient `linear-gradient(180deg,#fff,#f8f8f0)` blocks; digits color `#8b7355` weight 900 tabular-nums; each digit is a 20-face strip (0-9 twice) scrolling one-way downward via `translateY` (5% per face, 0.35s ease); colon weight 900, top -0.08em; sizes: container 40/48/56px, digits 20/26/34px.
+- A11y: `role="timer"` `aria-live="off"`; rolling strips `aria-hidden`, sr-only text carries the full formatted value.
+- Vue API: `<Countdown :value="deadline" format="DD 天 HH:mm:ss" variant="island"><template #prefix>活动结束还有</template></Countdown>`.
+
+### Pagination (client-side pagination)
+
+- Props: `total` (number, required), `current` (v-model:current, controlled page), `defaultCurrent` (default 1), `pageSize` (v-model:pageSize, controlled size), `defaultPageSize` (default 10), `showSizeChanger` (default false), `pageSizeOptions` (default `[10, 20, 50, 100]`), `showQuickJumper` (default false), `showTotal` (default false), `disabled` (default false), `variant` (`'orange' | 'teal'`, default 'orange').
+- Emits: `update:current` (page), `update:pageSize` (size), `change` (page, pageSize), `showSizeChange` (current, size).
+- Visual: ghost circular 32px page cells (transparent bg); orange variant hover `#ffd54f` / active `#ffc107` (hover `#ffb400`); teal variant hover `#e6f9f6` + text `#19c8b9` / active `#19c8b9` (hover `#3dd4c6`); active = white text weight 700, default cursor; ellipsis `#c4b89e` weight 900; total text 13px 600 `#a09080`; size changer = Select-style white 34px trigger with 2px `#e8dcc8` border + 12px radius, caret rotates 180° when open, `#ffeea0` 28px-radius listbox popping UP with gold pill bar (`#ffcc00`, 30% opacity) + Animal Crossing finger cursor on hover; quick jumper = 52×32px cream `#fffbe7` pill input, no border, no focus emphasis.
+- Behavior: ≤7 pages render all; >7 pages render first/last + current±1 + ellipses; prev/next disabled at boundaries; size change clamps current page into new page count; jumper accepts digits only, jumps on Enter/blur, clamps to bounds and clears.
+- A11y: `nav[aria-label="分页"]`; active page `aria-current="page"`; prev/next `aria-label="上一页/下一页"`; size trigger `aria-haspopup="listbox"` + `aria-expanded`; options `role="option"` + `aria-selected`; jumper input `aria-label="跳转到指定页"`; ellipses `aria-hidden`.
+- Vue API: `<Pagination v-model:current="page" v-model:page-size="pageSize" :total="500" show-total show-quick-jumper />`; Table integration: `<Table :pagination="{ defaultPageSize: 5, showTotal: true, showSizeChanger: true }" />` (total computed from dataSource).
 
 ## HARD RULES (must obey — disqualifies the output if violated)
 

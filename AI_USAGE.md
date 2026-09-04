@@ -1012,14 +1012,20 @@ const items: Item[] = [];
 ```ts
 interface CodeBlockProps {
     code: string; // REQUIRED — raw source string
+    copyable?: boolean; // default true — show copy button
 }
+// Emits: copy(code)
 ```
 
 ```vue
 <CodeBlock :code="`import { Button } from 'animal-island-vue';\n\n<Button type=\"primary\">Go</Button>`" />
+
+<CodeBlock :code="codeString" :copyable="false" @copy="handleCopy" />
 ```
 
-> Renders a `<pre>` with built-in JSX/TS tokenizer (also recognises Vue Composition-API symbols: `ref`, `reactive`, `computed`, `watch`, `defineComponent`, `defineProps`, `defineEmits`, `onMounted`, `onBeforeUnmount`). No `language` prop. Theme is fixed: bg `#2b2118`, border `1px solid #3d3028`, radius 20px, font-size 14, line-height 1.7. No copy button, no line numbers, no word-wrap.
+> Renders a `<pre>` with built-in JSX/TS tokenizer (also recognises Vue Composition-API symbols: `ref`, `reactive`, `computed`, `watch`, `defineComponent`, `defineProps`, `defineEmits`, `onMounted`, `onBeforeUnmount`). No `language` prop. Theme is fixed: bg `#2b2118`, border `1px solid #3d3028`, radius 20px, font-size 14, line-height 1.7.
+>
+> **Copy button** (default on, top-right pill): copies the raw `code` via Clipboard API with `document.execCommand('copy')` fallback; button text cycles 复制 → 已复制 / 复制失败 (auto-resets after 2s); fires `copy` emit with the code string on success. Layout: `class` and non-layout `:style` keys land on the `<pre>`; `width` / `min-width` / `max-width` / `margin*` keys land on the outer wrapper. When the button is shown and `padding` / `padding-right` are not customised, the `<pre>` gets `padding-right: 96px` to reserve button space. No line numbers, no word-wrap.
 
 ---
 
@@ -1577,6 +1583,116 @@ const time = ref<string | null>(null);
 ```
 
 > 时/分/秒三列滚动列表，打开时选中项滚动到列中央；hover 黄色 `#ffd54f`、选中琥珀黄 `#ffb400` 白字。footer「此刻」（设为当前时间）+「确定」。面板点击外部关闭、ESC 关闭、Enter 确定。format 不含 `ss` 时面板收窄为两列（172px，含秒 248px）。**Not supported:** 无 `disabledHours/disabledMinutes/disabledSeconds`、无 `use12Hours`、无 `showNow` 开关（固定「此刻」）。
+
+---
+
+### 1.33 Carousel
+
+```ts
+interface CarouselProps {
+    modelValue?: number; // v-model 当前索引（受控）
+    defaultActiveIndex?: number; // default 0
+    autoplay?: boolean; // default false
+    interval?: number; // default 3000（最小 1000）
+    loop?: boolean; // default true
+    showArrows?: boolean; // default true
+    showDots?: boolean; // default true
+    pauseOnHover?: boolean; // default true
+    ariaLabel?: string; // default '轮播图'
+}
+// Emits: update:modelValue(index), change(index)
+```
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import { Carousel } from 'animal-island-vue';
+const active = ref(0);
+</script>
+
+<template>
+    <Carousel v-model="active" autoplay :interval="3500" aria-label="岛屿照片">
+        <img src="/beach.jpg" alt="海滩" />
+        <img src="/plaza.jpg" alt="广场" />
+        <img src="/museum.jpg" alt="博物馆" />
+    </Carousel>
+</template>
+```
+
+> 默认插槽的每个直接子元素为一张。region 语义（`role="region"` + `aria-roledescription="carousel"`），键盘可用：ArrowLeft / ArrowRight / Home / End。autoplay 时鼠标悬停或焦点进入自动暂停（`pauseOnHover` 控制悬停部分），右上角提供播放/暂停按钮；单张内容不渲染任何控制器；`loop=false` 时边界箭头禁用。**Not supported:** 无纵向滚动、无 `effect` 切换动画模式、无拖拽手势。
+
+---
+
+### 1.34 Countdown
+
+```ts
+type CountdownSize = 'small' | 'middle' | 'large';
+type CountdownVariant = 'default' | 'island';
+
+interface CountdownProps {
+    value: number | Date; // 结束时间，时间戳或 Date
+    format?: string; // default 'HH:mm:ss'，支持 DD / HH / mm / ss
+    size?: CountdownSize; // default 'middle'
+    variant?: CountdownVariant; // default 'default'
+    bordered?: boolean; // default false，数字块带边框
+}
+// Emits: change(remaining), finish()
+// Slot: #prefix — 倒计时前的说明内容
+```
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import { Countdown } from 'animal-island-vue';
+const deadline = ref(Date.now() + 24 * 60 * 60 * 1000);
+</script>
+
+<template>
+    <Countdown :value="deadline" format="DD 天 HH:mm:ss" variant="island" @finish="onFinish">
+        <template #prefix>活动结束还有</template>
+    </Countdown>
+</template>
+```
+
+> 里程表式单向滚动数字（0-9 两轮 20 面数字条，`translateY` 滚动，回绕瞬移后继续同向滚动）。250ms 轮询，归零后清除定时器并触发 `finish`（仅一次）；`value` 变化后重新计时。滚动数字条对辅助技术隐藏，`role="timer"` 元素内附带完整格式化读屏文本。**Not supported:** 无暂停/恢复 API、无时区参数（用浏览器本地时钟）。
+
+---
+
+### 1.35 Pagination
+
+```ts
+type PaginationVariant = 'orange' | 'teal';
+
+interface PaginationProps {
+    total: number; // 数据总数（必填）
+    current?: number; // 当前页（受控，v-model:current）
+    defaultCurrent?: number; // default 1
+    pageSize?: number; // 每页条数（受控，v-model:pageSize）
+    defaultPageSize?: number; // default 10
+    showSizeChanger?: boolean; // default false，每页条数切换器
+    pageSizeOptions?: number[]; // default [10, 20, 50, 100]
+    showQuickJumper?: boolean; // default false，快速跳转输入框
+    showTotal?: boolean; // default false，总条数文本
+    disabled?: boolean; // default false
+    variant?: PaginationVariant; // default 'orange'
+}
+// Emits: update:current(page), update:pageSize(size), change(page, pageSize), showSizeChange(current, size)
+```
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import { Pagination } from 'animal-island-vue';
+const page = ref(1);
+const pageSize = ref(20);
+</script>
+
+<template>
+    <Pagination v-model:current="page" v-model:page-size="pageSize" :total="500" show-total show-quick-jumper />
+</template>
+```
+
+> 页码超过 7 页时首尾页 + 当前页邻域 + 省略号。`nav` 语义 + `aria-current="page"`，上一页/下一页按边界禁用。size changer 是 listbox 弹层（点击外部 / Escape 关闭），jumper 仅数字输入、Enter 或失焦跳页且超界收敛。`Table` 的 `pagination` 属性可直接内嵌客户端分页（total 由 Table 计算）。**Not supported:** 无极简/简洁模式、无自定义页码渲染插槽。
 
 ---
 

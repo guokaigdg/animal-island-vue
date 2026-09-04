@@ -27,7 +27,7 @@ animal-island-vue 是一套受《集合啦！动物森友会》启发的 Vue 3 +
 - 构建：Vite (library mode) + `vite.config.ts`（库）/ `vite.config.docs.ts`（Demo）
 - 样式系统：**scoped `<style lang="less" scoped>` + BEM** + `src/styles/variables.less` 设计 token（**不使用 CSS Modules**）
 
-### 全量导出清单（29 个 named exports = 28 个组件 + 1 个伴生导出按钮）
+### 全量导出清单（43 个 named exports — 含子组件、命令式 API 与伴生导出）
 
 从 `src/index.ts` 导出：
 
@@ -57,9 +57,11 @@ animal-island-vue 是一套受《集合啦！动物森友会》启发的 Vue 3 +
 | `CodeBlock`         | JSX/TS 语法高亮代码块                                                                                             |      | ✓             |
 | `Loading`           | 全屏遮罩 + SVG spinner（mint `#19c8b9`，`stroke-dasharray` 动画）                                                 |      | ✓             |
 | `Table`             | 数据表格，固定列、空状态、loading                                                                                 | ✓    |               |
+| `Carousel`          | 轮播图，自动播放 / 箭头 / 圆点 / 键盘导航                                                                        | ✓    |               |
+| `Countdown`         | 倒计时，里程表式单向滚动数字                                                                                     |      | ✓             |
 | `WeddingInvitation` | 婚礼邀请函（含 `WeddingInvitationExportButton` 导出 PNG —— 这是清单里**唯一非组件的伴生导出按钮**）               |      | ✓             |
 
-类型导出：`BackTopProps`、`ButtonProps/ButtonType/ButtonSize/ButtonHTMLType`、`InputProps/InputSize`、`SwitchProps/SwitchSize`、`ModalProps`、`CardProps/CardType/CardColor`、`TitleProps/TitleSize/TitleColor`、`FooterProps/FooterType`、`CollapseProps`、`CursorProps`、`TimeProps`、`PhoneProps`、`DividerProps/DividerType`、`TypewriterProps`、`SelectProps/SelectOption`、`SkeletonProps/SkeletonVariant`、`IconProps/IconName`、`TabsProps/TabItem`、`CheckboxProps/CheckboxOption/CheckboxSize/CheckboxValue`、`RadioProps/RadioOption/RadioSize/RadioValue`、`TooltipProps/TooltipPlacement/TooltipTrigger/TooltipVariant`、`CodeBlockProps`、`LoadingProps`、`TableProps/TableColumn/TableRecord`、`WeddingInvitationProps/WeddingInvitationExpose/WeddingInvitationExportButtonProps`。运行时值：`ICON_LIST`。
+类型导出：`BackTopProps`、`ButtonProps/ButtonType/ButtonSize/ButtonHTMLType`、`InputProps/InputSize`、`SwitchProps/SwitchSize`、`ModalProps`、`CardProps/CardType/CardColor`、`TitleProps/TitleSize/TitleColor`、`FooterProps/FooterType`、`CollapseProps`、`CursorProps`、`TimeProps`、`PhoneProps`、`DividerProps/DividerType`、`TypewriterProps`、`SelectProps/SelectOption`、`SkeletonProps/SkeletonVariant`、`IconProps/IconName`、`TabsProps/TabItem`、`CheckboxProps/CheckboxOption/CheckboxSize/CheckboxValue`、`RadioProps/RadioOption/RadioSize/RadioValue`、`TooltipProps/TooltipPlacement/TooltipTrigger/TooltipVariant`、`CodeBlockProps`、`LoadingProps`、`TableProps/TableColumn/TableRecord`、`CarouselProps`、`CountdownProps/CountdownSize/CountdownVariant`、`WeddingInvitationProps/WeddingInvitationExpose/WeddingInvitationExportButtonProps`。运行时值：`ICON_LIST`。
 
 > Vue 端约定：
 >
@@ -1379,15 +1381,47 @@ opacity: 0.55;
 
 Props：
 
-| name    | type            | default | 说明                                                 |
-| ------- | --------------- | ------- | ---------------------------------------------------- |
-| `code`  | `string`        | —       | **必填**；原始源码字符串，内部自动按 JSX/TS 分词高亮 |
-| `style` | `CSSProperties` | —       | 会合并覆盖默认深色主题                               |
-| `class` | `string`        | —       | 自定义类名                                           |
+| name       | type      | default | 说明                                                 |
+| ---------- | --------- | ------- | ---------------------------------------------------- |
+| `code`     | `string`  | —       | **必填**；原始源码字符串，内部自动按 JSX/TS 分词高亮 |
+| `copyable` | `boolean` | `true`  | 是否显示右上角复制按钮                               |
 
-**默认主题（写死在组件，不走 Less）：**
+Emits：`copy(code: string)` — 复制成功后触发。
+
+`class` 与非布局类 `:style` 键落在 `<pre>` 上；`width` / `min-width` / `max-width` / `margin*` 键落在外层 wrapper（`inheritAttrs: false` 手动分派）。显示复制按钮且未自定义 `padding` / `padding-right` 时，`<pre>` 自动加 `padding-right: 96px` 给按钮留位。
+
+结构（BEM，scoped Less）：
+
+```html
+<div class="animal-code-block">          <!-- wrapper: relative, min-width 0, margin 1em 0 -->
+    <pre class="animal-code-block__code"><!-- 高亮内容 -->
+    <button class="animal-code-block__copy-btn">复制</button>
+</div>
+```
+
+复制逻辑与 React 版一致：优先 `navigator.clipboard.writeText`，不可用时降级临时 `textarea` + `document.execCommand('copy')`（finally 中清理临时节点）；按钮三态文案 复制 / 已复制 / 复制失败，2s 后自动复位（卸载时清定时器）；成功时 emit `copy`。
 
 ```css
+/* 复制按钮 */
+.animal-code-block__copy-btn {
+    position: absolute; top: 12px; right: 12px;
+    min-width: 62px; height: 32px; padding: 0 12px;
+    border: 1px solid rgba(232, 213, 188, 0.3);
+    border-radius: 50px;
+    background: rgba(61, 48, 40, 0.94); color: #e8d5bc;
+    font-size: 12px; font-weight: 700;
+}
+.animal-code-block__copy-btn:hover { background: #4b3b31; transform: translateY(-1px); }
+.animal-code-block__copy-btn:focus-visible {
+    outline: 2px solid var(--animal-primary-color, #19c8b9);
+    outline-offset: 2px;
+}
+```
+
+**pre 默认主题：**
+
+```css
+box-sizing: border-box; width: 100%; margin: 0;
 padding: 20px 24px;
 background: #2b2118;
 border: 1px solid #3d3028;
@@ -1417,7 +1451,7 @@ tab-size: 4;
 | operator  | `#d4b896` | `{}[]();,` 和 `+-*/=<>&                                                                                  | ^~?:` 等 |
 | default   | `#e8d5bc` | 其余文本                                                                                                 |
 
-> 不支持 `language` prop；非 JS/TS 代码（Python/Shell/SQL）会按通用规则着色，显示可能不准确。不带 copy 按钮、行号或折行。
+> 不支持 `language` prop；非 JS/TS 代码（Python/Shell/SQL）会按通用规则着色，显示可能不准确。不带行号或折行；复制按钮默认显示（`copyable: false` 关闭）。
 
 ---
 
@@ -2747,6 +2781,232 @@ Props / Emits：见 `AI_USAGE.md` §1.31。交互：打开时选中项滚动居�
 ```
 
 Props：`src`（string，必填）、`alt`（string，默认 `''`）、`width`/`height`（number|string，数字自动加 px）、`color`（`ImageColor`，默认 `'white'`，14 种 Card 底色）、`lazy`（boolean，默认 false → 原生 `loading="lazy"`）、`preview`（boolean，默认 true）。Emits：`load`（Event）、`error`（Event）。`preview=true` 时相框渲染为 `<button>`（原生 Enter/Space 激活），预览弹层经 `<Teleport to="body">` 挂载，支持 ESC / 遮罩点击 / 关闭按钮关闭，关闭后焦点归还触发元素。
+
+---
+
+### Carousel
+
+源码：`src/components/Carousel/Carousel.vue`。轮播图组件，默认插槽的每个直接子元素为一张；支持自动播放、首尾循环、箭头与圆点切换、键盘导航。
+
+```css
+/* 容器（region 语义，可聚焦） */
+.animal-carousel {
+    position: relative; width: 100%;
+    border-radius: 20px;
+    font-family: var(--animal-font-family, 'Nunito', 'Noto Sans SC');
+}
+.animal-carousel:focus-visible {
+    outline: 2px solid var(--animal-primary-color, #19c8b9);
+    outline-offset: 3px;
+}
+
+/* 视口 */
+.animal-carousel__viewport {
+    position: relative; overflow: hidden;
+    min-height: 180px;
+    background: rgb(247, 243, 223);
+    border-radius: 20px;
+}
+
+/* 幻灯片：绝对定位淡入 + 位移，active 相对定位撑高 */
+.animal-carousel__slide {
+    position: absolute; inset: 0;
+    opacity: 0; visibility: hidden;
+    transform: translateX(18px);
+    transition: opacity/transform/visibility 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.animal-carousel__slide--active {
+    position: relative;
+    opacity: 1; visibility: visible;
+    transform: translateX(0);
+}
+
+/* 圆形箭头按钮 42×42（移动端 36×36），::before 画 9×9 折角箭头 */
+.animal-carousel__arrow {
+    position: absolute; top: 50%;
+    width: 42px; height: 42px;
+    border: 1.5px solid rgba(121, 79, 39, 0.16);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--animal-text-color, #794f27);
+    transform: translateY(-50%);
+}
+.animal-carousel__arrow--prev { left: 14px; }  /* ::before rotate(-45deg) */
+.animal-carousel__arrow--next { right: 14px; } /* ::before rotate(135deg) */
+
+/* 圆点指示器：白色胶囊容器，30×30 命中区 + ::before 10px 圆点，active 拉宽 24px 变主题色 */
+.animal-carousel__dots {
+    position: absolute; bottom: 14px; left: 50%;
+    padding: 7px 10px; border-radius: 50px;
+    background: rgba(255, 255, 255, 0.85);
+    transform: translateX(-50%);
+}
+.animal-carousel__dot--active::before {
+    width: 24px;
+    background: var(--animal-primary-color, #19c8b9);
+}
+
+/* 右上角播放/暂停按钮 */
+.animal-carousel__rotation-control {
+    position: absolute; top: 14px; right: 14px;
+    min-width: 58px; height: 32px;
+    border-radius: 50px;
+    font-size: 12px; font-weight: 700;
+}
+
+@media (prefers-reduced-motion: reduce) { /* 所有过渡归零 */ }
+```
+
+Props：`modelValue`（number，v-model 受控索引）、`defaultActiveIndex`（默认 0）、`autoplay`（默认 false）、`interval`（默认 3000，实际最小 1000）、`loop`（默认 true）、`showArrows`/`showDots`（默认 true）、`pauseOnHover`（默认 true）、`ariaLabel`（默认 '轮播图'）。Emits：`update:modelValue(index)`、`change(index)`。键盘：ArrowLeft / ArrowRight / Home / End。autoplay 悬停/聚焦暂停（右上角播放控制按钮），单张内容不渲染控制器，`loop=false` 边界箭头禁用。
+
+---
+
+### Countdown
+
+源码：`src/components/Countdown/Countdown.vue`（内部子组件 `DigitRoll.vue` 实现滚动数字位）。里程表式单向滚动倒计时，`format` 支持 DD / HH / mm / ss token，字面量原样渲染为分隔符。
+
+```css
+/* 容器：default 白底软阴影 / island 米色虚线边框 */
+.animal-countdown {
+    display: inline-flex; align-items: center;
+    gap: 8px; width: fit-content;
+    color: var(--animal-text-color, #794f27);
+    font-weight: 700; border-radius: 20px;
+}
+.animal-countdown--default {
+    padding: 12px 18px;
+    background: var(--animal-bg-color, #fff);
+    box-shadow: var(--animal-shadow-sm, 0 2px 4px rgba(61, 52, 40, 0.06));
+}
+.animal-countdown--island {
+    padding: 13px 20px;
+    background: rgb(247, 243, 223);
+    border: 2px dashed #d4c4a8;
+}
+
+/* 数字块（Time 同款渐变底，bordered 时加 1.5px #d4c9b4 边框） */
+.animal-countdown__unit {
+    display: inline-flex; gap: 3px;
+    padding: 3px 8px; border-radius: 12px;
+    background: linear-gradient(180deg, #fff 0%, #f8f8f0 100%);
+}
+
+/* 滚动数字位：0-9 两轮共 20 面数字条，translateY 每面 5% 单向向下滚动 */
+.animal-countdown__digit-cell { overflow: hidden; height: 1.2em; }
+.animal-countdown__digit-strip {
+    display: flex; flex-direction: column;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+}
+.animal-countdown__digit-face {
+    height: 1.2em;
+    color: #8b7355; font-weight: 900;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.2; text-align: center;
+}
+
+/* 冒号：900 字重 + top -0.08em 光学居中，字号按尺寸 20/26/34px */
+.animal-countdown__colon { font-weight: 900; position: relative; top: -0.08em; }
+
+/* 尺寸：small 40px / middle 48px / large 56px；数字位字号 20/26/34px */
+.animal-countdown--small  { min-height: 40px; }
+.animal-countdown--middle { min-height: 48px; }
+.animal-countdown--large  { min-height: 56px; }
+
+/* 读屏专用文本（.sr-only，滚动数字条 aria-hidden） */
+```
+
+Props：`value`（number|Date，必填）、`format`（默认 `'HH:mm:ss'`）、`size`（`'small' | 'middle' | 'large'`，默认 `'middle'`）、`variant`（`'default' | 'island'`，默认 `'default'`）、`bordered`（默认 false）。Emits：`change(remaining)`（剩余毫秒）、`finish()`（归零，仅一次）。插槽：`#prefix` 倒计时前的说明内容。250ms 轮询，归零清定时器；`value` 变化重新计时；含 DD 时 HH 取天内小时，否则取总小时。
+
+---
+
+### Pagination
+
+源码：`src/components/Pagination/Pagination.vue`。分页组件（幽灵正圆页码格子 + 双配色），支持受控/非受控、每页条数切换、快速跳转；`Table` 的 `pagination` 属性内嵌同款。
+
+```css
+/* 容器：nav 语义 */
+.animal-pagination {
+    display: inline-flex; align-items: center; gap: 2px;
+    font-family: var(--animal-font-family, 'Nunito', 'Noto Sans SC');
+    font-size: 14px; color: #725d42;
+    user-select: none;
+}
+.animal-pagination--disabled { opacity: 0.6; }
+
+/* 总条数 */
+.animal-pagination__total {
+    margin-right: 10px; font-size: 13px; font-weight: 600;
+    color: #a09080; white-space: nowrap;
+}
+
+/* 页码/前后翻页：32px 透明底正圆，hover 变色（由变体提供），disabled #d4c9b4 */
+.animal-pagination__item {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px; padding: 0;
+    border: none; border-radius: 50%; background: transparent;
+    color: #725d42; font-size: 13px; font-weight: 500;
+    cursor: pointer; transition: all 0.15s ease;
+}
+.animal-pagination__item:focus-visible { outline: 2px solid #ffcc00; outline-offset: 1px; }
+
+/* 当前页：白字 700 字重 + 变体底色（orange #ffc107 / teal #19c8b9） */
+.animal-pagination__item--active { color: #fff; font-weight: 700; cursor: default; }
+.animal-pagination--orange .animal-pagination__item--active { background: #ffc107; }
+.animal-pagination--orange .animal-pagination__item--active:hover { background: #ffb400; }
+.animal-pagination--orange .animal-pagination__item:hover:not(:disabled):not(.animal-pagination__item--active) {
+    background: #ffd54f; color: #725d42;
+}
+.animal-pagination--teal .animal-pagination__item--active { background: #19c8b9; }
+.animal-pagination--teal .animal-pagination__item--active:hover { background: #3dd4c6; }
+.animal-pagination--teal .animal-pagination__item:hover:not(:disabled):not(.animal-pagination__item--active) {
+    background: #e6f9f6; color: #19c8b9;
+}
+
+/* 省略号 */
+.animal-pagination__ellipsis {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 24px; height: 32px; color: #c4b89e; font-weight: 900; letter-spacing: 1px;
+}
+
+/* 每页条数切换器：白底 2px #e8dcc8 边框 34px 触发器（同 Select），箭头展开旋转 180° */
+.animal-pagination__size-changer { position: relative; display: inline-flex; margin-left: 8px; }
+.animal-pagination__size-trigger {
+    display: inline-flex; align-items: center; justify-content: space-between; gap: 8px;
+    height: 34px; padding: 0 12px;
+    border: 2px solid #e8dcc8; border-radius: 12px;
+    background: #fff; color: #725d42; font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: all 0.2s ease;
+}
+.animal-pagination__size-trigger--open .animal-pagination__caret { transform: rotate(180deg); }
+
+/* 弹层：#ffeea0 28px 圆角向上弹出，option 选中金色 pill bar + 手指光标（同 Select） */
+.animal-pagination__size-list {
+    position: absolute; bottom: calc(100% + 8px); left: 0; z-index: 10;
+    padding: 8px 0; list-style: none;
+    background: #ffeea0; border-radius: 28px;
+    box-shadow: 0 6px 18px rgba(61, 52, 40, 0.12);
+}
+.animal-pagination__size-option--active::after {
+    content: ''; position: absolute; left: 0; right: 0; top: 56%;
+    transform: translateY(-50%); height: 14px; margin: 0 20px;
+    background: #ffcc00; border-radius: 7px; z-index: -1; opacity: 0.3;
+}
+
+/* 快速跳转：奶油底胶囊输入框 52×32px，无 border，focus 无强调 */
+.animal-pagination__jumper {
+    display: inline-flex; align-items: center; gap: 6px; margin-left: 8px;
+    font-size: 13px; font-weight: 500; color: #8a7b66;
+}
+.animal-pagination__jumper-input {
+    width: 52px; height: 32px; padding: 0;
+    border: none; border-radius: 50px; background: #fffbe7;
+    color: #725d42; font-size: 13px; font-weight: 700;
+    text-align: center; outline: none; caret-color: #725d42;
+}
+```
+
+Props：`total`（number，必填）、`current`（v-model:current，受控当前页）、`defaultCurrent`（默认 1）、`pageSize`（v-model:pageSize，受控每页条数）、`defaultPageSize`（默认 10）、`showSizeChanger`（默认 false）、`pageSizeOptions`（默认 `[10, 20, 50, 100]`）、`showQuickJumper`（默认 false）、`showTotal`（默认 false）、`disabled`（默认 false）、`variant`（`'orange' | 'teal'`，默认 `'orange'`）。Emits：`update:current(page)`、`update:pageSize(size)`、`change(page, pageSize)`、`showSizeChange(current, size)`。页数 ≤7 全量展示；>7 时首尾页 + 当前页 ±1 + 省略号。size changer 弹层点击外部 / Escape 关闭；jumper 仅数字、Enter/失焦跳页、超界收敛到边界页。`Table` 的 `pagination` 属性传对象开启客户端分页（`total` 由 Table 按 dataSource 长度计算）。
 
 ---
 

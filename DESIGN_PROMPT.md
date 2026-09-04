@@ -396,12 +396,12 @@ Float decorations: 4.5s ease-in-out infinite "float" (Y: 0 → -6px, rot: 0 → 
                    stagger delays 0s / 0.6s / 1.2s / 0.3s / 1s
 Banner divider: 64px × 2px linear-gradient(to right, transparent, #725d42, transparent)
 
-=== COMPONENT INVENTORY (41 named exports from src/index.ts) ===
-Interactive:           BackTop, Button, Input, Switch, Modal, Collapse, Select, Tabs, Checkbox, Radio, Drawer
-Container / Heading:   Card (13 colors + 13 dot patterns), Title (ribbon banner — 13 schemes), Table, Tag
+=== COMPONENT INVENTORY (44 named exports from src/index.ts) ===
+Interactive:           BackTop, Button, Input, Switch, Modal, Collapse, Select, Tabs, Checkbox, Radio, Drawer, Carousel
+Container / Heading:   Card (13 colors + 13 dot patterns), Title (ribbon banner — 13 schemes), Table, Tag, Pagination (ghost circular cells, orange/teal variants, built into Table via pagination prop)
 Feedback:              Tooltip, Loading, Notification (imperative API, with NotificationContainer), Progress, Skeleton (SkeletonButton, SkeletonInput, SkeletonAvatar)
 Form:                  Form, FormItem, FormProvider, useForm, DatePicker, TimePicker
-Decorative:            Time, Phone, Footer, Divider, Cursor, Typewriter, Icon (+ ICON_LIST), Wallet
+Decorative:            Time, Phone, Footer, Divider, Cursor, Typewriter, Icon (+ ICON_LIST), Wallet, Countdown (odometer countdown)
 Content display:       CodeBlock, Image
 Non-component exports: Notification (command-style toast API), useForm (form hook), ICON_LIST (icon name list)
 [Demo-site only]       WeddingInvitation (+ WeddingInvitationExportButton companion) — moved out of the npm package in v1.0.0
