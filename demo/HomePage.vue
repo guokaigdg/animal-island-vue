@@ -245,11 +245,7 @@ function highlight(code: string): Seg[][] {
     min-height: 100vh;
     padding: 60px 40px 40px;
     position: relative;
-    background:
-        radial-gradient(circle, rgba(138, 198, 138, 0.28) 1.5px, transparent 1.5px),
-        radial-gradient(circle, rgba(180, 220, 180, 0.2) 1px, transparent 1px),
-        #cfe9cf;
-    background-size: 28px 28px, 20px 20px, auto;
+    
 }
 .hero-content {
     display: grid;

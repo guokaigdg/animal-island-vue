@@ -199,6 +199,16 @@ const menuBgImage = `url("${menuBgUrl}")`;
 </template>
 
 <style scoped>
+@keyframes bgScroll {
+    0% {
+        background-position: 0 0;
+    }
+
+    100% {
+        background-position: 140px 140px;
+    }
+}
+
 .layout {
     display: flex;
     height: 100dvh;
@@ -212,19 +222,17 @@ const menuBgImage = `url("${menuBgUrl}")`;
         'Hiragino Sans GB',
         'Microsoft YaHei',
         sans-serif;
-    background:
-        radial-gradient(circle, rgba(138, 198, 138, 0.28) 1.5px, transparent 1.5px),
-        radial-gradient(circle, rgba(180, 220, 180, 0.2) 1px, transparent 1px),
-        #cfe9cf;
-    background-size: 28px 28px, 20px 20px, auto;
+        background: #88c9a1;
 }
 
 .home-bg {
     background:
-        radial-gradient(circle, rgba(138, 198, 138, 0.28) 1.5px, transparent 1.5px),
-        radial-gradient(circle, rgba(180, 220, 180, 0.2) 1px, transparent 1px),
-        #cfe9cf;
+        radial-gradient(circle, rgba(90, 160, 105, 0.4) 1.5px, transparent 1.5px),
+        radial-gradient(circle, rgba(110, 180, 125, 0.3) 1px, transparent 1px),
+        #88c9a1;
     background-size: 28px 28px, 20px 20px, auto;
+    background-repeat: repeat;
+    animation: bgScroll 80s linear infinite;
 }
 
 .sidebar {
@@ -336,6 +344,11 @@ const menuBgImage = `url("${menuBgUrl}")`;
     overflow: auto;
     position: relative;
     z-index: 1;
+    background:
+        radial-gradient(circle, rgba(90, 160, 105, 0.4) 1.5px, transparent 1.5px),
+        radial-gradient(circle, rgba(110, 180, 125, 0.3) 1px, transparent 1px),
+        #88c9a1;
+    background-size: 28px 28px, 20px 20px, auto;
 }
 
 .mobile-bar {
