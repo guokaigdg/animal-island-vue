@@ -140,8 +140,8 @@ const handleKeyDown = (e: KeyboardEvent): void => {
 }
 
 .animal-backtop__img {
-    width: 120px;
-    height: 120px;
+    width: 64px;
+    height: 64px;
     display: block;
     object-fit: contain;
     filter: drop-shadow(0 4px 10px rgba(91, 78, 30, 0.22));
@@ -159,8 +159,8 @@ const handleKeyDown = (e: KeyboardEvent): void => {
     }
 
     .animal-backtop__img {
-        width: 80px;
-        height: 80px;
+        width: 44px;
+        height: 44px;
     }
 }
 </style>
