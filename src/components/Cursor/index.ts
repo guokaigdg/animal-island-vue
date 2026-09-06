@@ -1,2 +1,2 @@
 export { default as Cursor } from './Cursor.vue';
-export type { CursorProps } from './types';
+export type { CursorProps, CursorType } from './types';

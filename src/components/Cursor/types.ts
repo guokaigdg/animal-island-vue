@@ -1,4 +1,12 @@
+export type CursorType = 'default' | 'raindrop';
+
 export interface CursorProps {
+    /**
+     * 光标风格，默认 `'default'`。
+     * - `default`：箭头
+     * - `raindrop`：蓝色雨滴
+     */
+    type?: CursorType;
     /**
      * 是否对所有后代元素强制覆盖光标。默认 `true`。
      * - `true`：全覆盖，所有后代（含 a/button 等交互元素）统一使用自定义光标

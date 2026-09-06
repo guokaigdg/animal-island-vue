@@ -27,6 +27,29 @@ describe('Cursor', () => {
         expect(root.classList.contains('animal-cursor--scoped')).toBe(true);
     });
 
+    it('type 未设置时（默认）不带 raindrop 类', () => {
+        const wrapper = mount(Cursor, { slots: { default: () => 'x' } });
+        const root = wrapper.element as HTMLElement;
+        expect(root.classList.contains('animal-cursor--raindrop')).toBe(false);
+    });
+
+    it('type="raindrop" 应用 animal-cursor--raindrop', () => {
+        const wrapper = mount(Cursor, { props: { type: 'raindrop' }, slots: { default: () => 'x' } });
+        const root = wrapper.element as HTMLElement;
+        expect(root.classList.contains('animal-cursor--raindrop')).toBe(true);
+        expect(root.classList.contains('animal-cursor--force')).toBe(true);
+    });
+
+    it('type="raindrop" 与 forceAll=false 组合', () => {
+        const wrapper = mount(Cursor, {
+            props: { type: 'raindrop', forceAll: false },
+            slots: { default: () => 'x' },
+        });
+        const root = wrapper.element as HTMLElement;
+        expect(root.classList.contains('animal-cursor--raindrop')).toBe(true);
+        expect(root.classList.contains('animal-cursor--scoped')).toBe(true);
+    });
+
     it('应用 className 与 style', () => {
         const wrapper = mount(Cursor, {
             attrs: { class: 'extra', style: 'padding: 4px;' },

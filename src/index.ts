@@ -25,7 +25,7 @@ export { Divider } from './components/Divider';
 export type { DividerProps, DividerType } from './components/Divider';
 
 export { Cursor } from './components/Cursor';
-export type { CursorProps } from './components/Cursor';
+export type { CursorProps, CursorType } from './components/Cursor';
 
 export { Title } from './components/Title';
 export type { TitleProps, TitleSize, TitleColor } from './components/Title';

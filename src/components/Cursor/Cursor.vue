@@ -3,6 +3,7 @@ import { computed, useAttrs } from 'vue';
 import type { CursorProps } from './types';
 
 const props = withDefaults(defineProps<CursorProps>(), {
+    type: 'default',
     forceAll: true,
 });
 
@@ -11,20 +12,32 @@ const attrs = useAttrs();
 defineSlots<{ default?: () => unknown }>();
 
 const modeClass = computed(() => (props.forceAll ? 'animal-cursor--force' : 'animal-cursor--scoped'));
+const typeClass = computed(() => (props.type === 'raindrop' ? 'animal-cursor--raindrop' : undefined));
 </script>
 
 <template>
-    <div :class="['animal-cursor', modeClass]" v-bind="attrs">
+    <div :class="['animal-cursor', modeClass, typeClass]" v-bind="attrs">
         <slot />
     </div>
 </template>
 
 <style>
+/* 内联 SVG 光标（28×28 几何箭头，hotspot 6 4），无外部图片资源 */
 /* ============ force 模式（默认）：全覆盖所有后代 ============ */
 .animal-cursor--force,
 .animal-cursor--force * {
     cursor:
-        url('../../assets/img/cursor/cursor-icon.svg') 4 0,
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cpath d='M6 4 L6 21 L10.5 16.5 L13.5 23 L16.8 21.5 L13.8 15.2 L20.5 15.2 Z' fill='%23fff7e6' stroke='%23794f27' stroke-width='2.2' stroke-linejoin='round'/%3E%3C/svg%3E")
+            6 4,
+        default !important;
+}
+
+/* ============ 雨滴风格（type='raindrop'）：蓝色水滴，hotspot 16 6 ============ */
+.animal-cursor--force.animal-cursor--raindrop,
+.animal-cursor--force.animal-cursor--raindrop * {
+    cursor:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M16 6s-9 12-9 16a9 9 0 0 0 18 0c0-4-9-16-9-16z' fill='%2374ccff' stroke='%232e86ab' stroke-width='1.5'/%3E%3Cellipse cx='12.5' cy='19' rx='2' ry='3.2' fill='%23dff4ff' transform='rotate(-18 12.5 19)'/%3E%3C/svg%3E")
+            16 6,
         default !important;
 }
 
@@ -36,7 +49,16 @@ const modeClass = computed(() => (props.forceAll ? 'animal-cursor--force' : 'ani
 /* 容器自身：使用自定义光标（双类提升特异性 (0,2,0) > 祖先 (0,1,1)） */
 .animal-cursor.animal-cursor--scoped {
     cursor:
-        url('../../assets/img/cursor/cursor-icon.svg') 4 0,
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cpath d='M6 4 L6 21 L10.5 16.5 L13.5 23 L16.8 21.5 L13.8 15.2 L20.5 15.2 Z' fill='%23fff7e6' stroke='%23794f27' stroke-width='2.2' stroke-linejoin='round'/%3E%3C/svg%3E")
+            6 4,
+        default !important;
+}
+
+/* 雨滴风格 scoped：容器自身（三类提升特异性以胜过祖先 force 规则） */
+.animal-cursor.animal-cursor--scoped.animal-cursor--raindrop {
+    cursor:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M16 6s-9 12-9 16a9 9 0 0 0 18 0c0-4-9-16-9-16z' fill='%2374ccff' stroke='%232e86ab' stroke-width='1.5'/%3E%3Cellipse cx='12.5' cy='19' rx='2' ry='3.2' fill='%23dff4ff' transform='rotate(-18 12.5 19)'/%3E%3C/svg%3E")
+            16 6,
         default !important;
 }
 
