@@ -119,4 +119,12 @@ export const PAGE_INFO: Record<string, { title: string; desc: string }> = {
         title: 'Pagination 分页',
         desc: '分页组件 — 页码/条数受控与非受控、每页条数切换、快速跳转、orange/teal 双配色，可内置于 Table',
     },
+    cursor: {
+        title: 'Cursor 光标',
+        desc: '自定义光标组件 — default 箭头 / raindrop 蓝色雨滴两种风格，forceAll 可选全覆盖或保留交互语义',
+    },
+    background: {
+        title: 'Background 背景',
+        desc: '装饰背景壁纸 — dots 波点 / sprinkles 圆柱形彩色针糖两种图案，纯 CSS + 内联 SVG 实现，零图片资源',
+    },
 };

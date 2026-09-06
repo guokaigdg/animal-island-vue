@@ -4,6 +4,7 @@ import HomePage from './HomePage.vue';
 import ComponentPage from './ComponentPage.vue';
 import { PAGE_INFO } from './pageInfo';
 import { useHash, useIsMobile } from './router';
+import { Cursor } from '@';
 
 import menuBgUrl from './img/menu_bg.svg';
 
@@ -36,7 +37,9 @@ const MENU_ITEMS: MenuItem[] = [
             { key: 'footer', label: 'Footer 页脚' },
             { key: 'divider-comp', label: 'Divider 分割线' },
             { key: 'tag', label: 'Tag 标签' },
+            { key: 'cursor', label: 'Cursor 光标' },
             { key: 'codeblock', label: 'CodeBlock 代码高亮' },
+            { key: 'background', label: 'Background 背景', isNew: true },
             { key: 'backtop', label: 'BackTop 返回顶部', isNew: true },
             { key: 'skeleton', label: 'Skeleton 骨架屏' },
         ],
@@ -122,8 +125,10 @@ const menuBgImage = `url("${menuBgUrl}")`;
 </script>
 
 <template>
-    <!-- Home page — full screen, no sidebar -->
-    <div v-if="isHomePage" class="layout home-bg" :style="{ justifyContent: 'center' }">
+    <!-- 与 React 版一致：整个 demo 站点包裹 Cursor（光标全站生效） -->
+    <Cursor>
+        <!-- Home page — full screen, no sidebar -->
+        <div v-if="isHomePage" class="layout home-bg" :style="{ justifyContent: 'center' }">
             <HomePage @navigate="handleHomeNavigate" />
         </div>
 
@@ -132,51 +137,64 @@ const menuBgImage = `url("${menuBgUrl}")`;
             <!-- Desktop sidebar -->
             <aside v-if="!isMobile" class="sidebar">
                 <div class="sidebar-header" @click="handleNavigate('/')">
-                Animal Island
-            </div>
-            <nav class="menu-list">
-                <template v-for="item in MENU_ITEMS" :key="item.key">
-                    <div v-if="item.children">
-                        <div class="cat-label">
-                            {{ item.label }}
-                        </div>
-                        <div v-for="child in item.children" :key="child.key" class="menu-item"
-                            :class="{ active: activeKey === child.key }" @click="handleNavigate(`/${child.key}`)">
-                            <span>{{ child.label }}</span>
-                            <span v-if="child.isNew" class="menu-badge">NEW</span>
-                        </div>
-                    </div>
-                    <div v-else class="menu-item" :class="{ active: activeKey === item.key }"
-                        @click="handleNavigate(`/${item.key}`)">
-                        <span>{{ item.label }}</span>
-                    </div>
-                </template>
-            </nav>
-        </aside>
-
-        <!-- Mobile top bar -->
-        <div v-if="isMobile" class="mobile-bar">
-            <button class="icon-btn" @click="navigate('/')">←</button>
-            <span class="mobile-title">{{ PAGE_INFO[activeKey]?.title ?? '组件文档' }}</span>
-            <button class="icon-btn" @click="drawerOpen = true">☰</button>
-        </div>
-
-        <!-- Mobile drawer -->
-        <template v-if="isMobile && drawerOpen">
-            <div class="drawer-mask" @click="drawerOpen = false" />
-            <aside class="sidebar drawer">
-                <div class="sidebar-header" @click="handleNavigate('/')">
                     Animal Island
                 </div>
+                <nav class="menu-list">
+                    <template v-for="item in MENU_ITEMS" :key="item.key">
+                        <div v-if="item.children">
+                            <div class="cat-label">
+                                {{ item.label }}
+                            </div>
+                            <div
+                                v-for="child in item.children"
+                                :key="child.key"
+                                class="menu-item"
+                                :class="{ active: activeKey === child.key, 'demo-raindrop-hover': child.key === 'cursor' }"
+                                @click="handleNavigate(`/${child.key}`)"
+                            >
+                                <span>{{ child.label }}</span>
+                                <span v-if="child.isNew" class="menu-badge">NEW</span>
+                            </div>
+                        </div>
+                        <div
+                            v-else
+                            class="menu-item"
+                            :class="{ active: activeKey === item.key }"
+                            @click="handleNavigate(`/${item.key}`)"
+                        >
+                            <span>{{ item.label }}</span>
+                        </div>
+                    </template>
+                </nav>
+            </aside>
+
+            <!-- Mobile top bar -->
+            <div v-if="isMobile" class="mobile-bar">
+                <button class="icon-btn" @click="navigate('/')">←</button>
+                <span class="mobile-title">{{ PAGE_INFO[activeKey]?.title ?? '组件文档' }}</span>
+                <button class="icon-btn" @click="drawerOpen = true">☰</button>
+            </div>
+
+            <!-- Mobile drawer -->
+            <template v-if="isMobile && drawerOpen">
+                <div class="drawer-mask" @click="drawerOpen = false" />
+                <aside class="sidebar drawer">
+                    <div class="sidebar-header" @click="handleNavigate('/')">
+                        Animal Island
+                    </div>
                     <nav class="menu-list">
                         <template v-for="item in MENU_ITEMS" :key="item.key">
                             <div v-if="item.children">
                                 <div class="cat-label">
                                     {{ item.label }}
                                 </div>
-                                <div v-for="child in item.children" :key="child.key" class="menu-item"
-                                    :class="{ active: activeKey === child.key }"
-                                    @click="handleNavigate(`/${child.key}`)">
+                                <div
+                                    v-for="child in item.children"
+                                    :key="child.key"
+                                    class="menu-item"
+                                    :class="{ active: activeKey === child.key, 'demo-raindrop-hover': child.key === 'cursor' }"
+                                    @click="handleNavigate(`/${child.key}`)"
+                                >
                                     <span>{{ child.label }}</span>
                                     <span v-if="child.isNew" class="menu-badge">NEW</span>
                                 </div>
@@ -186,16 +204,21 @@ const menuBgImage = `url("${menuBgUrl}")`;
                 </aside>
             </template>
 
-            <main ref="mainRef" class="main" :style="{
-                padding: isMobile ? '16px' : '32px 40px',
-                paddingTop: isMobile ? '68px' : '32px',
-            }">
+            <main
+                ref="mainRef"
+                class="main"
+                :style="{
+                    padding: isMobile ? '16px' : '32px 40px',
+                    paddingTop: isMobile ? '68px' : '32px',
+                }"
+            >
                 <ComponentPage :active-key="activeKey" />
             </main>
 
             <!-- 原装饰条图片已因版权原因移除，改为 Card 调色板纯色带（app-teal） -->
             <div v-if="!isMobile" class="guide-line" />
         </div>
+    </Cursor>
 </template>
 
 <style scoped>
@@ -412,5 +435,23 @@ const menuBgImage = `url("${menuBgUrl}")`;
     border-radius: 14px 14px 0 0;
     pointer-events: none;
     z-index: 0;
+}
+</style>
+
+<style>
+/* 体验彩蛋：hover 侧边栏 Cursor 菜单项 → 蓝色雨滴光标（与 type="raindrop" 一致） */
+.demo-raindrop-hover:hover,
+.demo-raindrop-hover:hover * {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M16 6s-9 12-9 16a9 9 0 0 0 18 0c0-4-9-16-9-16z' fill='%2374ccff' stroke='%232e86ab' stroke-width='1.5'/%3E%3Cellipse cx='12.5' cy='19' rx='2' ry='3.2' fill='%23dff4ff' transform='rotate(-18 12.5 19)'/%3E%3C/svg%3E") 16 6,
+        default !important;
+}
+
+/* main 内容区默认雨滴光标（Cursor 演示框内部保留各自演示的光标）。
+   排除项限定 .main 内的 .animal-cursor（演示框）—— 站点根级 Cursor 包裹层
+   也是 .animal-cursor，若不限定范围会把 main 所有后代全部排除 */
+main.main,
+.main *:not(.main .animal-cursor, .main .animal-cursor *) {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M16 6s-9 12-9 16a9 9 0 0 0 18 0c0-4-9-16-9-16z' fill='%2374ccff' stroke='%232e86ab' stroke-width='1.5'/%3E%3Cellipse cx='12.5' cy='19' rx='2' ry='3.2' fill='%23dff4ff' transform='rotate(-18 12.5 19)'/%3E%3C/svg%3E") 16 6,
+        default !important;
 }
 </style>

@@ -54,6 +54,8 @@ const components = [
     { key: 'carousel', name: 'Carousel', desc: '自动播放轮播、箭头/圆点切换、键盘导航' },
     { key: 'countdown', name: 'Countdown', desc: '倒计时组件，里程表式滚动数字' },
     { key: 'pagination', name: 'Pagination', desc: '分页组件，支持条数切换与快速跳转' },
+    { key: 'cursor', name: 'Cursor', desc: '自定义光标，箭头 / 雨滴两种风格' },
+    { key: 'background', name: 'Background', desc: '波点 / 彩色针糖装饰背景壁纸' },
 ];
 
 const installCode = `// 使用 npm 安装\nnpm install animal-island-vue`;
@@ -131,7 +133,7 @@ function highlight(code: string): Seg[][] {
                             class="hero-subtitle"
                             :style="{ fontSize: isMobile ? '14px' : '17px', color: 'rgb(124, 87, 52)' }"
                         >
-                            Animal 风格的 Vue 3 组件库，基于 TypeScript + Vite + Less 构建，让 Web 应用充满温暖质感
+                            Kawaii 风格的 Vue 3 组件库，基于 TypeScript + Vite + Less 构建，让 Web 应用充满温暖质感
                         </p>
                     </Typewriter>
                     <div class="hero-actions" :style="{ justifyContent: isMobile ? 'center' : 'flex-start' }">

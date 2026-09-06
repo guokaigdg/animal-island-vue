@@ -33,6 +33,8 @@ import TimePickerDemo from './pages/TimePickerDemo.vue';
 import CarouselDemo from './pages/CarouselDemo.vue';
 import CountdownDemo from './pages/CountdownDemo.vue';
 import PaginationDemo from './pages/PaginationDemo.vue';
+import CursorDemo from './pages/CursorDemo.vue';
+import BackgroundDemo from './pages/BackgroundDemo.vue';
 
 const props = defineProps<{ activeKey: string }>();
 
@@ -67,6 +69,8 @@ const PAGES: Record<string, unknown> = {
     carousel: CarouselDemo,
     countdown: CountdownDemo,
     pagination: PaginationDemo,
+    cursor: CursorDemo,
+    background: BackgroundDemo,
 };
 
 // 与 React 版同款：根据 activeKey 哈希固定映射颜色，同页面不抖动
