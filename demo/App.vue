@@ -207,6 +207,7 @@ const menuBgImage = `url("${menuBgUrl}")`;
             <main
                 ref="mainRef"
                 class="main"
+                :class="{ 'demo-raindrop-page': activeKey === 'cursor' }"
                 :style="{
                     padding: isMobile ? '16px' : '32px 40px',
                     paddingTop: isMobile ? '68px' : '32px',
@@ -446,11 +447,12 @@ const menuBgImage = `url("${menuBgUrl}")`;
         default !important;
 }
 
-/* main 内容区默认雨滴光标（Cursor 演示框内部保留各自演示的光标）。
-   排除项限定 .main 内的 .animal-cursor（演示框）—— 站点根级 Cursor 包裹层
-   也是 .animal-cursor，若不限定范围会把 main 所有后代全部排除 */
-main.main,
-.main *:not(.main .animal-cursor, .main .animal-cursor *) {
+/* 仅 Cursor 演示页：main 内容区雨滴光标（演示框内部保留各自演示的光标），
+   其他页面维持站点根级 Cursor 的默认箭头。
+   排除项限定 .demo-raindrop-page 内的 .animal-cursor（演示框）—— 站点根级
+   Cursor 包裹层也是 .animal-cursor，若不限定范围会把 main 所有后代全部排除 */
+main.main.demo-raindrop-page,
+.demo-raindrop-page *:not(.demo-raindrop-page .animal-cursor, .demo-raindrop-page .animal-cursor *) {
     cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M16 6s-9 12-9 16a9 9 0 0 0 18 0c0-4-9-16-9-16z' fill='%2374ccff' stroke='%232e86ab' stroke-width='1.5'/%3E%3Cellipse cx='12.5' cy='19' rx='2' ry='3.2' fill='%23dff4ff' transform='rotate(-18 12.5 19)'/%3E%3C/svg%3E") 16 6,
         default !important;
 }
