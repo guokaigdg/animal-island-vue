@@ -1,6 +1,6 @@
 {
     "name": "animal-island-vue",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "description": "A nature-inspired Vue 3 component library, powered by Less + CSS Variables.",
     "type": "module",
     "main": "dist/cjs/index.cjs",

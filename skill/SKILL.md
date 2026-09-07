@@ -55,7 +55,8 @@ animal-island-vue 是一套自然可爱小岛风格的 Vue 3 + TypeScript UI 组
 | `Time`         | HUD 实时时钟                                                                                                      | <br /> | ✓             |
 | `Footer`       | 底部装饰（14 个 🎄 居中一行，`seamless` 铺满整行）                                                                | <br /> | ✓             |
 | `Divider`      | 装饰分割线，5 种风格                                                                                              | <br /> | ✓             |
-| `Cursor`       | 游戏手指光标包裹器                                                                                                | <br /> | ✓             |
+| `Cursor`       | 自定义光标包裹器，`default` 手指箭头 / `raindrop` 蓝色雨滴（内联 SVG，零图片资源）                                | <br /> | ✓             |
+| `Background`   | 装饰背景壁纸，`dots` 波点 / `sprinkles` 圆柱形彩色针糖（纯 CSS + 内联 SVG，零图片资源）                           | <br /> | ✓             |
 | `Typewriter`   | 打字机效果，保留 VNode 结构                                                                                       | <br /> | ✓             |
 | `Tabs`         | 标签页切换，叶子摆动动画可选                                                                                      | ✓      | <br />        |
 | `CodeBlock`    | JSX/TS 语法高亮代码块                                                                                             | <br /> | ✓             |
@@ -73,7 +74,7 @@ animal-island-vue 是一套自然可爱小岛风格的 Vue 3 + TypeScript UI 组
 | `Progress`     | 进度条，斜纹动画填充                                                                                              | <br /> | ✓             |
 | `Drawer`       | 抽屉，四方向弹出 + 焦点陷阱                                                                                       | ✓      | <br />        |
 
-类型导出：`BackTopProps`、`ButtonProps/ButtonType/ButtonSize/ButtonHTMLType`、`InputProps/InputSize`、`SwitchProps/SwitchSize`、`ModalProps`、`CardProps/CardType/CardColor`、`TitleProps/TitleSize/TitleColor`、`CollapseProps`、`CursorProps`、`DividerProps/DividerType`、`TypewriterProps`、`SelectProps/SelectOption`、`SkeletonProps/SkeletonVariant`、`TabsProps/TabItem`、`CheckboxProps/CheckboxOption/CheckboxSize/CheckboxValue`、`RadioProps/RadioOption/RadioSize/RadioValue`、`TooltipProps/TooltipPlacement/TooltipTrigger/TooltipVariant`、`CodeBlockProps`、`TableProps/TableColumn/TableRecord`、`PaginationProps/PaginationVariant`、`CarouselProps`、`CountdownProps/CountdownSize/CountdownVariant`、`FormProps` 系列、`ImageProps/ImageColor`、`DatePickerProps/DatePickerSize/DatePickerStatus/DatePickerValue`、`TimePickerProps/TimePickerSize/TimePickerStatus/TimePart`、`NotificationConfig` 系列、`TagProps/TagSize/TagVariant/TagColor`、`ProgressProps/ProgressSize/ProgressInfoPosition`、`DrawerProps/DrawerPlacement`。
+类型导出：`BackTopProps`、`ButtonProps/ButtonType/ButtonSize/ButtonHTMLType`、`InputProps/InputSize`、`SwitchProps/SwitchSize`、`ModalProps`、`CardProps/CardType/CardColor`、`TitleProps/TitleSize/TitleColor`、`CollapseProps`、`CursorProps/CursorType`、`BackgroundProps/BackgroundType`、`DividerProps/DividerType`、`TypewriterProps`、`SelectProps/SelectOption`、`SkeletonProps/SkeletonVariant`、`TabsProps/TabItem`、`CheckboxProps/CheckboxOption/CheckboxSize/CheckboxValue`、`RadioProps/RadioOption/RadioSize/RadioValue`、`TooltipProps/TooltipPlacement/TooltipTrigger/TooltipVariant`、`CodeBlockProps`、`TableProps/TableColumn/TableRecord`、`PaginationProps/PaginationVariant`、`CarouselProps`、`CountdownProps/CountdownSize/CountdownVariant`、`FormProps` 系列、`ImageProps/ImageColor`、`DatePickerProps/DatePickerSize/DatePickerStatus/DatePickerValue`、`TimePickerProps/TimePickerSize/TimePickerStatus/TimePart`、`NotificationConfig` 系列、`TagProps/TagSize/TagVariant/TagColor`、`ProgressProps/ProgressSize/ProgressInfoPosition`、`DrawerProps/DrawerPlacement`。
 
 > Vue 端约定：
 >
@@ -1031,27 +1032,69 @@ border-color: rgba(255, 204, 0, 0.85);
 <template>
     <Cursor>
         <App />
-        <!-- 此范围内所有元素变为游戏手指光标 -->
+        <!-- 此范围内所有元素变为光标 -->
+    </Cursor>
+
+    <!-- type="raindrop"：蓝色雨滴光标 -->
+    <Cursor type="raindrop">
+        <MapCanvas />
+    </Cursor>
+
+    <!-- forceAll=false：保留交互语义（a/button 仍是 pointer，input 仍是 text） -->
+    <Cursor :force-all="false">
+        <FormPage />
     </Cursor>
 </template>
 ```
 
+Props：`type`（`'default' | 'raindrop'`，默认 `'default'`）、`forceAll`（boolean，默认 `true`）。
+
 样式文件为 **普通全局 CSS**（非 scoped；类名固定为 `animal-cursor`，挂在根 `<div>` 上）：
 
 ```css
-.animal-cursor,
-.animal-cursor * {
-    cursor:
-        url('./cursor-icon.svg') 4 0,
-        auto !important;
+/* 内联 SVG data-URI（无外部图片资源）：28×28 几何箭头，hotspot 6 4 */
+.animal-cursor--force,
+.animal-cursor--force * {
+    cursor: url("data:image/svg+xml,...") 6 4, default !important;
 }
-```
 
-- `cursor-icon.svg`（原创手绘指向光标，49×48）热点坐标 `(4, 0)`
+/* type="raindrop"：32×32 蓝色水滴，hotspot 16 6 */
+.animal-cursor--force.animal-cursor--raindrop,
+.animal-cursor--force.animal-cursor--raindrop * {
+    cursor: url("data:image/svg+xml,...") 16 6, default !important;
+}
+
+/* forceAll=false（scoped 模式）：容器自身用自定义光标，后代恢复 auto，
+   交互元素（a/button/select 等）恢复 pointer、文本输入恢复 text、禁用态 not-allowed */
+.animal-cursor.animal-cursor--scoped { cursor: url("data:image/svg+xml,...") 6 4, default !important; }
+.animal-cursor--scoped * { cursor: auto !important; }
+```
 
 - 使用 `!important` 覆盖默认光标
 
 - ⚠️ 此组件**不能用** **`scoped`**：scoped 选择器无法穿透 slot 内容；必须以全局 CSS 形式注册（`<style>` 不带 `scoped`，或全局样式入口引入）
+
+---
+
+### Background
+
+装饰背景壁纸容器（纯 CSS + 内联 SVG，零图片资源），子内容渲染在图案之上。
+
+```vue
+<template>
+    <!-- dots 波点壁纸（默认）：两层错位圆点（28px 大点 + 14px 小点，绿色系 #bfe3bf 底） -->
+    <Background style="height: 200px" />
+
+    <!-- sprinkles 圆柱形彩色针糖壁纸：三层互质 tile（190×170 / 230×195 / 255×215），
+         内联 SVG 胶囊（圆角矩形 + 竖向高光渐变模拟圆柱受光），重复周期约 220000×280000px，
+         视觉上随机散落；#fdf3e3 奶油底 -->
+    <Background type="sprinkles" :style="{ minHeight: '200px', padding: '24px' }">
+        <p>内容渲染在图案背景之上</p>
+    </Background>
+</template>
+```
+
+Props：`type`（`'dots' | 'sprinkles'`，默认 `'dots'`）。容器为 `position: relative; width: 100%; min-height: 100%`，需通过 `style` 给显式高度。类名 `animal-background`（基础）+ `animal-background--sprinkles`（修饰类在根元素上，scoped 样式中必须放顶层）。
 
 ---
 
@@ -3255,6 +3298,7 @@ export const PAGE_INFO: Record<string, { title: string; desc: string }> = {
     card: { title: 'Card 卡片', desc: '...' },
     collapse: { title: 'Collapse 折叠面板', desc: '...' },
     cursor: { title: 'Cursor 光标', desc: '...' },
+    background: { title: 'Background 背景', desc: '...' },
     time: { title: 'Time 时间', desc: '...' },
     footer: { title: 'Footer 底部装饰', desc: '...' },
     modal: { title: 'Modal 弹窗', desc: '...' },

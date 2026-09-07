@@ -335,9 +335,19 @@ Loading overlay: rgba(247,243,223,0.8) + backdrop-filter blur(2px); spinner #19c
   dashed-brown / dashed-teal / dashed-white / dashed-yellow (dashed variants)
 
 === CURSOR WRAPPER ===
-<Cursor><slot/></Cursor> — applies ".animal-cursor, .animal-cursor * { cursor: url(cursor-icon.svg) 4 0, auto !important; }"
-Hotspot coordinates: (4, 0). Uses !important to override all child cursors.
-Cursor image: original hand-drawn SVG (49×48, cream hand + brown outline + mint cuff).
+<Cursor><slot/></Cursor> — wraps default-slot content; inline-SVG data-URI cursors with !important.
+Two types via `type` prop: 'default' (28×28 geometric arrow, fill #fff7e6 + stroke #794f27, hotspot 6 4)
+and 'raindrop' (32×32 blue drop, fill #74ccff + stroke #2e86ab, hotspot 16 6). Zero image assets.
+forceAll prop (default true) cascades the override to all descendants; forceAll=false keeps
+native pointer/text/not-allowed on interactive descendants.
+
+=== BACKGROUND (wallpaper container) ===
+<Background type="dots|sprinkles"><slot/></Background> — decorative wallpaper, zero image assets.
+dots (default): two offset radial-gradient dot grids (28px + 14px) on #bfe3bf green.
+sprinkles: three coprime tiles (190×170 / 230×195 / 255×215) of inline-SVG capsule sprinkles
+(rounded rects + shared vertical highlight gradient = lit cylinders; LCM repeat ≈ 220000×280000px,
+visually random) on #fdf3e3 cream. Container: position relative, width 100%, min-height 100%;
+children render on top; give explicit height via style.
 
 === TYPEWRITER (no markup wrapper) ===
 Props: default slot (VNode tree) or `text` prop, speed=90ms, trigger (any unknown; change to restart),
@@ -358,12 +368,12 @@ Or template form:
     <span class="note">Welcome to <strong>animal-island-vue</strong>!</span>
   </Typewriter>
 
-=== COMPONENT INVENTORY (40 named exports from src/index.ts) ===
+=== COMPONENT INVENTORY (42 named exports from src/index.ts) ===
 Interactive:           BackTop, Button, Input, Switch, Modal, Collapse, Select, Tabs, Checkbox, Radio, Drawer, Carousel
 Container / Heading:   Card (13 colors + 13 dot patterns), Title (ribbon banner — 13 schemes), Table, Tag, Pagination (ghost circular cells, orange/teal variants, built into Table via pagination prop)
 Feedback:              Tooltip, Loading, Notification (imperative API, with NotificationContainer), Progress, Skeleton (SkeletonButton, SkeletonInput, SkeletonAvatar)
 Form:                  Form, FormItem, FormProvider, useForm, DatePicker, TimePicker
-Decorative:            Time, Footer, Divider, Cursor, Typewriter, Countdown (odometer countdown)
+Decorative:            Time, Footer, Divider, Cursor (arrow/raindrop), Background (dots/sprinkles wallpaper), Typewriter, Countdown (odometer countdown)
 Content display:       CodeBlock, Image
 Non-component exports: Notification (command-style toast API), useForm (form hook)
 

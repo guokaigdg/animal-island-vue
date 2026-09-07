@@ -44,6 +44,7 @@ import {
     Title,
     Collapse,
     Cursor,
+    Background,
     Time,
     Footer,
     Divider,
@@ -96,6 +97,9 @@ import type {
     TitleColor,
     CollapseProps,
     CursorProps,
+    CursorType,
+    BackgroundProps,
+    BackgroundType,
     DividerProps,
     TypewriterProps,
     TabsProps,
@@ -481,18 +485,27 @@ interface CollapseProps {
 ### 1.9 Cursor
 
 ```ts
+type CursorType = 'default' | 'raindrop';
+
 interface CursorProps {
+    /** Cursor style: 'default' game finger arrow / 'raindrop' blue raindrop. Default 'default'. */
+    type?: CursorType; // default 'default'
     /** Force-override the cursor on every descendant (including <a>/<button>/inputs). Default true. */
     forceAll?: boolean; // default true
 }
 // Slots: default
 ```
 
-Wrap the region where you want a game-style finger cursor:
+Wrap the region where you want a game-style cursor:
 
 ```vue
 <Cursor>
   <App />
+</Cursor>
+
+<!-- Blue raindrop cursor -->
+<Cursor type="raindrop">
+  <MapCanvas />
 </Cursor>
 
 <!-- Preserve native pointer/text/not-allowed on interactive descendants -->
@@ -501,7 +514,7 @@ Wrap the region where you want a game-style finger cursor:
 </Cursor>
 ```
 
-> When `forceAll` is `true`, applies `cursor: url(...) 4 0, auto !important` to all `*` descendants. Set `:force-all="false"` on pages that contain text inputs / links so the browser keeps its native I-beam / pointer feedback. Do NOT nest multiple `<Cursor>`. Do not try to override the cursor URL via inline `style`.
+> Inline-SVG data-URI cursors (28×28 arrow, hotspot 6 4 / 32×32 raindrop, hotspot 16 6) — zero image assets. When `forceAll` is `true`, applies the cursor `!important` to all `*` descendants. Set `:force-all="false"` on pages that contain text inputs / links so the browser keeps its native I-beam / pointer feedback. Do NOT nest multiple `<Cursor>`. Do not try to override the cursor URL via inline `style`.
 
 ***
 
@@ -1535,6 +1548,36 @@ const pageSize = ref(20);
 
 ***
 
+***
+
+### 1.36 Background
+
+```ts
+type BackgroundType = 'dots' | 'sprinkles';
+
+interface BackgroundProps {
+    /** Pattern type: 'dots' polka dots / 'sprinkles' cylindrical candy sprinkles. Default 'dots'. */
+    type?: BackgroundType; // default 'dots'
+}
+// Slots: default — content renders ON TOP of the pattern
+```
+
+Decorative full-width wallpaper container (zero image assets — pure CSS gradients + inline SVG):
+
+```vue
+<!-- Polka-dot wallpaper (default) -->
+<Background style="height: 200px" />
+
+<!-- Candy-sprinkles wallpaper as a content block -->
+<Background type="sprinkles" :style="{ minHeight: '200px', padding: '24px' }">
+  <p>Content renders on top of the pattern</p>
+</Background>
+```
+
+> `dots` = two offset radial-gradient dot grids (28px + 14px, green on `#bfe3bf`). `sprinkles` = three coprime tiles of inline-SVG capsule sprinkles (rounded rects + shared vertical highlight gradient simulating lit cylinders; LCM repeat ≈ 220000×280000px — visually random). The container is `position: relative; width: 100%; min-height: 100%` — give it an explicit height via `style`. **Not supported:** no color customization, no pattern density props.
+
+***
+
 ## 2. Common Recipes
 
 ### 2.1 Form row
@@ -1652,7 +1695,7 @@ Follow these strictly; violations are bugs:
 5. **Button** **`type`** values are `primary | default | dashed | text | link` — NOT `secondary`, `outline`, `ghost`. Use the `ghost` prop for ghost styling.
 6. **Switch** **`size`** is `'small' | 'default'` (NOT `'middle' | 'large'`). Diverges from Button/Input sizing.
 7. **Card** **`color`** must be one of the 13 listed `CardColor` values. Do not pass hex codes. `type` is `'default' | 'dashed'`. `pattern` is `'none'` (default) or any `CardColor` value (13 dot-overlay variants).
-8. **Divider / Footer / Time / Cursor have no design-token props** beyond what's listed in §§ 1.8–1.12 (`Cursor` only adds `forceAll`). `class` and `:style` are accepted only for layout adjustments (margin, position, opacity); never use them to override colors / radii / shadows — recolor via CSS targeting the class instead.
+8. **Divider / Footer / Time / Cursor / Background have no design-token props** beyond what's listed in §§ 1.8–1.12 (`Cursor` only adds `type` + `forceAll`; `Background` only adds `type`). `class` and `:style` are accepted only for layout adjustments (margin, position, opacity); never use them to override colors / radii / shadows — recolor via CSS targeting the class instead.
 9. **Typewriter emits no wrapper element.** Do not rely on a DOM node to style it — style the children instead.
 10. **Select is controlled-only.** `options` and `v-model` (`modelValue` + `update:modelValue`) are ALL required. Never omit the model binding or pass a `defaultValue`.
 11. **Checkbox** **`size`** is `'small' | 'middle' | 'large'` (aligned with Button/Input — NOT with Switch). `options` is required; values can be `string | number`. No indeterminate state.

@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-09-06
+
+### Added
+
+- `Cursor` 新增 `type` 属性：`default` 箭头（默认）/ `raindrop` 蓝色雨滴两种风格
+- 新增 `Background` 装饰背景组件：`dots` 波点 / `sprinkles` 彩色针糖壁纸，纯 CSS + 内联 SVG 实现
+
+### Changed
+
+- `Cursor` 光标改为内联 SVG data URI，移除外部 SVG 图片资源（零图片依赖）
+
 ## [1.1.0] - 2026-09-05
 
 ### Removed

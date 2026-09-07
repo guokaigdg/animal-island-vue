@@ -369,8 +369,14 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 
 ### Cursor (wrapper)
 
-- Wraps default-slot content, applies: cursor: url(cursor-icon.svg) 4 0, auto !important; (and same on all descendants via .animal-cursor *). The cursor image is an original hand-drawn SVG (49×48, cream hand + brown outline + mint cuff). Hotspot (4, 0). `forceAll` prop (default true) controls whether the override cascades to all descendants.
-- Vue API: `<Cursor :force-all="true">...</Cursor>` — wraps the app or a region via the default slot.
+- Wraps default-slot content, applies inline-SVG data-URI cursors with !important (and same on all descendants when forceAll). Two `type` styles: `default` 28×28 geometric arrow (fill #fff7e6, stroke #794f27, hotspot 6 4) and `raindrop` 32×32 blue drop (fill #74ccff, stroke #2e86ab, hotspot 16 6). Zero image assets. `forceAll` prop (default true) controls whether the override cascades to all descendants; `forceAll=false` keeps native pointer/text/not-allowed on interactive descendants.
+- Vue API: `<Cursor :force-all="true">...</Cursor>` — wraps the app or a region via the default slot; `<Cursor type="raindrop">...</Cursor>` for the raindrop style.
+
+### Background (wallpaper container)
+
+- Decorative full-width wallpaper, zero image assets (pure CSS + inline SVG). `type` prop: `dots` (default) = two offset radial-gradient dot grids (28px dot + 14px small dot, green rgba(90,160,90,.22)/rgba(140,200,140,.15) on #bfe3bf); `sprinkles` = three coprime tiles (190×170 / 230×195 / 255×215) of inline-SVG capsule sprinkles (rounded rects with shared vertical highlight gradient simulating lit cylinders, LCM repeat ≈ 220000×280000px = visually random) on #fdf3e3 cream.
+- Container: position relative; width 100%; min-height 100%; children render on top of the pattern. Give explicit height via style.
+- Vue API: `<Background type="sprinkles" style="min-height:200px; padding:24px">content</Background>`.
 
 ### Typewriter
 
