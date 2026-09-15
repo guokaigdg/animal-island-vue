@@ -48,3 +48,6 @@ test-report.md
 *.tmp
 *.temp
 .npmrc
+
+# Vitest temp config artifacts
+vitest.config.ts.timestamp-*.mjs
