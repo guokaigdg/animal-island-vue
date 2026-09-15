@@ -60,7 +60,7 @@ animal-island-vue 是一套自然可爱小岛风格的 Vue 3 + TypeScript UI 组
 | `Typewriter`   | 打字机效果，保留 VNode 结构                                                                                       | <br /> | ✓             |
 | `Tabs`         | 标签页切换，叶子摆动动画可选                                                                                      | ✓      | <br />        |
 | `CodeBlock`    | JSX/TS 语法高亮代码块                                                                                             | <br /> | ✓             |
-| `Loading`      | 全屏遮罩 + SVG spinner（mint `#19c8b9`，`stroke-dasharray` 动画）                                                 | <br /> | ✓             |
+| `Loading`      | 全屏落雪加载屏，50 片雪花旋转飘落 + 暗角夜空（tip / delay / fadeDuration / zIndex）                               | <br /> | ✓             |
 | `Table`        | 数据表格，固定列、空状态、loading                                                                                 | ✓      | <br />        |
 | `Pagination`   | 分页器，条数切换 / 快速跳转 / 总数展示，可内置于 Table                                                            | ✓      | <br />        |
 | `Carousel`     | 轮播图，自动播放 / 箭头 / 圆点 / 键盘导航                                                                         | ✓      | <br />        |
@@ -74,7 +74,7 @@ animal-island-vue 是一套自然可爱小岛风格的 Vue 3 + TypeScript UI 组
 | `Progress`     | 进度条，斜纹动画填充                                                                                              | <br /> | ✓             |
 | `Drawer`       | 抽屉，四方向弹出 + 焦点陷阱                                                                                       | ✓      | <br />        |
 
-类型导出：`BackTopProps`、`ButtonProps/ButtonType/ButtonSize/ButtonHTMLType`、`InputProps/InputSize`、`SwitchProps/SwitchSize`、`ModalProps`、`CardProps/CardType/CardColor`、`TitleProps/TitleSize/TitleColor`、`CollapseProps`、`CursorProps/CursorType`、`BackgroundProps/BackgroundType`、`DividerProps/DividerType`、`TypewriterProps`、`SelectProps/SelectOption`、`SkeletonProps/SkeletonVariant`、`TabsProps/TabItem`、`CheckboxProps/CheckboxOption/CheckboxSize/CheckboxValue`、`RadioProps/RadioOption/RadioSize/RadioValue`、`TooltipProps/TooltipPlacement/TooltipTrigger/TooltipVariant`、`CodeBlockProps`、`TableProps/TableColumn/TableRecord`、`PaginationProps/PaginationVariant`、`CarouselProps`、`CountdownProps/CountdownSize/CountdownVariant`、`FormProps` 系列、`ImageProps/ImageColor`、`DatePickerProps/DatePickerSize/DatePickerStatus/DatePickerValue`、`TimePickerProps/TimePickerSize/TimePickerStatus/TimePart`、`NotificationConfig` 系列、`TagProps/TagSize/TagVariant/TagColor`、`ProgressProps/ProgressSize/ProgressInfoPosition`、`DrawerProps/DrawerPlacement`。
+类型导出：`BackTopProps`、`ButtonProps/ButtonType/ButtonSize/ButtonHTMLType`、`InputProps/InputSize`、`SwitchProps/SwitchSize`、`ModalProps`、`CardProps/CardType/CardColor`、`TitleProps/TitleSize/TitleColor`、`CollapseProps`、`CursorProps/CursorType`、`BackgroundProps/BackgroundType`、`TimeProps`、`LoadingProps`、`DividerProps/DividerType`、`TypewriterProps`、`SelectProps/SelectOption`、`SkeletonProps/SkeletonVariant`、`TabsProps/TabItem`、`CheckboxProps/CheckboxOption/CheckboxSize/CheckboxValue`、`RadioProps/RadioOption/RadioSize/RadioValue`、`TooltipProps/TooltipPlacement/TooltipTrigger/TooltipVariant`、`CodeBlockProps`、`TableProps/TableColumn/TableRecord`、`PaginationProps/PaginationVariant`、`CarouselProps`、`CountdownProps/CountdownSize/CountdownVariant`、`FormProps` 系列、`ImageProps/ImageColor`、`DatePickerProps/DatePickerSize/DatePickerStatus/DatePickerValue`、`TimePickerProps/TimePickerSize/TimePickerStatus/TimePart`、`NotificationConfig` 系列、`TagProps/TagSize/TagVariant/TagColor`、`ProgressProps/ProgressSize/ProgressInfoPosition`、`DrawerProps/DrawerPlacement`。
 
 > Vue 端约定：
 >
@@ -1432,7 +1432,7 @@ placement 12 种：`top` / `top_start` / `top_end` / `bottom` / `bottom_start` /
 
 ### Table
 
-源码：`src/components/Table/Table.vue`（scoped Less + BEM）。**外壳无实线 border**；行分隔靠 `::after` 的 dashed 横线实现；hover 行是对角青色条纹。
+源码：`src/components/Table/Table.vue`（scoped Less + BEM）。**外壳无实线 border**；行分隔靠 `::after` 的 dashed 横线实现；hover 行是纯色浅青背景。
 
 ```css
 /* 外壳 wrapper */
@@ -1466,11 +1466,9 @@ line-height: 1.6;
 /* striped 偶数行 */
 background: rgba(248, 248, 240, 0.6); /* 不是 rgba(247,243,223,0.5) */
 
-/* row hover —— 对角青色条纹 + 内圆角剪切 */
-background: repeating-linear-gradient(-45deg, rgba(25, 200, 185, 0.6) 0 10px, rgba(14, 196, 182, 0.6) 10px 20px);
-background-size: 28.28px 28.28px;
-clip-path: inset(0 0 0 0 round 30px);
-color: #3d2e1e;
+/* row hover —— 纯色浅青 + 内圆角（深棕文字无需换色即可读，避免字色切换闪烁） */
+background-color: #d6f0ea;
+border-radius: 30px;
 
 /* 空状态 */
 padding: 60px 20px;
@@ -1502,7 +1500,6 @@ color: #19c8b9;
     color: #725d42;
     font-weight: 600;
     font-size: 14px;
-    line-height: 1;
     cursor: pointer;
     transition: all 0.2s ease;
 }
@@ -1510,13 +1507,16 @@ color: #19c8b9;
     border-color: #d4c4a8;
     background: #fffdf7;
 }
-.animal-select__trigger--open {
-    border-color: #19c8b9;
-    color: #19c8b9;
+/* 展开期间 hover 保持纯白，避免底色闪动（同 React .trigger.open） */
+.animal-select__trigger--open,
+.animal-select__trigger--open:hover {
+    background: #fff;
+    border-radius: 12px;
 }
 .animal-select__trigger--disabled {
     opacity: 0.5;
     cursor: not-allowed;
+    background: #f5f5f0;
 }
 
 /* 下拉面板 */
@@ -1526,28 +1526,56 @@ color: #19c8b9;
     padding: 12px 0;
     z-index: 100;
     opacity: 0;
-    transition: opacity 0.2s ease;
-}
-.animal-select__dropdown--open {
-    opacity: 1;
+    animation: animal-select-fade-in 0.2s ease forwards;
 }
 
 /* 选项 */
 .animal-select__option {
     display: flex;
     align-items: center;
+    justify-content: center;
     padding: 10px 30px 10px 14px;
     font-size: 14px;
     font-weight: 500;
     color: #725d42;
     cursor: pointer;
-    transition: background 0.15s ease;
+    white-space: nowrap;
 }
-.animal-select__option:hover {
-    background: rgba(25, 200, 185, 0.08);
-}
-.animal-select__option--selected {
+.animal-select__option--active {
     font-weight: 700;
+}
+/* 悬停：加粗 + 左侧纯 CSS 三角箭头（border-left 10px × border-y 7px，#f5a623），
+   不依赖 select-cursor.svg 位图资源 */
+.animal-select__option--hovered {
+    font-weight: 700;
+
+    &::before {
+        content: '';
+        position: absolute;
+        left: -14px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 0;
+        height: 0;
+        border-top: 7px solid transparent;
+        border-bottom: 7px solid transparent;
+        border-left: 10px solid #f5a623;
+        animation: animal-select-cursor-in 0.5s ease-out forwards;
+    }
+}
+/* 选中项金色 pill bar 衬底 */
+.animal-select__highlight {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 56%;
+    transform: translateY(-50%);
+    height: 14px;
+    margin: 0 20px;
+    background: #ffcc00;
+    border-radius: 7px;
+    z-index: -1;
+    opacity: 0.3;
 }
 ```
 
@@ -2816,6 +2844,51 @@ Props：`value`（number|Date，必填）、`format`（默认 `'HH:mm:ss'`）、
 ```
 
 Props：`total`（number，必填）、`current`（v-model:current，受控当前页）、`defaultCurrent`（默认 1）、`pageSize`（v-model:pageSize，受控每页条数）、`defaultPageSize`（默认 10）、`showSizeChanger`（默认 false）、`pageSizeOptions`（默认 `[10, 20, 50, 100]`）、`showQuickJumper`（默认 false）、`showTotal`（默认 false）、`disabled`（默认 false）、`variant`（`'orange' | 'teal'`，默认 `'orange'`）。Emits：`update:current(page)`、`update:pageSize(size)`、`change(page, pageSize)`、`showSizeChange(current, size)`。页数 ≤7 全量展示；>7 时首尾页 + 当前页 ±1 + 省略号。size changer 弹层点击外部 / Escape 关闭；jumper 仅数字、Enter/失焦跳页、超界收敛到边界页。`Table` 的 `pagination` 属性传对象开启客户端分页（`total` 由 Table 按 dataSource 长度计算）。
+
+---
+
+### Time
+
+```vue
+<Time />
+```
+
+HUD 实时时钟：左侧星期（薄荷青 `@primary-color`，大写 900）+ 月日上下堆叠、右侧 HH:MM（大地棕 `@text-color` 48px/900），中间竖分隔线。奶油白圆角盒（`@border-width` 2px `@shadow-soft` 边框 + `@border-radius-base` 18px + 白→`@bg-color` 渐变底）。`setInterval` 每秒刷新，冒号 `animal-time-blink`（`step-end` 1s）闪烁，入场 `fade-up` 0.5s。
+
+Props：无。attrs 透传根元素。**不支持**：12 小时制、本地化（固定英文星期/月缩写）。
+
+---
+
+### Loading
+
+```vue
+<Loading :active="active" tip="正在连接岛屿…" :delay="300" :fade-duration="0.6" :z-index="3000" />
+```
+
+全屏夜晚落雪：`position: fixed; inset: 0` 的夜空底 `#0b101a` 覆盖整屏，50 片白色圆点雪花（1–6px 随机尺寸、随机水平位置）从视口上方旋转飘落——每片独立 6–12s 线性时长 + **负延迟**（取周期中段起步），首屏即刻铺满。落雪包裹层与中央暗角（`radial-gradient`，55% 处透明 → 边缘 `rgba(5,10,20,.6)`）均 `aria-hidden`。
+
+`active` 变为 false 时落雪**保持挂载**并加 `exiting` 类（`opacity: 0` + `pointer-events: none`），以 inline `transition-duration: <fadeDuration>s` 淡出，计时结束后卸载；淡出途中恢复 `active` 会取消计时器、立即回到不透明。`delay` 在每次 `active` 切为 true 时重新计时，避免快速结束时闪屏。
+
+Props：`active`（boolean，默认 true）、`tip`（string | VNode，中央提示文字；缺省时渲染视觉隐藏的「加载中」span 供读屏）、`delay`（number，毫秒，默认 0）、`fadeDuration`（number，秒，默认 0.6）、`zIndex`（number，默认 3000，高于 Notification 的 2000）。attrs 透传根元素。
+
+`prefers-reduced-motion: reduce` 时停止飘落与进入动画（opacity 渐隐保留）。**不支持**：容器内/内联模式（恒为全屏）、children、自定义 spinner 插槽。
+---
+
+### Icon
+
+```vue
+<Icon name="Heart" :size="32" color="#e76f51" />
+<Icon :icon="HeartIcon" />
+<Icon src="/stickers/cat.png" :size="48" />
+```
+
+内置手绘贴纸风图标（101 个）+ 自定义图标三合一，零图片资源。三种模式优先级 `icon`（组件）> `name`（内置 svg）> `src`（背景图）。
+
+`name` 命中内置注册表 → 渲染 `<svg>`（源 SVG 属性原样透传，`stroke` 默认 `currentColor`，`stroke-width: 3.5`，`vector-effect: non-scaling-stroke`）；`icon` 接收任意图标组件（101 个内置 `*Icon` 均已从包根导出）；`src` 渲染带 `background-image` 的 `span`。
+
+Props：`name`（IconName）、`icon`（Component）、`src`（string）、`size`（number | string，默认 24，number 视为 px）、`color`（string，仅 svg 模式，覆写 `stroke`）、`strokeWidth`（number | string，仅 svg 模式）、`bounce`（boolean，默认 false，hover 弹跳 0.3s）。`id` / `class` / `style` / `data-*` / `aria-*` 透传渲染元素。另导出 `ICON_LIST`、`NAIVE_PALETTE`、`ICON_CATEGORIES`。
+
+**不支持**：`spin` / `rotate` 旋转、单图标多路径多色、font-icon 模式。
 
 ---
 

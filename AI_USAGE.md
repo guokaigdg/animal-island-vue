@@ -29,7 +29,7 @@ vue >= 3.4.0
 
 ***
 
-## 1. Full API (40 named exports)
+## 1. Full API (146 named exports：45 基础导出 + 101 内置图标组件)
 
 All named exports from `animal-island-vue`:
 
@@ -100,6 +100,8 @@ import type {
     CursorType,
     BackgroundProps,
     BackgroundType,
+    TimeProps,
+    LoadingProps,
     DividerProps,
     TypewriterProps,
     TabsProps,
@@ -1575,6 +1577,112 @@ Decorative full-width wallpaper container (zero image assets — pure CSS gradie
 ```
 
 > `dots` = two offset radial-gradient dot grids (28px + 14px, green on `#bfe3bf`). `sprinkles` = three coprime tiles of inline-SVG capsule sprinkles (rounded rects + shared vertical highlight gradient simulating lit cylinders; LCM repeat ≈ 220000×280000px — visually random). The container is `position: relative; width: 100%; min-height: 100%` — give it an explicit height via `style`. **Not supported:** no color customization, no pattern density props.
+
+***
+
+### 1.37 Time
+
+```ts
+interface TimeProps {}
+// No props. Attrs are passed through to the root element.
+```
+
+```vue
+<script setup lang="ts">
+import { Time } from 'animal-island-vue';
+</script>
+
+<template>
+    <Time class="my-clock" />
+</template>
+```
+
+> HUD-style live clock (weekday / month-day / HH:MM), updates every second, colon blinks (`step-end` keyframes). Mint weekday `#19c8b9` + earth-brown digits `#794f27` on a cream rounded box (library tokens, `@border-width`/`@border-radius-base`). Zero props — style via attrs. **Not supported:** no 12-hour format, no locale/i18n (English only), no `timestamp` prop.
+
+***
+
+### 1.38 Loading
+
+```ts
+import type { VNode } from 'vue';
+
+interface LoadingProps {
+    /** Snowfall on / off. false → fade out, then unmount. */
+    active?: boolean; // default true
+    /** Centred caption over the snowfall (string | VNode). Falls back to a visually-hidden 加载中. */
+    tip?: string | VNode;
+    /** Delay before the screen appears (ms) — prevents flicker on fast loads. Re-arms on every active→true. */
+    delay?: number; // default 0
+    /** Fade-out duration in seconds. */
+    fadeDuration?: number; // default 0.6
+    /** Fullscreen stacking level. */
+    zIndex?: number; // default 3000
+}
+// Attrs (class / style / data-* / aria-*) fall through to the root element.
+```
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import { Loading, Button } from 'animal-island-vue';
+const active = ref(false);
+</script>
+
+<template>
+    <Button @click="active = true">Load</Button>
+    <Loading :active="active" tip="正在连接岛屿…" :delay="300" :fade-duration="0.6" :z-index="3000" />
+</template>
+```
+
+> Fullscreen night-sky snowfall: 50 white round flakes (1–6px, random size and position) drift down while rotating, each with its own 6–12s linear duration and a negative delay so the first frame is already full of snow. Root is `position: fixed; inset: 0`, painted `#0b101a`, with an `aria-hidden` snowfall layer plus a centred vignette. `active` → false keeps the screen mounted with the `exiting` class (opacity → 0, `pointer-events: none`) for `fadeDuration` seconds and only then unmounts; flipping `active` back mid-fade cancels the timer and returns to opaque immediately. Root carries `role="status"`; without `tip` a visually-hidden `加载中` span supplies the accessible text. `prefers-reduced-motion` stops the fall and the entrance animation. **Not supported:** no container/inline mode (always fullscreen), no children / spinner slot, no 12-hour or i18n text.
+
+***
+
+### 1.39 Icon
+
+```ts
+import type { Component } from 'vue';
+
+interface IconProps {
+    /** Built-in icon name (101 total, e.g. Heart / Flower). One of name / icon / src. */
+    name?: IconName;
+    /** Any icon component (import { HeartIcon } from 'animal-island-vue'); wins over name. */
+    icon?: Component;
+    /** Custom icon asset URL (color bitmaps etc.). */
+    src?: string;
+    /** Size — number → px. Default 24. */
+    size?: number | string; // default 24
+    /** Stroke color (svg modes). Defaults to currentColor. */
+    color?: string;
+    /** Stroke width (svg modes). Default 3.5. */
+    strokeWidth?: number | string;
+    /** Bounce on hover. Default false. */
+    bounce?: boolean; // default false
+}
+// Attrs (id / class / style / data-* / aria-*) fall through to the rendered element.
+// Also exported: ICON_LIST, NAIVE_PALETTE, ICON_CATEGORIES and 101 named *Icon components.
+```
+
+Three render modes, priority `icon` > `name` > `src`:
+
+```vue
+<script setup lang="ts">
+import { Icon, HeartIcon } from 'animal-island-vue';
+</script>
+
+<template>
+    <!-- Built-in icon by name -->
+    <Icon name="Heart" :size="32" color="#e76f51" />
+
+    <!-- Imported icon component -->
+    <Icon :icon="HeartIcon" />
+
+    <!-- Custom bitmap (background-image) -->
+    <Icon src="/stickers/cat.png" :size="48" />
+</template>
+```
+
+> Hand-drawn sticker-style icon set — 101 built-ins, zero image assets. `name` renders an inline `<svg>` whose source attributes are passed through, with `stroke` inheriting `currentColor` and `stroke-width: 3.5` (`vector-effect: non-scaling-stroke`). `size` accepts a number (→ px) or any CSS length string. `color` / `strokeWidth` only affect the two svg modes. `bounce` adds a 0.3s hover bounce. **Not supported:** no `spin` / `rotate` prop, no per-path multi-color API, no font-icon mode.
 
 ***
 

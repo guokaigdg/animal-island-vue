@@ -65,7 +65,7 @@ Game-special:
 Borders:
   Standard:       2px solid #aaa69d (Button default/dashed, Collapse container) | hover: #827157
   Input:          NONE — borderless cream-yellow capsule (bg #fffbe7), no border at any state
-  Time component: 3px solid #d4cfc3
+  Time component: 2px solid #d4c9b4
 
 3D shadow colors (bottom box-shadow only — NO elevation shadow):
   Button (primary / danger-primary ONLY):
@@ -310,11 +310,8 @@ Header cell:    padding 16px 20px; font-size 14px; font-weight 700; color #725d4
 Body cell:      padding 14px 20px; font-size 14px; font-weight 500; color #725d42; line-height 1.6
 Row divider:    1px dashed pattern (6px on / 6px off), color rgb(240,232,216) (via ::after)
 Striped rows:   alternate background rgba(248,248,240,0.6)
-Row hover:      diagonal teal stripe pattern,
-                background: repeating-linear-gradient(-45deg,
-                  rgba(25,200,185,0.6) 0 10px,
-                  rgba(14,196,182,0.6) 10px 20px);
-                background-size 28.28px 28.28px; clip-path inset(0 round 30px); text color #3d2e1e
+Row hover:      solid light teal, background-color #d6f0ea; border-radius 30px
+                (no text-color change — deep brown stays readable, avoids flicker)
 Empty state:    padding 60px 20px; text-align center; color #9f927d; icon opacity 0.5
 Loading overlay: rgba(247,243,223,0.8) + backdrop-filter blur(2px); spinner #19c8b9
 
@@ -439,7 +436,7 @@ Interface details:
 - Switch toggle with flat round handle, green #86d67a track when ON
 - Collapse accordion with teal circle icon, leaf SVG decoration
 - Time widget showing weekday in green #6fba2c, large 48px clock digits
-- Pastel parchment Table with dashed dotted row dividers and diagonal teal stripe hover
+- Pastel parchment Table with dashed dotted row dividers and a solid light-teal hover row
 - Soft warm Tooltip bubble with 8px diamond arrow, OR transparent island-bubble variant
 - Nature decorations: leaf SVG icons, illustrated ocean wave footer, forest tree silhouette
 - Diagonal stripe loading animation on active buttons
@@ -491,7 +488,10 @@ Interface details:
 | Title 字重             | `900`                                                                                                                    | 飘带文字                                            |
 | 过渡                   | `0.25s cubic-bezier(0.4,0,0.2,1)`                                                                                        | 通用动画                                            |
 | Loading stripe         | `28.28px` step, `-45deg`, `#0ec4b6/#01b0a7`                                                                              | 按钮 inline loading                                 |
-| Footer                 | `height: 80px`，14 个 🎄 emoji 居中（28px / 间距 12px），非图片                                                          | 圣诞树底部                                          |
+| Footer                 | 101 个内置 Icon 相连成链，按容器宽度循环铺满                                                                             | 底部图标链（`size` 默认 24）                        |
+| Icon                   | 101 个手绘贴纸风内置图标，`stroke-width: 3.5` / `stroke: currentColor`                                                   | 图标三合一（`name` / `icon` / `src`）               |
+| Loading                | 夜空底 `#0b101a` 全屏 + 50 片白色雪花（1–6px）6–12s 负延迟旋转飘落 + 暗角                                      | 全屏落雪加载屏                                      |
+| Time                   | 星期薄荷青 + 月日/HH:MM 大地棕 48px/900，冒号每秒闪烁                                                                     | HUD 实时时钟                                        |
 | Divider                | `height: 12px`，5 种背景图                                                                                               | 装饰分割线                                          |
 | Cursor                 | `cursor: url(...) 4 0, auto !important`                                                                                  | 原创手绘指向光标（奶油手背 + 棕描边 + 薄荷袖口）    |
 | Typewriter 默认速度    | `90ms/字`                                                                                                                | 按字符打印，无包裹元素                              |

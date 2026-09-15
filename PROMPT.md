@@ -122,12 +122,13 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 - Cards have NO box-shadow. They float on hover with `transform: translateY(-2px);` only. Pattern variants add a 1.5px solid border in the palette hue.
 - Switch handle stays vertically centered via `transform: translateY(-50%);` and has a 2.5px border but NO `box-shadow` of its own. Track has only inset shadow (see SHADOW SYSTEM above).
 
-## COMPONENT SPECS (29 named exports = 28 components + 1 export-button companion)
+## COMPONENT SPECS (35 components + 101 built-in icons)
 
 ### BackTop (返回顶部)
 
 - 钱袋图标浮窗，滚动到 `visibilityHeight` 时显示
-- Props: `target` (() => HTMLElement | Window), `visibilityHeight` (number, default 400), `onClick` (() => void), `className` (string), `style` (CSSProperties | string), `duration` (number, default 300)
+- Props: `target` (() => HTMLElement | Window), `visibilityHeight` (number, default 400), `duration` (number, default 300)
+- Emits: `click` (MouseEvent). `class` / `style` fall through to the root element.
 - Vue API: `<BackTop />` — 无子组件，无额外类型导出
 
 ### Button (3 sizes × 5 types)
@@ -349,17 +350,16 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 - Header cell: padding 16px 20px; font 14px/700 #725d42; letter-spacing 0.02em; ::after divider 1px dashed (6px on / 6px off) rgb(240,232,216).
 - Body cell: padding 14px 20px; font 14px/500 #725d42; line-height 1.6; same dashed bottom divider via ::after.
 - Striped rows: bg rgba(248,248,240,0.6).
-- Row hover: diagonal teal stripes
-  background: repeating-linear-gradient(-45deg, rgba(25,200,185,0.6) 0 10px, rgba(14,196,182,0.6) 10px 20px);
-  background-size: 28.28px 28.28px;
-  clip-path: inset(0 round 30px); color #3d2e1e.
+- Row hover: solid light teal + inner radius
+  background-color: #d6f0ea; border-radius: 30px. Deep-brown text needs no recolor, so there is no text-color flicker.
 - Empty: padding 60px 20px; text-align center; color #9f927d; icon opacity 0.5.
 - Loading overlay: rgba(247,243,223,0.8) + backdrop-filter blur(2px); spinner #19c8b9.
 - Vue API: `<Table :columns="cols" :data-source="rows" row-key="id" :striped="true" :show-header="true" :loading="false" empty-text="暂无数据" />`. `cols` items: `{ title, dataIndex, render?, width?, align?, style? }`. For rich cell rendering, prefer the `cell-{dataIndex}` named slot over `render`. Both `cols` and `rows` arrays are iterated with `v-for` + `:key` internally — never `.map(...)` in the template.
 
 ### Footer (decoration)
 
-- No `type` prop. width 100%; height 80px; centered row of 14 🎄 emoji (font-size 28px, letter-spacing 12px, flex center); `seamless` (default false) spreads them full-width via space-between.
+- No `type` prop. width 100%; a continuous chain of all 101 built-in icons, repeated to fill the container width (ResizeObserver-driven cycles).
+- Props: `size` (number, default 24 — icon size), `name` (IconName — locks the chain to one repeated icon). `class` / `style` fall through to the root element.
 
 ### Divider
 
@@ -493,6 +493,23 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 - Behavior: ≤7 pages render all; >7 pages render first/last + current±1 + ellipses; prev/next disabled at boundaries; size change clamps current page into new page count; jumper accepts digits only, jumps on Enter/blur, clamps to bounds and clears.
 - A11y: `nav[aria-label="分页"]`; active page `aria-current="page"`; prev/next `aria-label="上一页/下一页"`; size trigger `aria-haspopup="listbox"` + `aria-expanded`; options `role="option"` + `aria-selected`; jumper input `aria-label="跳转到指定页"`; ellipses `aria-hidden`.
 - Vue API: `<Pagination v-model:current="page" v-model:page-size="pageSize" :total="500" show-total show-quick-jumper />`; Table integration: `<Table :pagination="{ defaultPageSize: 5, showTotal: true, showSizeChanger: true }" />` (total computed from dataSource).
+
+### Icon (101 built-in sticker icons)
+
+- Props: `name` (IconName, e.g. 'Heart'), `icon` (Component — wins over `name`), `src` (string → background-image), `size` (number | string, default 24), `color` (svg modes only, overrides `stroke`), `strokeWidth` (svg modes only, default 3.5), `bounce` (default false, 0.3s hover bounce).
+- Mode priority: `icon` > `name` > `src`. The `name` mode renders an inline `<svg>` with `stroke: currentColor` and `stroke-width: 3.5`.
+- `id` / `class` / `style` / `data-*` / `aria-*` fall through to the rendered element.
+- All 101 `*Icon` components (HeartIcon, FlowerIcon, …) plus `ICON_LIST` / `NAIVE_PALETTE` / `ICON_CATEGORIES` are exported from the package root.
+
+### Time (HUD clock)
+
+- No props. HUD-style live clock — weekday + month-day + HH:MM, updates every second, blinking colon. English (no i18n) and 24-hour only. Attrs fall through; style via `class` / `style`.
+
+### Loading (overlay)
+
+- Fullscreen night-sky snowfall scene (`position: fixed; inset: 0`, base `#0b101a`): 50 white round flakes (1–6px, random size/left), each rotating as it falls on its own 6–12s linear duration with a negative delay so the first frame is already full of snow. An `aria-hidden` snowfall layer plus a centred vignette (`radial-gradient`, transparent 55% → `rgba(5,10,20,.6)`).
+- Props: `active` (boolean, default true — false keeps the screen mounted with the `exiting` class, `opacity: 0` + `pointer-events: none`, fading out over `fadeDuration` seconds before unmounting; flipping back mid-fade cancels the timer), `tip` (string | VNode — centred caption; omit for a visually-hidden 加载中), `delay` (number, ms, default 0 — re-arms on every active→true, prevents flicker on fast loads), `fadeDuration` (number, seconds, default 0.6), `zIndex` (number, default 3000, above Notification's 2000). Attrs fall through to the root; root carries `role="status"`.
+- Never mount it inside a `position: relative` box or put children inside it — it is a self-contained fullscreen scene.
 
 ## HARD RULES (must obey — disqualifies the output if violated)
 
