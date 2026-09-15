@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, ref, watch, onBeforeUnmount, type CSSProperties } from 'vue';
+import { computed, nextTick, ref, watch, onBeforeUnmount, useSlots, type CSSProperties, type VNode } from 'vue';
 import Cursor from '../Cursor/Cursor.vue';
 import Button from '../Button/Button.vue';
 import Typewriter from '../Typewriter/Typewriter.vue';
@@ -25,9 +25,12 @@ function getFocusable(root: HTMLElement): HTMLElement[] {
 
 interface Props {
     open: boolean;
+    variant?: 'default' | 'game';
     title?: string;
     width?: number | string;
     maskClosable?: boolean;
+    /** 底部区域。null 不渲染；省略时由 showFooter 决定默认按钮 */
+    footer?: VNode | string | null;
     showFooter?: boolean;
     typewriter?: boolean;
     typeSpeed?: number;
@@ -35,6 +38,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
+    variant: 'default',
     width: 520,
     maskClosable: true,
     showFooter: true,
@@ -48,11 +52,23 @@ const emit = defineEmits<{
     (e: 'ok'): void;
 }>();
 
+const slots = useSlots();
+
 defineSlots<{
     default?: () => unknown;
     title?: () => unknown;
     footer?: () => unknown;
 }>();
+
+// 底部渲染判定：对齐 React —— footer===null 不渲染；给 footer prop 或 #footer 插槽则渲染之；
+// 否则按 showFooter（Vue 便捷开关，默认 true）决定是否渲染默认 取消/确定。
+const footerVisible = computed(() => {
+    if (props.footer === null) return false;
+    if (slots.footer) return true;
+    if (props.footer) return true;
+    return props.showFooter;
+});
+const hasCustomFooter = computed(() => !!props.footer);
 
 const widthStyle = computed(() => ({
     width: typeof props.width === 'number' ? `${props.width}px` : props.width,
@@ -148,6 +164,7 @@ onBeforeUnmount(() => {
                 <div
                     ref="dialogRef"
                     class="animal-modal"
+                    :class="{ 'animal-modal--game': variant === 'game' }"
                     :style="widthStyle"
                     role="dialog"
                     aria-modal="true"
@@ -156,14 +173,17 @@ onBeforeUnmount(() => {
                     tabindex="-1"
                     @click.stop
                 >
-                    <svg class="animal-modal__svg-defs" aria-hidden="true">
+                    <svg v-if="variant === 'game'" class="animal-modal__svg-defs" aria-hidden="true">
                         <clipPath id="animal-modal-clip" clipPathUnits="objectBoundingBox">
                             <path
                                 d="M0.501,0.005 L0.501,0.005 L0.523,0.005 L0.549,0.006 C0.704,0.01,0.796,0.017,0.825,0.027 L0.827,0.028 C0.872,0.045,0.939,0.044,0.978,0.17 C1,0.254,1,0.365,0.99,0.505 L0.988,0.513 C0.979,0.558,0.971,0.598,0.965,0.633 C0.956,0.689,0.979,0.77,0.964,0.865 C0.953,0.928,0.921,0.966,0.869,0.979 C0.821,0.986,0.773,0.992,0.726,0.995 L0.712,0.996 L0.694,0.997 C0.648,1,0.586,1,0.507,1 L0.501,1 L0.464,1 C0.385,1,0.325,0.998,0.283,0.995 C0.234,0.992,0.184,0.987,0.133,0.979 C0.081,0.966,0.05,0.928,0.039,0.865 C0.023,0.77,0.047,0.689,0.037,0.633 C0.031,0.595,0.023,0.552,0.013,0.505 C-0.006,0.365,-0.002,0.254,0.024,0.17 C0.064,0.045,0.13,0.045,0.174,0.028 L0.175,0.028 C0.204,0.017,0.303,0.009,0.474,0.005 L0.501,0.005"
                             />
                         </clipPath>
                     </svg>
-                    <div class="animal-modal__body">
+                    <div
+                        class="animal-modal__body"
+                        :class="{ 'animal-modal__body--game': variant === 'game' }"
+                    >
                         <div v-if="$slots.title || title" class="animal-modal__header">
                             <div :id="titleId" class="animal-modal__title">
                                 <slot name="title">
@@ -177,10 +197,13 @@ onBeforeUnmount(() => {
                             </Typewriter>
                             <slot v-else />
                         </div>
-                        <div v-if="showFooter" class="animal-modal__footer">
+                        <div v-if="footerVisible" class="animal-modal__footer">
                             <slot name="footer">
-                                <Button type="primary" @click="handleClose"> 取消 </Button>
-                                <Button type="primary" @click="handleOk"> 确定 </Button>
+                                <template v-if="hasCustomFooter">{{ footer }}</template>
+                                <template v-else>
+                                    <Button type="primary" @click="handleClose"> 取消 </Button>
+                                    <Button type="primary" @click="handleOk"> 确定 </Button>
+                                </template>
                             </slot>
                         </div>
                     </div>
@@ -200,6 +223,10 @@ onBeforeUnmount(() => {
     display: flex;
     flex-direction: column;
     animation: animal-modal-zoom-in 0.3s ease;
+
+    &--game {
+        border-radius: 0;
+    }
 
     &__mask {
         position: fixed;
@@ -221,14 +248,22 @@ onBeforeUnmount(() => {
     &__body {
         width: 100%;
         height: 100%;
-        padding: 48px 48px 32px;
+        padding: 40px 35px 25px;
         background: rgb(247, 243, 223);
         color: rgb(128, 115, 89);
         font-family: @font-family;
         display: flex;
         flex-direction: column;
         overflow: hidden;
-        clip-path: url(#animal-modal-clip);
+        border-radius: 22px;
+        box-shadow: 0 18px 50px -12px rgba(0, 0, 0, 0.25);
+
+        &--game {
+            border-radius: 0;
+            box-shadow: none;
+            clip-path: url(#animal-modal-clip);
+            padding: 48px 48px 32px;
+        }
     }
 
     &__header {

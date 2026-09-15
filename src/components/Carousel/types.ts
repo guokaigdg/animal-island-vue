@@ -1,6 +1,8 @@
 export interface CarouselProps {
     /** 当前索引（v-model）— 受控 */
     modelValue?: number;
+    /** 当前索引 — 受控，对应 React 同名属性（优先级高于 modelValue） */
+    activeIndex?: number;
     /** 非受控模式的初始索引 */
     defaultActiveIndex?: number;
     /** 是否自动播放 */

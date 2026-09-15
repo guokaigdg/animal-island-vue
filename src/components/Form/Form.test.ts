@@ -288,10 +288,9 @@ describe('Form', () => {
             const finishEvents = wrapper.emitted('finish');
             expect(finishEvents).toBeTruthy();
             expect(finishEvents![0][0]).toEqual({ username: 'tom' });
-            // onFinish 回调被调用（Vue Form 的 watch+bindCallbacks 机制可能触发多次，
-            // 这里只断言最后收到的 payload 正确，不限制次数）
-            expect(onFinish).toHaveBeenCalled();
-            expect(onFinish.mock.calls[onFinish.mock.calls.length - 1][0]).toEqual({ username: 'tom' });
+            // onFinish 回调被调用，且只触发一次（callbacks 统一由 emit 派发）
+            expect(onFinish).toHaveBeenCalledTimes(1);
+            expect(onFinish.mock.calls[0][0]).toEqual({ username: 'tom' });
             wrapper.unmount();
         });
 
@@ -1367,10 +1366,10 @@ describe('Form', () => {
             const resetBtn = findForm().querySelector('button[type="reset"]') as HTMLButtonElement;
             resetBtn.click();
             await nextTick();
-            // 验证 emit 被触发（不受 Vue Form 的 double-call bug 影响）
+            // 验证 emit 被触发
             expect(wrapper.emitted('reset')).toHaveLength(1);
-            // onReset prop 也被调用（用于冒烟验证）
-            expect(onReset).toHaveBeenCalled();
+            // onReset prop（= @reset 监听器）同样只触发一次
+            expect(onReset).toHaveBeenCalledTimes(1);
             wrapper.unmount();
         });
     });

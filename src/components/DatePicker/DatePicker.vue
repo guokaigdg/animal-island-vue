@@ -20,6 +20,7 @@ const props = withDefaults(defineProps<DatePickerProps>(), {
 const emit = defineEmits<{
     (e: 'update:modelValue', value: DatePickerValue): void;
     (e: 'change', value: DatePickerValue): void;
+    (e: 'openChange', open: boolean): void;
     (e: 'update:open', open: boolean): void;
 }>();
 
@@ -146,6 +147,7 @@ const yearCells = computed(() => Array.from({ length: 12 }, (_, i) => startYear.
 function setOpen(next: boolean) {
     if (props.open === undefined) innerOpen.value = next;
     emit('update:open', next);
+    emit('openChange', next);
 }
 
 /** 统一关闭入口：先播放退场动效，动画结束后再卸载面板 */
@@ -233,21 +235,13 @@ function selectDate(date: Date) {
         pendingDate.value = date;
         return;
     }
-    // 范围模式：
-    // - 尚无起点：以该日期作为开始日期
-    // - 已有完整范围（起点+终点）：点击任意日期重新开始选择（以该日期为新起点）
-    // - 选择中：点击晚于起点设为结束；早于起点则替换起点
-    if (rangeStart.value && rangeEnd.value) {
-        rangeStart.value = date;
-        rangeEnd.value = null;
-        return;
-    }
+    // 范围模式：第一次点击确定开始日期，后续点击确定结束日期；
+    // 点击早于开始日期时以它替换开始日期（与 React 行为一致）
     if (!rangeStart.value) {
         rangeStart.value = date;
         return;
     }
     if (date < rangeStart.value) {
-        // 第二次点击早于开始日期：以它作为新的开始日期
         rangeStart.value = date;
         return;
     }
@@ -349,12 +343,8 @@ function handleKeyDown(e: KeyboardEvent) {
         if (mode.value === 'date') {
             if (props.disabledDate?.(focusedDate.value)) return;
             if (props.range) {
-                // 范围模式：回车依次确定开始日期与结束日期（待选）
-                if (rangeStart.value && rangeEnd.value) {
-                    // 已有完整范围：重新开始选择（以焦点日期为新起点）
-                    rangeStart.value = focusedDate.value;
-                    rangeEnd.value = null;
-                } else if (!rangeStart.value) {
+                // 范围模式：回车依次确定开始日期与结束日期（待选），与 React 行为一致
+                if (!rangeStart.value) {
                     rangeStart.value = focusedDate.value;
                 } else if (focusedDate.value < rangeStart.value) {
                     rangeStart.value = focusedDate.value;

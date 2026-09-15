@@ -92,14 +92,10 @@ describe('DatePicker', () => {
     describe('size / status', () => {
         it('size=small / large 应用对应类', () => {
             const small = mount(DatePicker, { props: { size: 'small' } });
-            expect(small.get('.animal-date-picker__trigger').classes()).toContain(
-                'animal-date-picker__trigger--small'
-            );
+            expect(small.get('.animal-date-picker__trigger').classes()).toContain('animal-date-picker__trigger--small');
             small.unmount();
             const large = mount(DatePicker, { props: { size: 'large' } });
-            expect(large.get('.animal-date-picker__trigger').classes()).toContain(
-                'animal-date-picker__trigger--large'
-            );
+            expect(large.get('.animal-date-picker__trigger').classes()).toContain('animal-date-picker__trigger--large');
             large.unmount();
         });
 
@@ -113,9 +109,7 @@ describe('DatePicker', () => {
 
         it('status=error / warning 应用对应类', () => {
             const error = mount(DatePicker, { props: { status: 'error' } });
-            expect(error.get('.animal-date-picker__trigger').classes()).toContain(
-                'animal-date-picker__trigger--error'
-            );
+            expect(error.get('.animal-date-picker__trigger').classes()).toContain('animal-date-picker__trigger--error');
             error.unmount();
             const warning = mount(DatePicker, { props: { status: 'warning' } });
             expect(warning.get('.animal-date-picker__trigger').classes()).toContain(
@@ -146,11 +140,7 @@ describe('DatePicker', () => {
         it('点击外部区域关闭面板', async () => {
             const Outer = defineComponent({
                 setup() {
-                    return () =>
-                        h('div', [
-                            h(DatePicker),
-                            h('button', { 'data-testid': 'outside' }, 'outside'),
-                        ]);
+                    return () => h('div', [h(DatePicker), h('button', { 'data-testid': 'outside' }, 'outside')]);
                 },
             });
             const wrapper = mount(Outer, { attachTo: document.body });
@@ -429,13 +419,13 @@ describe('DatePicker', () => {
             wrapper.unmount();
         });
 
-        it('已选完整范围后点击任意日期重新开始选择（重选逻辑优化）', async () => {
+        it('已选完整范围后再点击：晚于起点更新终点，早于起点重开选择（与 React 行为一致）', async () => {
             const wrapper = mount(DatePicker, {
                 props: { range: true, modelValue: ['2024-01-01', '2024-01-31'] as [string, string] },
             });
             const trigger = '.animal-date-picker__trigger';
             const confirm = '.animal-date-picker__confirm-btn';
-            // 打开面板，先选 1月10日 ~ 1月20日（完整范围，未确定）
+            // 打开面板，先选 1月10日 ~ 1月20日（完整待选范围，未确定）
             await wrapper.get(trigger).trigger('click');
             await flushRaf();
             await wrapper.get('button[aria-label="2024年1月10日"]').trigger('click');
@@ -444,20 +434,24 @@ describe('DatePicker', () => {
             await nextTick();
             expect(wrapper.get(trigger).text()).toContain('2024-01-10');
             expect(wrapper.get(trigger).text()).toContain('2024-01-20');
-            // 点击 2月5日：应重新开始选择（旧范围清除，2月5日 为新起点）
-            await wrapper.get('button[aria-label="2024年2月5日"]').trigger('click');
+            // 点击 1月25日（晚于起点）：起点保持不变，终点被更新
+            await wrapper.get('button[aria-label="2024年1月25日"]').trigger('click');
             await nextTick();
             const text = wrapper.get(trigger).text();
-            expect(text).toContain('2024-02-05');
-            expect(text).not.toContain('2024-01-10');
+            expect(text).toContain('2024-01-10');
+            expect(text).toContain('2024-01-25');
             expect(text).not.toContain('2024-01-20');
-            // 点击 2月20日 作为结束并确定
-            await wrapper.get('button[aria-label="2024年2月20日"]').trigger('click');
+            // 点击 1月5日（早于起点）：以它作为新的起点重新开始选择
+            await wrapper.get('button[aria-label="2024年1月5日"]').trigger('click');
+            await nextTick();
+            expect(wrapper.get(trigger).text()).toContain('2024-01-05');
+            // 再点 1月15日 作为结束并确定
+            await wrapper.get('button[aria-label="2024年1月15日"]').trigger('click');
             await nextTick();
             await wrapper.get(confirm).trigger('click');
             await nextTick();
             const updates = wrapper.emitted('update:modelValue')!;
-            expect(updates[updates.length - 1][0]).toEqual(['2024-02-05', '2024-02-20']);
+            expect(updates[updates.length - 1][0]).toEqual(['2024-01-05', '2024-01-15']);
             wrapper.unmount();
         });
     });

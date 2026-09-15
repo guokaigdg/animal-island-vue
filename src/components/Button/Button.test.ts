@@ -56,14 +56,18 @@ describe('Button', () => {
         expect(wrapper.emitted('click')).toHaveLength(1);
     });
 
-    it('icon prop 在非 loading 时渲染，loading 时不渲染图标', async () => {
+    it('icon prop 在非 loading 时渲染，loading 时被 loading 图标替换', async () => {
         const wrapper = mount(Button, {
             props: { icon: '🔍' },
             slots: { default: 'x' },
         });
+        // 非 loading：渲染 icon prop
         expect(wrapper.find('.animal-btn__icon').exists()).toBe(true);
+        expect(wrapper.find('.animal-btn__icon').text()).toBe('🔍');
         await wrapper.setProps({ loading: true });
-        expect(wrapper.find('.animal-btn__icon').exists()).toBe(false);
+        // loading：与 React 一致 —— icon 被替换为 loading 图标（同为 btn-icon 容器）
+        expect(wrapper.find('.animal-btn__loading-icon').exists()).toBe(true);
+        expect(wrapper.find('.animal-btn__icon').text()).not.toContain('🔍');
     });
 
     // ---------- 补充测试 ----------

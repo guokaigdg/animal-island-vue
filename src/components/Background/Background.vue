@@ -3,16 +3,14 @@ import { computed, useAttrs } from 'vue';
 import type { BackgroundProps } from './types';
 
 const props = withDefaults(defineProps<BackgroundProps>(), {
-    type: 'dots',
+    type: 'default',
 });
 
 const attrs = useAttrs();
 
 defineSlots<{ default?: () => unknown }>();
 
-const typeClass = computed(() =>
-    props.type === 'sprinkles' ? 'animal-background--sprinkles' : undefined
-);
+const typeClass = computed(() => `animal-background--${props.type}`);
 </script>
 
 <template>
@@ -23,22 +21,123 @@ const typeClass = computed(() =>
 
 <style lang="less" scoped>
 // Background — 装饰背景壁纸（无外部图片资源）
-// dots：两层错位圆点波点壁纸（28px 大点 + 14px 小点网格，绿色系）
-// sprinkles：圆柱形彩色针糖壁纸 —— 内联 SVG 胶囊（rx=半厚度的圆角矩形 + 共享
-//            竖向高光渐变，白高光→深底边，呈现圆柱受光），三层互质 tile 平铺，
-//            重复周期远超屏幕，视觉上随机散落
+// 基础容器仅定位；具体壁纸由 .animal-background--<type> 提供（与 React bg-<type> 对应）
 .animal-background {
     position: relative;
     width: 100%;
     min-height: 100%;
-    /* 默认 type=dots：两层错位圆点 + 纯色底 */
+}
+
+// ---------- default — 奶油色波点（默认，与 Card pattern-default 底色一致） ----------
+.animal-background--default {
+    background:
+        radial-gradient(circle, rgba(196, 184, 158, 0.15) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+        radial-gradient(circle, rgba(196, 184, 158, 0.1) 1px, transparent 1px) 7px 7px / 14px 14px,
+        rgb(247, 243, 223);
+}
+
+// ---------- grid — 网格 ----------
+.animal-background--grid {
+    background-color: rgb(247, 243, 223);
+    background-image:
+        linear-gradient(#c4b89e 1px, transparent 1px), linear-gradient(90deg, #c4b89e 1px, transparent 1px);
+    background-size: 24px 24px;
+}
+
+// ---------- dots-dark-green — 深绿波点 ----------
+.animal-background--dots-dark-green {
     background:
         radial-gradient(circle, rgba(90, 160, 90, 0.22) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
         radial-gradient(circle, rgba(140, 200, 140, 0.15) 1px, transparent 1px) 7px 7px / 14px 14px,
         #bfe3bf;
 }
 
-// sprinkles 修饰类在根元素上，必须放在顶层（嵌套在 .animal-background 内会编译成后代选择器）
+// ---------- 12 色 dots-* 底色对应 Card pattern-* 系列（粉彩底 + 同色系两层波点） ----------
+.animal-background--dots-pink {
+    background:
+        radial-gradient(circle, rgba(248, 166, 178, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+        radial-gradient(circle, rgba(255, 200, 210, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+        #fde4e8;
+}
+
+.animal-background--dots-purple {
+    background:
+        radial-gradient(circle, rgba(183, 125, 238, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+        radial-gradient(circle, rgba(220, 180, 255, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+        #f0e8ff;
+}
+
+.animal-background--dots-blue {
+    background:
+        radial-gradient(circle, rgba(136, 157, 240, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+        radial-gradient(circle, rgba(180, 195, 255, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+        #e8edff;
+}
+
+.animal-background--dots-yellow {
+    background:
+        radial-gradient(circle, rgba(247, 205, 103, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+        radial-gradient(circle, rgba(255, 230, 160, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+        #fff8e0;
+}
+
+.animal-background--dots-orange {
+    background:
+        radial-gradient(circle, rgba(229, 146, 102, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+        radial-gradient(circle, rgba(255, 190, 150, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+        #fff0e8;
+}
+
+.animal-background--dots-teal {
+    background:
+        radial-gradient(circle, rgba(130, 213, 187, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+        radial-gradient(circle, rgba(170, 235, 210, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+        #e8faf5;
+}
+
+.animal-background--dots-green {
+    background:
+        radial-gradient(circle, rgba(138, 198, 138, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+        radial-gradient(circle, rgba(180, 220, 180, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+        #e8f5e8;
+}
+
+.animal-background--dots-red {
+    background:
+        radial-gradient(circle, rgba(252, 115, 109, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+        radial-gradient(circle, rgba(255, 160, 155, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+        #ffe8e8;
+}
+
+.animal-background--dots-lime-green {
+    background:
+        radial-gradient(circle, rgba(209, 218, 73, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+        radial-gradient(circle, rgba(230, 240, 130, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+        #f5f8e0;
+}
+
+.animal-background--dots-yellow-green {
+    background:
+        radial-gradient(circle, rgba(236, 223, 82, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+        radial-gradient(circle, rgba(255, 245, 140, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+        #fffde8;
+}
+
+.animal-background--dots-brown {
+    background:
+        radial-gradient(circle, rgba(154, 131, 90, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+        radial-gradient(circle, rgba(190, 165, 120, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+        #f5f0e0;
+}
+
+.animal-background--dots-warm-peach-pink {
+    background:
+        radial-gradient(circle, rgba(225, 140, 111, 0.18) 1.5px, transparent 1.5px) 0 0 / 28px 28px,
+        radial-gradient(circle, rgba(255, 185, 160, 0.12) 1px, transparent 1px) 7px 7px / 14px 14px,
+        #fff0e8;
+}
+
+// ---------- sprinkles — 圆柱形彩色针糖 ----------
 .animal-background--sprinkles {
     /* 圆柱形糖针：每根糖针是两个共用 transform 的圆角矩形 —— 底色 + 竖向高光
        渐变叠加（id=s），模拟圆柱受光；三层互质 tile（190×170 / 230×195 / 255×215，
@@ -52,5 +151,17 @@ const typeClass = computed(() =>
         url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='255' height='215'%3E%3Cdefs%3E%3ClinearGradient id='s' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23fff' stop-opacity='.55'/%3E%3Cstop offset='.45' stop-color='%23fff' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23000' stop-opacity='.25'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg transform='translate(30 26) rotate(65)'%3E%3Crect width='16' height='4.6' rx='2.3' fill='%23f4a261'/%3E%3Crect width='16' height='4.6' rx='2.3' fill='url(%23s)'/%3E%3C/g%3E%3Cg transform='translate(152 38) rotate(-30)'%3E%3Crect width='15' height='4.4' rx='2.2' fill='%23c9a7f5'/%3E%3Crect width='15' height='4.4' rx='2.2' fill='url(%23s)'/%3E%3C/g%3E%3Cg transform='translate(222 88) rotate(15)'%3E%3Crect width='17' height='4.8' rx='2.4' fill='%23f8a6b2'/%3E%3Crect width='17' height='4.8' rx='2.4' fill='url(%23s)'/%3E%3C/g%3E%3Cg transform='translate(82 118) rotate(-95)'%3E%3Crect width='14' height='4.2' rx='2.1' fill='%23f5d04a'/%3E%3Crect width='14' height='4.2' rx='2.1' fill='url(%23s)'/%3E%3C/g%3E%3Cg transform='translate(186 158) rotate(48)'%3E%3Crect width='15' height='4.4' rx='2.2' fill='%2395d5b2'/%3E%3Crect width='15' height='4.4' rx='2.2' fill='url(%23s)'/%3E%3C/g%3E%3Cg transform='translate(42 184) rotate(10)'%3E%3Crect width='16' height='4.6' rx='2.3' fill='%238ecae6'/%3E%3Crect width='16' height='4.6' rx='2.3' fill='url(%23s)'/%3E%3C/g%3E%3C/svg%3E")
             90px 60px / 255px 215px,
         #fdf3e3;
+}
+
+// ---------- sweet-corner / coffee-break — 场景背景图（cover 铺满） ----------
+// 注：React 通过 import SVG 资源注入 background-image；Vue 工程未包含这些 svg 资源，
+// 且本任务约束仅可编辑 src/components/<C>/ 目录，故此处仅保留底色 + cover 布局占位，
+// 待资源就位后可在 class 上补 background-image: url(...) 即可。
+.animal-background--sweet-corner,
+.animal-background--coffee-break {
+    background-color: #fdf3e3;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 </style>

@@ -188,7 +188,7 @@ onBeforeUnmount(() => {
             <span class="animal-select__value" :class="{ 'animal-select__value--placeholder': !modelValue }">
                 {{ currentLabel }}
             </span>
-            <span class="animal-select__arrow" :class="{ 'animal-select__arrow--open': open }">
+            <span class="animal-select__arrow" :class="{ 'animal-select__arrow--open': open }" aria-hidden="true">
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                     <path
                         d="M3 4.5L6 7.5L9 4.5"
@@ -227,7 +227,7 @@ onBeforeUnmount(() => {
                 "
                 @mouseleave="hoveredKey = null"
             >
-                <span class="animal-select__spacer" />
+                <span class="animal-select__spacer" aria-hidden="true" />
                 {{ option.label }}
                 <div v-if="modelValue === option.key" class="animal-select__highlight" />
             </div>
@@ -259,6 +259,13 @@ onBeforeUnmount(() => {
         &:hover {
             border-color: #d4c4a8;
             background: #fffdf7;
+        }
+
+        // React .trigger.open：展开期间 hover 保持纯白，避免底色闪动
+        &--open,
+        &--open:hover {
+            background: #fff;
+            border-radius: 12px;
         }
 
         &--disabled {
@@ -326,15 +333,19 @@ onBeforeUnmount(() => {
         &--hovered {
             font-weight: 700;
 
+            // 纯 CSS 三角箭头指示（与 React select.module.less 的 .option:hover::before 完全一致），
+            // 不再依赖 select-cursor.svg 位图资源
             &::before {
                 content: '';
                 position: absolute;
-                left: -12px;
+                left: -14px;
                 top: 50%;
                 transform: translateY(-50%);
-                width: 35px;
-                height: 35px;
-                background: url('../../assets/img/cursor/select-cursor.svg') no-repeat center / contain;
+                width: 0;
+                height: 0;
+                border-top: 7px solid transparent;
+                border-bottom: 7px solid transparent;
+                border-left: 10px solid #f5a623;
                 animation: animal-select-cursor-in 0.5s ease-out forwards;
             }
         }

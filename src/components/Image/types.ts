@@ -27,6 +27,10 @@ export interface ImageProps {
     color?: ImageColor;
     /** 是否启用懒加载 */
     lazy?: boolean;
+    /** 相框类型：'default' 卡片大阴影+大圆角（默认），'bordered' 边框柔和阴影+小圆角，'stamp' 邮票齿孔边框 */
+    variant?: 'default' | 'bordered' | 'stamp';
+    /** 邮票类型（variant='stamp'）下的发行年份，如「2026」，印在右上角照片上；留空不显示 */
+    stampYear?: string;
     /** 点击图片弹出大图预览（默认开启） */
     preview?: boolean;
 }

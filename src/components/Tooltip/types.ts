@@ -18,8 +18,8 @@ export type TooltipTrigger = 'hover' | 'focus' | 'click';
 export type TooltipVariant = 'default' | 'island';
 
 export interface TooltipProps {
-    /** 提示内容 */
-    title?: string;
+    /** 提示内容，支持多行（可用 \n 或 <br/> 换行） */
+    title: string;
     /** 位置 */
     placement?: TooltipPlacement;
     /** 触发方式 */

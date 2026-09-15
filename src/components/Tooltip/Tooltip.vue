@@ -5,7 +5,7 @@ import type { TooltipPlacement, TooltipTrigger, TooltipVariant } from './types';
 const attrs = useAttrs();
 
 interface Props {
-    title?: string;
+    title: string;
     placement?: TooltipPlacement;
     trigger?: TooltipTrigger;
     variant?: TooltipVariant;
@@ -13,7 +13,6 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-    title: '',
     placement: 'top',
     trigger: 'hover',
     variant: 'default',

@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'vue';
+import type { CSSProperties, VNode } from 'vue';
 
 export type DrawerPlacement = 'left' | 'right' | 'top' | 'bottom';
 
@@ -17,10 +17,8 @@ export interface DrawerProps {
     maskClosable?: boolean;
     /** 背景下沉景深效果，默认 true */
     pushBackground?: boolean;
-    /** 底部区域，传 null 或不传则不渲染 */
-    footer?: string;
-    /** 关闭回调 */
-    onClose?: () => void;
+    /** 底部区域（ReactNode），传 null 或不传则不渲染 */
+    footer?: VNode | string | null;
     /** 遮罩层自定义样式 */
     maskStyle?: CSSProperties;
 }

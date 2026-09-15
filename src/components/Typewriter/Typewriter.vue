@@ -85,26 +85,17 @@ function clip(nodes: unknown, state: State): unknown {
     return null;
 }
 
-export interface TypewriterProps {
-    speed?: number;
-    trigger?: unknown;
-    autoPlay?: boolean;
-    text?: string;
-}
-
 export default defineComponent({
     name: 'Typewriter',
     props: {
         speed: { type: Number, default: 90 },
         trigger: { type: [Number, String, Boolean, Object, Array] as PropType<unknown>, required: false },
         autoPlay: { type: Boolean, default: true },
-        text: { type: String, default: undefined },
     },
     emits: ['done'],
     setup(props, { slots, emit }) {
         const getNodes = (): VNode[] => {
-            if (props.text !== null && props.text !== undefined) return [h(Text, props.text) as unknown as VNode];
-            return slots.default ? slots.default() : [];
+            return slots.default ? (slots.default() as VNode[]) : [];
         };
 
         const total = ref(0);
@@ -142,7 +133,7 @@ export default defineComponent({
         };
 
         watch(
-            () => [props.speed, props.trigger, props.autoPlay, props.text],
+            () => [props.speed, props.trigger, props.autoPlay],
             () => start(),
             { immediate: true }
         );

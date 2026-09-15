@@ -1,3 +1,5 @@
+import type { VNode } from 'vue';
+
 // ============================================
 // 字段名路径
 // ============================================
@@ -178,6 +180,8 @@ export interface FormProps<T = Record<string, unknown>> {
     onValuesChange?: (changedValues: Partial<T>, allValues: T) => void;
     /** reset 回调 */
     onReset?: (e: Event) => void;
+    /** 额外的 class（React 端为 className，作用于 <form> 元素） */
+    className?: string;
     class?: string;
     style?: Record<string, string | number>;
 }
@@ -219,8 +223,8 @@ export type ValidateStatus = 'success' | 'warning' | 'error' | 'validating' | ''
 export interface FormItemProps {
     /** 字段名，必传（无 name 的 FormItem 仅作展示） */
     name?: NamePath;
-    /** label 文本 */
-    label?: string;
+    /** label 文本（React 端为 ReactNode，Vue 端兼容 string | VNode） */
+    label?: string | VNode;
     /** 校验规则 */
     rules?: Rules;
     /** 是否必填（仅显示星号，校验仍以 rules.required 为准） */

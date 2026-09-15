@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useAttrs } from 'vue';
+import { computed, getCurrentInstance, useAttrs } from 'vue';
 import type { TagColor, TagSize, TagVariant } from './types';
 
 defineOptions({ inheritAttrs: false });
@@ -20,31 +20,33 @@ const props = withDefaults(defineProps<Props>(), {
     disabled: false,
 });
 
-const emit = defineEmits<{ (e: 'close', event: MouseEvent): void }>();
+const emit = defineEmits<{
+    (e: 'click', event: MouseEvent): void;
+    (e: 'close', event: MouseEvent): void;
+}>();
 
 defineSlots<{ default?: () => unknown }>();
 
 const attrs = useAttrs();
+const instance = getCurrentInstance();
 
-const isInteractive = computed(() => !!attrs.onClick && !props.disabled);
-
-function triggerClick(event: Event) {
-    if (props.disabled) return;
-    const handler = attrs.onClick;
-    if (typeof handler === 'function') {
-        (handler as (event: Event) => void)(event);
-    }
-}
+// React derives `isInteractive` from the presence of the `onClick` callback prop.
+// In Vue that callback is registered as a `click` emit listener, so we read it
+// from the vnode props (it is removed from `attrs` once declared in emits).
+const isInteractive = computed(
+    () => !!(instance?.vnode.props as Record<string, unknown> | undefined)?.onClick && !props.disabled
+);
 
 function handleClick(event: MouseEvent) {
-    triggerClick(event);
+    if (props.disabled) return;
+    emit('click', event);
 }
 
 function handleKeydown(event: KeyboardEvent) {
     if (!isInteractive.value) return;
     if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
-        triggerClick(event);
+        emit('click', event as unknown as MouseEvent);
     }
 }
 

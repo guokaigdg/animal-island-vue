@@ -19,6 +19,7 @@ const emit = defineEmits<{
         info: { values: Record<string, unknown>; errorFields: ValidateError[]; outOfDate: boolean }
     ): void;
     (e: 'reset', event: Event): void;
+    (e: 'valuesChange', changedValues: Record<string, unknown>, allValues: Record<string, unknown>): void;
 }>();
 
 const attrs = useAttrs();
@@ -48,7 +49,14 @@ watch(
             __bindCallbacks?: (c: typeof callbacksRef.value) => void;
         };
         if (typeof formAny.__bindCallbacks === 'function') {
-            formAny.__bindCallbacks(callbacksRef.value);
+            // 仅通过 emit 派发：Vue 的 emit 会同时命中 `@values-change` 与 `:on-values-change`，
+            // 再手动调用 props.onValuesChange 会导致回调触发两次。
+            formAny.__bindCallbacks({
+                ...val,
+                onValuesChange: (changed: Record<string, unknown>, all: Record<string, unknown>) => {
+                    emit('valuesChange', changed, all);
+                },
+            });
         }
     },
     { immediate: true, deep: true }
@@ -90,8 +98,8 @@ function handleSubmit(e: Event) {
     // 实际提交逻辑：通过校验后调用 onFinish，否则 onFinishFailed
     formInstance.validateFields().then(
         (values) => {
+            // 仅 emit：emit 会同时命中 `@finish` 与 `:on-finish`，避免回调重复触发
             emit('finish', values);
-            callbacksRef.value.onFinish?.(values as never);
         },
         (err: Error & { errorFields?: unknown[]; values?: unknown }) => {
             if (err && Array.isArray(err.errorFields)) {
@@ -101,7 +109,6 @@ function handleSubmit(e: Event) {
                     outOfDate: false,
                 };
                 emit('finishFailed', info);
-                callbacksRef.value.onFinishFailed?.(info as never);
             }
         }
     );
@@ -112,7 +119,6 @@ function handleReset(e: Event) {
     e.preventDefault();
     formInstance.resetFields();
     emit('reset', e);
-    props.onReset?.(e);
 }
 
 defineExpose({

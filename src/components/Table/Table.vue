@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="T extends TableRecord">
-import { computed, ref, useAttrs, type CSSProperties, type VNode } from 'vue';
+import { computed, ref, useAttrs, isVNode, type CSSProperties, type VNode } from 'vue';
 import Pagination from '../Pagination/Pagination.vue';
 import type { TableColumn, TableRecord, TableRowAttributes } from './types';
 
@@ -34,6 +34,10 @@ const props = withDefaults(
         scroll?: { x?: number | string; y?: number | string };
         /** 分页配置；传入对象开启客户端分页，false 或缺省不分页（total 由 Table 内部按数据量计算，无需传入） */
         pagination?: false | TablePaginationConfig;
+        /** 额外的 class（React 端为 className，作用于 <table> 元素） */
+        className?: string;
+        /** 透传到最外层滚动容器的内联样式 */
+        style?: CSSProperties;
     }>(),
     {
         columns: () => [] as TableColumn<T>[],
@@ -87,11 +91,13 @@ function renderCustom(col: TableColumn<T>, record: T, index: number): VNode | st
     return col.render(value, record, index);
 }
 
-const wrapperStyle = computed<CSSProperties>(() => ({
-    overflowX: props.scroll?.x ? 'auto' : undefined,
-    overflowY: props.scroll?.y ? 'auto' : undefined,
-    maxHeight: typeof props.scroll?.y === 'number' ? `${props.scroll.y}px` : props.scroll?.y,
-}));
+// React 端 scroll 仅用于切换 scrollable 类（overflow 由 CSS 控制），不单独按 x/y 设置 maxHeight
+const wrapperStyle = computed<CSSProperties>(() => ({ ...props.style }));
+
+// React 端：scroll 存在时 wrapper 加 scrollable 类（overflow-x/y 双向 auto，与 React table.module.less 对齐）
+const wrapperClass = computed(() =>
+    ['animal-table-wrapper', props.scroll ? 'animal-table-wrapper--scrollable' : ''].filter(Boolean)
+);
 
 // ---------- 客户端分页 ----------
 // pagination.current / pagination.pageSize 受控时优先，否则走内部状态（初值取 default*）
@@ -120,8 +126,11 @@ function handlePaginationChange(page: number, size: number) {
 </script>
 
 <template>
-    <div class="animal-table-wrapper" :style="wrapperStyle" v-bind="attrs">
-        <table class="animal-table" :class="{ 'animal-table--loading': loading }">
+    <div :class="wrapperClass" :style="wrapperStyle" v-bind="attrs">
+        <table
+            class="animal-table"
+            :class="{ 'animal-table--loading': loading, [props.className ?? '']: !!props.className }"
+        >
             <thead v-if="showHeader" class="animal-table__head">
                 <tr class="animal-table__head-row">
                     <th
@@ -153,7 +162,8 @@ function handlePaginationChange(page: number, size: number) {
                                         d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"
                                     />
                                 </svg>
-                                <span>{{ emptyText }}</span>
+                                <component :is="emptyText" v-if="isVNode(emptyText)" />
+                                <span v-else>{{ emptyText }}</span>
                             </slot>
                         </div>
                     </td>
@@ -226,6 +236,12 @@ function handlePaginationChange(page: number, size: number) {
     border-radius: 20px;
     padding: 6px;
     box-sizing: border-box;
+
+    // 对齐 React 端 scrollable：scroll 存在时双向可滚动（React 不按 x/y 单独控制）
+    &--scrollable {
+        overflow-x: auto;
+        overflow-y: auto;
+    }
 }
 
 .animal-table {
@@ -286,19 +302,10 @@ function handlePaginationChange(page: number, size: number) {
             background: rgba(248, 248, 240, 0.6);
         }
 
+        // hover 背景为纯色浅青，深棕文字无需换色即可读，避免字色切换闪烁（同 React）
         &:hover {
-            background-image: repeating-linear-gradient(
-                -45deg,
-                rgba(25, 200, 185, 0.6),
-                rgba(25, 200, 185, 0.6) 10px,
-                rgba(14, 196, 182, 0.6) 10px,
-                rgba(14, 196, 182, 0.6) 20px
-            );
-            background-size: 28.28px 28.28px;
-
-            .animal-table__cell {
-                color: #3d2e1e;
-            }
+            background-color: #d6f0ea;
+            border-radius: 30px;
         }
     }
 
@@ -317,7 +324,6 @@ function handlePaginationChange(page: number, size: number) {
             transparent 6px,
             transparent 12px
         );
-        transition: opacity 0.25s @motion-ease;
     }
 
     &__row:last-child::after {
@@ -356,6 +362,10 @@ function handlePaginationChange(page: number, size: number) {
     &__spinner {
         color: @primary-color;
         animation: animal-table-spin 1s linear infinite;
+
+        svg {
+            display: block;
+        }
 
         circle {
             animation: animal-table-dash 1.5s ease-in-out infinite;

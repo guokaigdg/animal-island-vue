@@ -37,7 +37,8 @@ function styleStr(): string | undefined {
     }
     // text (default)
     const w = props.width ?? '100%';
-    return `width:${typeof w === 'number' ? w + 'px' : w}`;
+    const h = props.heightValue ?? 16;
+    return `width:${typeof w === 'number' ? w + 'px' : w};height:${typeof h === 'number' ? h + 'px' : h}`;
 }
 
 const paragraphWidths = computed<(number | string)[]>(() => {

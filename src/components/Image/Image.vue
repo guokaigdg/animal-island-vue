@@ -16,6 +16,10 @@ interface Props {
     color?: ImageColor;
     /** 是否启用懒加载 */
     lazy?: boolean;
+    /** 相框类型：'default' 卡片大阴影+大圆角（默认），'bordered' 边框柔和阴影+小圆角，'stamp' 邮票齿孔边框 */
+    variant?: 'default' | 'bordered' | 'stamp';
+    /** 邮票类型（variant='stamp'）下的发行年份，如「2026」，印在右上角照片上；留空不显示 */
+    stampYear?: string;
     /** 点击图片弹出大图预览（默认开启） */
     preview?: boolean;
 }
@@ -29,6 +33,8 @@ const props = withDefaults(defineProps<Props>(), {
     height: undefined,
     color: 'white',
     lazy: false,
+    variant: 'default',
+    stampYear: undefined,
     preview: true,
 });
 
@@ -100,16 +106,20 @@ function closePreview() {
     previewOpen.value = false;
 }
 
-// 相框类名：failed → error；否则按 loaded / preview 叠加；用户传入的 class 一并合并
+// 相框类名：failed → error；否则按 loaded / preview / variant 叠加；用户传入的 class 一并合并
 const frameClasses = computed<(string | false | undefined)[]>(() => {
     const cls: (string | false | undefined)[] = ['animal-image'];
     if (failed.value) {
         cls.push('animal-image--error');
+        // 错误占位仍保留调色板底色（与 React 一致：color 类在 error 态也生效）
+        if (props.color !== 'white') cls.push(`animal-image--${props.color}`);
     } else {
         if (loaded.value) cls.push('animal-image--loaded');
         if (props.preview) cls.push('animal-image--preview');
+        // 非默认相框叠加 variant 类（default 用基础样式，避免与 color 同名类冲突）
+        if (props.variant !== 'default') cls.push(`animal-image--variant-${props.variant}`);
+        if (props.color !== 'white') cls.push(`animal-image--${props.color}`);
     }
-    if (props.color !== 'white') cls.push(`animal-image--${props.color}`);
     if (attrs.class) cls.push(attrs.class as string);
     return cls;
 });
@@ -170,6 +180,7 @@ const errorAriaLabel = computed(() => props.alt || '图片加载失败');
             @load="handleLoad"
             @error="handleError"
         />
+        <span v-if="variant === 'stamp' && stampYear" class="animal-image__stamp-year">{{ stampYear }}</span>
     </button>
     <!-- 默认：相框为 span -->
     <span v-else :class="frameClasses" :style="frameStyles">
@@ -181,7 +192,9 @@ const errorAriaLabel = computed(() => props.alt || '图片加载失败');
             @load="handleLoad"
             @error="handleError"
         />
+        <span v-if="variant === 'stamp' && stampYear" class="animal-image__stamp-year">{{ stampYear }}</span>
     </span>
+
     <!-- 大图预览弹层 -->
     <Teleport v-if="preview" to="body">
         <div v-if="previewOpen" class="animal-image__mask" @click="closePreview">
@@ -436,5 +449,101 @@ const errorAriaLabel = computed(() => props.alt || '图片加载失败');
         opacity: 1;
         transform: scale(1);
     }
+}
+
+// ---------- Frame variant（相框类型） ----------
+// default：无边框、无内边距、图片撑满，卡片大阴影 + 12px 大圆角
+.animal-image--variant-default {
+    border: none;
+    padding: 0;
+    background: transparent;
+    border-radius: 12px;
+    box-shadow:
+        0 13px 27px -5px rgba(50, 50, 93, 0.25),
+        0 8px 16px -8px rgba(0, 0, 0, 0.3),
+        0 -6px 16px -6px rgba(0, 0, 0, 0.03);
+}
+
+// bordered：边框 + 柔和阴影 + 小圆角（color 调色板底色在边框内生效）
+.animal-image--variant-bordered {
+    border: 1px solid rgba(114, 93, 66, 0.25);
+    padding: 8px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.06);
+}
+
+// stamp：邮票变体。奶油底纸 + 四周齿孔（mask-composite 交集）。
+.animal-image--variant-stamp {
+    border: none;
+    padding: 14px; // 齿孔内侧照片内缩
+    background: #fbfaf5; // 邮票底纸暖白
+    border-radius: 0;
+    box-shadow: none;
+
+    -webkit-mask-image:
+        radial-gradient(circle 5px at 50% 0, transparent 96%, #000),
+        radial-gradient(circle 5px at 50% 100%, transparent 96%, #000),
+        radial-gradient(circle 5px at 0 50%, transparent 96%, #000),
+        radial-gradient(circle 5px at 100% 50%, transparent 96%, #000);
+    -webkit-mask-position:
+        50% 0,
+        50% 100%,
+        0 50%,
+        100% 50%;
+    -webkit-mask-size:
+        16px 100%,
+        16px 100%,
+        100% 16px,
+        100% 16px;
+    -webkit-mask-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+    -webkit-mask-composite: source-in, source-in, source-in, source-in;
+    mask-image:
+        radial-gradient(circle 5px at 50% 0, transparent 96%, #000),
+        radial-gradient(circle 5px at 50% 100%, transparent 96%, #000),
+        radial-gradient(circle 5px at 0 50%, transparent 96%, #000),
+        radial-gradient(circle 5px at 100% 50%, transparent 96%, #000);
+    mask-position:
+        50% 0,
+        50% 100%,
+        0 50%,
+        100% 50%;
+    mask-size:
+        16px 100%,
+        16px 100%,
+        100% 16px,
+        100% 16px;
+    mask-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+    mask-composite: intersect, intersect, intersect, intersect;
+
+    // 阴影用 filter 的 drop-shadow（mask 会裁剪 box-shadow）
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.35)) drop-shadow(0 16px 26px rgba(0, 0, 0, 0.45));
+
+    .animal-image__img {
+        filter: saturate(0.93) contrast(1.03);
+    }
+}
+
+.animal-image--variant-stamp::after {
+    content: '';
+    position: absolute;
+    inset: 14px;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.13;
+    background-image: radial-gradient(circle, rgba(18, 18, 28, 0.6) 0.6px, transparent 0.75px);
+    background-size: 4px 4px;
+}
+
+// 邮票照片上的年份：右上角，白字 + 暗阴影
+.animal-image__stamp-year {
+    position: absolute;
+    right: 19px;
+    top: 18px;
+    z-index: 2;
+    font-size: 8px;
+    letter-spacing: 0.18em;
+    color: rgba(255, 255, 255, 0.88);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55);
+    pointer-events: none;
 }
 </style>

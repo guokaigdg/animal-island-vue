@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import type { InputSize } from './types';
 
 interface Props {
+    /** 输入值（受控，对应 v-model） */
     modelValue?: string;
+    /** 默认输入值（非受控初始值） */
+    defaultValue?: string;
     size?: InputSize;
-    prefix?: string;
-    suffix?: string;
+    prefix?: string | number;
+    suffix?: string | number;
     allowClear?: boolean;
     status?: 'error' | 'warning';
     shadow?: boolean;
@@ -14,12 +17,12 @@ interface Props {
     placeholder?: string;
     type?: string;
     readonly?: boolean;
-    maxlength?: number;
+    maxLength?: number;
     clearAriaLabel?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-    modelValue: '',
+    defaultValue: '',
     size: 'middle',
     prefix: undefined,
     suffix: undefined,
@@ -33,8 +36,10 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{
     (e: 'update:modelValue', value: string): void;
-    (e: 'change', value: string, event: Event): void;
+    (e: 'change', value: string, event?: Event): void;
     (e: 'clear'): void;
+    (e: 'focus', event: FocusEvent): void;
+    (e: 'blur', event: FocusEvent): void;
 }>();
 
 defineSlots<{
@@ -42,17 +47,44 @@ defineSlots<{
     suffix?: () => unknown;
 }>();
 
-const showClear = computed(() => props.allowClear && !!props.modelValue && !props.disabled);
+// 受控/非受控：modelValue 存在即为受控，否则使用内部 innerValue（初始来自 defaultValue）
+const isControlled = computed(() => props.modelValue !== undefined);
+const innerValue = ref(props.defaultValue ?? '');
+const currentValue = computed(() => (isControlled.value ? props.modelValue! : innerValue.value));
+const showClear = computed(() => props.allowClear && !!currentValue.value && !props.disabled);
+const inputRef = ref<HTMLInputElement | null>(null);
 
 function handleInput(event: Event) {
     const value = (event.target as HTMLInputElement).value;
+    if (!isControlled.value) innerValue.value = value;
     emit('update:modelValue', value);
     emit('change', value, event);
 }
 
+function handleFocus(event: FocusEvent) {
+    emit('focus', event);
+}
+
+function handleBlur(event: FocusEvent) {
+    emit('blur', event);
+}
+
+// 复刻 React：onClear 后派发真实 input 事件，从而触发 change（onChange）与受控值更新
 function handleClear() {
-    emit('update:modelValue', '');
     emit('clear');
+    const inputEl = inputRef.value;
+    if (inputEl) {
+        const nativeValueSetter = Object.getOwnPropertyDescriptor(
+            window.HTMLInputElement.prototype,
+            'value'
+        )?.set;
+        nativeValueSetter?.call(inputEl, '');
+        inputEl.dispatchEvent(new Event('input', { bubbles: true }));
+    } else {
+        if (!isControlled.value) innerValue.value = '';
+        emit('update:modelValue', '');
+        emit('change', '');
+    }
 }
 </script>
 
@@ -69,14 +101,18 @@ function handleClear() {
             <slot name="prefix">{{ prefix }}</slot>
         </span>
         <input
+            ref="inputRef"
             class="animal-input__inner"
             :type="type"
-            :value="modelValue"
+            :value="currentValue"
             :disabled="disabled"
             :readonly="readonly"
             :placeholder="placeholder"
-            :maxlength="maxlength"
+            :maxLength="maxLength"
+            :aria-invalid="status === 'error' ? 'true' : undefined"
             @input="handleInput"
+            @focus="handleFocus"
+            @blur="handleBlur"
         />
         <button
             v-if="showClear"

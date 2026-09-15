@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { useAttrs } from 'vue';
+import { computed, ref, useAttrs } from 'vue';
 import type { CheckboxOption, CheckboxSize, CheckboxValue } from './types';
 
 const attrs = useAttrs();
 
 interface Props {
+    /** 选中的值列表（受控，对应 v-model） */
     modelValue?: CheckboxValue[];
+    /** 默认选中的值列表（非受控初始值） */
+    defaultValue?: CheckboxValue[];
     options: CheckboxOption[];
     size?: CheckboxSize;
     disabled?: boolean;
@@ -13,10 +16,10 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-    modelValue: () => [],
     size: 'middle',
     disabled: false,
     direction: 'horizontal',
+    defaultValue: () => [],
 });
 
 const emit = defineEmits<{
@@ -24,15 +27,20 @@ const emit = defineEmits<{
     (e: 'change', value: CheckboxValue[]): void;
 }>();
 
+const isControlled = computed(() => props.modelValue !== undefined);
+const innerValue = ref<CheckboxValue[]>([...props.defaultValue]);
+const checkedValues = computed(() => (isControlled.value ? props.modelValue! : innerValue.value));
+
 function isChecked(value: CheckboxValue) {
-    return props.modelValue.includes(value);
+    return checkedValues.value.includes(value);
 }
 
 function toggle(option: CheckboxOption) {
     if (props.disabled || option.disabled) return;
     const next = isChecked(option.value)
-        ? props.modelValue.filter((v) => v !== option.value)
-        : [...props.modelValue, option.value];
+        ? checkedValues.value.filter((v) => v !== option.value)
+        : [...checkedValues.value, option.value];
+    if (!isControlled.value) innerValue.value = next;
     emit('update:modelValue', next);
     emit('change', next);
 }

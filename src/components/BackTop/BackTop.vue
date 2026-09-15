@@ -5,7 +5,6 @@ import backtopIcon from '../../assets/img/icons/backtop.svg';
 interface Props {
     target?: () => HTMLElement | Window;
     visibilityHeight?: number;
-    onClick?: (e: MouseEvent) => void;
     className?: string;
     style?: Record<string, string | number>;
     duration?: number;
@@ -71,6 +70,8 @@ const scrollToTop = (e: MouseEvent): void => {
     };
 
     requestAnimationFrame(animate);
+    // 仅通过 emit 派发：Vue 的 emit 会同时命中 `@click` 与 `:onClick`，
+    // 再手动调用 props.onClick 会造成回调触发两次。
     emit('click', e);
 };
 

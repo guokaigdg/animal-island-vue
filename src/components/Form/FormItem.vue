@@ -180,6 +180,18 @@ function buildChildProps(originalProps: Record<string, unknown> | null): Record<
         };
     }
 
+    // a11y 契约：把 child id 与 label.htmlFor 自动配对（用户已显式传 id 时不覆盖），
+    // 错误态下通过 aria-errormessage 把错误文案暴露给屏幕阅读器（与 React 端对齐）。
+    if (fieldKey.value && originalProps) {
+        if (originalProps.id === undefined) {
+            childProps.id = fieldKey.value;
+        }
+        const helpId = `${fieldKey.value}_help`;
+        if (originalProps['aria-errormessage'] === undefined) {
+            childProps['aria-errormessage'] = computedStatus.value === 'error' ? helpId : undefined;
+        }
+    }
+
     if (ctxDisabled && childProps.disabled === undefined) {
         childProps.disabled = true;
     }
@@ -240,11 +252,13 @@ function renderChildren(): VNode | VNode[] | null {
         <component :is="renderChildren()" />
         <div
             v-if="showHelp !== undefined"
+            :id="fieldKey ? `${fieldKey}_help` : undefined"
             class="island-form-item__explain"
             :class="{ 'island-form-item__explain--error': computedStatus === 'error' }"
         >
             <span v-if="hasFeedback && computedStatus === 'error'" class="island-form-item__feedback-icon">✕</span>
-            {{ showHelp }}
+            <component :is="showHelp" v-if="isVNode(showHelp)" />
+            <template v-else>{{ showHelp }}</template>
         </div>
     </template>
 
@@ -274,7 +288,8 @@ function renderChildren(): VNode | VNode[] | null {
             }"
             :style="{ ...labelColStyle, textAlign: labelAlign }"
         >
-            {{ label }}
+            <component :is="label" v-if="isVNode(label)" />
+            <template v-else>{{ label }}</template>
         </label>
 
         <div class="island-form-item__control" :style="wrapperColStyle">
@@ -283,11 +298,13 @@ function renderChildren(): VNode | VNode[] | null {
             </div>
             <div
                 v-if="showHelp !== undefined"
+                :id="fieldKey ? `${fieldKey}_help` : undefined"
                 class="island-form-item__explain"
                 :class="{ 'island-form-item__explain--error': computedStatus === 'error' }"
             >
                 <span v-if="hasFeedback && computedStatus === 'error'" class="island-form-item__feedback-icon">✕</span>
-                {{ showHelp }}
+                <component :is="showHelp" v-if="isVNode(showHelp)" />
+                <template v-else>{{ showHelp }}</template>
             </div>
         </div>
     </div>

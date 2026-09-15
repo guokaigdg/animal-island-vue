@@ -7,11 +7,13 @@ const attrs = useAttrs();
 interface Props {
     size?: TitleSize;
     color?: TitleColor;
+    variant?: 'ribbon' | 'plain';
 }
 
 const props = withDefaults(defineProps<Props>(), {
     size: 'middle',
     color: 'default',
+    variant: 'ribbon',
 });
 
 const SIZE_MAP: Record<TitleSize, number> = {
@@ -24,8 +26,9 @@ const fontSize = computed(() => `${SIZE_MAP[props.size]}px`);
 </script>
 
 <template>
-    <span class="animal-title" v-bind="attrs">
+    <span class="animal-title" :class="`animal-title--${variant}`" v-bind="attrs">
         <span
+            v-if="variant === 'ribbon'"
             class="animal-title__ribbon"
             :class="color !== 'default' ? `animal-title__ribbon--${color}` : ''"
             :style="{ fontSize }"
@@ -39,6 +42,9 @@ const fontSize = computed(() => `${SIZE_MAP[props.size]}px`);
                 <slot />
             </span>
         </span>
+        <span v-else class="animal-title__plain" :style="{ fontSize }">
+            <slot />
+        </span>
     </span>
 </template>
 
@@ -51,6 +57,11 @@ const fontSize = computed(() => `${SIZE_MAP[props.size]}px`);
     font-weight: 800;
     line-height: 1;
     user-select: none;
+}
+
+.animal-title--plain .animal-title__plain {
+    font-weight: 700;
+    color: @text-color;
 }
 
 .animal-title__ribbon {

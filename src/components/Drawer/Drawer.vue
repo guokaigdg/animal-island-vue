@@ -13,10 +13,12 @@ const props = withDefaults(defineProps<DrawerProps>(), {
 const emit = defineEmits<{ (e: 'close'): void }>();
 defineSlots<{
     default?: () => unknown;
+    title?: () => unknown;
     footer?: () => unknown;
 }>();
 const slots = useSlots() as {
     default?: () => unknown;
+    title?: () => unknown;
     footer?: () => unknown;
 };
 
@@ -269,9 +271,11 @@ const titleId = `${idBase}-title`;
                     tabindex="-1"
                     @click="handleContentClick"
                 >
-                    <div v-if="title" class="animal-drawer__header">
+                    <div v-if="title || $slots.title" class="animal-drawer__header">
                         <div :id="titleId" class="animal-drawer__title">
-                            {{ title }}
+                            <slot name="title">
+                                {{ title }}
+                            </slot>
                         </div>
                         <button type="button" class="animal-drawer__close" aria-label="关闭" @click="emit('close')">
                             ×

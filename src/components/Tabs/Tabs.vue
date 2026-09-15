@@ -9,6 +9,8 @@ interface Props {
     items: TabItem[];
     /** 当前激活标签 (v-model) — 受控 */
     modelValue?: string;
+    /** 当前激活标签 — 受控，对应 React 同名属性（优先级高于 modelValue） */
+    activeKey?: string;
     /** 默认激活标签（非受控） */
     defaultActiveKey?: string;
     /** 是否启用叶子摆动动画 */
@@ -34,7 +36,13 @@ defineSlots<Record<string, (scope: { item: TabItem }) => unknown>>();
 // 内部 state，仅在非受控（未传 modelValue）时使用
 const internalKey = ref<string>(props.defaultActiveKey ?? props.items[0]?.key ?? '');
 
-const activeKey = computed(() => (props.modelValue !== undefined ? props.modelValue : internalKey.value));
+const activeKey = computed(() =>
+    props.activeKey !== undefined
+        ? props.activeKey
+        : props.modelValue !== undefined
+          ? props.modelValue
+          : internalKey.value
+);
 const activeItem = computed(() => props.items.find((i) => i.key === activeKey.value));
 
 // ARIA 关联 id
@@ -77,7 +85,7 @@ function handleKeyDown(e: KeyboardEvent) {
 watch(
     () => props.items,
     (list) => {
-        if (props.modelValue !== undefined) return;
+        if (props.activeKey !== undefined || props.modelValue !== undefined) return;
         if (!list.find((i) => i.key === internalKey.value)) {
             internalKey.value = list[0]?.key ?? '';
         }
@@ -85,7 +93,7 @@ watch(
 );
 
 function handleClick(key: string) {
-    if (props.modelValue === undefined) {
+    if (props.activeKey === undefined && props.modelValue === undefined) {
         internalKey.value = key;
     }
     emit('update:modelValue', key);
@@ -139,7 +147,8 @@ function handleClick(key: string) {
             tabindex="0"
         >
             <div class="animal-tabs__inner">
-                <slot v-if="activeItem" :name="activeItem.key" :item="activeItem" />
+                <component :is="activeItem.children" v-if="activeItem?.children" />
+                <slot v-else-if="activeItem" :name="activeItem.key" :item="activeItem" />
             </div>
         </div>
     </div>

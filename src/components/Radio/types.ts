@@ -3,7 +3,7 @@ export type RadioValue = string | number;
 
 export interface RadioOption {
     /** 选项标签 */
-    label: string;
+    label: string | number;
     /** 选项值 */
     value: RadioValue;
     /** 是否禁用该选项 */
@@ -13,6 +13,8 @@ export interface RadioOption {
 export interface RadioProps {
     /** 受控选中值（v-model） */
     modelValue?: RadioValue;
+    /** 默认选中的值（非受控初始值） */
+    defaultValue?: RadioValue;
     /** 选项列表 */
     options: RadioOption[];
     /** 尺寸 */

@@ -5,7 +5,10 @@ import type { RadioOption, RadioSize, RadioValue } from './types';
 const attrs = useAttrs();
 
 interface Props {
+    /** 选中的值（受控，对应 v-model） */
     modelValue?: RadioValue;
+    /** 默认选中的值（非受控初始值） */
+    defaultValue?: RadioValue;
     options: RadioOption[];
     size?: RadioSize;
     disabled?: boolean;
@@ -13,7 +16,6 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-    modelValue: undefined,
     size: 'middle',
     disabled: false,
     direction: 'horizontal',
@@ -30,21 +32,20 @@ const groupRef = ref<HTMLDivElement | null>(null);
 const idBase = `animal-radio-${Math.random().toString(36).slice(2, 10)}`;
 const inputRefs = ref<Array<HTMLInputElement | null>>([]);
 
+// 受控/非受控：modelValue 存在即为受控，否则使用内部 innerValue（初始来自 defaultValue）
+const isControlled = computed(() => props.modelValue !== undefined);
+const innerValue = ref<RadioValue | undefined>(props.defaultValue);
+const checkedValue = computed(() => (isControlled.value ? props.modelValue : innerValue.value));
+
 // 当前聚焦的索引（用于 roving tabindex）
 const focusedIndex = ref<number>(
-    Math.max(
-        0,
-        props.options.findIndex((o) => o.value === props.modelValue)
-    )
+    Math.max(0, props.options.findIndex((o) => o.value === checkedValue.value))
 );
 
-watch(
-    () => props.modelValue,
-    (val) => {
-        const idx = props.options.findIndex((o) => o.value === val);
-        if (idx >= 0) focusedIndex.value = idx;
-    }
-);
+watch(checkedValue, (val) => {
+    const idx = props.options.findIndex((o) => o.value === val);
+    if (idx >= 0) focusedIndex.value = idx;
+});
 
 const enabledIndices = computed(() =>
     props.options
@@ -56,11 +57,12 @@ const enabledIndices = computed(() =>
 const currentEnabledPos = computed(() => enabledIndices.value.indexOf(focusedIndex.value));
 
 function isChecked(value: RadioValue) {
-    return props.modelValue === value;
+    return checkedValue.value === value;
 }
 
 function select(option: RadioOption) {
     if (props.disabled || option.disabled) return;
+    if (!isControlled.value) innerValue.value = option.value;
     emit('update:modelValue', option.value);
     emit('change', option.value);
 }

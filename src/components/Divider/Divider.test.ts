@@ -10,8 +10,8 @@ describe('Divider', () => {
     });
 
     it('支持自定义 type', () => {
-        const wrapper = mount(Divider, { props: { type: 'dashed-teal' } });
-        expect(wrapper.classes()).toContain('animal-divider--dashed-teal');
+        const wrapper = mount(Divider, { props: { type: 'dashed-brown' } });
+        expect(wrapper.classes()).toContain('animal-divider--dashed-brown');
     });
 
     it('应用 className 与 style', () => {

@@ -1,39 +1,72 @@
 <script setup lang="ts">
-interface Props {
-    seamless?: boolean;
-}
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
+import { Icon } from '../Icon';
+import { ICON_LIST } from '../Icon/src/_svg-data';
+import type { FooterProps } from './types';
 
-withDefaults(defineProps<Props>(), { seamless: false });
+const props = withDefaults(defineProps<FooterProps>(), {
+    size: 24,
+});
+
+// All 101 icon names
+const FULL_NAMES: string[] = ICON_LIST.map((item) => item.name);
+
+const containerRef = ref<HTMLElement | null>(null);
+const cycles = ref(1);
+let resizeObserver: ResizeObserver | null = null;
+
+const iconNames = props.name ? [props.name] : FULL_NAMES;
+const cycleWidth = iconNames.length * props.size;
+
+const updateCycles = () => {
+    const el = containerRef.value;
+    if (!el) return;
+    cycles.value = Math.max(1, Math.ceil(el.clientWidth / cycleWidth) + 1);
+};
+
+onMounted(() => {
+    updateCycles();
+    if (typeof ResizeObserver !== 'undefined' && containerRef.value) {
+        resizeObserver = new ResizeObserver(updateCycles);
+        resizeObserver.observe(containerRef.value);
+    }
+});
+
+onBeforeUnmount(() => {
+    if (resizeObserver) {
+        resizeObserver.disconnect();
+        resizeObserver = null;
+    }
+});
+
+watch(
+    () => [props.size, props.name],
+    () => {
+        updateCycles();
+    }
+);
 </script>
 
 <template>
-    <div
-        class="animal-footer"
-        :class="{ 'animal-footer--seamless': seamless }"
-        aria-hidden="true"
-    >
-        🎄🎄🎄🎄🎄🎄🎄🎄🎄🎄🎄🎄🎄🎄
+    <div ref="containerRef" class="animal-footer">
+        <div v-for="c in cycles" :key="c" class="animal-footer__cycle" :aria-hidden="c > 1 ? true : undefined">
+            <Icon v-for="iconName in iconNames" :key="iconName" :name="iconName as never" :size="props.size" />
+        </div>
     </div>
 </template>
 
 <style lang="less" scoped>
 .animal-footer {
     width: 100%;
-    height: 80px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: 28px;
-    line-height: 1;
-    letter-spacing: 12px;
-    white-space: nowrap;
     overflow: hidden;
     user-select: none;
 
-    &--seamless {
-        justify-content: space-between;
-        padding: 0 8px;
-        letter-spacing: 0;
+    &__cycle {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
     }
 }
 </style>

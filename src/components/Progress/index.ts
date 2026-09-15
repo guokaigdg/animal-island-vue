@@ -1,2 +1,2 @@
 export { default as Progress } from './Progress.vue';
-export type { ProgressProps, ProgressSize, ProgressInfoPosition } from './types';
+export type { ProgressProps, ProgressSize, ProgressVariant, ProgressInfoPosition } from './types';

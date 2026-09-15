@@ -19,6 +19,7 @@ const props = withDefaults(defineProps<TimePickerProps>(), {
 const emit = defineEmits<{
     (e: 'update:modelValue', value: string | null): void;
     (e: 'change', value: string | null): void;
+    (e: 'openChange', open: boolean): void;
     (e: 'update:open', open: boolean): void;
 }>();
 
@@ -72,6 +73,7 @@ const open = computed(() => (isOpenControlled.value ? (props.open ?? false) : in
 const setOpen = (next: boolean) => {
     if (!isOpenControlled.value) innerOpen.value = next;
     emit('update:open', next);
+    emit('openChange', next);
 };
 
 // ---------- 面板状态 ----------

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, onUnmounted, defineComponent, type VNode } from 'vue';
+import { ref, computed, watch, onUnmounted, defineComponent, isVNode, type VNode } from 'vue';
 import type { NotificationItem } from './types';
 
 /** 渲染 VNode 的函数式组件（用于命令式 API 传入的自定义内容） */
@@ -71,6 +71,10 @@ function handleKeydown(e: KeyboardEvent) {
         props.item.onClick();
     }
 }
+
+// message / description 支持 VNode（对齐 React 的 ReactNode）
+const isMessageVNode = computed(() => isVNode(props.item.message));
+const isDescriptionVNode = computed(() => isVNode(props.item.description));
 </script>
 
 <template>
@@ -140,10 +144,12 @@ function handleKeydown(e: KeyboardEvent) {
         </div>
         <div class="animal-notification__body">
             <div class="animal-notification__title">
-                {{ item.message }}
+                <VNodeRenderer v-if="isMessageVNode" :node="(item.message as VNode)" />
+                <template v-else>{{ item.message }}</template>
             </div>
             <div v-if="item.description != null" class="animal-notification__description">
-                {{ item.description }}
+                <VNodeRenderer v-if="isDescriptionVNode" :node="(item.description as VNode)" />
+                <template v-else>{{ item.description }}</template>
             </div>
         </div>
         <div v-if="item.btn" class="animal-notification__btn-slot">

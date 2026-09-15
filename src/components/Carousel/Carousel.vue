@@ -5,6 +5,8 @@ import { Fragment, type VNode } from 'vue';
 interface Props {
     /** 当前索引（v-model）— 受控 */
     modelValue?: number;
+    /** 当前索引 — 受控，对应 React 同名属性（优先级高于 modelValue） */
+    activeIndex?: number;
     /** 非受控模式的初始索引 */
     defaultActiveIndex?: number;
     /** 是否自动播放 */
@@ -68,7 +70,9 @@ const hoverPaused = ref(false);
 const focusPaused = ref(false);
 const rotationPaused = ref(false);
 
-const currentIndex = computed(() => clamp(props.modelValue ?? internalIndex.value, lastIndex.value));
+const currentIndex = computed(() =>
+    clamp(props.activeIndex ?? props.modelValue ?? internalIndex.value, lastIndex.value)
+);
 const effectivePaused = computed(() => hoverPaused.value || focusPaused.value || rotationPaused.value);
 const hasControls = computed(() => slides.value.length > 1);
 
@@ -79,7 +83,7 @@ function goTo(nextIndex: number) {
     if (props.loop) normalized = ((nextIndex % len) + len) % len;
     else normalized = clamp(nextIndex, lastIndex.value);
     if (normalized === currentIndex.value) return;
-    if (props.modelValue === undefined) {
+    if (props.activeIndex === undefined && props.modelValue === undefined) {
         internalIndex.value = normalized;
     }
     emit('update:modelValue', normalized);
@@ -109,6 +113,8 @@ function toggleRotation() {
 
 function handleKeyDown(e: KeyboardEvent) {
     const { key } = e;
+    // 与 React 对齐：父级可通过 onKeydown 调用 preventDefault 拦截导航
+    if (e.defaultPrevented) return;
     if (key !== 'ArrowLeft' && key !== 'ArrowRight' && key !== 'Home' && key !== 'End') return;
     e.preventDefault();
     if (key === 'ArrowLeft') goTo(currentIndex.value - 1);

@@ -90,3 +90,5 @@ notificationApi.destroy = destroy;
 
 export { notificationApi as Notification };
 export const NOTIFICATION_DEFAULT_DURATION = DEFAULT_DURATION;
+// 与 React 一致，暴露底层命令式 API（open 用于同 key 更新，destroy 用于关闭）
+export { open as notificationOpen, destroy as notificationDestroy };

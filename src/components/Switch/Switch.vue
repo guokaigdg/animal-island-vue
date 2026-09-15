@@ -5,15 +5,29 @@ import type { SwitchSize } from './types';
 const attrs = useAttrs();
 
 interface Props {
+    /** 是否选中（受控，对应 v-model） */
     modelValue?: boolean;
+    /** 是否选中（受控，React `checked` prop 的别名） */
+    checked?: boolean;
+    /** 默认是否选中（非受控初始值） */
     defaultChecked?: boolean;
+    /** 尺寸 */
     size?: SwitchSize;
+    /** 禁用 */
     disabled?: boolean;
+    /** 加载状态 */
     loading?: boolean;
+    /** 选中时文案 */
+    checkedChildren?: string | number;
+    /** 未选中时文案 */
+    unCheckedChildren?: string | number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
+    // 显式给出 undefined 默认值，关闭 Vue 对 Boolean 类型的「缺省即 false」转换，
+    // 否则未传 checked 时会被转成 false，导致非受控/受控判断永远走受控分支。
     modelValue: undefined,
+    checked: undefined,
     defaultChecked: false,
     size: 'default',
     disabled: false,
@@ -31,8 +45,13 @@ defineSlots<{
 }>();
 
 const innerChecked = ref(props.defaultChecked);
-const isControlled = computed(() => props.modelValue !== undefined);
-const isChecked = computed(() => (isControlled.value ? !!props.modelValue : innerChecked.value));
+// 受控判断：React 的 `checked` 与 Vue 的 `modelValue` 均可作为受控值，checked 优先
+const isControlled = computed(() => props.checked !== undefined || props.modelValue !== undefined);
+const isChecked = computed(() => {
+    if (props.checked !== undefined) return props.checked;
+    if (props.modelValue !== undefined) return props.modelValue;
+    return innerChecked.value;
+});
 
 function handleClick() {
     if (props.disabled || props.loading) return;
@@ -73,8 +92,14 @@ function handleKeyDown(e: KeyboardEvent) {
             <span v-if="loading" class="animal-switch__spinner" />
         </span>
         <span class="animal-switch__inner">
-            <slot v-if="isChecked" name="checked" />
-            <slot v-else name="unchecked" />
+            <template v-if="isChecked">
+                <template v-if="checkedChildren !== undefined">{{ checkedChildren }}</template>
+                <slot v-else name="checked" />
+            </template>
+            <template v-else>
+                <template v-if="unCheckedChildren !== undefined">{{ unCheckedChildren }}</template>
+                <slot v-else name="unchecked" />
+            </template>
         </span>
     </button>
 </template>

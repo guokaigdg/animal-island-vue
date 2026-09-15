@@ -8,7 +8,9 @@ const INSIDE_MIN_FILL = 18;
 const props = withDefaults(defineProps<ProgressProps>(), {
     size: 'middle',
     showInfo: true,
-    infoPosition: 'inside',
+    variant: 'sweet-corner',
+    // React Progress 固定将百分比置于进度条右侧；Vue 保留 infoPosition 作为扩展能力
+    infoPosition: 'right',
     duration: 0.6,
 });
 
@@ -33,16 +35,20 @@ const fillStyle = computed(() => ({
 }));
 
 const ariaValueNow = computed(() => Math.round(safePercent.value));
+
+const rootClass = computed(() => ['animal-progress', `animal-progress--${props.variant}`]);
 </script>
 
 <template>
     <div
-        class="animal-progress"
+        :class="rootClass"
         role="progressbar"
         aria-valuemin="0"
         aria-valuemax="100"
         :aria-valuenow="ariaValueNow"
         :aria-valuetext="renderedInfo"
+        :aria-label="props['aria-label']"
+        :aria-labelledby="props['aria-labelledby']"
     >
         <div
             v-if="infoPosition === 'top'"
