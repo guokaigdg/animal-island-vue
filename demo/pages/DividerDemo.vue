@@ -32,14 +32,14 @@ import { Divider } from 'animal-island-vue';
         <div :style="sectionTitleStyle">Divider <span :style="tagStyle">4 types</span></div>
         <div :style="labelStyle">dashed-brown</div>
         <Divider type="dashed-brown" />
-        <div :style="labelStyle">dashed-teal</div>
-        <Divider type="dashed-teal" />
-        <div :style="labelStyle">dashed-white</div>
+        <div :style="labelStyle">thin</div>
+        <Divider type="thin" />
+        <div :style="labelStyle">hairline</div>
         <div :style="{ background: '#333', padding: '10px' }">
-            <Divider type="dashed-white" />
+            <Divider type="hairline" />
         </div>
-        <div :style="labelStyle">dashed-yellow</div>
-        <Divider type="dashed-yellow" />
+        <div :style="labelStyle">wave-yellow</div>
+        <Divider type="wave-yellow" />
 
         <CodeBlock :code="code" />
         <ApiTable :rows="DIVIDER_API" />

@@ -115,6 +115,14 @@ export const PAGE_INFO: Record<string, { title: string; desc: string }> = {
         title: 'Countdown 倒计时',
         desc: '倒计时组件 — 里程表式单向滚动数字、DD/HH/mm/ss 格式模板、三种尺寸、default/island 风格',
     },
+    time: {
+        title: 'Time 实时时钟',
+        desc: 'HUD 实时时钟 — 星期 / 月日 / HH:MM 展示，冒号每秒闪烁，attrs 透传自定义样式',
+    },
+    loading: {
+        title: 'Loading 加载',
+        desc: '全屏落雪加载指示器 — 50 片随机雪花旋转飘落 + 暗角夜空，中央提示文字、delay 防闪烁，结束时渐变消失',
+    },
     pagination: {
         title: 'Pagination 分页',
         desc: '分页组件 — 页码/条数受控与非受控、每页条数切换、快速跳转、orange/teal 双配色，可内置于 Table',

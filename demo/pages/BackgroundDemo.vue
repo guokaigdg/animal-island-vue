@@ -46,8 +46,8 @@ import { Background } from 'animal-island-vue';
         <div :style="sectionTitleStyle">
             Background <span :style="tagStyle">背景</span> <span :style="tagStyle">2 types · zero image assets</span>
         </div>
-        <div :style="labelStyle">dots（波点，默认）</div>
-        <Background type="dots" :style="previewBox"> 波点背景 </Background>
+        <div :style="labelStyle">default（波点，默认）</div>
+        <Background type="default" :style="previewBox"> 波点背景 </Background>
         <div :style="labelStyle">sprinkles（彩色针糖）</div>
         <Background type="sprinkles" :style="previewBox"> 彩色针糖背景 </Background>
         <div :style="labelStyle">承载内容（children 渲染在图案之上）</div>

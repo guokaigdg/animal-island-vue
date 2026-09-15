@@ -32,6 +32,8 @@ import DatePickerDemo from './pages/DatePickerDemo.vue';
 import TimePickerDemo from './pages/TimePickerDemo.vue';
 import CarouselDemo from './pages/CarouselDemo.vue';
 import CountdownDemo from './pages/CountdownDemo.vue';
+import TimeDemo from './pages/TimeDemo.vue';
+import LoadingDemo from './pages/LoadingDemo.vue';
 import PaginationDemo from './pages/PaginationDemo.vue';
 import CursorDemo from './pages/CursorDemo.vue';
 import BackgroundDemo from './pages/BackgroundDemo.vue';
@@ -68,6 +70,8 @@ const PAGES: Record<string, unknown> = {
     timepicker: TimePickerDemo,
     carousel: CarouselDemo,
     countdown: CountdownDemo,
+    time: TimeDemo,
+    loading: LoadingDemo,
     pagination: PaginationDemo,
     cursor: CursorDemo,
     background: BackgroundDemo,
