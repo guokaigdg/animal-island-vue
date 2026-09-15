@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2026-09-16
+
+### Added
+
+- New `Icon` component library with 100+ inline SVG icons (original
+  illustrations, no external assets) and a unified `Icon.vue`
+  dispatcher backed by `_svg-data.ts`.
+- New `Loading` component (snow-flake animation, 50 flakes, fade in/out
+  with configurable delay and duration) plus tests.
+- New `Time` component (live HH:MM clock with weekday/month-day pill)
+  plus tests.
+- New `LoadingDemo` and `TimeDemo` pages; `Icon` is exported from
+  `src/index.ts`.
+
+### Changed
+
+- Standardized props/types, `index.ts` barrel exports, and styling
+  conventions across 26 components (BackTop, Background, Button,
+  Carousel, Checkbox, DatePicker, Divider, Drawer, Footer, Form, Image,
+  Input, Modal, Notification, Progress, Radio, Select, Skeleton, Switch,
+  Table, Tabs, Tag, TimePicker, Title, Tooltip, Typewriter).
+- Refreshed demo pages (Background, Divider, Footer, Tooltip) to match
+  updated component APIs.
+- Synced `AI_USAGE.md`, `PROMPT.md`, `DESIGN_PROMPT.md`, and
+  `skill/SKILL.md` with new components and conventions.
+
+### Chore
+
+- Ignored transient `vitest.config.ts.timestamp-*.mjs` artifacts.
+
 ## [1.2.0] - 2026-09-06
 
 ### Added
