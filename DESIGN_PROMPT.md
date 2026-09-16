@@ -319,8 +319,8 @@ Loading overlay: rgba(247,243,223,0.8) + backdrop-filter blur(2px); spinner #19c
 [See dedicated blocks below]
 
 === FOOTER DECORATION ===
-<Footer />              width 100%, height 80px, centered row of 14 🎄 emoji
-                        (font-size 28px, letter-spacing 12px, flex center; seamless = space-between)
+<Footer />              width 100%, centered copyright bar: © {year} {text}
+                        (color #807d75, font-size 12px, padding 16px 0, year defaults to current year)
 
 === DIVIDER DECORATION ===
 9 types — all width 100%, height 12px, background center/contain no-repeat:
@@ -488,7 +488,7 @@ Interface details:
 | Title 字重             | `900`                                                                                                                    | 飘带文字                                            |
 | 过渡                   | `0.25s cubic-bezier(0.4,0,0.2,1)`                                                                                        | 通用动画                                            |
 | Loading stripe         | `28.28px` step, `-45deg`, `#0ec4b6/#01b0a7`                                                                              | 按钮 inline loading                                 |
-| Footer                 | 101 个内置 Icon 相连成链，按容器宽度循环铺满                                                                             | 底部图标链（`size` 默认 24）                        |
+| Footer                 | 版权栏：© 年份 文案，年份缺省取当前年份（color #807d75 / 12px / 居中）                                                    | 版权栏（`text` / `year`）                          |
 | Icon                   | 101 个手绘贴纸风内置图标，`stroke-width: 3.5` / `stroke: currentColor`                                                   | 图标三合一（`name` / `icon` / `src`）               |
 | Loading                | 夜空底 `#0b101a` 全屏 + 50 片白色雪花（1–6px）6–12s 负延迟旋转飘落 + 暗角                                      | 全屏落雪加载屏                                      |
 | Time                   | 星期薄荷青 + 月日/HH:MM 大地棕 48px/900，冒号每秒闪烁                                                                     | HUD 实时时钟                                        |

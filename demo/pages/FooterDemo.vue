@@ -4,8 +4,10 @@ import { sectionStyle, sectionTitleStyle, tagStyle, labelStyle, demoBodyStyle, A
 import type { ApiRow } from '../tools';
 
 const FOOTER_API: ApiRow[] = [
-    { prop: 'size', desc: '图标大小（px）', type: 'number', defaultVal: '24' },
-    { prop: 'name', desc: '指定单一图标名，整条链仅用该图标铺满', type: 'IconName', defaultVal: '-' },
+    { prop: 'text', desc: '版权文案，默认 All Rights Reserved.', type: 'string', defaultVal: "'All Rights Reserved.'" },
+    { prop: 'year', desc: '年份，缺省取当前年份（动态获取）', type: 'number', defaultVal: '-' },
+    { prop: 'className', desc: '自定义类名（attribute 透传）', type: 'string', defaultVal: '-' },
+    { prop: 'style', desc: '自定义样式（attribute 透传）', type: 'CSSProperties', defaultVal: '-' },
 ];
 
 const code = `<script setup lang="ts">
@@ -14,26 +16,30 @@ import { Footer } from 'animal-island-vue';
 
 <template>
     <Footer />
-    <Footer :size="16" />
-    <Footer name="Heart" />
+    <Footer text="Pocket Projects Inc." />
+    <Footer text="Acme Ltd." :year="2020" :style="{ background: '#f7f3ea', borderRadius: '8px' }" />
 </template>`;
 </script>
 
 <template>
     <div :style="sectionStyle">
-        <div :style="sectionTitleStyle">Footer <span :style="tagStyle">底部装饰</span></div>
-        <div :style="labelStyle">Footer 组件 — 由全部内置图标相连组成的一条图标链，按容器宽度循环铺满。</div>
+        <div :style="sectionTitleStyle">Footer <span :style="tagStyle">版权栏</span></div>
+        <div :style="labelStyle">Footer 组件 — 版权栏，渲染「© 年份 文案」，年份缺省取当前年份。</div>
         <div :style="{ ...demoBodyStyle, padding: '40px 0' }">
-            <div :style="labelStyle">默认（全部 101 个图标）</div>
+            <div :style="labelStyle">默认（当前年份 + All Rights Reserved.）</div>
             <Footer />
         </div>
         <div :style="{ ...demoBodyStyle, padding: '40px 0' }">
-            <div :style="labelStyle">size=16</div>
-            <Footer :size="16" />
+            <div :style="labelStyle">text 自定义文案</div>
+            <Footer text="Pocket Projects Inc." />
         </div>
         <div :style="{ ...demoBodyStyle, padding: '40px 0' }">
-            <div :style="labelStyle">name=&quot;Heart&quot;（单一图标）</div>
-            <Footer name="Heart" />
+            <div :style="labelStyle">year 自定义年份</div>
+            <Footer text="Acme" :year="2020" />
+        </div>
+        <div :style="{ ...demoBodyStyle, padding: '40px 0' }">
+            <div :style="labelStyle">自定义年份 + style（背景 / 圆角透传）</div>
+            <Footer text="Acme Ltd." :year="2020" :style="{ background: '#f7f3ea', borderRadius: '8px' }" />
         </div>
         <CodeBlock :code="code" />
         <ApiTable :rows="FOOTER_API" />

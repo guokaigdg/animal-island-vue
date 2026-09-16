@@ -961,27 +961,20 @@ border-color: rgba(255, 204, 0, 0.85);
 ```vue
 <template>
     <Footer />
-    <!-- 14 个 🎄 居中一行（高 80px） -->
-    <Footer seamless />
-    <!-- 🎄 铺满整行（space-between） -->
+    <!-- © 2026 All Rights Reserved. -->
+    <Footer text="Pocket Projects Inc." />
+    <Footer text="Acme" :year="2020" />
 </template>
 ```
 
 ```less
 .animal-footer {
-    // 14 个 🎄 emoji 居中一行（flex + letter-spacing），非图片
+    // 版权栏：© 年份 文案，居中、浅灰、12px
     width: 100%;
-    height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
-    letter-spacing: 12px;
-}
-.animal-footer--seamless {
-    justify-content: space-between;
-    padding: 0 8px;
-    letter-spacing: 0;
+    color: #807d75;
+    font-size: 12px;
+    padding: 16px 0;
+    text-align: center;
 }
 ```
 

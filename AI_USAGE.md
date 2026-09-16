@@ -526,15 +526,16 @@ Wrap the region where you want a game-style cursor:
 
 ```ts
 interface Props {
-    seamless?: boolean; // default false
+    text?: string; // 版权文案，默认 'All Rights Reserved.'
+    year?: number; // 年份，默认取当前年份
 }
 ```
 
 ```vue
 <Footer />
-<!-- centered row of 14 🎄 emoji, 80px tall — default -->
-<Footer seamless />
-<!-- 🎄 spread full-width via space-between -->
+<!-- © 2026 All Rights Reserved. -->
+<Footer text="Pocket Projects Inc." />
+<Footer text="Acme" :year="2020" />
 ```
 
 > No design-token props. `class` / `:style` accept layout properties only (margin / position).

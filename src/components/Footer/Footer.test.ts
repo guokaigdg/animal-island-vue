@@ -2,36 +2,36 @@ import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
 import Footer from './Footer.vue';
 
+const thisYear = new Date().getFullYear();
+
 describe('Footer', () => {
-    it('渲染 animal-footer 根元素，内容为图标链（非 emoji 文本）', () => {
+    it('默认渲染版权栏（当前年份 + 默认文案）', () => {
         const wrapper = mount(Footer);
         const root = wrapper.element as HTMLElement;
+        expect(root.tagName).toBe('FOOTER');
         expect(root.classList.contains('animal-footer')).toBe(true);
-        // React 端 Footer 是「全部内置 Icon 相连」的图标链
-        expect(root.querySelectorAll('svg').length).toBeGreaterThan(10);
+        expect(wrapper.text()).toBe(`© ${thisYear} All Rights Reserved.`);
     });
 
-    it('默认使用全部图标铺满（单个 cycle 含多个图标）', () => {
-        const wrapper = mount(Footer);
-        const firstCycle = wrapper.get('.animal-footer__cycle');
-        expect(firstCycle.findAll('svg').length).toBeGreaterThan(10);
+    it('text 可自定义文案', () => {
+        const wrapper = mount(Footer, { props: { text: 'Pocket Projects Inc.' } });
+        expect(wrapper.text()).toContain(`© ${thisYear} Pocket Projects Inc.`);
     });
 
-    it('size 控制图标尺寸', () => {
-        const wrapper = mount(Footer, { props: { size: 32 } });
-        expect(wrapper.get('svg').attributes('style')).toContain('32px');
+    it('year 可自定义年份', () => {
+        const wrapper = mount(Footer, { props: { text: 'Acme', year: 2020 } });
+        expect(wrapper.text()).toContain('© 2020 Acme');
     });
 
-    it('name 指定单一图标名时整条链只用该图标', () => {
-        const wrapper = mount(Footer, { props: { name: 'Heart' } });
-        const firstCycle = wrapper.get('.animal-footer__cycle');
-        expect(firstCycle.findAll('svg').length).toBe(1);
+    it('year 缺省时动态取当前年份', () => {
+        const wrapper = mount(Footer, { props: { text: 'Only' } });
+        expect(wrapper.text()).toBe(`© ${thisYear} Only`);
     });
 
-    it('className / style 由 fallthrough 透传到根元素', () => {
-        const wrapper = mount(Footer, { attrs: { class: 'custom', style: 'margin: 4px;' } });
+    it('className 与 style 经 attribute fallthrough 透传到根 <footer>', () => {
+        const wrapper = mount(Footer, { attrs: { class: 'x', style: { fontSize: '14px' } } });
         const root = wrapper.element as HTMLElement;
-        expect(root.classList.contains('custom')).toBe(true);
-        expect(root.getAttribute('style')).toContain('margin: 4px');
+        expect(root.classList.contains('x')).toBe(true);
+        expect(root.style.fontSize).toBe('14px');
     });
 });

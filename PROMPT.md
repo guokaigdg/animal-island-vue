@@ -356,10 +356,10 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 - Loading overlay: rgba(247,243,223,0.8) + backdrop-filter blur(2px); spinner #19c8b9.
 - Vue API: `<Table :columns="cols" :data-source="rows" row-key="id" :striped="true" :show-header="true" :loading="false" empty-text="暂无数据" />`. `cols` items: `{ title, dataIndex, render?, width?, align?, style? }`. For rich cell rendering, prefer the `cell-{dataIndex}` named slot over `render`. Both `cols` and `rows` arrays are iterated with `v-for` + `:key` internally — never `.map(...)` in the template.
 
-### Footer (decoration)
+### Footer (copyright bar)
 
-- No `type` prop. width 100%; a continuous chain of all 101 built-in icons, repeated to fill the container width (ResizeObserver-driven cycles).
-- Props: `size` (number, default 24 — icon size), `name` (IconName — locks the chain to one repeated icon). `class` / `style` fall through to the root element.
+- No `type` prop. width 100%; a copyright bar rendering `© {year} {text}`, year defaults to the current year.
+- Props: `text` (string, default `'All Rights Reserved.'`), `year` (number — override the displayed year). `class` / `style` fall through to the root `<footer>` element.
 
 ### Divider
 
