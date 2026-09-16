@@ -374,9 +374,9 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 
 ### Background (wallpaper container)
 
-- Decorative full-width wallpaper, zero image assets (pure CSS + inline SVG). `type` prop: `dots` (default) = two offset radial-gradient dot grids (28px dot + 14px small dot, green rgba(90,160,90,.22)/rgba(140,200,140,.15) on #bfe3bf); `sprinkles` = three coprime tiles (190×170 / 230×195 / 255×215) of inline-SVG capsule sprinkles (rounded rects with shared vertical highlight gradient simulating lit cylinders, LCM repeat ≈ 220000×280000px = visually random) on #fdf3e3 cream.
+- Decorative full-width wallpaper. `type` prop (18 types): `default` (cream polka dots, two offset radial-gradient dot grids 28px + 14px on rgb(247,243,223)); `grid` (24px grid of 1px #c4b89e lines); `dots-dark-green` (green dots on #bfe3bf); `sprinkles` = three coprime tiles (190×170 / 230×195 / 255×215) of inline-SVG capsule sprinkles (rounded rects with shared vertical highlight gradient simulating lit cylinders, LCM repeat ≈ 220000×280000px = visually random) on #fdf3e3 cream; `sweet-corner` / `coffee-break` = scene wallpapers (the same 2560×1440 transparent-background scene SVGs used by Progress `fill` scene variants) drawn with `background-size: cover`, centered, no repeat, over a cream #fdf3e3 base — the SVG URL is injected from the component (`backgroundImage` inline style); the remaining 12 `dots-*` pastel dot wallpapers whose base colors match the Card `pattern-*` series.
 - Container: position relative; width 100%; min-height 100%; children render on top of the pattern. Give explicit height via style.
-- Vue API: `<Background type="sprinkles" style="min-height:200px; padding:24px">content</Background>`.
+- Vue API: `<Background type="sprinkles" style="min-height:200px; padding:24px">content</Background>`; scene wallpapers via `<Background type="sweet-corner" style="height:200px" />`.
 
 ### Typewriter
 

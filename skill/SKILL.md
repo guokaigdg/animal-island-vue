@@ -8,7 +8,9 @@ description: >
 (3) 构建温馨自然、圆润可爱风格的 Vue 界面；
 (4) 复现或扩展 animal-island-vue 的视觉语言；
 (5) 提问"自然小岛风格"、"animal island 风格"、"可爱圆润风格"的 UI 时，务必使用此 skill。
--------------------------------------------------------------
+---
+
+---
 
 # Animal Island Vue 设计风格指南
 
@@ -37,42 +39,42 @@ animal-island-vue 是一套自然可爱小岛风格的 Vue 3 + TypeScript UI 组
 
 从 `src/index.ts` 导出：
 
-| 组件           | 职责                                                                                                              | 交互   | 装饰 / 纯展示 |
-| -------------- | ----------------------------------------------------------------------------------------------------------------- | ------ | ------------- |
-| `BackTop`      | 返回顶部按钮，钱袋图标浮窗，支持自定义滚动容器、动画时长和可见高度                                                | ✓      | <br />        |
-| `Button`       | 按钮，5 种类型 × 3 种尺寸                                                                                         | ✓      | <br />        |
-| `Input`        | 输入框，3 种尺寸 + clear/prefix/suffix                                                                            | ✓      | <br />        |
-| `Switch`       | 开关，默认/小号                                                                                                   | ✓      | <br />        |
-| `Modal`        | SVG blob 裁切弹窗                                                                                                 | ✓      | <br />        |
-| `Card`         | 容器，`default`/`dashed`，13 种调色板实色 + 13 种 `pattern` 波点墙纸（CSS radial-gradient，非图片）               | <br /> | ✓             |
-| `Title`        | 章节标题，飘带横幅（swallowtail clip-path 燕尾 + 折角阴影 + 微透视正面），13 种配色（替代旧 `Card type="title"`） | <br /> | ✓             |
-| `Collapse`     | 手风琴（动画用 CSS Grid 0fr↔1fr 实现，无 JS 动画）                                                                | ✓      | <br />        |
-| `Select`       | 下拉选择器（受控）                                                                                                | ✓      | <br />        |
-| `Skeleton`     | 加载占位骨架屏（SkeletonButton、SkeletonInput、SkeletonAvatar）                                                   | <br /> | ✓             |
-| `Checkbox`     | 多选框组，水平/垂直，3 种尺寸                                                                                     | ✓      | <br />        |
-| `Radio`        | 单选框组，3 种尺寸，键盘 roving tabindex                                                                          | ✓      | <br />        |
-| `Tooltip`      | 12 种 placement，`hover`/`focus`/`click` 触发，`default`/`island` 形态                                            | ✓      | <br />        |
-| `Time`         | HUD 实时时钟                                                                                                      | <br /> | ✓             |
-| `Footer`       | 底部装饰（14 个 🎄 居中一行，`seamless` 铺满整行）                                                                | <br /> | ✓             |
-| `Divider`      | 装饰分割线，5 种风格                                                                                              | <br /> | ✓             |
-| `Cursor`       | 自定义光标包裹器，`default` 手指箭头 / `raindrop` 蓝色雨滴（内联 SVG，零图片资源）                                | <br /> | ✓             |
-| `Background`   | 装饰背景壁纸，`dots` 波点 / `sprinkles` 圆柱形彩色针糖（纯 CSS + 内联 SVG，零图片资源）                           | <br /> | ✓             |
-| `Typewriter`   | 打字机效果，保留 VNode 结构                                                                                       | <br /> | ✓             |
-| `Tabs`         | 标签页切换，叶子摆动动画可选                                                                                      | ✓      | <br />        |
-| `CodeBlock`    | JSX/TS 语法高亮代码块                                                                                             | <br /> | ✓             |
-| `Loading`      | 全屏落雪加载屏，50 片雪花旋转飘落 + 暗角夜空（tip / delay / fadeDuration / zIndex）                               | <br /> | ✓             |
-| `Table`        | 数据表格，固定列、空状态、loading                                                                                 | ✓      | <br />        |
-| `Pagination`   | 分页器，条数切换 / 快速跳转 / 总数展示，可内置于 Table                                                            | ✓      | <br />        |
-| `Carousel`     | 轮播图，自动播放 / 箭头 / 圆点 / 键盘导航                                                                         | ✓      | <br />        |
-| `Countdown`    | 倒计时，里程表式单向滚动数字                                                                                      | <br /> | ✓             |
-| `Form`         | 表单系统（Form、FormItem、FormProvider、useForm）                                                                 | ✓      | <br />        |
-| `Image`        | 相框图片，14 种底色、懒加载、点击预览                                                                             | ✓      | <br />        |
-| `DatePicker`   | 日期选择器，日历网格 / 范围选择                                                                                   | ✓      | <br />        |
-| `TimePicker`   | 时间选择器，时/分/秒滚动列                                                                                        | ✓      | <br />        |
-| `Notification` | 命令式通知（含 NotificationContainer）                                                                            | ✓      | <br />        |
-| `Tag`          | 标签，3 变体 × 13 色                                                                                              | <br /> | ✓             |
-| `Progress`     | 进度条，斜纹动画填充                                                                                              | <br /> | ✓             |
-| `Drawer`       | 抽屉，四方向弹出 + 焦点陷阱                                                                                       | ✓      | <br />        |
+| 组件           | 职责                                                                                                                                                                                                      | 交互   | 装饰 / 纯展示 |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------------- |
+| `BackTop`      | 返回顶部按钮，钱袋图标浮窗，支持自定义滚动容器、动画时长和可见高度                                                                                                                                        | ✓      | <br />        |
+| `Button`       | 按钮，5 种类型 × 3 种尺寸                                                                                                                                                                                 | ✓      | <br />        |
+| `Input`        | 输入框，3 种尺寸 + clear/prefix/suffix                                                                                                                                                                    | ✓      | <br />        |
+| `Switch`       | 开关，默认/小号                                                                                                                                                                                           | ✓      | <br />        |
+| `Modal`        | SVG blob 裁切弹窗                                                                                                                                                                                         | ✓      | <br />        |
+| `Card`         | 容器，`default`/`dashed`，13 种调色板实色 + 13 种 `pattern` 波点墙纸（CSS radial-gradient，非图片）                                                                                                       | <br /> | ✓             |
+| `Title`        | 章节标题，飘带横幅（swallowtail clip-path 燕尾 + 折角阴影 + 微透视正面），13 种配色（替代旧 `Card type="title"`）                                                                                         | <br /> | ✓             |
+| `Collapse`     | 手风琴（动画用 CSS Grid 0fr↔1fr 实现，无 JS 动画）                                                                                                                                                        | ✓      | <br />        |
+| `Select`       | 下拉选择器（受控）                                                                                                                                                                                        | ✓      | <br />        |
+| `Skeleton`     | 加载占位骨架屏（SkeletonButton、SkeletonInput、SkeletonAvatar）                                                                                                                                           | <br /> | ✓             |
+| `Checkbox`     | 多选框组，水平/垂直，3 种尺寸                                                                                                                                                                             | ✓      | <br />        |
+| `Radio`        | 单选框组，3 种尺寸，键盘 roving tabindex                                                                                                                                                                  | ✓      | <br />        |
+| `Tooltip`      | 12 种 placement，`hover`/`focus`/`click` 触发，`default`/`island` 形态                                                                                                                                    | ✓      | <br />        |
+| `Time`         | HUD 实时时钟                                                                                                                                                                                              | <br /> | ✓             |
+| `Footer`       | 版权栏（© 年份 文案，年份缺省取当前年份）                                                                                                                                                                | <br /> | ✓             |
+| `Divider`      | 装饰分割线，5 种风格                                                                                                                                                                                      | <br /> | ✓             |
+| `Cursor`       | 自定义光标包裹器，`default` 手指箭头 / `raindrop` 蓝色雨滴（内联 SVG，零图片资源）                                                                                                                        | <br /> | ✓             |
+| `Background`   | 装饰背景壁纸，18 种类型：`default` 波点 / `grid` 网格 / `dots-dark-green` 深绿波点 / `sprinkles` 彩色针糖 / `sweet-corner` · `coffee-break` 场景背景图 / 12 色 `dots-*`（底色对应 Card `pattern-*` 系列） | <br /> | ✓             |
+| `Typewriter`   | 打字机效果，保留 VNode 结构                                                                                                                                                                               | <br /> | ✓             |
+| `Tabs`         | 标签页切换，叶子摆动动画可选                                                                                                                                                                              | ✓      | <br />        |
+| `CodeBlock`    | JSX/TS 语法高亮代码块                                                                                                                                                                                     | <br /> | ✓             |
+| `Loading`      | 全屏落雪加载屏，50 片雪花旋转飘落 + 暗角夜空（tip / delay / fadeDuration / zIndex）                                                                                                                       | <br /> | ✓             |
+| `Table`        | 数据表格，固定列、空状态、loading                                                                                                                                                                         | ✓      | <br />        |
+| `Pagination`   | 分页器，条数切换 / 快速跳转 / 总数展示，可内置于 Table                                                                                                                                                    | ✓      | <br />        |
+| `Carousel`     | 轮播图，自动播放 / 箭头 / 圆点 / 键盘导航                                                                                                                                                                 | ✓      | <br />        |
+| `Countdown`    | 倒计时，里程表式单向滚动数字                                                                                                                                                                              | <br /> | ✓             |
+| `Form`         | 表单系统（Form、FormItem、FormProvider、useForm）                                                                                                                                                         | ✓      | <br />        |
+| `Image`        | 相框图片，14 种底色、懒加载、点击预览                                                                                                                                                                     | ✓      | <br />        |
+| `DatePicker`   | 日期选择器，日历网格 / 范围选择                                                                                                                                                                           | ✓      | <br />        |
+| `TimePicker`   | 时间选择器，时/分/秒滚动列                                                                                                                                                                                | ✓      | <br />        |
+| `Notification` | 命令式通知（含 NotificationContainer）                                                                                                                                                                    | ✓      | <br />        |
+| `Tag`          | 标签，3 变体 × 13 色                                                                                                                                                                                      | <br /> | ✓             |
+| `Progress`     | 进度条，斜纹动画填充                                                                                                                                                                                      | <br /> | ✓             |
+| `Drawer`       | 抽屉，四方向弹出 + 焦点陷阱                                                                                                                                                                               | ✓      | <br />        |
 
 类型导出：`BackTopProps`、`ButtonProps/ButtonType/ButtonSize/ButtonHTMLType`、`InputProps/InputSize`、`SwitchProps/SwitchSize`、`ModalProps`、`CardProps/CardType/CardColor`、`TitleProps/TitleSize/TitleColor`、`CollapseProps`、`CursorProps/CursorType`、`BackgroundProps/BackgroundType`、`TimeProps`、`LoadingProps`、`DividerProps/DividerType`、`TypewriterProps`、`SelectProps/SelectOption`、`SkeletonProps/SkeletonVariant`、`TabsProps/TabItem`、`CheckboxProps/CheckboxOption/CheckboxSize/CheckboxValue`、`RadioProps/RadioOption/RadioSize/RadioValue`、`TooltipProps/TooltipPlacement/TooltipTrigger/TooltipVariant`、`CodeBlockProps`、`TableProps/TableColumn/TableRecord`、`PaginationProps/PaginationVariant`、`CarouselProps`、`CountdownProps/CountdownSize/CountdownVariant`、`FormProps` 系列、`ImageProps/ImageColor`、`DatePickerProps/DatePickerSize/DatePickerStatus/DatePickerValue`、`TimePickerProps/TimePickerSize/TimePickerStatus/TimePart`、`NotificationConfig` 系列、`TagProps/TagSize/TagVariant/TagColor`、`ProgressProps/ProgressSize/ProgressInfoPosition`、`DrawerProps/DrawerPlacement`。
 
@@ -1048,19 +1050,29 @@ Props：`type`（`'default' | 'raindrop'`，默认 `'default'`）、`forceAll`�
 /* 内联 SVG data-URI（无外部图片资源）：28×28 几何箭头，hotspot 6 4 */
 .animal-cursor--force,
 .animal-cursor--force * {
-    cursor: url("data:image/svg+xml,...") 6 4, default !important;
+    cursor:
+        url('data:image/svg+xml,...') 6 4,
+        default !important;
 }
 
 /* type="raindrop"：32×32 蓝色水滴，hotspot 16 6 */
 .animal-cursor--force.animal-cursor--raindrop,
 .animal-cursor--force.animal-cursor--raindrop * {
-    cursor: url("data:image/svg+xml,...") 16 6, default !important;
+    cursor:
+        url('data:image/svg+xml,...') 16 6,
+        default !important;
 }
 
 /* forceAll=false（scoped 模式）：容器自身用自定义光标，后代恢复 auto，
    交互元素（a/button/select 等）恢复 pointer、文本输入恢复 text、禁用态 not-allowed */
-.animal-cursor.animal-cursor--scoped { cursor: url("data:image/svg+xml,...") 6 4, default !important; }
-.animal-cursor--scoped * { cursor: auto !important; }
+.animal-cursor.animal-cursor--scoped {
+    cursor:
+        url('data:image/svg+xml,...') 6 4,
+        default !important;
+}
+.animal-cursor--scoped * {
+    cursor: auto !important;
+}
 ```
 
 - 使用 `!important` 覆盖默认光标
@@ -1071,12 +1083,15 @@ Props：`type`（`'default' | 'raindrop'`，默认 `'default'`）、`forceAll`�
 
 ### Background
 
-装饰背景壁纸容器（纯 CSS + 内联 SVG，零图片资源），子内容渲染在图案之上。
+装饰背景壁纸容器，18 种类型，子内容渲染在图案之上。
 
 ```vue
 <template>
-    <!-- dots 波点壁纸（默认）：两层错位圆点（28px 大点 + 14px 小点，绿色系 #bfe3bf 底） -->
+    <!-- default 奶油色波点壁纸（默认）：两层错位圆点（28px 大点 + 14px 小点，奶油底） -->
     <Background style="height: 200px" />
+
+    <!-- grid 网格壁纸：24px 网格，#c4b89e 细线 -->
+    <Background type="grid" style="height: 200px" />
 
     <!-- sprinkles 圆柱形彩色针糖壁纸：三层互质 tile（190×170 / 230×195 / 255×215），
          内联 SVG 胶囊（圆角矩形 + 竖向高光渐变模拟圆柱受光），重复周期约 220000×280000px，
@@ -1084,10 +1099,18 @@ Props：`type`（`'default' | 'raindrop'`，默认 `'default'`）、`forceAll`�
     <Background type="sprinkles" :style="{ minHeight: '200px', padding: '24px' }">
         <p>内容渲染在图案背景之上</p>
     </Background>
+
+    <!-- sweet-corner / coffee-break 场景背景图：Progress 场景图同款 SVG，cover 铺满，
+         组件内联注入 backgroundImage -->
+    <Background type="sweet-corner" style="height: 200px" />
+    <Background type="coffee-break" style="height: 200px" />
+
+    <!-- 12 色 dots-* 底色对应 Card pattern-* 系列的粉彩波点壁纸 -->
+    <Background type="dots-blue" style="height: 200px" />
 </template>
 ```
 
-Props：`type`（`'dots' | 'sprinkles'`，默认 `'dots'`）。容器为 `position: relative; width: 100%; min-height: 100%`，需通过 `style` 给显式高度。类名 `animal-background`（基础）+ `animal-background--sprinkles`（修饰类在根元素上，scoped 样式中必须放顶层）。
+Props：`type`（18 类型 union，默认 `'default'`；`dots-*` 底色与 Card `pattern-*` 系列一致）。容器为 `position: relative; width: 100%; min-height: 100%`，需通过 `style` 给显式高度。类名 `animal-background`（基础）+ `animal-background--<type>`（修饰类在根元素上，scoped 样式中必须放顶层）；场景图类型（`sweet-corner` / `coffee-break`）的 `backgroundImage` 由组件内联注入。
 
 ---
 

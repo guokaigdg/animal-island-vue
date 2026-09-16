@@ -14,25 +14,25 @@ const RADIO_API: ApiRow[] = [
 ];
 
 const seasonOptions = [
-    { label: '🌸 春天', value: 'spring' },
-    { label: '☀️ 夏天', value: 'summer' },
-    { label: '🍁 秋天', value: 'autumn' },
-    { label: '❄️ 冬天', value: 'winter' },
+    { label: '春天', value: 'spring' },
+    { label: '夏天', value: 'summer' },
+    { label: '秋天', value: 'autumn' },
+    { label: '冬天', value: 'winter' },
 ];
 
 const fruitOptions = [
-    { label: '🍎 苹果', value: 'apple' },
-    { label: '🍊 橙子', value: 'orange' },
-    { label: '🍑 桃子', value: 'peach' },
-    { label: '🍐 梨子', value: 'pear', disabled: true },
-    { label: '🍒 樱桃', value: 'cherry' },
+    { label: '苹果', value: 'apple' },
+    { label: '橙子', value: 'orange' },
+    { label: '桃子', value: 'peach' },
+    { label: '梨子', value: 'pear', disabled: true },
+    { label: '樱桃', value: 'cherry' },
 ];
 
 const timeOptions = [
-    { label: '🌅 早晨', value: 'morning' },
-    { label: '🌞 中午', value: 'noon' },
-    { label: '🌇 傍晚', value: 'evening' },
-    { label: '🌙 深夜', value: 'night' },
+    { label: '早晨', value: 'morning' },
+    { label: '中午', value: 'noon' },
+    { label: '傍晚', value: 'evening' },
+    { label: '深夜', value: 'night' },
 ];
 
 const selected1 = ref<string | number>('spring');
@@ -48,8 +48,8 @@ import { ref } from 'vue';
 import { Radio } from 'animal-island-vue';
 
 const options = [
-    { label: '🌸 春天', value: 'spring' },
-    { label: '☀️ 夏天', value: 'summer' },
+    { label: '春天', value: 'spring' },
+    { label: '夏天', value: 'summer' },
 ];
 const value = ref('spring');
 <\/script>

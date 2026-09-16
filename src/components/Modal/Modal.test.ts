@@ -26,6 +26,20 @@ describe('Modal', () => {
         expect(getDialog()).toBeNull();
     });
 
+    it('默认使用常规圆角矩形，无 game 变体类', () => {
+        mount(Modal, { props: { open: true, typewriter: false }, slots: { default: 'content' } });
+        const dialog = getDialog();
+        expect(dialog!.classList.contains('animal-modal--game')).toBe(false);
+        expect(document.querySelector('.animal-modal__body--game')).toBeNull();
+    });
+
+    it('variant="game" 应用异形外框类', () => {
+        mount(Modal, { props: { open: true, variant: 'game', typewriter: false }, slots: { default: 'content' } });
+        const dialog = getDialog();
+        expect(dialog!.classList.contains('animal-modal--game')).toBe(true);
+        expect(document.querySelector('.animal-modal__body--game')).not.toBeNull();
+    });
+
     it('open=true 通过 portal 渲染到 body 且包含 role="dialog"', () => {
         mount(Modal, {
             props: { open: true, title: '标题', typewriter: false },

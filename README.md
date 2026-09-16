@@ -1,5 +1,11 @@
 # 🏝 Animal-Island-Vue
 
+<br/>
+<div align="center">
+    <img src="./docs/img/readme-logo.png" alt="animal-island-vue" style="border-radius: 24px; width: 125px; display: block; margin: 0 auto 24px;" />
+</div>
+<br/>
+
 <div align="center">
 一款自然可爱风格的 Vue 3 UI 组件库
 </div>
@@ -25,16 +31,6 @@
 
 所有视觉元素、布局、图标、动画均为独立原创设计实现，不使用任何第三方受版权保护的美术素材、代码或资源文件。
 
-## ⚠️ Git 历史已重写 — 请重新克隆
-
-2026 年 9 月，本仓库的全部 git 历史已重写，以移除涉嫌侵犯任天堂版权的内容（依据 DMCA 下架通知）。此前所有提交、标签与发行版均已替换为清洁历史。
-
-**如果你在历史重写前克隆或 fork 过本仓库：**
-
-- 请勿 pull 或 merge —— 这会把已移除的内容重新带回你的副本。
-- 请删除旧的克隆/fork，然后从本仓库重新克隆或重新 fork。
-- 仅接受基于新历史的 Pull Request。
-
 ## 🎉 React 版本
 
 - [animal-island-ui](https://github.com/guokaigdg/animal-island-ui)
@@ -44,6 +40,10 @@
 - 在线预览 (PC 端) [animal-island-vue-pc](https://guokaigdg.github.io/animal-island-vue/#/)
 
 - 在线预览（移动端）[animal-island-vue-mobile](https://guokaigdg.github.io/animal-island-vue/#/)
+
+## 🎨 图标
+
+如需图标，推荐使用 [naive-icons](https://github.com/guokaigdg/naive-icons)。
 
 ## 🚀 用 AI 工具一键生成 animal-island-vue 风格页面（无需写代码）
 

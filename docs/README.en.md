@@ -1,5 +1,11 @@
 # 🏝 Animal-Island-Vue
 
+<br/>
+<div align="center">
+    <img src="./img/readme-logo.png" alt="animal-island-vue" style="border-radius: 24px; width: 125px; display: block; margin: 0 auto 24px;" />
+</div>
+<br/>
+
 <div align="center">
 A Vue 3 UI component library with a natural, cute island style
 </div>
@@ -26,16 +32,6 @@ This project is a lightweight UI component library built with Vue 3 + TypeScript
 
 All visual elements, layouts, icons, and animations are independently designed and implemented, without using any third-party copyrighted art materials, code, or resource files.
 
-## ⚠️ Git History Rewritten — Re-clone Required
-
-In September 2026, the entire git history of this repository was rewritten to remove content that infringed Nintendo's copyright (per a DMCA takedown notice). All previous commits, tags, and releases were replaced with a clean history.
-
-**If you cloned or forked this repository before the rewrite:**
-
-- Do NOT pull or merge — doing so would reintroduce the removed content into your copy.
-- Delete your old clone/fork, then re-clone or re-fork from this repository.
-- Only pull requests based on the new history can be accepted.
-
 ## 🎉 React Version
 
 - [animal-island-ui](https://github.com/guokaigdg/animal-island-ui)
@@ -44,6 +40,10 @@ In September 2026, the entire git history of this repository was rewritten to re
 
 - Online Preview (PC) [animal-island-vue-pc](https://guokaigdg.github.io/animal-island-vue/#/)
 - Online Preview (Mobile) [animal-island-vue-mobile](https://guokaigdg.github.io/animal-island-vue/#/)
+
+## 🎨 Icons
+
+If you need icons, we recommend [naive-icons](https://github.com/guokaigdg/naive-icons).
 
 ## 🚀 Use AI to Generate animal-island-vue Pages (No Coding Needed)
 

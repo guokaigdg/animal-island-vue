@@ -88,7 +88,7 @@ const percent = ref(60);
             <div :style="labelStyle">动画控制 — 按钮 +/- 调整百分比</div>
             <div :style="demoBoxStyle">
                 <div :style="rowStyle">
-                    <Button size="small" @click="decrease"> - 10 </Button>
+                    <Button size="small" type="primary" @click="decrease"> - 10 </Button>
                     <Button size="small" type="primary" @click="increase"> + 10 </Button>
                     <span :style="hintStyle">当前：{{ percent }}%</span>
                 </div>

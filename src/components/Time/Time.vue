@@ -70,7 +70,7 @@ function pad(n: number) {
     // 冒号：按秒闪烁
     &__colon {
         display: inline-block;
-        margin: 0;
+        margin: 0 -0.08em;
         transform: translateY(-0.11em);
         animation: animal-time-blink 1s step-end infinite;
     }

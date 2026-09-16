@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { computed, useAttrs } from 'vue';
-import type { BackgroundProps } from './types';
+import type { CSSProperties } from 'vue';
+import sweetCorner from '../../assets/img/scene/sweet-corner.svg';
+import coffeeBreak from '../../assets/img/scene/coffee-break.svg';
+import type { BackgroundProps, BackgroundType } from './types';
 
 const props = withDefaults(defineProps<BackgroundProps>(), {
     type: 'default',
@@ -11,10 +14,22 @@ const attrs = useAttrs();
 defineSlots<{ default?: () => unknown }>();
 
 const typeClass = computed(() => `animal-background--${props.type}`);
+
+// 场景背景图（Progress 场景图同款）：由 JS 注入 backgroundImage，与 React 版一致
+const BG_IMAGE: Partial<Record<BackgroundType, string>> = {
+    'sweet-corner': sweetCorner,
+    'coffee-break': coffeeBreak,
+};
+
+// 用户透传 style 覆盖组件注入的 backgroundImage（v-bind="attrs" 在 :style 之后，同名属性以后者为准）
+const bgImageStyle = computed<CSSProperties>(() => {
+    const bgImage = BG_IMAGE[props.type];
+    return bgImage ? { backgroundImage: `url(${bgImage})` } : {};
+});
 </script>
 
 <template>
-    <div class="animal-background" :class="typeClass" v-bind="attrs">
+    <div class="animal-background" :class="typeClass" :style="bgImageStyle" v-bind="attrs">
         <slot />
     </div>
 </template>
@@ -153,10 +168,8 @@ const typeClass = computed(() => `animal-background--${props.type}`);
         #fdf3e3;
 }
 
-// ---------- sweet-corner / coffee-break — 场景背景图（cover 铺满） ----------
-// 注：React 通过 import SVG 资源注入 background-image；Vue 工程未包含这些 svg 资源，
-// 且本任务约束仅可编辑 src/components/<C>/ 目录，故此处仅保留底色 + cover 布局占位，
-// 待资源就位后可在 class 上补 background-image: url(...) 即可。
+// ---------- sweet-corner / coffee-break — 场景背景图（Progress 场景图同款，cover 铺满） ----------
+// 背景图由组件内联 style 注入（与 React 版一致），此类仅提供底色 + cover 布局
 .animal-background--sweet-corner,
 .animal-background--coffee-break {
     background-color: #fdf3e3;

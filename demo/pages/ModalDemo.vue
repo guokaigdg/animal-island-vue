@@ -6,6 +6,7 @@ import type { ApiRow } from '../tools';
 
 const MODAL_API: ApiRow[] = [
     { prop: 'open', desc: '是否可见', type: 'boolean', defaultVal: '-', required: true },
+    { prop: 'variant', desc: "弹窗类型: default 常规圆角矩形, game 异形自然外框", type: "'default' | 'game'", defaultVal: "'default'" },
     { prop: 'title', desc: '标题', type: 'string', defaultVal: '-' },
     { prop: 'width', desc: '宽度', type: 'number | string', defaultVal: '520' },
     { prop: 'maskClosable', desc: '点击遮罩关闭', type: 'boolean', defaultVal: 'true' },
@@ -25,6 +26,7 @@ const customFooterOpen = ref(false);
 const noTypewriterOpen = ref(false);
 const lightMaskOpen = ref(false);
 const darkMaskOpen = ref(false);
+const gameOpen = ref(false);
 
 const rowStyle = { display: 'flex', gap: '16px', flexWrap: 'wrap' as const };
 
@@ -38,6 +40,9 @@ const open = ref(false);
 <template>
     <Button type="primary" @click="open = true">打开 Modal</Button>
     <Modal v-model:open="open" @ok="open = false">Modal 内容</Modal>
+
+    <!-- 异形弹窗 -->
+    <Modal v-model:open="open" variant="game">异形弹窗内容</Modal>
 
     <!-- 带标题 -->
     <Modal v-model:open="open" title="标题">内容</Modal>
@@ -69,6 +74,10 @@ const open = ref(false);
         <div :style="sectionTitleStyle">Modal <span :style="tagStyle">弹窗</span></div>
 
         <div :style="demoBodyStyle">
+            <div :style="labelStyle">异形弹窗 (game)</div>
+            <div :style="rowStyle">
+                <Button type="primary" @click="gameOpen = true"> 异形 Modal </Button>
+            </div>
             <div :style="labelStyle">基础弹窗</div>
             <div :style="rowStyle">
                 <Button type="primary" @click="modalOpen = true"> 基础 Modal </Button>
@@ -87,6 +96,22 @@ const open = ref(false);
         </div>
 
         <Modal v-model:open="modalOpen" @ok="modalOpen = false">
+            <div
+                :style="{
+                    textAlign: 'center',
+                    width: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '8px',
+                }"
+            >
+                <span>钓到<span :style="{ color: '#FD9303' }">石头</span>了!</span>
+                <span>竟然连这种都能钓起来...</span>
+            </div>
+        </Modal>
+
+        <Modal v-model:open="gameOpen" variant="game" @ok="gameOpen = false">
             <div
                 :style="{
                     textAlign: 'center',

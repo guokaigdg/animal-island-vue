@@ -1556,20 +1556,27 @@ const pageSize = ref(20);
 ### 1.36 Background
 
 ```ts
-type BackgroundType = 'dots' | 'sprinkles';
+type BackgroundType =
+    | 'default' | 'grid' | 'dots-dark-green' | 'sprinkles' | 'sweet-corner' | 'coffee-break'
+    | 'dots-pink' | 'dots-purple' | 'dots-blue' | 'dots-yellow' | 'dots-orange' | 'dots-teal'
+    | 'dots-green' | 'dots-red' | 'dots-lime-green' | 'dots-yellow-green' | 'dots-brown' | 'dots-warm-peach-pink';
 
 interface BackgroundProps {
-    /** Pattern type: 'dots' polka dots / 'sprinkles' cylindrical candy sprinkles. Default 'dots'. */
-    type?: BackgroundType; // default 'dots'
+    /** Pattern type; dots-* base colors match the Card pattern-* series. Default 'default'. */
+    type?: BackgroundType; // default 'default'
 }
 // Slots: default — content renders ON TOP of the pattern
 ```
 
-Decorative full-width wallpaper container (zero image assets — pure CSS gradients + inline SVG):
+Decorative full-width wallpaper container:
 
 ```vue
-<!-- Polka-dot wallpaper (default) -->
+<!-- Cream polka-dot wallpaper (default) -->
 <Background style="height: 200px" />
+
+<!-- Scene wallpaper (cover) — SVG injected inline by the component -->
+<Background type="sweet-corner" style="height: 200px" />
+<Background type="coffee-break" style="height: 200px" />
 
 <!-- Candy-sprinkles wallpaper as a content block -->
 <Background type="sprinkles" :style="{ minHeight: '200px', padding: '24px' }">
@@ -1577,7 +1584,7 @@ Decorative full-width wallpaper container (zero image assets — pure CSS gradie
 </Background>
 ```
 
-> `dots` = two offset radial-gradient dot grids (28px + 14px, green on `#bfe3bf`). `sprinkles` = three coprime tiles of inline-SVG capsule sprinkles (rounded rects + shared vertical highlight gradient simulating lit cylinders; LCM repeat ≈ 220000×280000px — visually random). The container is `position: relative; width: 100%; min-height: 100%` — give it an explicit height via `style`. **Not supported:** no color customization, no pattern density props.
+> `default` = cream polka dots (two offset radial-gradient dot grids 28px + 14px on rgb(247,243,223)). `grid` = 24px grid of 1px `#c4b89e` lines. `dots-dark-green` = green dots on `#bfe3bf`. `sprinkles` = three coprime tiles of inline-SVG capsule sprinkles (rounded rects + shared vertical highlight gradient simulating lit cylinders; LCM repeat ≈ 220000×280000px — visually random) on `#fdf3e3` cream. `sweet-corner` / `coffee-break` = scene wallpapers (the same 2560×1440 transparent-background scene SVGs used by Progress `fill` scene variants), `background-size: cover` centered no-repeat over cream `#fdf3e3`; the SVG URL is injected from the component (`backgroundImage` inline style). The remaining 12 `dots-*` are pastel dot wallpapers whose base colors match the Card `pattern-*` series. The container is `position: relative; width: 100%; min-height: 100%` — give it an explicit height via `style`. **Not supported:** no color customization, no pattern density props.
 
 ***
 
@@ -1877,7 +1884,7 @@ const draft = ref('');
 <template>
     <Cursor>
         <main :style="{ padding: '32px', maxWidth: '720px', margin: '0 auto' }">
-            <Title size="large">Animal Island</Title>
+            <Title size="large">Animal Island Vue</Title>
             <Card>
                 <Input v-model="draft" placeholder="What's on your mind?" allow-clear />
                 <Button type="primary" block :style="{ marginTop: '16px' }">Post</Button>
