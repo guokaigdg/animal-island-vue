@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import HomePage from './HomePage.vue';
 import ComponentPage from './ComponentPage.vue';
 import { PAGE_INFO } from './pageInfo';
 import { useHash, useIsMobile } from './router';
-import { Cursor } from '@';
+import { Cursor, Background } from '@';
+import type { BackgroundType } from '@';
 
 import menuBgUrl from './img/menu_bg.svg';
+import logoUrl from './img/logo.png';
 
 interface MenuChild {
     key: string;
@@ -34,7 +36,6 @@ const MENU_ITEMS: MenuItem[] = [
         children: [
             { key: 'title', label: 'Title 标题', isNew: true },
             { key: 'button', label: 'Button 按钮' },
-            { key: 'footer', label: 'Footer 页脚' },
             { key: 'divider-comp', label: 'Divider 分割线' },
             { key: 'tag', label: 'Tag 标签' },
             { key: 'cursor', label: 'Cursor 光标' },
@@ -42,6 +43,7 @@ const MENU_ITEMS: MenuItem[] = [
             { key: 'background', label: 'Background 背景', isNew: true },
             { key: 'backtop', label: 'BackTop 返回顶部', isNew: true },
             { key: 'skeleton', label: 'Skeleton 骨架屏' },
+            { key: 'footer', label: 'Footer 页脚' },
         ],
     },
     {
@@ -80,16 +82,10 @@ const MENU_ITEMS: MenuItem[] = [
             { key: 'table', label: 'Table 表格' },
             { key: 'pagination', label: 'Pagination 分页', isNew: true },
             { key: 'typewriter', label: 'Typewriter 打字机' },
-            { key: 'image', label: 'Image 图片', isNew: true },
-            { key: 'carousel', label: 'Carousel 轮播图', isNew: true },
-        ],
-    },
-    {
-        key: 'cat-animal',
-        label: '── 主题 ──',
-        children: [
+            { key: 'image', label: 'Image 图片' },
+            { key: 'carousel', label: 'Carousel 轮播图' },
             { key: 'time', label: 'Time 时间' },
-            { key: 'countdown', label: 'Countdown 倒计时', isNew: true },
+            { key: 'countdown', label: 'Countdown 倒计时' },
         ],
     },
 ];
@@ -121,6 +117,37 @@ function handleHomeNavigate(path: string) {
     navigate(path);
 }
 
+// 彩蛋：整页壁纸切换（Background 预览块 hover 触发）
+// 覆盖层方案：默认壁纸常驻，彩蛋壁纸以 opacity 淡入淡出覆盖，避免背景硬切闪烁
+const pageBg = ref<BackgroundType | null>(null);
+const eggOn = ref(false);
+let eggTimer: number | undefined;
+
+function fadeOutEgg() {
+    eggOn.value = false;
+    window.clearTimeout(eggTimer);
+    eggTimer = window.setTimeout(() => {
+        pageBg.value = null;
+    }, 480);
+}
+
+function onEgg(e: Event) {
+    const type = (e as CustomEvent<string>).detail;
+    if (type === 'reset') {
+        fadeOutEgg();
+    } else {
+        window.clearTimeout(eggTimer);
+        pageBg.value = type as BackgroundType;
+        eggOn.value = true;
+    }
+}
+
+onMounted(() => window.addEventListener('demo-bg-easter-egg', onEgg));
+onUnmounted(() => {
+    window.removeEventListener('demo-bg-easter-egg', onEgg);
+    window.clearTimeout(eggTimer);
+});
+
 // 包装为完整 url() 值，避免 url(v-bind(...)) 被 css minifier 解析失败
 const menuBgImage = `url("${menuBgUrl}")`;
 </script>
@@ -134,11 +161,30 @@ const menuBgImage = `url("${menuBgUrl}")`;
         </div>
 
         <!-- Component page -->
-        <div v-else class="layout">
+        <div v-else class="layout" style="position: relative">
+            <!-- 彩蛋壁纸覆盖层：opacity 淡入淡出，覆盖默认壁纸 -->
+            <Background
+                v-if="pageBg"
+                :type="pageBg ?? 'default'"
+                aria-hidden="true"
+                :style="{
+                    position: 'absolute',
+                    inset: 0,
+                    minHeight: 0,
+                    opacity: eggOn ? 1 : 0,
+                    transition: 'opacity 0.45s ease',
+                    pointerEvents: 'none',
+                }"
+            />
             <!-- Desktop sidebar -->
             <aside v-if="!isMobile" class="sidebar">
                 <div class="sidebar-header" @click="handleNavigate('/')">
-                    Animal Island
+                    <img
+                        :src="logoUrl"
+                        alt="Animal Island Vue"
+                        class="sidebar-logo"
+                    />
+                    Animal Island Vue
                 </div>
                 <nav class="menu-list">
                     <template v-for="item in MENU_ITEMS" :key="item.key">
@@ -150,7 +196,10 @@ const menuBgImage = `url("${menuBgUrl}")`;
                                 v-for="child in item.children"
                                 :key="child.key"
                                 class="menu-item"
-                                :class="{ active: activeKey === child.key, 'demo-raindrop-hover': child.key === 'cursor' }"
+                                :class="{
+                                    active: activeKey === child.key,
+                                    'demo-raindrop-hover': child.key === 'cursor',
+                                }"
                                 @click="handleNavigate(`/${child.key}`)"
                             >
                                 <span>{{ child.label }}</span>
@@ -181,7 +230,12 @@ const menuBgImage = `url("${menuBgUrl}")`;
                 <div class="drawer-mask" @click="drawerOpen = false" />
                 <aside class="sidebar drawer">
                     <div class="sidebar-header" @click="handleNavigate('/')">
-                        Animal Island
+                        <img
+                            :src="logoUrl"
+                            alt="Animal Island Vue"
+                            class="sidebar-logo"
+                        />
+                        Animal Island Vue
                     </div>
                     <nav class="menu-list">
                         <template v-for="item in MENU_ITEMS" :key="item.key">
@@ -193,7 +247,10 @@ const menuBgImage = `url("${menuBgUrl}")`;
                                     v-for="child in item.children"
                                     :key="child.key"
                                     class="menu-item"
-                                    :class="{ active: activeKey === child.key, 'demo-raindrop-hover': child.key === 'cursor' }"
+                                    :class="{
+                                        active: activeKey === child.key,
+                                        'demo-raindrop-hover': child.key === 'cursor',
+                                    }"
                                     @click="handleNavigate(`/${child.key}`)"
                                 >
                                     <span>{{ child.label }}</span>
@@ -247,15 +304,17 @@ const menuBgImage = `url("${menuBgUrl}")`;
         'Hiragino Sans GB',
         'Microsoft YaHei',
         sans-serif;
-        background: #88c9a1;
+    background: #88c9a1;
 }
 
 .home-bg {
     background:
         radial-gradient(circle, rgba(90, 160, 105, 0.4) 1.5px, transparent 1.5px),
-        radial-gradient(circle, rgba(110, 180, 125, 0.3) 1px, transparent 1px),
-        #88c9a1;
-    background-size: 28px 28px, 20px 20px, auto;
+        radial-gradient(circle, rgba(110, 180, 125, 0.3) 1px, transparent 1px), #88c9a1;
+    background-size:
+        28px 28px,
+        20px 20px,
+        auto;
     background-repeat: repeat;
     animation: bgScroll 80s linear infinite;
 }
@@ -282,6 +341,14 @@ const menuBgImage = `url("${menuBgUrl}")`;
     display: flex;
     align-items: center;
     cursor: pointer;
+}
+
+.sidebar-logo {
+    width: 25px;
+    height: 25px;
+    border-radius: 8px;
+    margin-right: 8px;
+    flex-shrink: 0;
 }
 
 .menu-list {
@@ -353,7 +420,6 @@ const menuBgImage = `url("${menuBgUrl}")`;
 }
 
 @keyframes badgePulse {
-
     0%,
     100% {
         transform: scale(1);
@@ -371,9 +437,11 @@ const menuBgImage = `url("${menuBgUrl}")`;
     z-index: 1;
     background:
         radial-gradient(circle, rgba(90, 160, 105, 0.4) 1.5px, transparent 1.5px),
-        radial-gradient(circle, rgba(110, 180, 125, 0.3) 1px, transparent 1px),
-        #88c9a1;
-    background-size: 28px 28px, 20px 20px, auto;
+        radial-gradient(circle, rgba(110, 180, 125, 0.3) 1px, transparent 1px), #88c9a1;
+    background-size:
+        28px 28px,
+        20px 20px,
+        auto;
 }
 
 .mobile-bar {
@@ -444,7 +512,9 @@ const menuBgImage = `url("${menuBgUrl}")`;
 /* 体验彩蛋：hover 侧边栏 Cursor 菜单项 → 蓝色雨滴光标（与 type="raindrop" 一致） */
 .demo-raindrop-hover:hover,
 .demo-raindrop-hover:hover * {
-    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M16 6s-9 12-9 16a9 9 0 0 0 18 0c0-4-9-16-9-16z' fill='%2374ccff' stroke='%232e86ab' stroke-width='1.5'/%3E%3Cellipse cx='12.5' cy='19' rx='2' ry='3.2' fill='%23dff4ff' transform='rotate(-18 12.5 19)'/%3E%3C/svg%3E") 16 6,
+    cursor:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M16 6s-9 12-9 16a9 9 0 0 0 18 0c0-4-9-16-9-16z' fill='%2374ccff' stroke='%232e86ab' stroke-width='1.5'/%3E%3Cellipse cx='12.5' cy='19' rx='2' ry='3.2' fill='%23dff4ff' transform='rotate(-18 12.5 19)'/%3E%3C/svg%3E")
+            16 6,
         default !important;
 }
 
@@ -454,7 +524,9 @@ const menuBgImage = `url("${menuBgUrl}")`;
    Cursor 包裹层也是 .animal-cursor，若不限定范围会把 main 所有后代全部排除 */
 main.main.demo-raindrop-page,
 .demo-raindrop-page *:not(.demo-raindrop-page .animal-cursor, .demo-raindrop-page .animal-cursor *) {
-    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M16 6s-9 12-9 16a9 9 0 0 0 18 0c0-4-9-16-9-16z' fill='%2374ccff' stroke='%232e86ab' stroke-width='1.5'/%3E%3Cellipse cx='12.5' cy='19' rx='2' ry='3.2' fill='%23dff4ff' transform='rotate(-18 12.5 19)'/%3E%3C/svg%3E") 16 6,
+    cursor:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M16 6s-9 12-9 16a9 9 0 0 0 18 0c0-4-9-16-9-16z' fill='%2374ccff' stroke='%232e86ab' stroke-width='1.5'/%3E%3Cellipse cx='12.5' cy='19' rx='2' ry='3.2' fill='%23dff4ff' transform='rotate(-18 12.5 19)'/%3E%3C/svg%3E")
+            16 6,
         default !important;
 }
 </style>
