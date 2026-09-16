@@ -5,9 +5,10 @@ import { useIsMobile } from './router';
 import FeatureCard from './FeatureCard.vue';
 
 import animalIconUrl from './img/logo.svg';
-import componentsUrl from './img/feature-components.svg';
-import themeUrl from './img/feature-theme.svg';
-import packageUrl from './img/feature-package.svg';
+import heartUrl from './img/heart.svg';
+import starUrl from './img/star.svg';
+import paintbrushUrl from './img/paintbrush.svg';
+import giftUrl from './img/gift.svg';
 
 const emit = defineEmits<{ navigate: [path: string] }>();
 const isMobile = useIsMobile();
@@ -24,14 +25,14 @@ function openGithub() {
 }
 
 const features = [
-    { icon: animalIconUrl, title: '自然风格', desc: 'SVG 有机形状裁切，3D 按压按钮，温暖质朴的自然 UI 质感' },
+    { icon: heartUrl, title: '自然风格', desc: 'SVG 有机形状裁切，3D 按压按钮，温暖质朴的自然 UI 质感' },
     {
-        icon: componentsUrl,
+        icon: starUrl,
         title: '30+ 组件',
         desc: 'Button / Input / Switch / Modal / Typewriter / Card / Collapse / Divider / Time / Footer / Checkbox / Select / Tabs / CodeBlock / Table',
     },
-    { icon: themeUrl, title: '主题定制', desc: '基于 Less 变量 + CSS 自定义属性，40+ 设计令牌运行时换肤无需重新构建' },
-    { icon: packageUrl, title: '开箱即用', desc: 'ESM + CJS 双格式输出，TypeScript 类型声明完整' },
+    { icon: paintbrushUrl, title: '主题定制', desc: '基于 Less 变量 + CSS 自定义属性，40+ 设计令牌运行时换肤无需重新构建' },
+    { icon: giftUrl, title: '开箱即用', desc: 'ESM + CJS 双格式输出，TypeScript 类型声明完整' },
 ];
 
 const components = [
@@ -121,10 +122,10 @@ function highlight(code: string): Seg[][] {
                 </div>
                 <div :class="isMobile ? 'hero-text-center' : 'hero-text'">
                     <h1 class="hero-title" :style="{ fontSize: isMobile ? '37px' : '60px' }">
-                        <template v-if="isMobile"> Animal Island UI </template>
+                        <template v-if="isMobile"> Animal Island Vue </template>
                         <template v-else>
                             Animal <br />
-                            Island UI
+                            Island Vue
                         </template>
                         <span class="hero-version">v1.0.0</span>
                     </h1>

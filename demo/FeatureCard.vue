@@ -29,6 +29,7 @@ const hovered = ref(false);
                 height: '42px',
                 transform: hovered ? 'scale(1.1) rotate(-4deg)' : 'scale(1) rotate(0deg)',
                 transition: 'transform 0.3s ease',
+                animation: hovered ? 'iconBounce 0.4s ease forwards' : 'none',
             }"
         />
         <div class="title">
@@ -57,5 +58,20 @@ const hovered = ref(false);
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+</style>
+
+<style>
+/* 非 scoped：keyframes 需保持全局名称，否则内联 :style 中的 animation-name 无法匹配（对齐 React Demo 的 iconBounce） */
+@keyframes iconBounce {
+    0% {
+        transform: scale(1) rotate(0deg);
+    }
+    50% {
+        transform: scale(1.2) rotate(-5deg);
+    }
+    100% {
+        transform: scale(1.1) rotate(-4deg);
+    }
 }
 </style>

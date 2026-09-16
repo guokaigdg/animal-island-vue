@@ -24,8 +24,8 @@ export const PAGE_INFO: Record<string, { title: string; desc: string }> = {
         desc: '折叠面板组件 — 支持展开/收起、默认展开、禁用状态',
     },
     footer: {
-        title: 'Footer 底部装饰',
-        desc: '页面底部圣诞树装饰，一行 🎄 居中排列，支持无缝铺满',
+        title: 'Footer 版权栏',
+        desc: '页面底部版权栏，渲染 © 年份 文案，年份缺省取当前年份',
     },
     modal: {
         title: 'Modal 弹窗',
