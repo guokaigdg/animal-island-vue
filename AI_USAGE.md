@@ -443,16 +443,26 @@ type TitleColor =
 interface TitleProps {
     size?: TitleSize; // default 'middle'
     color?: TitleColor; // default 'default'
+    variant?: TitleVariant; // default 'ribbon'
 }
+type TitleVariant = 'ribbon' | 'layer' | 'tab';
 // Slots: default (REQUIRED — heading content)
 ```
 
 ```vue
 <Title>Chapter One</Title>
+<Title variant="ribbon">Swallowtail</Title>
+<Title variant="tab" color="app-teal">Note</Title>
 <Title size="large" color="app-yellow">Notification</Title>
 ```
 
-> Renders a heraldic ribbon banner (swallowtail clip-path ends + fold-shadow triangles + raised front). Uses the same 13-color palette as `Card.color`; size scales the entire ribbon via `em` units (small 14px / middle 20px / large 28px base).
+> 三种视觉变体共用 13 色板（`Title.color`，与 `Card.color` 同名）：
+>
+> - `variant="ribbon"`（默认）— 游戏风飘带横幅（燕尾 clip-path 两端 + 折角阴影 + 微透视正面主体）。
+> - `variant="layer"` — 双层纸，背层纸片向左上错位露出，hover 放大 1.06。
+> - `variant="tab"` — 折角便签，135° 渐变切掉右下角 + 深色三角折瓣，hover 放大 1.06。
+>
+> size 通过 `em` 单位缩放整个标题（small 14px / middle 20px / large 28px 基准）。
 >
 > **Not supported:** no `level` (`h1..h6`) — renders as inline-block `<div>`; no `bordered`; no `code` / `mark` / `underline` / `delete` modifiers (this is NOT antd's `Typography.Title`).
 

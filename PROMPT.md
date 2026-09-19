@@ -230,22 +230,26 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
     Wallpaper values for the other 12 colors follow the same formula: lighten the palette hue ~70% for bg, use the pure palette hue at 0.18 alpha for the 1.5px dots and a paler tint at 0.12 alpha for the 1px dots, set border to the pure palette hue, choose darker readable text (#3d2e1e, #6a3a9a, etc.).
 - Vue API: `<Card type="default" color="app-pink">...</Card>`. Default slot for body. Real lib props: `type` (`'default' | 'dashed'`) + `color` (13 names) + `pattern` (`'none'` or any `CardColor` value, 13 dot-overlay variants).
 
-### Title (ribbon banner — REPLACES old `Card type="title"`)
+### Title (layer / ribbon / tab — REPLACES old `Card type="title"`)
 
-- Layered structure: back-tail (swallowtail clip-path) → fold-shadow triangle → 3deg-tilted front face → top text.
+- Three visual variants (prop `variant`, default **ribbon**):
+  - `layer` — double-layer paper: a back sheet offset to the upper-left peeks out behind the front; hover scales 1.06. Front: height 2.1em; padding 0 1.55em; border-radius 0.35em; bg var(--rf); box-shadow 0 0.1em 0.16em rgba(0,0,0,0.08).
+  - `ribbon` — game-style banner (swallowtail clip-path ends + fold-shadow triangles + 3deg-tilted front). See structure below.
+  - `tab` — folded-corner note: 135° gradient cuts the bottom-right corner + dark triangular dog-ear; hover scales 1.06. bg linear-gradient(135deg, transparent 0.9em, var(--rf) 0.9em); ::after triangle border-color transparent transparent var(--rk) transparent.
 - Sizes (font-size of wrapper; everything else in em):
   small 14px / middle 20px / large 28px.
-- Wrapper: display inline-flex; height 2em; padding 0 1.6em; weight 800; line-height 1; letter-spacing 0.04em; filter drop-shadow(0 0.08em 0.12em rgba(0,0,0,0.05)).
-- .ribbonText: weight 900; padding-top 0.11em (CJK optical centering); z-index 4.
-- .ribbonBack (z-index 1, width 1.7em, height 1.7em, bottom -0.4em):
-  left: clip-path: polygon(100% 0%, 100% 100%, 0% 100%, 30% 50%, 0% 0%);
-  right: clip-path: polygon(0% 0%, 100% 0%, 70% 50%, 100% 100%, 0% 100%);
-  bg: var(--rb).
-- .ribbonFold (z-index 2, top calc(100% - 0.04em); CSS triangle via border):
-  left: border-width: 0 0.95em 0.45em 0; border-color: transparent var(--rk) transparent transparent;
-  right: border-width: 0 0 0.45em 0.95em; border-color: transparent transparent transparent var(--rk);
-- .ribbonFront (z-index 3): inset 0 0.1em; border-radius 0.2em; bg var(--rf); transform perspective(11.5em) rotateX(3deg); inset shadow 0 -0.06em 0 rgba(0,0,0,0.05).
-- Color attribute drives 4 vars (--rf front / --rb back / --rk fold / --rt text). 13 schemes:
+- **ribbon** layered structure: back-tail (swallowtail clip-path) → fold-shadow triangle → 3deg-tilted front face → top text.
+  - Wrapper: display inline-flex; height 2em; padding 0 1.6em; weight 800; line-height 1; letter-spacing 0.04em; filter drop-shadow(0 0.08em 0.12em rgba(0,0,0,0.05)).
+  - .ribbonText: weight 900; padding-top 0.11em (CJK optical centering); z-index 4.
+  - .ribbonBack (z-index 1, width 1.7em, height 1.7em, bottom -0.4em):
+    left: clip-path: polygon(100% 0%, 100% 100%, 0% 100%, 30% 50%, 0% 0%);
+    right: clip-path: polygon(0% 0%, 100% 0%, 70% 50%, 100% 100%, 0% 100%);
+    bg: var(--rb).
+  - .ribbonFold (z-index 2, top calc(100% - 0.04em); CSS triangle via border):
+    left: border-width: 0 0.95em 0.45em 0; border-color: transparent var(--rk) transparent transparent;
+    right: border-width: 0 0 0.45em 0.95em; border-color: transparent transparent transparent var(--rk);
+  - .ribbonFront (z-index 3): inset 0 0.1em; border-radius 0.2em; bg var(--rf); transform perspective(11.5em) rotateX(3deg); inset shadow 0 -0.06em 0 rgba(0,0,0,0.05).
+- Color attribute drives 4 vars (--rf front / --rb back / --rk fold / --rt text). 13 schemes (shared by all three variants):
   default-green: --rf #27d039 --rb #20992a --rk #115017 --rt #fff
   app-pink: --rf #f8a6b2 --rb #e06880 --rk #a03060 --rt #fff
   purple: --rf #b77dee --rb #9050d0 --rk #5a1a9a --rt #fff
@@ -259,7 +263,7 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
   yellow-green: --rf #ecdf52 --rb #c0b010 --rk #706800 --rt #725d42
   brown: --rf #9a835a --rb #705830 --rk #3a2810 --rt #fff
   warm-peach-pink: --rf #e18c6f --rb #b85a30 --rk #6a2a10 --rt #fff
-- Vue API: `<Title size="large" color="app-teal">Settings</Title>`. Default slot for the heading text.
+- Vue API: `<Title size="large" color="app-teal" variant="ribbon">Settings</Title>`. Default slot for the heading text.
 
 ### Collapse / Accordion (CSS-only height animation)
 

@@ -13,6 +13,12 @@ const TITLE_API: ApiRow[] = [
         type: "'default' | 'app-pink' | 'purple' | 'app-blue' | 'app-yellow' | 'app-orange' | 'app-teal' | 'app-green' | 'app-red' | 'lime-green' | 'yellow-green' | 'brown' | 'warm-peach-pink'",
         defaultVal: "'default'",
     },
+    {
+        prop: 'variant',
+        desc: '视觉变体',
+        type: "'layer' | 'ribbon' | 'tab'",
+        defaultVal: "'ribbon'",
+    },
 ];
 
 // 自然风格背景工厂：底色 + 错位圆点纹理
@@ -42,6 +48,8 @@ import { Title } from 'animal-island-vue';
 
 <template>
     <Title>斯普拉遁</Title>
+    <Title variant="ribbon">飘带标题</Title>
+    <Title variant="tab" color="app-teal">折角便签</Title>
     <Title size="small">小标题</Title>
     <Title size="large" color="app-pink">大号粉色</Title>
     <Title color="purple">紫色标题</Title>
@@ -52,9 +60,11 @@ import { Title } from 'animal-island-vue';
     <div :style="sectionStyle">
         <div :style="sectionTitleStyle">Title <span :style="tagStyle">标题</span></div>
 
-        <div :style="labelStyle">飘带标题</div>
-        <div :style="bgGreen">
-            <Title>斯普拉遁</Title>
+        <div :style="labelStyle">视觉变体（默认 layer 双层纸）</div>
+        <div :style="{ ...bgGreen, display: 'flex', flexWrap: 'wrap', gap: '50px' }">
+            <Title variant="layer">双层纸</Title>
+            <Title variant="ribbon">飘带</Title>
+            <Title variant="tab">折角便签</Title>
         </div>
 
         <div :style="labelStyle">配色变体</div>

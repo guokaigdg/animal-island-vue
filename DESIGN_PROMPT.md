@@ -236,12 +236,16 @@ NEW `pattern` prop (v0.9+) — pastel polka-dot wallpaper layer (REPLACES solid 
   pattern overrides color when both are set; use pattern for "wallpaper" feel, color for solid blocks.
   VISUAL DEFAULT: API default is `pattern='none'`, but for the animal-island look, pass a `pattern` (e.g. `pattern="default"`) on Cards by default.
 
-=== TITLE (ribbon banner — replaces deprecated Card type="title") ===
-Layered ribbon with swallowtail ends + 3D fold-shadow triangles. ALL sizes are em-based so they scale with font-size.
+=== TITLE (layer / ribbon / tab — replaces deprecated Card type="title") ===
+Three visual variants (prop `variant`, default **ribbon**); all em-based so they scale with font-size.
+  - layer: double-layer paper — a back sheet offset to the upper-left (::before, left -0.26em / top -0.3em / right 0.65em, border-radius 0.35em, bg --rb) peeks behind the front; hover scale 1.06.
+    Front: height 2.1em, padding 0 1.55em, border-radius 0.35em, bg --rf, box-shadow 0 0.1em 0.16em rgba(0,0,0,0.08).
+  - ribbon: layered ribbon with swallowtail ends + 3D fold-shadow triangles (see stack below).
+    Container: height 2em, padding 0 1.6em, drop-shadow 0 0.08em 0.12em rgba(0,0,0,0.05).
+  - tab: folded-corner note — 135° gradient cuts the bottom-right corner (linear-gradient(135deg, transparent 0.9em, var(--rf) 0.9em)) + dark triangular dog-ear (::after border-color transparent transparent var(--rk) transparent). hover scale 1.06.
   Sizes:  small=14px / middle=20px / large=28px (font-size of the wrapper)
   Text:   font-weight 900, line-height 1, letter-spacing 0.01em, padding-top 0.11em (CJK optical centering)
-  Container: height 2em, padding 0 1.6em, drop-shadow 0 0.08em 0.12em rgba(0,0,0,0.05)
-Layer stack (z-index ascending):
+Ribbon layer stack (z-index ascending):
   1. Back tail (--rb): 1.7em square, bottom -0.4em, clip-path swallowtail
        left:  polygon(100% 0%, 100% 100%, 0% 100%, 30% 50%, 0% 0%)
        right: polygon(0% 0%, 100% 0%, 70% 50%, 100% 100%, 0% 100%)
@@ -252,7 +256,7 @@ Layer stack (z-index ascending):
        transform: perspective(11.5em) rotateX(3deg),
        inset shadow 0 -0.06em 0 rgba(0,0,0,0.05)
   4. Text (--rt): on top of front
-13 color schemes (same 13 palette names): each defines --rf (front) / --rb (back tail) / --rk (fold shadow) / --rt (text).
+13 color schemes (same 13 palette names, shared by all three variants): each defines --rf (front) / --rb (back tail) / --rk (fold shadow) / --rt (text).
   Example "Default Green":  --rf #27d039  --rb #20992a  --rk #115017  --rt #fff
   Example "app-yellow":     --rf #f7cd67  --rb #d4a030  --rk #8a6010  --rt #725d42
   Example "purple":         --rf #b77dee  --rb #9050d0  --rk #5a1a9a  --rt #fff
@@ -468,7 +472,7 @@ Interface details:
 | Modal 确认按钮         | bg `#ffcc00`, color `#725d42`                                                                                            | 游戏黄主操作                                        |
 | 按钮高度（中）         | `45px`                                                                                                                   | middle size                                         |
 | pill 圆角              | `50px`                                                                                                                   | 按钮、输入框                                        |
-| Title 飘带             | swallowtail clip-path + fold 三角阴影 + 3deg X 透视                                                                      | `<Title>` 章节标题                                  |
+| Title 变体             | `layer`(默认 双层纸) / `ribbon`(飘带) / `tab`(折角便签)                                                                  | `<Title variant="...">` 章节标题                    |
 | Title 字号             | small 14 / middle 20 / large 28 px                                                                                       | em 缩放，含 padding-top 0.11em                      |
 | Title 13 色变量        | `--rf` 正面 / `--rb` 背面燕尾 / `--rk` 折角 / `--rt` 文字                                                                | 13 套调色板配色                                     |
 | Card 圆角              | `20px`                                                                                                                   | 默认卡片                                            |

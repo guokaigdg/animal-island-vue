@@ -47,7 +47,7 @@ animal-island-vue 是一套自然可爱小岛风格的 Vue 3 + TypeScript UI 组
 | `Switch`       | 开关，默认/小号                                                                                                                                                                                           | ✓      | <br />        |
 | `Modal`        | SVG blob 裁切弹窗                                                                                                                                                                                         | ✓      | <br />        |
 | `Card`         | 容器，`default`/`dashed`，13 种调色板实色 + 13 种 `pattern` 波点墙纸（CSS radial-gradient，非图片）                                                                                                       | <br /> | ✓             |
-| `Title`        | 章节标题，飘带横幅（swallowtail clip-path 燕尾 + 折角阴影 + 微透视正面），13 种配色（替代旧 `Card type="title"`）                                                                                         | <br /> | ✓             |
+| `Title`        | 章节标题，三种视觉变体（layer 双层纸 / ribbon 飘带 / tab 折角便签），13 种配色（替代旧 `Card type="title"`）                                                                                              | <br /> | ✓             |
 | `Collapse`     | 手风琴（动画用 CSS Grid 0fr↔1fr 实现，无 JS 动画）                                                                                                                                                        | ✓      | <br />        |
 | `Select`       | 下拉选择器（受控）                                                                                                                                                                                        | ✓      | <br />        |
 | `Skeleton`     | 加载占位骨架屏（SkeletonButton、SkeletonInput、SkeletonAvatar）                                                                                                                                           | <br /> | ✓             |
@@ -618,13 +618,17 @@ color: #a85565;
 
 ---
 
-### Title（飘带 Ribbon 章节标题）
+### Title（章节标题：layer / ribbon / tab）
 
-替代旧 `Card type="title"`，渲染游戏风飘带横幅：燕尾两端 + 折角阴影 + 微透视正面主体。
+替代旧 `Card type="title"`，三种视觉变体：
+- `variant="ribbon"`（默认）— 游戏风飘带横幅：燕尾两端 + 折角阴影 + 微透视正面主体。
+- `variant="layer"` — 双层纸：背层纸片向左上错位露出，正面浮在上方；hover 放大 1.06。
+- `variant="tab"` — 折角便签：135° 渐变切掉右下角 + 深色三角折瓣；hover 放大 1.06。
+
 源码：`src/components/Title/Title.vue`（scoped Less，BEM 类名 `animal-title__*`）。
 
 ```css
-/* 默认（绿色配色，可被 .animal-title--color-* 覆盖） */
+/* 默认（绿色配色，可被 .animal-title__color-* 覆盖） */
 --rf: #27d039; /* front 正面 */
 --rb: #20992a; /* back  燕尾 */
 --rk: #115017; /* fold  折角阴影 */
@@ -678,18 +682,18 @@ bottom: -0.4em;
 | middle | 20px      |
 | large  | 28px      |
 
-13 种颜色覆盖：在 wrapper 上叠加 `.animal-title--color-app-pink` / `.animal-title--color-purple` / `.animal-title--color-app-blue` / `.animal-title--color-app-yellow` / `.animal-title--color-app-orange` / `.animal-title--color-app-teal` / `.animal-title--color-app-green` / `.animal-title--color-app-red` / `.animal-title--color-lime-green` / `.animal-title--color-yellow-green` / `.animal-title--color-brown` / `.animal-title--color-warm-peach-pink` 之一；每个类同时覆盖 `--rf / --rb / --rk / --rt` 四个变量。详见 `Title.vue` `<style scoped>` 末尾的 13 行 `.animal-title--color-*` 定义。
+13 种颜色覆盖：在变体元素（`.animal-title__ribbon` / `.animal-title__layer` / `.animal-title__tab`）上叠加 `.animal-title__color-app-pink` / `.animal-title__color-purple` / `.animal-title__color-app-blue` / `.animal-title__color-app-yellow` / `.animal-title__color-app-orange` / `.animal-title__color-app-teal` / `.animal-title__color-app-green` / `.animal-title__color-app-red` / `.animal-title__color-lime-green` / `.animal-title__color-yellow-green` / `.animal-title__color-brown` / `.animal-title__color-warm-peach-pink` 之一；每个类同时覆盖 `--rf / --rb / --rk / --rt` 四个变量，ribbon / layer / tab 三者共用。详见 `Title.vue` `<style scoped>` 末尾的 12 行 `.animal-title__color-*` 定义。
 
 例：
 
 ```less
-.animal-title--color-app-yellow {
+.animal-title__color--app-yellow {
     --rf: #f7cd67;
     --rb: #d4a030;
     --rk: #8a6010;
     --rt: #725d42;
 }
-.animal-title--color-purple {
+.animal-title__color--purple {
     --rf: #b77dee;
     --rb: #9050d0;
     --rk: #5a1a9a;
