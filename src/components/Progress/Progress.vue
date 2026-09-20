@@ -188,10 +188,7 @@ const rootClass = computed(() => ['animal-progress', `animal-progress--${props.v
         bottom: 0;
         width: 0;
         border-radius: 999px;
-        background: #0ec4b6;
-        background-image: repeating-linear-gradient(-45deg, #0ec4b6 0, #0ec4b6 10px, #01b0a7 10px, #01b0a7 20px);
-        background-size: 28.28px 28.28px;
-        animation: animal-progress-stripe 1s linear infinite;
+        background: rgb(255, 193, 7);
         transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         overflow: hidden;
         display: flex;
@@ -220,19 +217,9 @@ const rootClass = computed(() => ['animal-progress', `animal-progress--${props.v
     }
 }
 
-@keyframes animal-progress-stripe {
-    0% {
-        background-position: 0 0;
-    }
-    100% {
-        background-position: -28.28px 0;
-    }
-}
-
 @media (prefers-reduced-motion: reduce) {
     .animal-progress__fill {
         transition: none;
-        animation: none;
     }
 }
 </style>
