@@ -58,9 +58,21 @@ const IMAGE_API: ApiRow[] = [
     { prop: 'height', desc: '图片高度', type: 'number | string', defaultVal: '-' },
     {
         prop: 'color',
-        desc: '背景颜色（Card pattern 同款底色，无花纹；white 为纯白）',
+        desc: '背景颜色（Card pattern 同款底色，无花纹；white 为纯白；仅 variant=\'bordered\' 时生效）',
         type: "'white' | 'default' | 'app-pink' | 'purple' | 'app-blue' | 'app-yellow' | 'app-orange' | 'app-teal' | 'app-green' | 'app-red' | 'lime-green' | 'yellow-green' | 'brown' | 'warm-peach-pink'",
         defaultVal: "'white'",
+    },
+    {
+        prop: 'variant',
+        desc: "相框类型：'default' 卡片大阴影+大圆角（默认），'bordered' 柔和阴影+小圆角，'stamp' 邮票齿孔边框",
+        type: "'default' | 'bordered' | 'stamp'",
+        defaultVal: "'default'",
+    },
+    {
+        prop: 'stampYear',
+        desc: "邮票类型（variant='stamp'）下的发行年份，印在右上角照片上（如「2026」）",
+        type: 'string',
+        defaultVal: '-',
     },
     { prop: 'lazy', desc: '是否启用懒加载', type: 'boolean', defaultVal: 'false' },
     {
@@ -85,6 +97,15 @@ const code = `import { Image } from 'animal-island-vue';
 // 基础用法
 <Image src="/photo.png" alt="岛屿风景" :width="200" :height="150" />
 
+// 相框类型：default（默认，大阴影） / bordered（边框，原样式） / stamp（邮票齿孔）
+<Image src="/photo.png" alt="默认类型" :width="200" :height="150" variant="default" />
+<Image src="/photo.png" alt="边框类型" :width="200" :height="150" variant="bordered" />
+
+// 邮票类型：四周齿孔 + 暖白底纸，可选 stampYear 印发行年份
+<Image src="/photo.png" alt="邮票（带年份）" :width="210" :height="154" variant="stamp" stamp-year="2026" />
+// 仅齿孔边框，不印文字
+<Image src="/photo.png" alt="纯邮票边框" :width="210" :height="154" variant="stamp" />
+
 // 懒加载
 <Image src="/photo.png" alt="懒加载" :width="240" :height="150" lazy />
 
@@ -98,13 +119,52 @@ const code = `import { Image } from 'animal-island-vue';
 <template>
     <div :style="sectionStyle">
         <div :style="sectionTitleStyle">
-            Image <span :style="tagStyle">图片</span> <span :style="tagStyle">9 props</span>
+            Image <span :style="tagStyle">图片</span> <span :style="tagStyle">13 props</span>
         </div>
         <div :style="demoBodyStyle">
             <!-- 点击预览 -->
             <div :style="labelStyle">点击预览（preview 默认开启，点击图片弹出大图，ESC / 遮罩 / 关闭按钮均可关闭）</div>
             <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap">
                 <Image :src="previewSrc" alt="点击预览大图" :width="330" :height="200" preview />
+            </div>
+
+            <!-- 相框类型 -->
+            <div :style="labelStyle">
+                相框类型（variant）— <code style="color: #a09080">default</code> 卡片大阴影+大圆角（默认），
+                <code style="color: #a09080">bordered</code> 柔和阴影+小圆角
+            </div>
+            <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap">
+                <div style="text-align: center">
+                    <Image :src="basicSrc1" alt="默认类型" :width="330" :height="200" variant="default" />
+                    <div style="font-size: 12px; color: #a0936e; margin-top: 6px">default（默认）</div>
+                </div>
+                <div style="text-align: center">
+                    <Image :src="basicSrc2" alt="边框类型" :width="330" :height="200" variant="bordered" />
+                    <div style="font-size: 12px; color: #a0936e; margin-top: 6px">bordered（边框）</div>
+                </div>
+            </div>
+
+            <!-- 邮票类型 -->
+            <div :style="labelStyle">
+                邮票类型（variant=&quot;stamp&quot;）— 四周齿孔 + 暖白底纸 + 半色调网点；可选
+                <code style="color: #a09080">stampYear</code> 在右上角印发行年份
+            </div>
+            <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap">
+                <div style="text-align: center">
+                    <Image
+                        :src="basicSrc1"
+                        alt="邮票（带年份）"
+                        :width="210"
+                        :height="154"
+                        variant="stamp"
+                        stamp-year="2026"
+                    />
+                    <div style="font-size: 12px; color: #a0936e; margin-top: 6px">带年份</div>
+                </div>
+                <div style="text-align: center">
+                    <Image :src="basicSrc2" alt="纯邮票边框" :width="210" :height="154" variant="stamp" />
+                    <div style="font-size: 12px; color: #a0936e; margin-top: 6px">仅齿孔边框（无文字）</div>
+                </div>
             </div>
 
             <!-- 基础用法 -->
@@ -115,10 +175,10 @@ const code = `import { Image } from 'animal-island-vue';
             </div>
 
             <!-- 背景颜色 -->
-            <div :style="labelStyle">背景颜色（color，Card pattern 同款底色，无花纹）</div>
+            <div :style="labelStyle">背景颜色（color，Card pattern 同款底色，无花纹；仅 variant='bordered' 时生效）</div>
             <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap">
                 <div v-for="(c, i) in IMAGE_COLORS" :key="c.color" style="text-align: center">
-                    <Image :src="shuffledImages[i]" :alt="c.label" :width="330" :height="200" :color="c.color" />
+                    <Image :src="shuffledImages[i]" :alt="c.label" :width="330" :height="200" :color="c.color" variant="bordered" />
                     <div style="font-size: 12px; color: #a0936e; margin-top: 6px">{{ c.label }}</div>
                 </div>
             </div>

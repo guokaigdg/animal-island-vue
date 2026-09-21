@@ -53,8 +53,10 @@ describe('Image', () => {
         expect(style).toMatch(/height:\s*120px/);
     });
 
-    it('color 应用对应调色板类名（非 white 时）', () => {
-        const wrapper = mountImage({ props: { src: 'photo.png', alt: 'x', color: 'app-pink' } });
+    it('color 应用对应调色板类名（仅 variant=bordered 时生效，对齐 React）', () => {
+        const wrapper = mountImage({
+            props: { src: 'photo.png', alt: 'x', color: 'app-pink', variant: 'bordered' },
+        });
         expect(wrapper.find('.animal-image').classes()).toContain('animal-image--app-pink');
     });
 
@@ -67,9 +69,32 @@ describe('Image', () => {
         expect(white.find('.animal-image').classes()).not.toContain('animal-image--default');
     });
 
-    it('color=default 应用奶油色类', () => {
-        const wrapper = mountImage({ props: { src: 'photo.png', alt: 'x', color: 'default' } });
+    it('color=default 应用奶油色类（variant=bordered）', () => {
+        const wrapper = mountImage({
+            props: { src: 'photo.png', alt: 'x', color: 'default', variant: 'bordered' },
+        });
         expect(wrapper.find('.animal-image').classes()).toContain('animal-image--default');
+    });
+
+    it('color 不在 stamp 相框生效（对齐 React：仅 bordered）', () => {
+        const wrapper = mountImage({
+            props: { src: 'photo.png', alt: 'x', color: 'app-pink', variant: 'stamp' },
+        });
+        expect(wrapper.find('.animal-image').classes()).not.toContain('animal-image--app-pink');
+    });
+
+    it('原生属性透传到 img（title / crossorigin，对齐 React 的 ...rest）', () => {
+        const wrapper = mountImage({
+            props: { src: 'photo.png', alt: 'x' },
+            attrs: { title: '悬停提示', crossorigin: 'anonymous' },
+        });
+        const img = wrapper.find('img');
+        expect(img.attributes('title')).toBe('悬停提示');
+        expect(img.attributes('crossorigin')).toBe('anonymous');
+        // 这些原生属性不应出现在相框（span/button）上
+        const frame = wrapper.find('.animal-image');
+        expect(frame.attributes('title')).toBeUndefined();
+        expect(frame.attributes('crossorigin')).toBeUndefined();
     });
 
     it('lazy 映射为原生 loading="lazy"', () => {

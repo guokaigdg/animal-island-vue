@@ -12,7 +12,7 @@ interface Props {
     width?: number | string;
     /** 图片高度 */
     height?: number | string;
-    /** 背景颜色（Card pattern 同款底色，无花纹；'white' 为纯白，默认 white） */
+    /** 背景颜色（Card pattern 同款底色，无花纹；'white' 为纯白，默认 white；仅 variant='bordered' 时生效） */
     color?: ImageColor;
     /** 是否启用懒加载 */
     lazy?: boolean;
@@ -44,6 +44,12 @@ const emit = defineEmits<{
 }>();
 
 const attrs = useAttrs();
+
+// 透传给 <img> 的原生属性：去掉 class/style（已手动合并到相框），其余（title / crossorigin / referrerpolicy / decoding 等）透传到 img，对齐 React 的 ...rest
+const imgAttrs = computed(() => {
+    const { class: _class, style: _style, ...rest } = attrs as Record<string, unknown>;
+    return rest;
+});
 
 // failed：主图加载失败时显示错误占位
 const failed = ref(false);
@@ -118,7 +124,8 @@ const frameClasses = computed<(string | false | undefined)[]>(() => {
         if (props.preview) cls.push('animal-image--preview');
         // 非默认相框叠加 variant 类（default 用基础样式，避免与 color 同名类冲突）
         if (props.variant !== 'default') cls.push(`animal-image--variant-${props.variant}`);
-        if (props.color !== 'white') cls.push(`animal-image--${props.color}`);
+        // 背景颜色仅 variant='bordered' 时生效（对齐 React：color 类只在 bordered 相框内出现）
+        if (props.variant === 'bordered' && props.color !== 'white') cls.push(`animal-image--${props.color}`);
     }
     if (attrs.class) cls.push(attrs.class as string);
     return cls;
@@ -155,18 +162,19 @@ const errorAriaLabel = computed(() => props.alt || '图片加载失败');
             class="animal-image__error-icon"
             width="32"
             height="32"
-            viewBox="0 0 85 66"
+            viewBox="0 0 48 48"
             fill="none"
+            stroke="#2A2A2A"
+            stroke-width="3.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
             xmlns="http://www.w3.org/2000/svg"
             aria-hidden="true"
         >
-            <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M30.585 0H54.7227C56.8954 0.0509226 61.251 1.72121 61.2917 7.99496C61.2917 10.9719 62.9303 12.1182 64.1666 12.4312H70.5935C78.4581 12.4312 84.8336 18.8067 84.8336 26.6712V51.0976C84.8336 58.9622 78.4581 65.3377 70.5935 65.3377H14.2401C6.37551 65.3377 0 58.9622 0 51.0976V26.6712C0 18.8067 6.37549 12.4312 14.2401 12.4312H21.3539C22.5467 12.1169 24.1915 11.0856 24.1915 8.63043C24.1915 4.37225 26.5803 0 30.585 0Z"
-                fill="currentColor"
-            />
-            <ellipse cx="42.9035" cy="39.4683" rx="19.7658" ry="19.7652" fill="#F9F6E5" />
+            <rect x="6" y="10" width="36" height="28" rx="3" fill="#FAEDCD" />
+            <circle cx="16" cy="20" r="3" fill="#E9C46A" />
+            <path d="M10 36 L20 24 L28 32 L36 22 L42 36 Z" fill="#2A9D8F" />
+            <path d="M10 36 L42 36" stroke="#2A2A2A" />
         </svg>
         <span>图片加载失败</span>
     </span>
@@ -177,6 +185,7 @@ const errorAriaLabel = computed(() => props.alt || '图片加载失败');
             :alt="alt"
             :loading="lazy ? 'lazy' : undefined"
             class="animal-image__img"
+            v-bind="imgAttrs"
             @load="handleLoad"
             @error="handleError"
         />
@@ -189,6 +198,7 @@ const errorAriaLabel = computed(() => props.alt || '图片加载失败');
             :alt="alt"
             :loading="lazy ? 'lazy' : undefined"
             class="animal-image__img"
+            v-bind="imgAttrs"
             @load="handleLoad"
             @error="handleError"
         />
