@@ -22,6 +22,12 @@ const TABLE_API: ApiRow[] = [
     { prop: 'showHeader', desc: '是否显示表头', type: 'boolean', defaultVal: 'true' },
     { prop: 'loading', desc: '加载状态', type: 'boolean', defaultVal: 'false' },
     { prop: 'emptyText', desc: '空数据显示文本', type: 'string', defaultVal: "'暂无数据'" },
+    {
+        prop: 'pagination',
+        desc: '分页配置，传入对象开启客户端分页（透传 Pagination 属性）',
+        type: 'false | TablePagination',
+        defaultVal: 'false',
+    },
     { prop: 'slot[cell-{dataIndex}]', desc: '自定义单元格渲染 slot', type: 'slot', defaultVal: '-' },
 ];
 
@@ -43,6 +49,19 @@ const dataSource: Person[] = [
     { key: '4', name: '喻哥', age: 30, island: '月亮岛', fruit: '梨', hobby: '钓鱼' },
     { key: '5', name: '小润', age: 22, island: '摸鱼岛', fruit: '桃子', hobby: '画画' },
 ];
+
+// 分页示例数据：12 条，配 pagination.defaultPageSize 3
+const hobbies = ['音乐', '运动', '唱歌', '钓鱼', '画画'];
+const fruits = ['苹果', '橘子', '樱桃', '梨', '桃子', '椰子'];
+const islands = ['彩虹岛', '好评岛', '小岛', '摸鱼岛'];
+const bigDataSource: Person[] = Array.from({ length: 12 }, (_, i) => ({
+    key: String(i + 1),
+    name: `岛民${i + 1}号`,
+    age: 20 + i,
+    island: islands[i % islands.length],
+    fruit: fruits[i % fruits.length],
+    hobby: hobbies[i % hobbies.length],
+}));
 
 const tagStyles: Record<string, { bg: string; color: string }> = {
     音乐: { bg: '#f1ecfa', color: '#9370db' },
@@ -112,6 +131,19 @@ const striped = ref(true);
 
         <div :style="{ ...demoBodyStyle, padding: '0', overflow: 'hidden' }">
             <Table :columns="columns" :data-source="dataSource" :striped="striped" :loading="loading">
+                <template #cell-hobby="{ value }">
+                    <span :style="hobbyStyle(value as string)">{{ value }}</span>
+                </template>
+            </Table>
+        </div>
+
+        <div :style="labelStyle">内置分页（pagination 属性，客户端分页）</div>
+        <div :style="{ ...demoBodyStyle, padding: '0', overflow: 'hidden' }">
+            <Table
+                :columns="columns"
+                :data-source="bigDataSource"
+                :pagination="{ defaultPageSize: 3, showTotal: true, showSizeChanger: true, pageSizeOptions: [3, 5, 8] }"
+            >
                 <template #cell-hobby="{ value }">
                     <span :style="hobbyStyle(value as string)">{{ value }}</span>
                 </template>

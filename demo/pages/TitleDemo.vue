@@ -38,9 +38,15 @@ function acBox(bg: string, dot1: string, dot2: string, border: string): CSSPrope
 const bgGreen = acBox('#e8f5d8', 'rgba(120,200,80,0.18)', 'rgba(180,230,120,0.12)', '#b8d890');
 const bgSky = acBox('#ddf0fa', 'rgba(80,170,230,0.15)', 'rgba(140,210,250,0.10)', '#90cce8');
 const bgSand = acBox('#fdf3d8', 'rgba(220,180,80,0.15)', 'rgba(240,210,120,0.10)', '#e8d090');
-const bgLavender = acBox('#ede8f8', 'rgba(160,120,230,0.15)', 'rgba(200,170,250,0.10)', '#c0a8e8');
 const bgCoral = acBox('#fce8e0', 'rgba(240,120,90,0.15)', 'rgba(250,170,140,0.10)', '#e8b0a0');
-const bgMint = acBox('#d8f5f0', 'rgba(60,190,170,0.18)', 'rgba(120,230,210,0.12)', '#88d8c8');
+
+// 尺寸标注：置于标题下方居中
+const sizeLabelStyle: CSSProperties = {
+    ...labelStyle,
+    marginTop: '20px',
+    marginBottom: '0',
+    textAlign: 'center',
+};
 
 const code = `<script setup lang="ts">
 import { Title } from 'animal-island-vue';
@@ -84,19 +90,21 @@ import { Title } from 'animal-island-vue';
             <Title color="warm-peach-pink"> 暖桃粉 </Title>
         </div>
 
-        <div :style="labelStyle">小尺寸</div>
-        <div :style="bgCoral">
-            <Title size="small"> 小标题 </Title>
-        </div>
+        <div :style="{ ...bgCoral, display: 'flex', flexWrap: 'wrap', alignItems: 'flex-end', gap: '50px' }">
+            <div>
+                <Title size="small"> 小标题 </Title>
+                <div :style="sizeLabelStyle">小尺寸</div>
+            </div>
 
-        <div :style="labelStyle">中尺寸（默认）</div>
-        <div :style="bgMint">
-            <Title size="middle"> 中等标题 </Title>
-        </div>
+            <div>
+                <Title size="middle"> 中等标题 </Title>
+                <div :style="sizeLabelStyle">中尺寸（默认）</div>
+            </div>
 
-        <div :style="labelStyle">大尺寸</div>
-        <div :style="bgLavender">
-            <Title size="large"> 大号标题 </Title>
+            <div>
+                <Title size="large"> 大号标题 </Title>
+                <div :style="sizeLabelStyle">大尺寸</div>
+            </div>
         </div>
 
         <div :style="labelStyle">支持英文与表情</div>
