@@ -172,4 +172,8 @@ export type { CarouselProps } from './components/Carousel';
 export { Countdown } from './components/Countdown';
 export type { CountdownProps, CountdownSize, CountdownVariant } from './components/Countdown';
 
+// Phase 10 — 文件上传
+export { Upload } from './components/Upload';
+export type { UploadProps, UploadFile, UploadFileStatus, UploadListType, UploadCustomRequestOptions } from './components/Upload';
+
 // ...（后续阶段陆续启用）
