@@ -176,4 +176,8 @@ export type { CountdownProps, CountdownSize, CountdownVariant } from './componen
 export { Upload } from './components/Upload';
 export type { UploadProps, UploadFile, UploadFileStatus, UploadListType, UploadCustomRequestOptions } from './components/Upload';
 
+// Phase 5 — 头像
+export { Avatar, AvatarGroup } from './components/Avatar';
+export type { AvatarProps, AvatarShape, AvatarSize, AvatarGroupProps } from './components/Avatar';
+
 // ...（后续阶段陆续启用）
