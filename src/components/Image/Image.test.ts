@@ -83,6 +83,20 @@ describe('Image', () => {
         expect(wrapper.find('.animal-image').classes()).not.toContain('animal-image--app-pink');
     });
 
+    it('variant=default 应用 variant-default 类（图片撑满、无衬板）', () => {
+        const wrapper = mountImage({
+            props: { src: 'photo.png', alt: 'x', variant: 'default' },
+        });
+        expect(wrapper.find('.animal-image').classes()).toContain('animal-image--variant-default');
+    });
+
+    it('variant=bordered 不加 variant-bordered 类（对齐 React：bordered 用 base 样式、无边框）', () => {
+        const wrapper = mountImage({
+            props: { src: 'photo.png', alt: 'x', variant: 'bordered' },
+        });
+        expect(wrapper.find('.animal-image').classes()).not.toContain('animal-image--variant-bordered');
+    });
+
     it('原生属性透传到 img（title / crossorigin，对齐 React 的 ...rest）', () => {
         const wrapper = mountImage({
             props: { src: 'photo.png', alt: 'x' },

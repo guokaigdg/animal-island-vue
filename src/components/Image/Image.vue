@@ -122,8 +122,9 @@ const frameClasses = computed<(string | false | undefined)[]>(() => {
     } else {
         if (loaded.value) cls.push('animal-image--loaded');
         if (props.preview) cls.push('animal-image--preview');
-        // 非默认相框叠加 variant 类（default 用基础样式，避免与 color 同名类冲突）
-        if (props.variant !== 'default') cls.push(`animal-image--variant-${props.variant}`);
+        // variant 类：对齐 React —— 仅 default / stamp 单独加类；bordered 直接用 base 样式（无边框）
+        if (props.variant === 'default') cls.push('animal-image--variant-default');
+        if (props.variant === 'stamp') cls.push('animal-image--variant-stamp');
         // 背景颜色仅 variant='bordered' 时生效（对齐 React：color 类只在 bordered 相框内出现）
         if (props.variant === 'bordered' && props.color !== 'white') cls.push(`animal-image--${props.color}`);
     }
@@ -474,13 +475,8 @@ const errorAriaLabel = computed(() => props.alt || '图片加载失败');
         0 -6px 16px -6px rgba(0, 0, 0, 0.03);
 }
 
-// bordered：边框 + 柔和阴影 + 小圆角（color 调色板底色在边框内生效）
-.animal-image--variant-bordered {
-    border: 1px solid rgba(114, 93, 66, 0.25);
-    padding: 8px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.06);
-}
+// bordered：无单独类，直接用 base .animal-image —— 白底衬板 + 12px 内边距 + 8px 小圆角 + 柔和阴影，无边框。
+// （React 的 variant='bordered' 不附加任何 variant 类，仅用 base 样式；注释称「边框」但实际 border:none。）
 
 // stamp：邮票变体。奶油底纸 + 四周齿孔（mask-composite 交集）。
 .animal-image--variant-stamp {
