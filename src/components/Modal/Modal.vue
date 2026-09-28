@@ -38,7 +38,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-    variant: 'default',
+    variant: 'game',
     width: 520,
     maskClosable: true,
     showFooter: true,

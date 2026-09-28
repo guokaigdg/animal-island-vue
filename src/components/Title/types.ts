@@ -15,7 +15,7 @@ export type TitleColor =
     | 'brown'
     | 'warm-peach-pink';
 
-/** 视觉变体（layer=默认双层纸；ribbon=飘带；tab=折角便签） */
+/** 视觉变体（ribbon=默认飘带；layer=双层纸；tab=折角便签） */
 export type TitleVariant = 'ribbon' | 'layer' | 'tab';
 
 export interface TitleProps {

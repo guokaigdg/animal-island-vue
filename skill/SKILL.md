@@ -853,7 +853,9 @@ scoped Less + BEM；类名根 `.animal-tabs`，内部使用 `__list` / `__item` 
 
 ### Modal
 
-**SVG clip-path 完整 path d 值（精确还原 blob 轮廓）：**
+`variant` prop：`'game'`（默认，异形 blob clip-path 自然外框）| `'default'`（常规圆角矩形）。
+
+**SVG clip-path 完整 path d 值（精确还原 blob 轮廓，默认 `variant="game"` 专用）：**
 
 ```vue
 <template>

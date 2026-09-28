@@ -205,7 +205,8 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
         </defs>
     </svg>
     ```
-- Modal content: clip-path: url(#animal-modal-clip); bg rgb(247,243,223); padding 48px 48px 32px 48px; color #725d42.
+- Modal supports a `variant` prop: `'game'`（默认，异形 blob clip-path 自然外框）| `'default'`（常规圆角矩形）。
+- Modal content (game variant): clip-path: url(#animal-modal-clip); bg rgb(247,243,223); padding 48px 48px 32px 48px; color #725d42.
 - Backdrop: rgba(40, 30, 20, 0.45); backdrop-filter: blur(2px).
 - Confirm button uses game yellow: bg #ffcc00, color #725d42, 3D shadow #e0b800.
 - Vue API: `<Modal v-model:open="visible" title="Hello" :width="520" :mask-closable="true" :show-footer="true" :typewriter="true" :type-speed="80" @ok="onOk" @close="onClose">...</Modal>`. Default slot for body, `#title` / `#footer` slots for header / footer overrides. Use `<Teleport to="body">` internally.

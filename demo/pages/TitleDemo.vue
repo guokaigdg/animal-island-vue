@@ -54,7 +54,7 @@ import { Title } from 'animal-island-vue';
 
 <template>
     <Title>斯普拉遁</Title>
-    <Title variant="ribbon">飘带标题</Title>
+    <Title variant="layer">双层纸标题</Title>
     <Title variant="tab" color="app-teal">折角便签</Title>
     <Title size="small">小标题</Title>
     <Title size="large" color="app-pink">大号粉色</Title>
@@ -66,10 +66,10 @@ import { Title } from 'animal-island-vue';
     <div :style="sectionStyle">
         <div :style="sectionTitleStyle">Title <span :style="tagStyle">标题</span></div>
 
-        <div :style="labelStyle">视觉变体（默认 layer 双层纸）</div>
+        <div :style="labelStyle">视觉变体（默认 ribbon 飘带）</div>
         <div :style="{ ...bgGreen, display: 'flex', flexWrap: 'wrap', gap: '50px' }">
-            <Title variant="layer">双层纸</Title>
             <Title variant="ribbon">飘带</Title>
+            <Title variant="layer">双层纸</Title>
             <Title variant="tab">折角便签</Title>
         </div>
 

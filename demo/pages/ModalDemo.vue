@@ -6,7 +6,12 @@ import type { ApiRow } from '../tools';
 
 const MODAL_API: ApiRow[] = [
     { prop: 'open', desc: '是否可见', type: 'boolean', defaultVal: '-', required: true },
-    { prop: 'variant', desc: "弹窗类型: default 常规圆角矩形, game 异形自然外框", type: "'default' | 'game'", defaultVal: "'default'" },
+    {
+        prop: 'variant',
+        desc: '弹窗类型: game 异形自然外框, default 常规圆角矩形',
+        type: "'default' | 'game'",
+        defaultVal: "'game'",
+    },
     { prop: 'title', desc: '标题', type: 'string', defaultVal: '-' },
     { prop: 'width', desc: '宽度', type: 'number | string', defaultVal: '520' },
     { prop: 'maskClosable', desc: '点击遮罩关闭', type: 'boolean', defaultVal: 'true' },
@@ -39,10 +44,11 @@ const open = ref(false);
 
 <template>
     <Button type="primary" @click="open = true">打开 Modal</Button>
+    <!-- 默认使用 game 异形外框 -->
     <Modal v-model:open="open" @ok="open = false">Modal 内容</Modal>
 
-    <!-- 异形弹窗 -->
-    <Modal v-model:open="open" variant="game">异形弹窗内容</Modal>
+    <!-- 常规圆角矩形 -->
+    <Modal v-model:open="open" variant="default">常规弹窗内容</Modal>
 
     <!-- 带标题 -->
     <Modal v-model:open="open" title="标题">内容</Modal>
@@ -74,13 +80,13 @@ const open = ref(false);
         <div :style="sectionTitleStyle">Modal <span :style="tagStyle">弹窗</span></div>
 
         <div :style="demoBodyStyle">
-            <div :style="labelStyle">异形弹窗 (game)</div>
+            <div :style="labelStyle">默认弹窗 (game 异形外框)</div>
             <div :style="rowStyle">
-                <Button type="primary" @click="gameOpen = true"> 异形 Modal </Button>
+                <Button type="primary" @click="gameOpen = true"> 默认 Modal </Button>
             </div>
-            <div :style="labelStyle">基础弹窗</div>
+            <div :style="labelStyle">圆角弹窗 (variant="default")</div>
             <div :style="rowStyle">
-                <Button type="primary" @click="modalOpen = true"> 基础 Modal </Button>
+                <Button type="primary" @click="modalOpen = true"> 圆角 Modal </Button>
                 <Button @click="titleModalOpen = true"> 带标题 Modal </Button>
                 <Button type="dashed" @click="customFooterOpen = true"> 自定义 Footer </Button>
             </div>
@@ -95,7 +101,7 @@ const open = ref(false);
             </div>
         </div>
 
-        <Modal v-model:open="modalOpen" @ok="modalOpen = false">
+        <Modal v-model:open="modalOpen" variant="default" @ok="modalOpen = false">
             <div
                 :style="{
                     textAlign: 'center',
@@ -111,7 +117,7 @@ const open = ref(false);
             </div>
         </Modal>
 
-        <Modal v-model:open="gameOpen" variant="game" @ok="gameOpen = false">
+        <Modal v-model:open="gameOpen" @ok="gameOpen = false">
             <div
                 :style="{
                     textAlign: 'center',

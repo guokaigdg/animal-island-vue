@@ -316,6 +316,7 @@ interface ModalProps {
     open: boolean; // REQUIRED, supports v-model:open
     title?: string; // heading text — NOT the <Title> component (see § 1.6).
     // For rich content use the #title slot.
+    variant?: 'default' | 'game'; // default 'game' — organic blob clip-path frame; 'default' renders a rounded rect
     width?: number | string; // default 520
     maskClosable?: boolean; // default true
     showFooter?: boolean; // default true — set false to hide footer entirely
@@ -356,6 +357,8 @@ function submit() {
 Notes:
 
 - Modal already ships the required SVG `<clipPath id="animal-modal-clip">` internally.
+
+- Default `variant` is `'game'` — the organic blob clip-path frame (rounded rectangle disabled). Pass `variant="default"` for a plain rounded rectangle.
 
 - To disable the typewriter animation for dynamic content: `:typewriter="false"`.
 

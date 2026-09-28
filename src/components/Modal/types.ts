@@ -5,7 +5,7 @@ export type ModalVariant = 'default' | 'game';
 export interface ModalProps {
     /** 是否可见 */
     open: boolean;
-    /** 弹窗类型: default 常规圆角矩形, game 异形自然外框。默认 default */
+    /** 弹窗类型: default 常规圆角矩形, game 异形自然外框。默认 game */
     variant?: ModalVariant;
     /** 标题 */
     title?: string;

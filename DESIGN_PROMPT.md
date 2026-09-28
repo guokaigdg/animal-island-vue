@@ -472,7 +472,7 @@ Interface details:
 | Modal 确认按钮         | bg `#ffcc00`, color `#725d42`                                                                                            | 游戏黄主操作                                        |
 | 按钮高度（中）         | `45px`                                                                                                                   | middle size                                         |
 | pill 圆角              | `50px`                                                                                                                   | 按钮、输入框                                        |
-| Title 变体             | `layer`(默认 双层纸) / `ribbon`(飘带) / `tab`(折角便签)                                                                  | `<Title variant="...">` 章节标题                    |
+| Title 变体             | `ribbon`(默认 飘带) / `layer`(双层纸) / `tab`(折角便签)                                                                  | `<Title variant="...">` 章节标题                    |
 | Title 字号             | small 14 / middle 20 / large 28 px                                                                                       | em 缩放，含 padding-top 0.11em                      |
 | Title 13 色变量        | `--rf` 正面 / `--rb` 背面燕尾 / `--rk` 折角 / `--rt` 文字                                                                | 13 套调色板配色                                     |
 | Card 圆角              | `20px`                                                                                                                   | 默认卡片                                            |
