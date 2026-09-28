@@ -37,6 +37,8 @@ import LoadingDemo from './pages/LoadingDemo.vue';
 import PaginationDemo from './pages/PaginationDemo.vue';
 import CursorDemo from './pages/CursorDemo.vue';
 import BackgroundDemo from './pages/BackgroundDemo.vue';
+import UploadDemo from './pages/UploadDemo.vue';
+import AvatarDemo from './pages/AvatarDemo.vue';
 
 const props = defineProps<{ activeKey: string }>();
 
@@ -75,6 +77,8 @@ const PAGES: Record<string, unknown> = {
     pagination: PaginationDemo,
     cursor: CursorDemo,
     background: BackgroundDemo,
+    upload: UploadDemo,
+    avatar: AvatarDemo,
 };
 
 // 与 React 版同款：根据 activeKey 哈希固定映射颜色，同页面不抖动

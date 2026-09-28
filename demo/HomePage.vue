@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Card, Button, Typewriter } from '@';
+import { Card, Button, Typewriter, Icon } from '@';
+import type { IconName } from '@';
 import { useIsMobile } from './router';
 import FeatureCard from './FeatureCard.vue';
 
@@ -24,14 +25,117 @@ function openGithub() {
     window.open('https://github.com/guokaigdg/animal-island-vue', '_blank');
 }
 
+// ============================================
+// 背景壁纸：低透明度 Icon 随机漂浮（对齐 React demo 的 BG_ICONS / giants）
+// ============================================
+const BG_ICONS: IconName[] = [
+    'Heart',
+    'Star',
+    'Sun',
+    'Moon',
+    'Cloud',
+    'Rainbow',
+    'Flower',
+    'Butterfly',
+    'Leaf',
+    'Tree',
+    'Mushroom',
+    'Bird',
+    'Fish',
+    'Sailboat',
+    'Balloon',
+    'Icecream',
+    'Coffee',
+    'Music',
+    'Snowflake',
+    'Gift',
+    'Rocket',
+    'Bear',
+    'Cat',
+    'Rabbit',
+    'Frog',
+    'Owl',
+    'Penguin',
+    'Apple',
+    'Cherry',
+    'Lemon',
+    'Cactus',
+    'Home',
+    'Camera',
+    'Bell',
+    'Globe',
+    'Key',
+    'Search',
+    'Settings',
+    'Mail',
+    'Phone',
+    'Umbrella',
+    'Download',
+    'Wifi',
+    'Headphones',
+    'Donut',
+    'Strawberry',
+    'Watermelon',
+    'Ladybug',
+    'Bee',
+    'Snail',
+    'Dog',
+    'Fox',
+    'Bicycle',
+    'Car',
+    'Train',
+];
+
+// 超大 Icon：每次进入随机挑 5–8 个、超级大，作为背景装饰（对齐 React 的拒绝采样避免重叠）
+const giants = (() => {
+    const count = 5 + Math.floor(Math.random() * 4);
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const placed: {
+        left: number;
+        top: number;
+        size: number;
+        name: IconName;
+        rotate: number;
+        cx: number;
+        cy: number;
+    }[] = [];
+    const used = new Set<string>();
+    let guard = 0;
+    while (placed.length < count && guard < 2000) {
+        guard++;
+        const size = 430 + Math.random() * 160;
+        const left = 4 + Math.random() * 92;
+        const top = 4 + Math.random() * 92;
+        const cx = (left / 100) * vw;
+        const cy = (top / 100) * vh;
+        const ok = placed.every((p) => Math.hypot(cx - p.cx, cy - p.cy) >= (size + p.size) / 2 + 20);
+        if (ok) {
+            let name = BG_ICONS[Math.floor(Math.random() * BG_ICONS.length)];
+            let nameGuard = 0;
+            while (used.has(name) && nameGuard < 200) {
+                name = BG_ICONS[Math.floor(Math.random() * BG_ICONS.length)];
+                nameGuard++;
+            }
+            used.add(name);
+            placed.push({ name, left, top, rotate: -14 + Math.random() * 28, size, cx, cy });
+        }
+    }
+    return placed;
+})();
+
 const features = [
-    { icon: heartUrl, title: '自然风格', desc: 'SVG 有机形状裁切，3D 按压按钮，温暖质朴的自然 UI 质感' },
+    { icon: heartUrl, title: '治愈系风格', desc: 'SVG 有机形状裁切，3D 按压按钮，温暖质朴的自然 UI 质感' },
     {
         icon: starUrl,
-        title: '30+ 组件',
+        title: '30+ 个组件',
         desc: 'Button / Input / Switch / Modal / Typewriter / Card / Collapse / Divider / Time / Footer / Checkbox / Select / Tabs / CodeBlock / Table',
     },
-    { icon: paintbrushUrl, title: '主题定制', desc: '基于 Less 变量 + CSS 自定义属性，40+ 设计令牌运行时换肤无需重新构建' },
+    {
+        icon: paintbrushUrl,
+        title: '主题定制',
+        desc: '基于 Less 变量 + CSS 自定义属性，40+ 设计令牌运行时换肤无需重新构建',
+    },
     { icon: giftUrl, title: '开箱即用', desc: 'ESM + CJS 双格式输出，TypeScript 类型声明完整' },
 ];
 
@@ -42,12 +146,12 @@ const components = [
     { key: 'checkbox', name: 'Checkbox', desc: '多选框组件，支持水平/垂直排列' },
     { key: 'select', name: 'Select', desc: '下拉选择器，支持搜索和禁用' },
     { key: 'tabs', name: 'Tabs', desc: '标签页组件，支持受控/非受控模式' },
-    { key: 'modal', name: 'Modal', desc: 'SVG 有机形状弹窗、ESC 关闭' },
+    { key: 'modal', name: 'Modal', desc: 'SVG 有机形状弹窗、支持异形 game 变体、ESC 关闭' },
     { key: 'typewriter', name: 'Typewriter', desc: '逐字打字机效果，支持多行与富内容' },
     { key: 'card', name: 'Card', desc: '默认/标题两种卡片风格' },
     { key: 'collapse', name: 'Collapse', desc: 'FAQ 折叠面板、平滑展开动画' },
     { key: 'divider-comp', name: 'Divider', desc: '装饰性水平分割线' },
-    { key: 'footer', name: 'Footer', desc: '页脚组件' },
+    { key: 'footer', name: 'Footer', desc: '页脚版权栏，© 年份 文案' },
     { key: 'codeblock', name: 'CodeBlock', desc: '代码语法高亮组件' },
     { key: 'table', name: 'Table', desc: '泛型表格、悬浮动画、加载/空态' },
     { key: 'form', name: 'Form', desc: '完整校验、三种布局、命令式 API' },
@@ -114,6 +218,29 @@ function highlight(code: string): Seg[][] {
 
 <template>
     <div ref="pageRef" class="page" @scroll="handleScroll">
+        <!-- 背景壁纸：各种 Icon 低透明度漂浮，作为整页装饰（对齐 React demo） -->
+        <div aria-hidden="true" class="bg-icons">
+            <div
+                v-for="(g, i) in giants"
+                :key="`giant-${i}`"
+                class="giant"
+                :style="{
+                    left: g.left + '%',
+                    top: g.top + '%',
+                    transform: `translate(-50%, -50%) rotate(${g.rotate}deg)`,
+                }"
+            >
+                <Icon
+                    :name="g.name"
+                    :size="g.size"
+                    color="#ffffff"
+                    :style="{
+                        opacity: 0.68,
+                        animation: `iconFloat ${5.5 + (i % 3)}s ease-in-out ${-i * 1.2}s infinite`,
+                    }"
+                />
+            </div>
+        </div>
         <!-- Hero -->
         <div class="hero">
             <div :class="isMobile ? 'hero-content-mobile' : 'hero-content'">
@@ -127,7 +254,7 @@ function highlight(code: string): Seg[][] {
                             Animal <br />
                             Island Vue
                         </template>
-                        <span class="hero-version">v1.0.0</span>
+                        <span class="hero-version">v1.3.1</span>
                     </h1>
                     <Typewriter :speed="60">
                         <p
@@ -238,6 +365,20 @@ function highlight(code: string): Seg[][] {
     height: 100dvh;
     overflow-y: auto;
     overflow-x: hidden;
+    position: relative;
+}
+
+/* 背景装饰层：各种 Icon 随机散落（固定种子定位 + 轻微旋转，漂浮动画在图标上）；fixed 铺满全屏 */
+.bg-icons {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+}
+.giant {
+    position: absolute;
+    line-height: 0;
 }
 
 .hero {
@@ -248,7 +389,7 @@ function highlight(code: string): Seg[][] {
     min-height: 100vh;
     padding: 60px 40px 40px;
     position: relative;
-    
+    z-index: 1;
 }
 .hero-content {
     display: grid;
@@ -325,11 +466,14 @@ function highlight(code: string): Seg[][] {
     color: #fff9e6;
     font-size: 12px;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    z-index: 1;
 }
 
 .section {
     max-width: 960px;
     margin: 0 auto;
+    position: relative;
+    z-index: 1;
 }
 .section-title {
     font-family:
@@ -399,6 +543,8 @@ function highlight(code: string): Seg[][] {
     font-size: 12px;
     color: #7c5734;
     margin-top: 32px;
+    position: relative;
+    z-index: 1;
 }
 .footer-links {
     display: flex;
@@ -424,6 +570,17 @@ function highlight(code: string): Seg[][] {
     50% {
         transform: translateX(-50%) translateY(-8px);
         opacity: 0.7;
+    }
+}
+
+/* 背景 Icon 漂浮动画（对齐 React demo） */
+@keyframes iconFloat {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-8px);
     }
 }
 </style>

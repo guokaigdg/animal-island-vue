@@ -135,4 +135,12 @@ export const PAGE_INFO: Record<string, { title: string; desc: string }> = {
         title: 'Background 背景',
         desc: '装饰背景壁纸 — dots 波点 / sprinkles 圆柱形彩色针糖两种图案，纯 CSS + 内联 SVG 实现，零图片资源',
     },
+    upload: {
+        title: 'Upload 上传',
+        desc: '文件上传组件 — 奶油胶囊触发钮 / 虚线拖拽区 / text 行列表 / picture 行内缩略图 / picture-card 图片卡片，支持内置 XHR 真实上传、进度与取消、自定义触发区、onExceed 超限提示、内置大图预览',
+    },
+    avatar: {
+        title: 'Avatar 头像',
+        desc: '头像组件 — 圆形 / 方形，图片 / 图标 / 文字三种内容形态，文字超宽自动缩放，Avatar.Group 支持叠加展示与超出折叠为 +N',
+    },
 };
