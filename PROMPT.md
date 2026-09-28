@@ -516,6 +516,18 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 - Props: `active` (boolean, default true — false keeps the screen mounted with the `exiting` class, `opacity: 0` + `pointer-events: none`, fading out over `fadeDuration` seconds before unmounting; flipping back mid-fade cancels the timer), `tip` (string | VNode — centred caption; omit for a visually-hidden 加载中), `delay` (number, ms, default 0 — re-arms on every active→true, prevents flicker on fast loads), `fadeDuration` (number, seconds, default 0.6), `zIndex` (number, default 3000, above Notification's 2000). Attrs fall through to the root; root carries `role="status"`.
 - Never mount it inside a `position: relative` box or put children inside it — it is a self-contained fullscreen scene.
 
+### Upload (file upload)
+
+- File upload with a cream capsule trigger / dashed drag zone / text row list / **picture** inline-thumbnail rows / picture-card tiles, animal-island cream base + mint-teal (#19c8b9) progress. Controlled via `v-model` (or `defaultFileList`); `beforeUpload` can skip or transform a file, `customRequest` plugs in real uploads (otherwise a timer simulates progress). `action` switches to a native XHR upload with real progress, cancel-on-remove and `file.response`/`file.error`. Image files auto-generate an ObjectURL into `thumbUrl`; built-in lightbox preview opens on image click unless the consumer listens to `preview`. Deleting reports `status:'removed'` via `change`.
+- Props: `accept`, `multiple` (default false), `maxCount` (=1 replaces, >1 keeps earliest N and drops extras), `disabled` (default false), `directory`, `modelValue` (UploadFile[], v-model), `defaultFileList` (default []), `listType` ('text' | 'picture' | 'picture-card', default 'text'), `showUploadList` (boolean | {showPreviewIcon, showRemoveIcon}), `drag` (default false), `tip`, `ariaLabel` (default '上传文件'), `beforeUpload`, `customRequest`, `action`, `method` (default POST), `headers`, `data`, `name` (default 'file'), `withCredentials`, `onRemove`. Emits `update:modelValue`, `change` ({ file, fileList, event? }), `preview` (file), `exceed` (files, fileList).
+
+### Avatar (circle / square)
+
+- Avatar: a filled circle (border-radius 999px; `shape="square"` = 8px-cornered square) on `@primary-color-bg` (#e6f9f6) cream-teal fill with mint-teal (#19c8b9) text, `font-weight 600`, and a 2px cream (#f8f8f0) border when in placeholder state for a sticker feel. `size` = 'small' 32 / 'middle' 40 / 'large' 48, or any pixel number (numeric font-size = round(px × 0.4), min 12).
+- Three content shapes: **image** (`src` fills via `<img style="object-fit:cover">`, `alt` a11y, load failure auto-falls back to icon/text unless `onError` returns false), **icon** (a component child, or the `icon` VNode prop, else the default user icon at font-size = px × 0.5), **text** (string/number children inside a center-aligned `.string` span; auto-shrinks font-size when the text overflows `px − gap×2`). Empty state → default user icon with `role="img"` + `aria-label="avatar"`.
+- `gap` (default 4) = padding between text/icon and the boundary.
+- **AvatarGroup** stacks avatars with a 2px cream gap and negative margin (gap), `maxCount` collapses extras into a "+N" badge (font-size 14px), and injects group-level `size` / `shape` into children that don't set their own.
+
 ## HARD RULES (must obey — disqualifies the output if violated)
 
 1. Never use pure black (#000) or near-black (#111) text. Use #794f27 / #725d42 / #8a7b66.

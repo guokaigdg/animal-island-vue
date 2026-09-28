@@ -1707,6 +1707,149 @@ import { Icon, HeartIcon } from 'animal-island-vue';
 
 ***
 
+### 1.40 Upload
+
+```ts
+import type {
+    UploadFile,
+    UploadFileStatus,
+    UploadListType,
+    UploadCustomRequestOptions,
+    UploadChangeParam,
+    UploadShowUploadList,
+} from 'animal-island-vue';
+
+interface UploadProps {
+    /** Accepted file types, forwarded to input[accept]. */
+    accept?: string;
+    /** Allow multiple selection. Default false. */
+    multiple?: boolean; // default false
+    /** Max count: =1 replaces the current file; >1 keeps the earliest N and drops extras; 0/negative = unlimited. */
+    maxCount?: number;
+    /** Disabled. Default false. */
+    disabled?: boolean; // default false
+    /** Choose a whole directory (forwards webkitdirectory). Default false. */
+    directory?: boolean; // default false
+    /** File list (controlled, v-model). */
+    modelValue?: UploadFile[];
+    /** Initial file list (uncontrolled). */
+    defaultFileList?: UploadFile[]; // default []
+    /** List shape. */
+    listType?: 'text' | 'picture' | 'picture-card'; // default 'text'
+    /** Show list, or { showPreviewIcon, showRemoveIcon } to toggle icons. Default true. */
+    showUploadList?: boolean | UploadShowUploadList; // default true
+    /** Enable drag-and-drop zone. Default false. */
+    drag?: boolean; // default false
+    /** Hint text below the trigger. */
+    tip?: string;
+    /** a11y label (default 上传文件). */
+    ariaLabel?: string; // default '上传文件'
+    /** Hook before upload; return false to skip the file, or a File (sync/async) to upload a transformed file. */
+    beforeUpload?: (file: File, fileList: File[]) => boolean | File | Promise<boolean | File>;
+    /** Custom upload impl; takes precedence over action. Throws mark the file as error. */
+    customRequest?: (options: UploadCustomRequestOptions) => void;
+    /** Upload URL; uses native XHR (real progress + cancel). Also accepts (file) => url or async Promise<url>; empty -> error. */
+    action?: string | ((file: File) => string | Promise<string>);
+    /** HTTP method. Default POST. */
+    method?: 'POST' | 'PUT' | 'PATCH'; // default 'POST'
+    /** Custom request headers. */
+    headers?: Record<string, string>;
+    /** Extra form fields; also accepts (file) => fields or async Promise<fields>. Blob/File passed through. */
+    data?: Record<string, unknown> | ((file: File) => Record<string, unknown> | undefined | Promise<Record<string, unknown> | undefined>);
+    /** File field name. Default 'file'. */
+    name?: string; // default 'file'
+    /** Send with credentials. Default false. */
+    withCredentials?: boolean; // default false
+    /** Hook before remove; return false to cancel removal (throws also block). */
+    onRemove?: (file: UploadFile) => boolean | void | Promise<boolean | void>;
+    /** className / style fall through to root. */
+}
+// Emits:
+//   update:modelValue (UploadFile[])
+//   change (info: UploadChangeParam) { file, fileList, event? }
+//   preview (file: UploadFile) — when listened, the built-in lightbox is suppressed
+//   exceed (files: File[], fileList: UploadFile[]) — dropped when maxCount is full (not for =1 replacement)
+```
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import { Upload, type UploadFile } from 'animal-island-vue';
+
+const list = ref<UploadFile[]>([]);
+</script>
+
+<template>
+    <Upload list-type="picture-card" accept="image/*" :max-count="4" v-model="list" />
+</template>
+```
+
+> File upload with a cream capsule trigger / dashed drag zone / text row list / **picture** inline-thumbnail rows / picture-card tiles. Controlled via `v-model` (or `defaultFileList`); `beforeUpload` can skip or transform a file, `customRequest` plugs in real uploads (otherwise a timer simulates progress). `action` switches to a native XHR upload with real progress, cancel-on-remove and `file.response`/`file.error`. Image files auto-generate an ObjectURL into `thumbUrl` (distinct from `url`); built-in lightbox preview opens on image click unless the consumer listens to `preview`. Deleting reports `status:'removed'` via `change`. `exceed` fires when `maxCount>1` is full. **Not supported:** drag-to-reorder of the list, chunked upload.
+
+***
+
+### 1.41 Avatar
+
+```ts
+import type { AvatarProps, AvatarShape, AvatarSize, AvatarGroupProps } from 'animal-island-vue';
+
+interface AvatarProps {
+    /** shape: circle (rounded square) or square (8px corner). Default circle. */
+    shape?: 'circle' | 'square'; // default 'circle'
+    /** size: preset small/middle/large or any pixel number. Default middle. */
+    size?: number | 'small' | 'middle' | 'large'; // default 'middle'
+    /** Image URL; on load failure it automatically falls back to icon / text. */
+    src?: string;
+    /** Image alt (a11y); only applies to the image. */
+    alt?: string;
+    /** Icon placeholder (VNode); shown when src is empty or fails. Defaults to the user icon. */
+    icon?: VNode;
+    /** Padding between text/icon and the boundary (px); wide text auto-shrinks proportionally. */
+    gap?: number; // default 4
+    /** Image-load-error callback; return false to prevent falling back to placeholder. */
+    onError?: () => boolean;
+    // default slot: text produces a text avatar; an icon component produces an icon avatar
+}
+// AvatarGroup (avatar group, exported standalone):
+//   maxCount?: number  — show at most N avatars, collapse the rest into "+N"
+//   maxStyle?: CSSProperties — style for the collapsed "+N" avatar
+//   size?: number | AvatarSize — group size injected into children that don't set their own
+//   shape?: AvatarShape — group shape injected into children that don't set their own
+//   gap?: number — spacing between stacked avatars (default 8)
+```
+
+```vue
+<script setup lang="ts">
+import { Avatar, AvatarGroup, UserIcon } from 'animal-island-vue';
+</script>
+
+<template>
+    <Avatar>岛</Avatar>
+    <Avatar>
+        <FishIcon />
+    </Avatar>
+    <Avatar :src="'/photo.png'" alt="岛屿风景" />
+    <Avatar :size="64">64</Avatar>
+
+    <!-- icon avatar: an icon component as children -->
+    <Avatar>
+        <FishIcon />
+    </Avatar>
+
+    <!-- avatar group: stacked by default, collapses beyond maxCount into +N -->
+    <AvatarGroup :max-count="3">
+        <Avatar :src="'/a.png'" alt="A" />
+        <Avatar :src="'/b.png'" alt="B" />
+        <Avatar>C</Avatar>
+        <Avatar>D</Avatar>
+    </AvatarGroup>
+</template>
+```
+
+> Avatar renders image / icon / text three content shapes inside a filled circle (or 8px-cornered square). Empty state shows the default user icon with `role="img"` + `aria-label="avatar"`. A component child (icon) is treated as an icon avatar; string / number text becomes a text avatar whose font auto-shrinks when the text overflows the avatar (measured against `px - gap*2`). `AvatarGroup` stacks avatars with a cream gap via negative margin, injects group-level `size` / `shape` into children that don't set their own, and collapses extras into a "+N" badge. **Not supported:** `maxStyle` expects `CSSProperties`; group has no max-`gap` collapse animation.
+
+***
+
 ## 2. Common Recipes
 
 ### 2.1 Form row

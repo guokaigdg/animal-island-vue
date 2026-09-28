@@ -35,7 +35,7 @@ animal-island-vue 是一套自然可爱小岛风格的 Vue 3 + TypeScript UI 组
 
 - 样式系统：**scoped** **`<style lang="less" scoped>`** **+ BEM** + `src/styles/variables.less` 设计 token（**不使用 CSS Modules**）
 
-### 全量导出清单（40 个 named exports — 含子组件、命令式 API 与伴生导出）
+### 全量导出清单（42 个 named exports — 含子组件、命令式 API 与伴生导出）
 
 从 `src/index.ts` 导出：
 
@@ -69,6 +69,7 @@ animal-island-vue 是一套自然可爱小岛风格的 Vue 3 + TypeScript UI 组
 | `Countdown`    | 倒计时，里程表式单向滚动数字                                                                                                                                                                              | <br /> | ✓             |
 | `Form`         | 表单系统（Form、FormItem、FormProvider、useForm）                                                                                                                                                         | ✓      | <br />        |
 | `Image`        | 相框图片，14 种底色、懒加载、点击预览                                                                                                                                                                     | ✓      | <br />        |
+| `Avatar` / `AvatarGroup` | 圆形/方形头像，图片/图标/文字三种形态，文字超宽自动缩放；头像组叠加展示 + 超出折叠为 +N                                                             | ✓      | ✓             |
 | `DatePicker`   | 日期选择器，日历网格 / 范围选择                                                                                                                                                                           | ✓      | <br />        |
 | `TimePicker`   | 时间选择器，时/分/秒滚动列                                                                                                                                                                                | ✓      | <br />        |
 | `Notification` | 命令式通知（含 NotificationContainer）                                                                                                                                                                    | ✓      | <br />        |
@@ -2911,6 +2912,47 @@ Props：`active`（boolean，默认 true）、`tip`（string | VNode，中央提
 Props：`name`（IconName）、`icon`（Component）、`src`（string）、`size`（number | string，默认 24，number 视为 px）、`color`（string，仅 svg 模式，覆写 `stroke`）、`strokeWidth`（number | string，仅 svg 模式）、`bounce`（boolean，默认 false，hover 弹跳 0.3s）。`id` / `class` / `style` / `data-*` / `aria-*` 透传渲染元素。另导出 `ICON_LIST`、`NAIVE_PALETTE`、`ICON_CATEGORIES`。
 
 **不支持**：`spin` / `rotate` 旋转、单图标多路径多色、font-icon 模式。
+
+---
+
+### Upload
+
+```vue
+<Upload list-type="picture-card" accept="image/*" :max-count="4" v-model="list" />
+<Upload drag multiple tip="点击或文件拖进虚线框均可" />
+```
+
+文件上传：奶油胶囊触发钮 / 虚线拖拽区 / text 行列表 / **picture** 行内缩略图 / picture-card 图片卡片，动物岛奶油底色 + 薄荷绿 teal(#19c8b9) 进度。
+
+Props：`accept`（string，透传 input[accept]，拖拽同样按它过滤）、`multiple`（boolean，默认 false）、`maxCount`（number，=1 新文件替换当前，>1 保留最早 N 个、超出丢弃）、`disabled`（boolean，默认 false）、`directory`（boolean，透传 webkitdirectory 整文件夹选择）、`modelValue`（UploadFile[]，受控 v-model）、`defaultFileList`（UploadFile[]，默认 []）、`listType`（'text' | 'picture' | 'picture-card'，默认 'text'）、`showUploadList`（boolean | { showPreviewIcon, showRemoveIcon }，默认 true）、`drag`（boolean，默认 false）、`tip`（string，触发区下方提示文字）、`ariaLabel`（string，默认 '上传文件'）、`beforeUpload`（(file, fileList) => boolean | File | Promise，返回 false 跳过，返回 File 上传转换后的文件）、`customRequest`（(options) => void，优先级高于 action，不传也不给 action 时定时器模拟进度）、`action`（string | (file) => url，原生 XHR 真实上传，支持进度与删除取消，解析为空标记 error）、`method`（默认 POST）、`headers`、`data`（Record 或 (file) => Record，Blob/File 透传不序列化）、`name`（默认 'file'）、`withCredentials`、`onRemove`（(file) => boolean | void | Promise，返回 false 阻止删除，抛错同样阻止。Emits：`update:modelValue`（UploadFile[]）、`change`（info: { file, fileList, event? }）、`preview`（file，监听后组件关闭内置弹层）、`exceed`（files, fileList，maxCount>1 满员丢弃时触发）。`className` / `style` 透传到根。
+
+状态：每行/卡片显示 uploading 旋转 + 百分比、done 绿勾、error 红叉；图片文件自动 `URL.createObjectURL` 生成 `thumbUrl`（与 `url` 语义分离），text/picture 行内预览与 picture-card 卡片共用，删除时 `revokeObjectURL` 清理；点击可预览图片默认打开内置大图弹层（焦点陷阱 + Esc + 背景滚动锁）。maxCount>1 满员时添加块仍保留，选中的新文件被丢弃并由 `exceed` 通知；maxCount=1 为替换语义不触发 `exceed`。删除后经 `change` 以 `status:'removed'` 上报。
+
+**不支持**：列表拖拽重排、分片上传。
+
+---
+
+### Avatar
+
+```vue
+<Avatar>岛</Avatar>
+<Avatar><FishIcon /></Avatar>
+<Avatar :src="'/photo.png'" alt="岛屿风景" />
+<Avatar :size="64">64</Avatar>
+
+<AvatarGroup :max-count="3">
+    <Avatar :src="'/a.png'" alt="A" />
+    <Avatar>C</Avatar>
+</AvatarGroup>
+```
+
+头像组件：圆形 / 方形，图片 / 图标 / 文字三种内容形态，动物岛奶油底（@primary-color-bg #e6f9f6）+ 薄荷绿 teal(#19c8b9) 文字，占位形态带 2px 奶油色（@bg-color #f8f8f0）描边增加贴纸感，border-radius 999px（方形 8px）。
+
+Avatar Props：`shape`（'circle' | 'square'，默认 'circle'）、`size`（'small'=32 / 'middle'=40 / 'large'=48 或任意像素数值，默认 'middle'；数字尺寸字号按 0.4 换算并 ≥12）、`src`（string，图片地址，加载失败自动回退图标 / 文字）、`alt`（string，图片替代文本，仅图片头像生效，缺省为空串表装饰性）、`icon`（VNode，图标占位，缺省使用用户图标 UserIcon 且 size = 头像尺寸 × 0.5）、`gap`（number，文字 / 图标与边界间距 px，默认 4，文字超宽时按 available = px − gap×2 等比缩放字号）、`onError`（() => boolean，图片加载失败回调，返回 false 阻止回退）。`className` / `style` / 原生属性透传根元素。
+
+内容判定：默认 slot 的子元素若为组件（object/function type）→ 图标头像；字符串 / 数字 → 文字头像；无子且无图片 → 占位显示默认用户图标，根元素 `role="img"` + `aria-label="avatar"`。有图时 `<img class="__img" object-fit: cover>` 铺满，加载失败触发 onError。
+
+AvatarGroup（头像组，独立导出）：`maxCount`（number，最多显示数量，超出折叠为 '+N'）、`maxStyle`（CSSProperties，折叠 '+N' 头像自定义样式）、`size` / `shape`（组级下发给孩子 Avatar，子级显式指定则优先）、`gap`（number，头像间距 px，默认 8）。叠加展示通过负 margin（-1 × gap）重叠，头像间 2px 奶油色缝隙；'+N' 复用头像外观、font-size 14px。
 
 ---
 

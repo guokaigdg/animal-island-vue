@@ -373,7 +373,7 @@ Or template form:
 Interactive:           BackTop, Button, Input, Switch, Modal, Collapse, Select, Tabs, Checkbox, Radio, Drawer, Carousel
 Container / Heading:   Card (13 colors + 13 dot patterns), Title (ribbon banner — 13 schemes), Table, Tag, Pagination (ghost circular cells, orange/teal variants, built into Table via pagination prop)
 Feedback:              Tooltip, Loading, Notification (imperative API, with NotificationContainer), Progress, Skeleton (SkeletonButton, SkeletonInput, SkeletonAvatar)
-Form:                  Form, FormItem, FormProvider, useForm, DatePicker, TimePicker
+Form:                  Form, FormItem, FormProvider, useForm, DatePicker, TimePicker, Upload (file upload — cream capsule trigger, dashed drag zone, text list, picture inline thumbnails, picture-card)
 Decorative:            Time, Footer, Divider, Cursor (arrow/raindrop), Background (dots/sprinkles wallpaper), Typewriter, Countdown (odometer countdown)
 Content display:       CodeBlock, Image
 Non-component exports: Notification (command-style toast API), useForm (form hook)
