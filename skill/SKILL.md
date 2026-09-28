@@ -986,7 +986,7 @@ border-color: rgba(255, 204, 0, 0.85);
 }
 ```
 
-- 无 `type` prop（原 `sea` 海浪类型与森林像素图均已移除），仅保留 `seamless` prop。
+- 版权栏：渲染 `© {year} {text}`，`year` 默认取当前年份、`text` 默认 `All Rights Reserved.`，包裹在语义化 `<footer>` 中。无 `type` prop。
 
 ---
 
