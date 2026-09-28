@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
+import Icon from '../Icon/Icon.vue';
 
 interface Props {
     question?: string;
@@ -69,13 +70,8 @@ function toggle() {
             <span class="animal-collapse__title">
                 <slot name="question">{{ question }}</slot>
             </span>
-            <span class="animal-collapse__arrow">
-                <svg viewBox="0 0 24 24" width="20" height="20">
-                    <path
-                        fill="currentColor"
-                        d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"
-                    />
-                </svg>
+            <span class="animal-collapse__fish" aria-hidden>
+                <Icon name="Fish" :size="20" />
             </span>
         </button>
         <div
@@ -153,13 +149,10 @@ function toggle() {
         line-height: 1.35;
     }
 
-    &__arrow {
-        color: @primary-color;
-        opacity: 0.5;
-        transition:
-            opacity @motion-duration-base @motion-ease,
-            transform @motion-duration-base @motion-ease;
+    &__fish {
         display: inline-flex;
+        opacity: 1;
+        transition: transform @motion-duration-base @motion-ease;
     }
 
     &--expanded {
@@ -167,8 +160,7 @@ function toggle() {
             background: @primary-color-active;
             transform: rotate(180deg);
         }
-        .animal-collapse__arrow {
-            opacity: 1;
+        .animal-collapse__fish {
             transform: rotate(45deg);
         }
         .animal-collapse__content {

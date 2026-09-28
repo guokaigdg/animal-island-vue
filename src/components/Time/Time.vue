@@ -51,7 +51,7 @@ function pad(n: number) {
     width: fit-content;
     padding: 20px 32px 15px 32px;
     border-radius: 20px;
-    background: #fff;
+    background: @bg-color;
     box-shadow: @shadow-sm;
     font-family: @font-family;
     animation: animal-time-fade-in @motion-duration-slow @motion-ease;
