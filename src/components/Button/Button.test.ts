@@ -56,7 +56,7 @@ describe('Button', () => {
         expect(wrapper.emitted('click')).toHaveLength(1);
     });
 
-    it('icon prop 在非 loading 时渲染，loading 时被 loading 图标替换', async () => {
+    it('icon prop 在非 loading 时渲染，loading 时保留图标并切换到条纹动画', async () => {
         const wrapper = mount(Button, {
             props: { icon: '🔍' },
             slots: { default: 'x' },
@@ -65,9 +65,9 @@ describe('Button', () => {
         expect(wrapper.find('.animal-btn__icon').exists()).toBe(true);
         expect(wrapper.find('.animal-btn__icon').text()).toBe('🔍');
         await wrapper.setProps({ loading: true });
-        // loading：与 React 一致 —— icon 被替换为 loading 图标（同为 btn-icon 容器）
-        expect(wrapper.find('.animal-btn__loading-icon').exists()).toBe(true);
-        expect(wrapper.find('.animal-btn__icon').text()).not.toContain('🔍');
+        // loading：仅切换类名触发斜条纹动画，icon 仍按 icon prop 渲染
+        expect(wrapper.get('button').classes()).toContain('animal-btn--loading');
+        expect(wrapper.find('.animal-btn__icon').text()).toBe('🔍');
     });
 
     // ---------- 补充测试 ----------
