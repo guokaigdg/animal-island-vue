@@ -180,4 +180,12 @@ export type { AvatarProps, AvatarShape, AvatarSize, AvatarGroupProps } from './c
 export { Upload } from './components/Upload';
 export type { UploadProps, UploadFile, UploadFileStatus, UploadListType, UploadCustomRequestOptions } from './components/Upload';
 
+// Phase 11 — 星级评分
+export { Rate } from './components/Rate';
+export type { RateProps, RateSize } from './components/Rate';
+
+// Phase 12 — 徽标数
+export { Badge } from './components/Badge';
+export type { BadgeProps, BadgeSize, BadgeColor } from './components/Badge';
+
 // ...（后续阶段陆续启用）

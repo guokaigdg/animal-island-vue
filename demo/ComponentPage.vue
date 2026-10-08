@@ -39,6 +39,8 @@ import CursorDemo from './pages/CursorDemo.vue';
 import BackgroundDemo from './pages/BackgroundDemo.vue';
 import UploadDemo from './pages/UploadDemo.vue';
 import AvatarDemo from './pages/AvatarDemo.vue';
+import RateDemo from './pages/RateDemo.vue';
+import BadgeDemo from './pages/BadgeDemo.vue';
 
 const props = defineProps<{ activeKey: string }>();
 
@@ -79,6 +81,8 @@ const PAGES: Record<string, unknown> = {
     background: BackgroundDemo,
     upload: UploadDemo,
     avatar: AvatarDemo,
+    rate: RateDemo,
+    badge: BadgeDemo,
 };
 
 // 与 React 版同款：根据 activeKey 哈希固定映射颜色，同页面不抖动

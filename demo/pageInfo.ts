@@ -143,4 +143,12 @@ export const PAGE_INFO: Record<string, { title: string; desc: string }> = {
         title: 'Avatar 头像',
         desc: '头像组件 — 圆形 / 方形，图片 / 图标 / 文字三种内容形态，文字超宽自动缩放，Avatar.Group 支持叠加展示与超出折叠为 +N',
     },
+    rate: {
+        title: 'Rate 评分',
+        desc: '星级评分组件 — 支持 v-model 受控与 defaultValue 非受控、星星总数自定义、悬停预览、点击同星清空、方向键 / Home / End 键盘操作，选中时星星逐格弹跳并扩散光点',
+    },
+    badge: {
+        title: 'Badge 徽标数',
+        desc: '徽标数组件 — 包裹元素显示右上角数字角标，支持 overflowCount 封顶、showZero 零值展示、dot 小红点、small / medium 两档尺寸、12 色调色板、#count 插槽自定义内容，不传被包裹元素即独立使用',
+    },
 };
