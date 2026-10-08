@@ -12,8 +12,8 @@ A Vue 3 UI component library with a natural, cute island style
 <br/>
 <div align="center">
     <a href="https://github.com/guokaigdg/animal-island-vue/stargazers"><img src="https://img.shields.io/github/stars/guokaigdg/animal-island-vue?style=flat-square" alt="Stars"></a>
-    <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt="License"></a>
-    <a href="LICENSE"><img src="https://img.shields.io/npm/dm/animal-island-vue.svg?style=flat-square" alt=""></a>
+    <a href="../LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt="License"></a>
+    <a href="../LICENSE"><img src="https://img.shields.io/npm/dm/animal-island-vue.svg?style=flat-square" alt=""></a>
     <a href="https://github.com/guokaigdg/animal-island-vue/releases"><img src="https://img.shields.io/github/v/tag/guokaigdg/animal-island-vue?label=version&style=flat-square" alt="Version"></a>
 </div>
 <br/>
@@ -47,7 +47,7 @@ If you need icons, we recommend [naive-icons](https://github.com/guokaigdg/naive
 
 ## 🚀 Use AI to Generate animal-island-vue Pages (No Coding Needed)
 
-Non-developer and don't want to write code yourself? Use [`PROMPT.md`](../PROMPT.md) — no npm, no build step.
+Not a developer and don't want to write code yourself? Use [`PROMPT.md`](../PROMPT.md) — no npm, no build step.
 
 **4 steps:**
 
@@ -69,7 +69,7 @@ npm install animal-island-vue
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Button, Card, Modal } from 'animal-island-vue';
+import { Button, Card, Modal, Title } from 'animal-island-vue';
 import 'animal-island-vue/style';
 
 const open = ref(false);
@@ -96,7 +96,7 @@ Complete reference for different scenarios:
 | [`DESIGN_PROMPT.md`](../DESIGN_PROMPT.md) | Visual-style prompts for v0 / Figma AI / Midjourney / DALL-E, including color palette, fonts, size tables, Modal clip-path and prohibition list.                 |
 | [`skill/SKILL.md`](../skill/SKILL.md)     | Pixel-perfect style specification Skill - design tokens, all component CSS, Demo layout values, Less variable templates and new component development checklist. |
 | [`CHANGELOG.md`](../CHANGELOG.md)         | Release notes.                                                                                                                                                   |
-| [`CONTRIBUTING.md`](../CONTRIBUTING.md)   | Contributing Guide                                                                                                                                               |
+| [`CONTRIBUTING.md`](../CONTRIBUTING.md)   | Contributing Guide.                                                                                                                                              |
 
 ## Local Development
 
@@ -127,7 +127,7 @@ npm run build:docs
 ## Copyright and Disclaimer
 
 - All visual elements, interface designs, icons, and animations in this project are independently original designs and do not copy any copyrighted materials from third-party games or products.
-- If the copyright holder believes that related content is suspected of infringement, they can contact via email, and I will make rectifications or deletions immediately.
+- If the copyright holder believes that related content is suspected of infringement, they can contact me via email, and I will make rectifications or deletions immediately.
 
 ## Contact
 
@@ -136,4 +136,5 @@ For any questions or copyright-related communications, please contact via Issue 
 ## License
 
 MIT
+
 This project is released under the MIT open-source license, for learning use only. The author is not responsible for any legal issues or losses caused by the use of this library.

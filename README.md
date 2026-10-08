@@ -37,7 +37,7 @@
 
 ## 预览
 
-- 在线预览 (PC 端) [animal-island-vue-pc](https://guokaigdg.github.io/animal-island-vue/#/)
+- 在线预览（PC 端）[animal-island-vue-pc](https://guokaigdg.github.io/animal-island-vue/#/)
 
 - 在线预览（移动端）[animal-island-vue-mobile](https://guokaigdg.github.io/animal-island-vue/#/)
 
@@ -64,12 +64,12 @@ npm install animal-island-vue
 
 ## 快速上手
 
-> ⚠️ **重要**: 请务必导入样式文件 `import 'animal-island-vue/style'`，否则组件将没有样式与字体!
+> ⚠️ **重要**: 请务必导入样式文件 `import 'animal-island-vue/style'`，否则组件将没有样式与字体！
 
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Button, Card, Modal } from 'animal-island-vue';
+import { Button, Card, Modal, Title } from 'animal-island-vue';
 import 'animal-island-vue/style';
 
 const open = ref(false);
@@ -139,4 +139,5 @@ npm run build:docs
 ## License
 
 MIT
+
 本项目基于 MIT 开源协议发布，仅限学习使用，作者不对因使用本库导致的任何法律问题或损失承担责任。

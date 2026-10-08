@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2026-10-08
+
+### Added
+
+- New `Rate` component (star rating built on native radio inputs —
+  controlled `v-model` and uncontrolled `defaultValue`, custom `count`,
+  hover preview, click-to-clear, roving tabindex with arrow / Home / End
+  keys, sequential pop-in plus six-point splash on increase) plus tests.
+- New `Badge` component (numeric / dot indicator on a `<sup>` —
+  `overflowCount` clamping, `showZero`, `dot`, two sizes, 12-color
+  palette, `#count` slot, standalone mode) plus tests.
+- New `RateDemo` and `BadgeDemo` pages; both components are exported
+  from `src/index.ts` (148 named exports).
+
+### Changed
+
+- Synced `AI_USAGE.md`, `PROMPT.md`, `DESIGN_PROMPT.md`, and
+  `skill/SKILL.md` with the new components.
+
 ## [1.3.0] - 2026-09-16
 
 ### Added
