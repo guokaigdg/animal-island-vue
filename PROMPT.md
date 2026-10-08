@@ -528,6 +528,26 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 - `gap` (default 4) = padding between text/icon and the boundary.
 - **AvatarGroup** stacks avatars with a 2px cream gap and negative margin (gap), `maxCount` collapses extras into a "+N" badge (font-size 14px), and injects group-level `size` / `shape` into children that don't set their own.
 
+### Rate (star rating on native radio inputs)
+
+- API: `<Rate v-model="score" />`, or uncontrolled via `:default-value="3"`. Props: `modelValue` / `value` (controlled, `value` wins — React prop alias), `defaultValue` (default 0), `count` (default 5), `size` ('small' 20px / 'middle' 26px / 'large' 34px), `readonly`, `allowClear` (default true). Emits `update:modelValue` and `change` (both `number`; clearing reports 0).
+- Root `role="radiogroup"` with `aria-label="评分"` (overridable); each star is a visually hidden native `radio` with `aria-label="N 星"`, so single-select semantics and keyboard support are free. `.item` hover `translateY(-1px)`; focus-visible ring `outline 2px solid @warning-color` offset 1px.
+- Star icon: built-in `StarIcon` (stroke #2A2A2A). Unselected = stroke only (@text-color-disabled) with `fill-opacity 0` on the path and `opacity 0` on the two eye circles; selected = stroke @warning-color-active, path fill-opacity 1, circles opacity 1, all fading over @motion-duration-base.
+- Values are clamped to `[0, count]` and rounded, so a 4.6 average lights 5 stars and a stale high value after `count` shrinks stays selectable. Roving tabindex: exactly one star is in the tab order (the selected one, or the first when unrated); ArrowRight/ArrowUp +1, ArrowLeft/ArrowDown −1 (min 1), `Home` 1, `End` count — each moves focus and commits.
+- Hover previews without committing; `readonly` shows the true value, disables the inputs, sets `aria-readonly`, and ignores hover and keys. Clicking the already-selected star clears to 0 when `allowClear`.
+- Increase-only animation: newly lit stars pop in sequence via `--rate-pop-delay` (60ms apart) and the last one emits a six-point `splash` ring (22px base circle scaled by `--rate-splash-scale`, six box-shadows, no fill). Both remount via `key` to replay; both respect `prefers-reduced-motion`.
+- **Vue-only notes**: bind `click` only (never `change`) — a native radio fires `change` on a new selection while the clear branch needs a repeated click, and reading the updated checked value in both makes a fresh selection clear itself instantly. Read the previous clamped value BEFORE writing the ref (Vue refs update synchronously, so a later read yields `from === to` and the animation never fires). In controlled mode, re-sync the inputs' `checked` on `nextTick`, because the browser mutates it even when the parent rejects the value and Vue only writes back when the vnode value changes.
+
+### Badge (numeric / dot indicator on a `<sup>`)
+
+- API: `<Badge :count="5"><Tag>未读</Tag></Badge>`, `overflowCount` (default 99), `showZero` (default false), `dot` (default false), `size` ('small' 16px / 'medium' 20px, default 'medium'; dot is always 10px), `color` (12-value palette shared with Card / Tag, default 'app-red'). Default slot = the wrapped element; `#count` slot replaces `count` entirely. Native `title` is the indicator tooltip.
+- Root is `position: relative` inline-flex; the indicator is a `<sup>` at `top/right: 0` + `translate(50%, -50%)`, 2px cream (@bg-color) ring, @shadow-sm, `border-radius 999px`, entry animation `animal-badge-zoom-in` 0.25s from `scale(0.6)`.
+- Overflow: only pure numbers / numeric strings are clamped (100 → `99+`); anything else renders verbatim. The untruncated value stays in `title`.
+- Box shape: content ≤ 2 characters locks `width == height` for a true circle; 3+ characters (`100`, `99+`) and two full-width CJK chars fall back to a capsule. Font sizes 10px / 9px because the 2px ring leaves only a 16px inner well in the 20px circle.
+- Visibility: `0` / `'0'` hidden unless `showZero`; empty or whitespace-only `count` renders no indicator, but `dot` still shows its dot. `dot` never sets `title`.
+- Standalone (no default slot) drops the absolute positioning, cream ring and shadow so the indicator sits in normal flow; `--badge-shift-x/y` reset to 0 keeps the same keyframes.
+- **Vue-only note**: `inheritAttrs: false` with `title` stripped from the forwarded root attrs, so the tooltip appears on the indicator only — never twice.
+
 ## HARD RULES (must obey — disqualifies the output if violated)
 
 1. Never use pure black (#000) or near-black (#111) text. Use #794f27 / #725d42 / #8a7b66.

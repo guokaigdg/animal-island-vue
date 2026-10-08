@@ -2954,6 +2954,50 @@ Avatar Props：`shape`（'circle' | 'square'，默认 'circle'）、`size`（'sm
 
 AvatarGroup（头像组，独立导出）：`maxCount`（number，最多显示数量，超出折叠为 '+N'）、`maxStyle`（CSSProperties，折叠 '+N' 头像自定义样式）、`size` / `shape`（组级下发给孩子 Avatar，子级显式指定则优先）、`gap`（number，头像间距 px，默认 8）。叠加展示通过负 margin（-1 × gap）重叠，头像间 2px 奶油色缝隙；'+N' 复用头像外观、font-size 14px。
 
+### Rate
+
+```vue
+<Rate />
+<Rate :default-value="2" />
+<Rate v-model="score" />
+<Rate :count="10" size="large" :model-value="4" readonly />
+<Rate :default-value="3" :allow-clear="false" />
+```
+
+星级评分组件：根节点 `role="radiogroup"`，每颗星是一个视觉隐藏的原生 `radio`（`aria-label`「N 星」），单选语义与键盘能力由浏览器免费提供；星星图标复用内置 `StarIcon`（描边 #2A2A2A，选中时换 @warning-color-active 并把 path 填充淡入、两个 circle 眼睛显形）。尺寸 small/middle/large 对应 `--rate-size` 20/26/34px，gap 用 @spacing-xs / 6px / @spacing-sm，hover 整颗 `translateY(-1px)`。焦点环沿用输入类的黄色（`outline 2px solid @warning-color`，offset 1px）。
+
+Rate Props：`modelValue`（number，受控，对应 v-model）、`value`（number，受控，React `value` 别名，优先级高于 modelValue）、`defaultValue`（number，非受控初值，默认 0）、`count`（number，星星总数，默认 5）、`size`（'small' | 'middle' | 'large'，默认 'middle'）、`readonly`（boolean，只读，input 全部 disabled 且容器标 `aria-readonly`，默认 false）、`allowClear`（boolean，再点同一颗清空为 0，默认 true）。Emits：`update:modelValue` (number) + `change` (number)。根元素透传 `class` / `style` / 原生属性，`aria-label` 默认「评分」可覆盖。
+
+取值一律先夹取到 `[0, count]` 并四舍五入（`toStarCount`），所以平均分 4.6 点亮 5 颗、count 调小后残留的高分也仍可被选中。Roving tabindex：始终只有一颗星在 Tab 序列里（有分值时是当前选中星，无分值时是第一颗），方向键 / `Home` / `End` 移动并直接提交。悬停只做预览不提交，`readonly` 与键盘操作时收起预览。
+
+**Vue 移植注意（与 React 版的两处刻意差异）**：
+1. 只监听 `click`、不监听 `change`。原生 radio 在「勾选新星」时触发 `change`、只有「已勾选再点」才走到清空分支，两者挂在同一次点击上会各自读到已更新的 checkedValue，导致点第 4 颗星刚点亮就被清空；合并到单一 click 里按当前值判断分支即可根除该双触发。
+2. `commit` 里必须在写 `innerValue` 之前先取旧的 `checkedValue` —— Vue 的 ref 是同步更新，晚读会拿到刚提交的新值，`from === to` 时星星动画永远不触发（React 靠 setState 异步侥幸没这个问题）。另外受控模式下父级不接新值时浏览器仍会改写原生 radio 的 `checked`，而 Vue 只在 vnode 值变化时才回写，需在提交后 `nextTick` 里主动拨回（对齐 React 的 restoreControlledState）。
+
+动画：只有「加分」才播（`to > from`），from → to 之间新点亮的星星依次弹出，`--rate-pop-delay` 每颗递增 60ms；最后一颗额外挂一个 `splash` 光点，22px 基准圆 + `scale(var(--rate-splash-scale))` 缩放到当前尺寸，只画六点不铺底色。两者都换 `key` 重挂载以重放动画，并遵循 `prefers-reduced-motion`。
+
+### Badge
+
+```vue
+<Badge :count="5"><Tag>未读</Tag></Badge>
+<Badge :count="100" :overflow-count="99"><Tag>未读</Tag></Badge>
+<Badge dot><Tag>通知</Tag></Badge>
+<Badge><Tag>收藏</Tag><template #count><HeartIcon /></template></Badge>
+<Badge :count="11" />
+```
+
+徽标数组件：根节点 `position: relative` 的 inline-flex span，角标渲染为 `<sup>` 绝对定位到右上角（`top/right: 0` + `translate(50%, -50%)`），2px 奶油色描边（@bg-color）把角标从被覆盖元素上分离出来，配 @shadow-sm。出场动画 `animal-badge-zoom-in` 0.25s 从 `scale(0.6)` 淡入，位移抽成 `--badge-shift-x/y` 变量。
+
+Badge Props：`count`（string | number，展示内容）、`overflowCount`（number，封顶值，默认 99）、`showZero`（boolean，数值为 0 时是否展示，默认 false）、`dot`（boolean，只展示小圆点，默认 false）、`size`（'small' | 'medium'，默认 'medium'，仅对数字角标生效，dot 尺寸固定 10px）、`color`（BadgeColor，12 色，默认 'app-red'）。插槽：默认插槽 = 被包裹的元素，`#count` = 自定义角标内容（优先于 count）。原生 `title` 作为角标 tooltip。
+
+尺寸与盒型：medium 20px / small 16px（font-size 10 / 9px，2px 描边吃掉 4px 后内腔只剩 16px，所以两位数降到 84% 占宽）。内容 ≤ 2 字符时锁死 `width == height` 走正圆，否则 min-width + padding 会渲染成扁胶囊；3 位以上（`100`、`99+`）与两格全角 CJK（正则 `[\u2E80-\u9FFF\uF900-\uFAFF\uFF00-\uFFEF]`）回退为胶囊，一格全角字仍是正圆。
+
+显隐规则：只有纯数字 / 纯数字字符串参与封顶换算（100 → `99+`），非数字原样展示；`0` 与 `'0'` 默认隐藏，`showZero` 开启后展示；空串 / 纯空白视为无内容不渲染角标，但 `dot` 模式仍出圆点。`title` 未显式传时回退为真实数值（封顶后仍是完整数字），`dot` 模式不设 title。
+
+独立使用：不传默认插槽时根节点加 `animal-badge--standalone`，角标取消绝对定位与奶油描边阴影、落回正常文档流（`--badge-shift-*` 归零，出场动画因此仍复用同一组 keyframes）。
+
+**Vue 移植注意**：`inheritAttrs: false` + 从 `rootAttrs` 里剔除 `title`，让 title 只落在 `<sup>` 上，与 React 版解构 `title` 的行为一致，避免根元素与角标同时出现两个 tooltip。
+
 ---
 
 ## 3. Demo 布局精确规范

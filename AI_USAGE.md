@@ -29,7 +29,7 @@ vue >= 3.4.0
 
 ***
 
-## 1. Full API (146 named exports：45 基础导出 + 101 内置图标组件)
+## 1. Full API (148 named exports：47 基础导出 + 101 内置图标组件)
 
 All named exports from `animal-island-vue`:
 
@@ -1847,6 +1847,122 @@ import { Avatar, AvatarGroup, UserIcon } from 'animal-island-vue';
 ```
 
 > Avatar renders image / icon / text three content shapes inside a filled circle (or 8px-cornered square). Empty state shows the default user icon with `role="img"` + `aria-label="avatar"`. A component child (icon) is treated as an icon avatar; string / number text becomes a text avatar whose font auto-shrinks when the text overflows the avatar (measured against `px - gap*2`). `AvatarGroup` stacks avatars with a cream gap via negative margin, injects group-level `size` / `shape` into children that don't set their own, and collapses extras into a "+N" badge. **Not supported:** `maxStyle` expects `CSSProperties`; group has no max-`gap` collapse animation.
+
+***
+
+### 1.42 Rate
+
+```ts
+import type { RateProps, RateSize } from 'animal-island-vue';
+
+interface RateProps {
+    /** 当前评分（受控，对应 v-model） */
+    modelValue?: number;
+    /** 当前评分（受控，React `value` prop 的别名，优先级高于 modelValue） */
+    value?: number;
+    /** 默认评分（非受控初始值） */
+    defaultValue?: number; // default 0
+    /** 星星总数 */
+    count?: number; // default 5
+    /** 尺寸：'small' / 'middle' / 'large' */
+    size?: RateSize; // default 'middle'
+    /** 只读，仅展示不可交互 */
+    readonly?: boolean; // default false
+    /** 再次点击同一颗星时清空评分 */
+    allowClear?: boolean; // default true
+}
+// Emits:
+//   update:modelValue (number)
+//   change (number) — 清空时为 0
+// 根节点 role="radiogroup"，每颗星是原生 radio（aria-label「N 星」）
+```
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import { Rate } from 'animal-island-vue';
+
+const score = ref(3);
+</script>
+
+<template>
+    <!-- 非受控：内部自维护，defaultValue 给初值 -->
+    <Rate :default-value="2" />
+
+    <!-- 受控 -->
+    <Rate v-model="score" />
+
+    <!-- 10 颗星 / large 尺寸 / 只读 -->
+    <Rate :count="10" size="large" :model-value="4" readonly />
+
+    <!-- 关闭再次点击清空 -->
+    <Rate :default-value="3" :allow-clear="false" />
+</template>
+```
+
+> Star rating built on native `radio` inputs (visually hidden) so single-select semantics and keyboard support come for free. Hover previews the rating without committing; `readonly` shows the real value and disables interaction. `value` / `modelValue` make it controlled (either prop, `value` wins), `defaultValue` is the uncontrolled seed. Values are clamped to `[0, count]` and rounded, so an average like `4.6` still lights 5 stars and a stale high value after `count` shrinks stays selectable. Roving tabindex keeps exactly one star in the tab order; arrow keys / `Home` / `End` move and commit. Clicking the already-selected star clears back to `0` when `allowClear`. On increase only, the newly lit stars pop in sequence (`--rate-pop-delay`, 60ms apart) and the last one emits a six-point splash. **Not supported:** half-star selection (values are rounded, not fractional); React's `onChange` prop is replaced by the `change` event.
+
+***
+
+### 1.43 Badge
+
+```ts
+import type { BadgeProps, BadgeSize, BadgeColor } from 'animal-island-vue';
+
+interface BadgeProps {
+    /** 展示的内容：数字 / 字符串；需要图标等结构化内容时改用 #count 插槽 */
+    count?: string | number;
+    /** 展示封顶的数字值，超过时显示为 `${overflowCount}+` */
+    overflowCount?: number; // default 99
+    /** 数值为 0 时是否展示 */
+    showZero?: boolean; // default false
+    /** 不展示数字，只展示一个小圆点 */
+    dot?: boolean; // default false
+    /** 尺寸，仅对数字角标生效（dot 尺寸固定） */
+    size?: BadgeSize; // default 'medium'（'small' | 'medium'）
+    /** 颜色，与 Card / Tag 调色板一致 */
+    color?: BadgeColor; // default 'app-red'
+    // 默认插槽：被包裹的元素；不传即为独立使用
+    // #count 插槽：自定义角标内容，优先于 count 属性
+    // 原生 title：作为角标 tooltip；未传时回退为真实数值
+}
+```
+
+```vue
+<script setup lang="ts">
+import { Badge, Tag, HeartIcon } from 'animal-island-vue';
+</script>
+
+<template>
+    <!-- 包裹元素：角标定位到右上角 -->
+    <Badge :count="5">
+        <Tag>未读</Tag>
+    </Badge>
+
+    <!-- 封顶：100 → 99+ -->
+    <Badge :count="100" :overflow-count="99">
+        <Tag>未读</Tag>
+    </Badge>
+
+    <!-- 小红点 -->
+    <Badge dot>
+        <Tag>通知</Tag>
+    </Badge>
+
+    <!-- 自定义角标内容：#count 插槽（优先于 count） -->
+    <Badge>
+        <Tag>收藏</Tag>
+        <template #count>
+            <HeartIcon />
+        </template>
+    </Badge>
+
+    <!-- 独立使用：不传默认插槽即取消绝对定位 -->
+    <Badge :count="11" />
+</template>
+```
+
+> The indicator renders as a `<sup>` pinned to the top-right of the wrapped element. Only pure numbers (or numeric strings) take part in `overflowCount`; the original value stays in the `title` tooltip so `100` capped to `99+` still reveals the real count. Zero is hidden unless `showZero`; empty / whitespace-only `count` renders nothing, but `dot` still shows the dot. Content of 1–2 characters is locked to a true circle; 3+ characters (`100`, `99+`) and two full-width CJK characters fall back to a capsule, since they would break out of a round box. Passing no default slot makes the badge standalone: absolute positioning, the cream ring and the shadow are dropped so it sits in normal flow. The `#count` slot replaces `count` entirely and is not clamped. **Not supported:** React's `children` prop is the default slot; `title` is consumed by the indicator and intentionally not forwarded to the root element (to avoid two tooltips).
 
 ***
 
