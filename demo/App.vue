@@ -186,11 +186,7 @@ const menuBgImage = `url("${menuBgUrl}")`;
             <!-- Desktop sidebar -->
             <aside v-if="!isMobile" class="sidebar">
                 <div class="sidebar-header" @click="handleNavigate('/')">
-                    <img
-                        :src="logoUrl"
-                        alt="Animal Island Vue"
-                        class="sidebar-logo"
-                    />
+                    <img :src="logoUrl" alt="Animal Island Vue" class="sidebar-logo" />
                     Animal Island Vue
                 </div>
                 <nav class="menu-list">
@@ -237,11 +233,7 @@ const menuBgImage = `url("${menuBgUrl}")`;
                 <div class="drawer-mask" @click="drawerOpen = false" />
                 <aside class="sidebar drawer">
                     <div class="sidebar-header" @click="handleNavigate('/')">
-                        <img
-                            :src="logoUrl"
-                            alt="Animal Island Vue"
-                            class="sidebar-logo"
-                        />
+                        <img :src="logoUrl" alt="Animal Island Vue" class="sidebar-logo" />
                         Animal Island Vue
                     </div>
                     <nav class="menu-list">

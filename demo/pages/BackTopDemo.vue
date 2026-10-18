@@ -65,7 +65,13 @@ const VILLAGERS = [
     { name: '胡胡', romanized: 'Huhu', species: '狐狸', hobby: '魔术', desc: '会变魔术的小狐狸，口袋里总有惊喜' },
     { name: '雪莉', romanized: 'Xueli', species: '北极熊', hobby: '冰雕', desc: '擅长冰雕的北极熊，作品栩栩如生' },
     { name: '雷雷', romanized: 'Leilei', species: '大象', hobby: '音乐', desc: '用长鼻子吹口琴的大象，岛上的音乐家' },
-    { name: '小花', romanized: 'Xiaohua', species: '长颈鹿', hobby: '摄影', desc: '个子最高的长颈鹿，拍日出最美的角度' },
+    {
+        name: '小花',
+        romanized: 'Xiaohua',
+        species: '长颈鹿',
+        hobby: '摄影',
+        desc: '个子最高的长颈鹿，拍日出最美的角度',
+    },
     { name: '冲儿', romanized: 'Chonger', species: '鲨鱼', hobby: '冲浪', desc: '爱冲浪的鲨鱼，浪花上的舞者' },
     { name: '妮可', romanized: 'Nike', species: '猫', hobby: '时尚', desc: '爱打扮的猫咪，每天换不同的蝴蝶结' },
     { name: '帕克', romanized: 'Pake', species: '企鹅', hobby: '钓鱼', desc: '很会钓鱼的企鹅，冰钓冠军' },
@@ -147,11 +153,7 @@ const code = `import { BackTop } from 'animal-island-vue';
             <!-- ---- 动物岛民列表 ---- -->
             <div :style="labelStyle">动物岛民列表 — 共 50 位</div>
             <div style="display: flex; flex-direction: column; gap: 12px">
-                <Card
-                    v-for="(villager, i) in VILLAGERS"
-                    :key="villager.name"
-                    :pattern="PATTERNS[i % PATTERNS.length]"
-                >
+                <Card v-for="(villager, i) in VILLAGERS" :key="villager.name" :pattern="PATTERNS[i % PATTERNS.length]">
                     <div
                         :style="{
                             display: 'flex',

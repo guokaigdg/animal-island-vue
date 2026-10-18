@@ -622,6 +622,7 @@ color: #a85565;
 ### Title（章节标题：layer / ribbon / tab）
 
 替代旧 `Card type="title"`，三种视觉变体：
+
 - `variant="ribbon"`（默认）— 游戏风飘带横幅：燕尾两端 + 折角阴影 + 微透视正面主体。
 - `variant="layer"` — 双层纸：背层纸片向左上错位露出，正面浮在上方；hover 放大 1.06。
 - `variant="tab"` — 折角便签：135° 渐变切掉右下角 + 深色三角折瓣；hover 放大 1.06。
@@ -2971,6 +2972,7 @@ Rate Props：`modelValue`（number，受控，对应 v-model）、`value`（numb
 取值一律先夹取到 `[0, count]` 并四舍五入（`toStarCount`），所以平均分 4.6 点亮 5 颗、count 调小后残留的高分也仍可被选中。Roving tabindex：始终只有一颗星在 Tab 序列里（有分值时是当前选中星，无分值时是第一颗），方向键 / `Home` / `End` 移动并直接提交。悬停只做预览不提交，`readonly` 与键盘操作时收起预览。
 
 **Vue 移植注意（与 React 版的两处刻意差异）**：
+
 1. 只监听 `click`、不监听 `change`。原生 radio 在「勾选新星」时触发 `change`、只有「已勾选再点」才走到清空分支，两者挂在同一次点击上会各自读到已更新的 checkedValue，导致点第 4 颗星刚点亮就被清空；合并到单一 click 里按当前值判断分支即可根除该双触发。
 2. `commit` 里必须在写 `innerValue` 之前先取旧的 `checkedValue` —— Vue 的 ref 是同步更新，晚读会拿到刚提交的新值，`from === to` 时星星动画永远不触发（React 靠 setState 异步侥幸没这个问题）。另外受控模式下父级不接新值时浏览器仍会改写原生 radio 的 `checked`，而 Vue 只在 vnode 值变化时才回写，需在提交后 `nextTick` 里主动拨回（对齐 React 的 restoreControlledState）。
 

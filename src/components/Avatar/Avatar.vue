@@ -58,9 +58,7 @@ export default defineComponent({
             typeof effSize.value === 'number' ? effSize.value : PRESET_SIZE[effSize.value]
         );
         const fontPx = computed<number>(() =>
-            typeof effSize.value === 'number'
-                ? Math.max(12, Math.round(px.value * 0.4))
-                : PRESET_FONT[effSize.value]
+            typeof effSize.value === 'number' ? Math.max(12, Math.round(px.value * 0.4)) : PRESET_FONT[effSize.value]
         );
 
         // isImgLoaded：图片是否加载成功；false → 显示占位（icon 或文字）
@@ -94,11 +92,7 @@ export default defineComponent({
         }
         onMounted(measure);
         onUpdated(measure);
-        watch(
-            [px, () => props.gap, () => props.icon],
-            measure,
-            { flush: 'post' }
-        );
+        watch([px, () => props.gap, () => props.icon], measure, { flush: 'post' });
 
         // 判断默认 slot：组件（object/function type）→ 图标头像；字符串/数字 → 文字头像
         function inspectSlots() {
@@ -149,8 +143,7 @@ export default defineComponent({
                 }
                 inner = h('span', { class: 'animal-avatar__string' }, [iconNode]);
             } else {
-                const strStyle =
-                    scale.value > 1 ? { fontSize: `${fontPx.value * scale.value}px` } : undefined;
+                const strStyle = scale.value > 1 ? { fontSize: `${fontPx.value * scale.value}px` } : undefined;
                 inner = h(
                     'span',
                     {

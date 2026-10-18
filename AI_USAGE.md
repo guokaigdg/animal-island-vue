@@ -29,7 +29,7 @@ vue >= 3.4.0
 
 ***
 
-## 1. Full API (148 named exports：47 基础导出 + 101 内置图标组件)
+## 1. Full API (215 named exports：51 基础导出 + 164 内置图标组件)
 
 All named exports from `animal-island-vue`:
 
@@ -263,7 +263,9 @@ interface InputProps {
     placeholder?: string;
     type?: string; // default 'text'
     readonly?: boolean; // default false
-    maxlength?: number;
+    maxLength?: number; // note the capital L — the prop is camelCase, not `maxlength`
+    defaultValue?: string; // default '' — uncontrolled initial value (paired with modelValue)
+    clearAriaLabel?: string; // aria-label for the built-in clear button; default '清空'
 }
 // Emits: update:modelValue, change(value, event), clear
 // Slots: prefix, suffix
@@ -322,6 +324,7 @@ interface ModalProps {
     showFooter?: boolean; // default true — set false to hide footer entirely
     typewriter?: boolean; // default true — body plays typewriter on open
     typeSpeed?: number; // default 80 (ms/char for built-in typewriter)
+    maskStyle?: Record<string, unknown>; // inline styles merged into the mask backdrop
 }
 // Emits: update:open, close, ok
 // Slots: default (body), title (rich heading), footer (replace default 取消/确定 buttons)
@@ -409,6 +412,7 @@ interface CardProps {
     type?: CardType; // default 'default'
     color?: CardColor; // default 'default'
     pattern?: CardPattern; // default 'none'
+    hoverable?: boolean; // enable the hover lift (pointer cursor + translateY -2px); default false
 }
 // Slots: default
 ```
@@ -571,6 +575,9 @@ type DividerType =
 
 interface DividerProps {
     type?: DividerType; // default 'line-brown'
+    icon?: DividerIconName; // optional icon rendered between the two lines
+    iconSize?: number; // icon size in px
+    iconGap?: number; // gap around the icon in px
 }
 ```
 
@@ -590,7 +597,8 @@ interface TypewriterProps {
     speed?: number; // ms per char, default 90
     trigger?: unknown; // change this value to restart animation (e.g. modal openCount)
     autoPlay?: boolean; // default true (false = show full immediately)
-    text?: string; // optional: pass plain text instead of using the slot
+    onDone?: () => void; // callback prop alternative to the `done` event
+    children?: VNode | VNode[] | string; // plain text or VNode tree; the slot is the idiomatic form
 }
 // Emits: done
 // Slots: default — ANY VNode tree; preserves element structure, classes, inline styles
@@ -624,6 +632,7 @@ interface TabsProps {
     defaultActiveKey?: string; // default: first item's key
     leafAnimation?: boolean; // default true — active-tab leaf wiggle
     shadow?: boolean; // default true — drop-shadow on active tab
+    ariaLabel?: string; // accessible name for the tablist
 }
 // Emits: update:modelValue(key), change(key)
 // Slots: ONE NAMED SLOT PER `item.key` — the slot named `[key]` becomes the panel body
@@ -671,13 +680,35 @@ const items = [
 ```ts
 type SelectOption = { key: string; label: string };
 
+/** 过滤规则：true 按 optionFilterProp 匹配、false 不过滤、传函数则自行判定 */
+type SelectFilterOption = boolean | ((inputValue: string, option: SelectOption) => boolean);
+
 interface SelectProps {
     modelValue: string; // REQUIRED — v-model (controlled-only)
     options: SelectOption[]; // REQUIRED
     placeholder?: string; // default '请选择'
     disabled?: boolean; // default false
+    /** 允许一键清空当前选中值 */
+    allowClear?: boolean; // default false
+    /** 清除按钮的无障碍标签 */
+    clearAriaLabel?: string; // default '清除'
+    /** 允许在触发区内输入关键字过滤选项 */
+    showSearch?: boolean; // default false
+    /** 过滤规则 */
+    filterOption?: SelectFilterOption; // default true
+    /** filterOption 为 true 时参与匹配的字段 */
+    optionFilterProp?: 'key' | 'label'; // default 'label'
+    /** 无匹配选项时展示的文案；富文本用 #not-found 插槽 */
+    notFoundContent?: string; // default '暂无数据'
+    ariaLabel?: string;
+    ariaLabelledBy?: string;
 }
-// Emits: update:modelValue(key), change(key)
+// 插槽：#not-found — 无匹配时的自定义内容，优先于 notFoundContent
+// Emits:
+//   update:modelValue (string)
+//   change (string) — 清空时为 ''
+//   clear () — 通过清除按钮清空时触发
+//   search (string) — 搜索词变化；收起时以空串再通知一次
 ```
 
 ```vue
@@ -746,6 +777,8 @@ interface SkeletonProps {
     rowWidths?: (number | string)[];
     widthValue?: number | string;
     heightValue?: number | string;
+    size?: 'small' | 'middle' | 'large';
+    shape?: 'circle' | 'square';
 }
 // Slots: default (content to show when loading=false)
 ```
@@ -780,6 +813,7 @@ interface CheckboxProps {
     size?: CheckboxSize; // default 'middle'
     disabled?: boolean; // default false — disables all
     direction?: 'horizontal' | 'vertical'; // default 'horizontal'
+    defaultValue?: CheckboxValue[]; // uncontrolled initial value for checkbox groups
 }
 // Emits: update:modelValue(values), change(values)
 ```
@@ -837,6 +871,7 @@ interface RadioProps {
     size?: RadioSize; // default 'middle'
     disabled?: boolean; // default false — disables all
     direction?: 'horizontal' | 'vertical'; // default 'horizontal'
+    defaultValue?: RadioValue; // uncontrolled initial value
 }
 // Emits: update:modelValue(value), change(value)
 ```
@@ -1060,6 +1095,7 @@ interface ProgressProps {
     infoPosition?: ProgressInfoPosition; // default 'inside'
     infoFormat?: (percent: number) => string; // custom text formatter
     duration?: number; // default 0.6 — fill width animation seconds; 0 = no animation
+    variant?: ProgressVariant;
 }
 ```
 
@@ -1224,6 +1260,7 @@ interface FormProps<T = Record<string, unknown>> {
     onFinishFailed?: (info: ValidateInfo) => void;
     onValuesChange?: (changedValues: Partial<T>, allValues: T) => void;
     onReset?: (e: Event) => void;
+    class?: string;
 }
 // Emits: finish, finishFailed, reset
 
@@ -1354,6 +1391,8 @@ interface ImageProps {
     color?: ImageColor; // default 'white'
     lazy?: boolean; // default false
     preview?: boolean; // default true
+    variant?: 'default' | 'bordered' | 'stamp';
+    stampYear?: string; // year text on the `stamp` variant
 }
 // Emits: load (Event), error (Event)
 ```
@@ -1491,6 +1530,7 @@ interface CarouselProps {
     showDots?: boolean; // default true
     pauseOnHover?: boolean; // default true
     ariaLabel?: string; // default '轮播图'
+    activeIndex?: number; // controlled current slide
 }
 // Emits: update:modelValue(index), change(index)
 ```
@@ -1601,6 +1641,7 @@ type BackgroundType =
 interface BackgroundProps {
     /** Pattern type; dots-* base colors match the Card pattern-* series. Default 'default'. */
     type?: BackgroundType; // default 'default'
+    children?: unknown; // decorative VNode tree painted on the wallpaper
 }
 // Slots: default — content renders ON TOP of the pattern
 ```
@@ -1931,7 +1972,6 @@ const score = ref(3);
 ***
 
 ### 1.43 Badge
-
 ```ts
 import type { BadgeProps, BadgeSize, BadgeColor } from 'animal-island-vue';
 

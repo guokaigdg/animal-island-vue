@@ -1,14 +1,5 @@
 <script lang="ts">
-import {
-    defineComponent,
-    h,
-    provide,
-    useAttrs,
-    useSlots,
-    type CSSProperties,
-    type PropType,
-    type VNode,
-} from 'vue';
+import { defineComponent, h, provide, useAttrs, useSlots, type CSSProperties, type PropType, type VNode } from 'vue';
 import type { AvatarShape, AvatarSize } from './types';
 import { avatarGroupKey } from './types';
 

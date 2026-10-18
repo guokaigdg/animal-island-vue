@@ -180,10 +180,7 @@ onBeforeUnmount(() => {
                             />
                         </clipPath>
                     </svg>
-                    <div
-                        class="animal-modal__body"
-                        :class="{ 'animal-modal__body--game': variant === 'game' }"
-                    >
+                    <div class="animal-modal__body" :class="{ 'animal-modal__body--game': variant === 'game' }">
                         <div v-if="$slots.title || title" class="animal-modal__header">
                             <div :id="titleId" class="animal-modal__title">
                                 <slot name="title">

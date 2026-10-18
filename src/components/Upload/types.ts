@@ -63,6 +63,9 @@ export interface UploadShowUploadList {
     showRemoveIcon?: boolean;
 }
 
+/** upload 事件的监听器类型，对齐 React 侧的同名导出 */
+export type UploadOnChange = (info: UploadChangeParam) => void;
+
 export interface UploadProps {
     /** 接受的文件类型，透传给 <input accept>，如 "image/*" 或 ".pdf,.png" */
     accept?: string;

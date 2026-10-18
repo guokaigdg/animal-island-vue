@@ -596,46 +596,46 @@ const rootClass = computed(() => [
             <ul class="animal-upload__card-list">
                 <template v-if="listVisible">
                     <li v-for="file in list" :key="file.uid" :class="cardClass(file)">
-                    <img
-                        v-if="previewSrc(file)"
-                        class="animal-upload__card-img"
-                        :class="{ 'animal-upload__card-img--previewable': canPreview(file) }"
-                        :src="previewSrc(file)"
-                        :alt="file.name"
-                        @click="showPreviewIcon && canPreview(file) ? openPreview(file) : undefined"
-                    />
-                    <span v-else class="animal-upload__card-file-icon">
-                        <Icon name="File" :size="15" />
-                    </span>
-                    <span v-if="statusOf(file) === 'uploading'" class="animal-upload__card-mask">
-                        <span class="animal-upload__spinner" aria-hidden="true" />
-                        <span class="animal-upload__percent">{{ clampPercent(file.percent ?? 0) }}%</span>
-                    </span>
-                    <span v-else-if="statusOf(file) === 'error'" class="animal-upload__card-mask">
-                        <Icon name="Close" :size="22" color="#e05a5a" />
-                    </span>
-                    <button
-                        v-if="showPreviewIcon && canPreview(file)"
-                        type="button"
-                        class="animal-upload__card-preview"
-                        :aria-label="`预览 ${file.name}`"
-                        :disabled="disabled"
-                        @click="openPreview(file)"
-                    >
-                        <Icon name="Eye" :size="12" />
-                    </button>
-                    <button
-                        v-if="showRemoveIcon"
-                        type="button"
-                        class="animal-upload__card-remove"
-                        :aria-label="`删除 ${file.name}`"
-                        :disabled="disabled"
-                        @click="handleRemove(file)"
-                    >
-                        <Icon name="Close" :size="12" />
-                    </button>
-                </li>
-            </template>
+                        <img
+                            v-if="previewSrc(file)"
+                            class="animal-upload__card-img"
+                            :class="{ 'animal-upload__card-img--previewable': canPreview(file) }"
+                            :src="previewSrc(file)"
+                            :alt="file.name"
+                            @click="showPreviewIcon && canPreview(file) ? openPreview(file) : undefined"
+                        />
+                        <span v-else class="animal-upload__card-file-icon">
+                            <Icon name="File" :size="15" />
+                        </span>
+                        <span v-if="statusOf(file) === 'uploading'" class="animal-upload__card-mask">
+                            <span class="animal-upload__spinner" aria-hidden="true" />
+                            <span class="animal-upload__percent">{{ clampPercent(file.percent ?? 0) }}%</span>
+                        </span>
+                        <span v-else-if="statusOf(file) === 'error'" class="animal-upload__card-mask">
+                            <Icon name="Close" :size="22" color="#e05a5a" />
+                        </span>
+                        <button
+                            v-if="showPreviewIcon && canPreview(file)"
+                            type="button"
+                            class="animal-upload__card-preview"
+                            :aria-label="`预览 ${file.name}`"
+                            :disabled="disabled"
+                            @click="openPreview(file)"
+                        >
+                            <Icon name="Eye" :size="12" />
+                        </button>
+                        <button
+                            v-if="showRemoveIcon"
+                            type="button"
+                            class="animal-upload__card-remove"
+                            :aria-label="`删除 ${file.name}`"
+                            :disabled="disabled"
+                            @click="handleRemove(file)"
+                        >
+                            <Icon name="Close" :size="12" />
+                        </button>
+                    </li>
+                </template>
                 <!-- 添加块始终保留：maxCount=1 时点击可替换，>1 满员时新文件会被丢弃 -->
                 <li class="animal-upload__card-add">
                     <button

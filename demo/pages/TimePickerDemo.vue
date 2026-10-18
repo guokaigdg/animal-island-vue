@@ -8,7 +8,12 @@ const time = ref<string | null>(null);
 const timeNoSec = ref<string | null>(null);
 
 const TIME_API: ApiRow[] = [
-    { prop: 'modelValue', desc: '选中时间（v-model），格式 HH:mm:ss，清空为 null', type: 'string | null', defaultVal: '-' },
+    {
+        prop: 'modelValue',
+        desc: '选中时间（v-model），格式 HH:mm:ss，清空为 null',
+        type: 'string | null',
+        defaultVal: '-',
+    },
     { prop: 'defaultValue', desc: '默认时间（非受控）', type: 'string | null', defaultVal: '-' },
     { prop: 'placeholder', desc: '占位文本', type: 'string', defaultVal: "'请选择时间'" },
     { prop: 'disabled', desc: '是否禁用', type: 'boolean', defaultVal: 'false' },
@@ -47,9 +52,7 @@ const time = ref<string | null>(null);
 
 <template>
     <div :style="sectionStyle">
-        <div :style="sectionTitleStyle">
-            TimePicker <span :style="tagStyle">时间选择</span>
-        </div>
+        <div :style="sectionTitleStyle">TimePicker <span :style="tagStyle">时间选择</span></div>
         <div :style="demoBodyStyle">
             <div :style="labelStyle">基础用法（v-model，HH:mm:ss）</div>
             <TimePicker v-model="time" />

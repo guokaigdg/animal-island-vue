@@ -2,15 +2,7 @@
 import { ref } from 'vue';
 import { Tag } from '@';
 import type { TagColor } from '@';
-import {
-    sectionStyle,
-    sectionTitleStyle,
-    tagStyle,
-    labelStyle,
-    demoBodyStyle,
-    ApiTable,
-    CodeBlock,
-} from '../tools';
+import { sectionStyle, sectionTitleStyle, tagStyle, labelStyle, demoBodyStyle, ApiTable, CodeBlock } from '../tools';
 import type { ApiRow } from '../tools';
 
 const TAG_API: ApiRow[] = [
@@ -194,10 +186,7 @@ function removeItem(item) {
                 >
                     {{ item.name }}
                 </Tag>
-                <span
-                    v-if="closableItems.length === 0"
-                    :style="{ fontSize: '12px', color: '#a0936e' }"
-                >
+                <span v-if="closableItems.length === 0" :style="{ fontSize: '12px', color: '#a0936e' }">
                     所有标签都已关闭
                 </span>
             </div>
@@ -205,9 +194,7 @@ function removeItem(item) {
             <div :style="labelStyle">onClick 可点击（hover + 键盘 Enter / Space 触发）</div>
             <div :style="rowStyle">
                 <Tag color="app-blue" @click="alertTag"> 可点击 </Tag>
-                <Tag variant="outlined" color="app-green" @click="alertOutlinedTag">
-                    outlined 可点击
-                </Tag>
+                <Tag variant="outlined" color="app-green" @click="alertOutlinedTag"> outlined 可点击 </Tag>
                 <Tag color="brown" disabled @click="() => {}"> disabled </Tag>
             </div>
         </div>

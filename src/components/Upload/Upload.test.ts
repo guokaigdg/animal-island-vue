@@ -299,6 +299,8 @@ describe('Upload', () => {
             setRequestHeader: ReturnType<typeof vi.fn>;
             withCredentials?: boolean;
             status: number;
+            /** FakeXHR 上没有预置这个字段，用例里动态赋值；真实 XHR 恒有 */
+            response?: unknown;
             onload: (() => void) | null;
             onerror: (() => void) | null;
             onabort: (() => void) | null;

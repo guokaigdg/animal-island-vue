@@ -122,7 +122,7 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 - Cards have NO box-shadow. They float on hover with `transform: translateY(-2px);` only. Pattern variants add a 1.5px solid border in the palette hue.
 - Switch handle stays vertically centered via `transform: translateY(-50%);` and has a 2.5px border but NO `box-shadow` of its own. Track has only inset shadow (see SHADOW SYSTEM above).
 
-## COMPONENT SPECS (35 components + 101 built-in icons)
+## COMPONENT SPECS (41 components + 164 built-in icons)
 
 ### BackTop (返回顶部)
 

@@ -186,7 +186,10 @@ describe('Pagination', () => {
         });
         const wrapper = mount(Host);
         const pagination = wrapper.findComponent(Pagination);
-        await pagination.findAll('button').find((b) => b.text() === '5')!.trigger('click');
+        await pagination
+            .findAll('button')
+            .find((b) => b.text() === '5')!
+            .trigger('click');
         expect(wrapper.findComponent(Pagination).vm.$props).toMatchObject({ current: 5 });
 
         await wrapper.find('button[aria-label="每页 10 条"]').trigger('click');

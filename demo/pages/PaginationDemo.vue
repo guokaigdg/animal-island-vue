@@ -139,13 +139,7 @@ const pageSize = ref(20);
             />
 
             <div :style="labelStyle">快速跳转（受控）</div>
-            <Pagination
-                v-model:current="page"
-                v-model:page-size="pageSize"
-                :total="500"
-                show-total
-                show-quick-jumper
-            />
+            <Pagination v-model:current="page" v-model:page-size="pageSize" :total="500" show-total show-quick-jumper />
 
             <div :style="labelStyle">禁用</div>
             <Pagination :total="85" :default-current="4" disabled />

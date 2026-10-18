@@ -4,7 +4,12 @@ import { sectionStyle, sectionTitleStyle, tagStyle, labelStyle, demoBodyStyle, A
 import type { ApiRow } from '../tools';
 
 const TIME_API: ApiRow[] = [
-    { prop: '(attrs)', desc: '透传任意属性到根元素（如 class / style）', type: 'Record<string, unknown>', defaultVal: '-' },
+    {
+        prop: '(attrs)',
+        desc: '透传任意属性到根元素（如 class / style）',
+        type: 'Record<string, unknown>',
+        defaultVal: '-',
+    },
 ];
 
 const code = `<script setup lang="ts">

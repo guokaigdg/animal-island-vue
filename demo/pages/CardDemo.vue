@@ -91,9 +91,7 @@ import { Card } from 'animal-island-vue';
             <div :style="rowStyle">
                 <Card><p>基础卡片</p></Card>
                 <Card :style="{ maxWidth: '560px', width: '100%' }">
-                    <p>
-                        欢迎来到小岛！这里是一个自然风格组件库的卡片示例，展示较长的文本内容在卡片中的排版效果。
-                    </p>
+                    <p>欢迎来到小岛！这里是一个自然风格组件库的卡片示例，展示较长的文本内容在卡片中的排版效果。</p>
                 </Card>
             </div>
             <div :style="labelStyle">type="dashed"</div>

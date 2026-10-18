@@ -39,7 +39,10 @@ const checkedValue = computed(() => (isControlled.value ? props.modelValue : inn
 
 // 当前聚焦的索引（用于 roving tabindex）
 const focusedIndex = ref<number>(
-    Math.max(0, props.options.findIndex((o) => o.value === checkedValue.value))
+    Math.max(
+        0,
+        props.options.findIndex((o) => o.value === checkedValue.value)
+    )
 );
 
 watch(checkedValue, (val) => {

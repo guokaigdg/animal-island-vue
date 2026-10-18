@@ -184,7 +184,16 @@ export type { AvatarProps, AvatarShape, AvatarSize, AvatarGroupProps } from './c
 
 // Phase 10 — 文件上传
 export { Upload } from './components/Upload';
-export type { UploadProps, UploadFile, UploadFileStatus, UploadListType, UploadCustomRequestOptions } from './components/Upload';
+export type {
+    UploadProps,
+    UploadFile,
+    UploadFileStatus,
+    UploadListType,
+    UploadCustomRequestOptions,
+    UploadChangeParam,
+    UploadShowUploadList,
+    UploadOnChange,
+} from './components/Upload';
 
 // Phase 11 — 星级评分
 export { Rate } from './components/Rate';

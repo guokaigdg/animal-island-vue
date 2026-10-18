@@ -16,7 +16,12 @@ const DATE_API: ApiRow[] = [
         defaultVal: '-',
     },
     { prop: 'range', desc: '范围选择模式：联动选择开始与结束日期', type: 'boolean', defaultVal: 'false' },
-    { prop: 'picker', desc: '选择粒度：date 日期 / month 月份（直接打开月份网格）', type: "'date' | 'month'", defaultVal: "'date'" },
+    {
+        prop: 'picker',
+        desc: '选择粒度：date 日期 / month 月份（直接打开月份网格）',
+        type: "'date' | 'month'",
+        defaultVal: "'date'",
+    },
     { prop: 'defaultValue', desc: '默认值（非受控）', type: 'string | [string, string]', defaultVal: '-' },
     { prop: 'placeholder', desc: '占位文本', type: 'string', defaultVal: "'请选择日期'" },
     { prop: 'disabled', desc: '是否禁用', type: 'boolean', defaultVal: 'false' },
@@ -24,7 +29,12 @@ const DATE_API: ApiRow[] = [
     { prop: 'size', desc: '尺寸', type: "'small' | 'middle' | 'large'", defaultVal: "'middle'" },
     { prop: 'status', desc: '校验状态', type: "'error' | 'warning'", defaultVal: '-' },
     { prop: 'format', desc: '展示格式（YYYY/MM/DD/M/D）', type: 'string', defaultVal: "'YYYY-MM-DD'" },
-    { prop: 'disabledDate', desc: '禁用日期判断函数，返回 true 的日期不可选', type: '(date: Date) => boolean', defaultVal: '-' },
+    {
+        prop: 'disabledDate',
+        desc: '禁用日期判断函数，返回 true 的日期不可选',
+        type: '(date: Date) => boolean',
+        defaultVal: '-',
+    },
     { prop: 'showToday', desc: '面板底部是否显示「今天」快捷按钮', type: 'boolean', defaultVal: 'true' },
     { prop: 'open', desc: '受控展开状态（v-model:open）', type: 'boolean', defaultVal: '-' },
 ];
@@ -50,9 +60,7 @@ const range = ref<[string, string] | null>(null);
 
 <template>
     <div :style="sectionStyle">
-        <div :style="sectionTitleStyle">
-            DatePicker <span :style="tagStyle">日期选择</span>
-        </div>
+        <div :style="sectionTitleStyle">DatePicker <span :style="tagStyle">日期选择</span></div>
         <div :style="demoBodyStyle">
             <div :style="labelStyle">基础用法（v-model）</div>
             <div style="display: flex; gap: 16px; flex-wrap: wrap">

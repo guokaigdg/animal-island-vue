@@ -58,7 +58,7 @@ const IMAGE_API: ApiRow[] = [
     { prop: 'height', desc: '图片高度', type: 'number | string', defaultVal: '-' },
     {
         prop: 'color',
-        desc: '背景颜色（Card pattern 同款底色，无花纹；white 为纯白；仅 variant=\'bordered\' 时生效）',
+        desc: "背景颜色（Card pattern 同款底色，无花纹；white 为纯白；仅 variant='bordered' 时生效）",
         type: "'white' | 'default' | 'app-pink' | 'purple' | 'app-blue' | 'app-yellow' | 'app-orange' | 'app-teal' | 'app-green' | 'app-red' | 'lime-green' | 'yellow-green' | 'brown' | 'warm-peach-pink'",
         defaultVal: "'white'",
     },
@@ -175,10 +175,19 @@ const code = `import { Image } from 'animal-island-vue';
             </div>
 
             <!-- 背景颜色 -->
-            <div :style="labelStyle">背景颜色（color，Card pattern 同款底色，无花纹；仅 variant='bordered' 时生效）</div>
+            <div :style="labelStyle">
+                背景颜色（color，Card pattern 同款底色，无花纹；仅 variant='bordered' 时生效）
+            </div>
             <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap">
                 <div v-for="(c, i) in IMAGE_COLORS" :key="c.color" style="text-align: center">
-                    <Image :src="shuffledImages[i]" :alt="c.label" :width="330" :height="200" :color="c.color" variant="bordered" />
+                    <Image
+                        :src="shuffledImages[i]"
+                        :alt="c.label"
+                        :width="330"
+                        :height="200"
+                        :color="c.color"
+                        variant="bordered"
+                    />
                     <div style="font-size: 12px; color: #a0936e; margin-top: 6px">{{ c.label }}</div>
                 </div>
             </div>

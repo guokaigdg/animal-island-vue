@@ -67,11 +67,7 @@ const rootClass = computed(() => [
         <template v-if="iconMode">
             <div v-for="c in cycles" :key="c" class="animal-divider__icon-cycle">
                 <Icon :name="icon" :size="iconSize" />
-                <span
-                    v-if="c < cycles"
-                    class="animal-divider__icon-gap"
-                    :style="{ width: iconGap + 'px' }"
-                >
+                <span v-if="c < cycles" class="animal-divider__icon-gap" :style="{ width: iconGap + 'px' }">
                     <span class="animal-divider__icon-line" />
                 </span>
             </div>

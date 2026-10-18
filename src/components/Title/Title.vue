@@ -23,19 +23,12 @@ const SIZE_MAP: Record<TitleSize, number> = {
 };
 
 const fontSize = computed(() => `${SIZE_MAP[props.size]}px`);
-const colorClass = computed(() =>
-    props.color !== 'default' ? `animal-title__color--${props.color}` : '',
-);
+const colorClass = computed(() => (props.color !== 'default' ? `animal-title__color--${props.color}` : ''));
 </script>
 
 <template>
     <span class="animal-title" :class="`animal-title--${variant}`" v-bind="attrs">
-        <span
-            v-if="variant === 'ribbon'"
-            class="animal-title__ribbon"
-            :class="colorClass"
-            :style="{ fontSize }"
-        >
+        <span v-if="variant === 'ribbon'" class="animal-title__ribbon" :class="colorClass" :style="{ fontSize }">
             <span class="animal-title__ribbon-back animal-title__ribbon-back--left" aria-hidden="true" />
             <span class="animal-title__ribbon-back animal-title__ribbon-back--right" aria-hidden="true" />
             <span class="animal-title__ribbon-fold animal-title__ribbon-fold--left" aria-hidden="true" />
@@ -45,22 +38,12 @@ const colorClass = computed(() =>
                 <slot />
             </span>
         </span>
-        <span
-            v-else-if="variant === 'layer'"
-            class="animal-title__layer"
-            :class="colorClass"
-            :style="{ fontSize }"
-        >
+        <span v-else-if="variant === 'layer'" class="animal-title__layer" :class="colorClass" :style="{ fontSize }">
             <span class="animal-title__layer-front">
                 <slot />
             </span>
         </span>
-        <span
-            v-else
-            class="animal-title__tab"
-            :class="colorClass"
-            :style="{ fontSize }"
-        >
+        <span v-else class="animal-title__tab" :class="colorClass" :style="{ fontSize }">
             <span class="animal-title__tab-text">
                 <slot />
             </span>

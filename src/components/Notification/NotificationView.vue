@@ -144,11 +144,11 @@ const isDescriptionVNode = computed(() => isVNode(props.item.description));
         </div>
         <div class="animal-notification__body">
             <div class="animal-notification__title">
-                <VNodeRenderer v-if="isMessageVNode" :node="(item.message as VNode)" />
+                <VNodeRenderer v-if="isMessageVNode" :node="item.message as VNode" />
                 <template v-else>{{ item.message }}</template>
             </div>
             <div v-if="item.description != null" class="animal-notification__description">
-                <VNodeRenderer v-if="isDescriptionVNode" :node="(item.description as VNode)" />
+                <VNodeRenderer v-if="isDescriptionVNode" :node="item.description as VNode" />
                 <template v-else>{{ item.description }}</template>
             </div>
         </div>

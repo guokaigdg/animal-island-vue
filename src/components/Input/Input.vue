@@ -74,10 +74,7 @@ function handleClear() {
     emit('clear');
     const inputEl = inputRef.value;
     if (inputEl) {
-        const nativeValueSetter = Object.getOwnPropertyDescriptor(
-            window.HTMLInputElement.prototype,
-            'value'
-        )?.set;
+        const nativeValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value')?.set;
         nativeValueSetter?.call(inputEl, '');
         inputEl.dispatchEvent(new Event('input', { bubbles: true }));
     } else {

@@ -157,7 +157,7 @@ const live = ref(3);
         <div :style="{ marginBottom: '12px' }">
             <Radio v-model="color" :options="COLORS.map((c) => ({ label: c, value: c }))" />
         </div>
-        <div :style="rowStyle">
+        <div :style="{ ...rowStyle, marginBottom: '12px' }">
             <Badge :count="8" :color="color">
                 <Tag>{{ color }}</Tag>
             </Badge>

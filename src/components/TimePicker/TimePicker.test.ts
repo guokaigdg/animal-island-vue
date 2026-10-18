@@ -124,14 +124,10 @@ describe('TimePicker', () => {
             await openPanel(wrapper);
             await wrapper.find('[aria-label="12 时"]').trigger('click');
             expect(wrapper.find('.animal-time-picker__trigger').text()).toContain('12:20:30');
-            expect(wrapper.find('[aria-label="12 时"]').classes()).toContain(
-                'animal-time-picker__option--selected'
-            );
+            expect(wrapper.find('[aria-label="12 时"]').classes()).toContain('animal-time-picker__option--selected');
             await wrapper.find('[aria-label="45 分"]').trigger('click');
             expect(wrapper.find('.animal-time-picker__trigger').text()).toContain('12:45:30');
-            expect(wrapper.find('[aria-label="45 分"]').classes()).toContain(
-                'animal-time-picker__option--selected'
-            );
+            expect(wrapper.find('[aria-label="45 分"]').classes()).toContain('animal-time-picker__option--selected');
         });
 
         it('点击确定提交 update:modelValue 与 change', async () => {

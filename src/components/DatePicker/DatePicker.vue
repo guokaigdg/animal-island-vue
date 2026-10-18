@@ -121,9 +121,7 @@ const selectedDate = computed<Date | null>(() =>
     props.range ? null : parseValue(typeof currentValue.value === 'string' ? currentValue.value : null)
 );
 
-const selectedRange = computed<[Date, Date] | null>(() =>
-    props.range ? parseRange(currentValue.value) : null
-);
+const selectedRange = computed<[Date, Date] | null>(() => (props.range ? parseRange(currentValue.value) : null));
 
 const open = computed(() => (props.open !== undefined ? props.open : innerOpen.value));
 
@@ -575,7 +573,11 @@ function onYearClick(y: number) {
             <!-- 单日期触发区 -->
             <span
                 v-else
-                :class="currentValue || (open && pendingDate) ? 'animal-date-picker__value' : 'animal-date-picker__placeholder'"
+                :class="
+                    currentValue || (open && pendingDate)
+                        ? 'animal-date-picker__value'
+                        : 'animal-date-picker__placeholder'
+                "
             >
                 {{
                     open && pendingDate
@@ -648,7 +650,13 @@ function onYearClick(y: number) {
                                     @mousedown.prevent
                                 >
                                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                                        <path d="M7.5 2.5L4 6l3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                        <path
+                                            d="M7.5 2.5L4 6l3.5 3.5"
+                                            stroke="currentColor"
+                                            stroke-width="1.5"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                        />
                                     </svg>
                                 </button>
                             </div>
@@ -665,7 +673,13 @@ function onYearClick(y: number) {
                                     @mousedown.prevent
                                 >
                                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                                        <path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                        <path
+                                            d="M4.5 2.5L8 6l-3.5 3.5"
+                                            stroke="currentColor"
+                                            stroke-width="1.5"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                        />
                                     </svg>
                                 </button>
                                 <button
@@ -737,7 +751,13 @@ function onYearClick(y: number) {
                             @mousedown.prevent
                         >
                             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                                <path d="M7.5 2.5L4 6l3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                <path
+                                    d="M7.5 2.5L4 6l3.5 3.5"
+                                    stroke="currentColor"
+                                    stroke-width="1.5"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                />
                             </svg>
                         </button>
                     </div>
@@ -768,7 +788,13 @@ function onYearClick(y: number) {
                             @mousedown.prevent
                         >
                             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                                <path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                <path
+                                    d="M4.5 2.5L8 6l-3.5 3.5"
+                                    stroke="currentColor"
+                                    stroke-width="1.5"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                />
                             </svg>
                         </button>
                         <button
@@ -835,7 +861,8 @@ function onYearClick(y: number) {
                             type="button"
                             class="animal-date-picker__year-cell"
                             :class="{
-                                'animal-date-picker__year-cell--selected': !!selectedDate && selectedDate.getFullYear() === y,
+                                'animal-date-picker__year-cell--selected':
+                                    !!selectedDate && selectedDate.getFullYear() === y,
                             }"
                             :aria-label="`${y}年`"
                             @click="onYearClick(y)"

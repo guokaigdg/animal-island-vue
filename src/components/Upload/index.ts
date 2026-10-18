@@ -6,5 +6,6 @@ export type {
     UploadCustomRequestOptions,
     UploadChangeParam,
     UploadShowUploadList,
+    UploadOnChange,
     UploadProps,
 } from './types';

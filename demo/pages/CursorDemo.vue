@@ -60,8 +60,8 @@ import { Cursor } from 'animal-island-vue';
         <p :style="labelStyle">
             Cursor 组件通过 CSS cursor 属性将子元素的鼠标光标替换为自定义图标，提供
             <code>default</code>（箭头）与 <code>raindrop</code>（蓝色雨滴）两种风格。 默认
-            <code>forceAll=true</code> 全覆盖所有后代；设置 <code>forceAll=false</code> 可保留 a/button 的
-            pointer 和输入框的 text 语义。
+            <code>forceAll=true</code> 全覆盖所有后代；设置 <code>forceAll=false</code> 可保留 a/button 的 pointer
+            和输入框的 text 语义。
         </p>
         <div :style="demoBodyStyle">
             <div :style="labelStyle">type="default"（默认）：箭头</div>

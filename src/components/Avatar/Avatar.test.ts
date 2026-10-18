@@ -106,11 +106,7 @@ describe('AvatarGroup', () => {
     it('renders all children without maxCount', () => {
         const wrapper = mount(AvatarGroup, {
             slots: {
-                default: () => [
-                    h(Avatar, {}, 'A'),
-                    h(Avatar, {}, 'B'),
-                    h(Avatar, {}, 'C'),
-                ],
+                default: () => [h(Avatar, {}, 'A'), h(Avatar, {}, 'B'), h(Avatar, {}, 'C')],
             },
         });
         expect(wrapper.text()).toContain('A');
@@ -122,12 +118,7 @@ describe('AvatarGroup', () => {
         const wrapper = mount(AvatarGroup, {
             props: { maxCount: 2 },
             slots: {
-                default: () => [
-                    h(Avatar, {}, 'A'),
-                    h(Avatar, {}, 'B'),
-                    h(Avatar, {}, 'C'),
-                    h(Avatar, {}, 'D'),
-                ],
+                default: () => [h(Avatar, {}, 'A'), h(Avatar, {}, 'B'), h(Avatar, {}, 'C'), h(Avatar, {}, 'D')],
             },
         });
         expect(wrapper.text()).toContain('A');
@@ -159,11 +150,7 @@ describe('AvatarGroup', () => {
         const wrapper = mount(AvatarGroup, {
             props: { maxCount: 3 },
             slots: {
-                default: () => [
-                    h(Avatar, {}, 'A'),
-                    h(Avatar, {}, 'B'),
-                    h(Avatar, {}, 'C'),
-                ],
+                default: () => [h(Avatar, {}, 'A'), h(Avatar, {}, 'B'), h(Avatar, {}, 'C')],
             },
         });
         expect(wrapper.find('.animal-avatar-group__more').exists()).toBe(false);

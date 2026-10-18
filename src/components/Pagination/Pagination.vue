@@ -322,8 +322,7 @@ function jump() {
 
 // ---------- 配色变体 ----------
 // orange（默认）—— DatePicker 范围选择琥珀色系
-.animal-pagination--orange
-    .animal-pagination__item:hover:not(:disabled):not(.animal-pagination__item--active) {
+.animal-pagination--orange .animal-pagination__item:hover:not(:disabled):not(.animal-pagination__item--active) {
     background: #ffd54f;
     color: #725d42;
 }
@@ -337,8 +336,7 @@ function jump() {
 }
 
 // teal —— DatePicker 单选青色系
-.animal-pagination--teal
-    .animal-pagination__item:hover:not(:disabled):not(.animal-pagination__item--active) {
+.animal-pagination--teal .animal-pagination__item:hover:not(:disabled):not(.animal-pagination__item--active) {
     background: #e6f9f6;
     color: #19c8b9;
 }
