@@ -1,34 +1,38 @@
 <script setup lang="ts">
 import { computed, ref, useAttrs, watch, onBeforeUnmount, type CSSProperties } from 'vue';
-import type { SelectOption } from './types';
+import type { SelectOption, SelectProps } from './types';
 
 const attrs = useAttrs();
 
-interface Props {
-    modelValue: string;
-    options: SelectOption[];
-    placeholder?: string;
-    disabled?: boolean;
-    ariaLabel?: string;
-    ariaLabelledBy?: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<SelectProps>(), {
     placeholder: '请选择',
     disabled: false,
+    allowClear: false,
+    clearAriaLabel: '清除',
+    showSearch: false,
+    filterOption: true,
+    optionFilterProp: 'label',
+    notFoundContent: '暂无数据',
 });
 
 const emit = defineEmits<{
     (e: 'update:modelValue', value: string): void;
     (e: 'change', value: string): void;
+    (e: 'clear'): void;
+    (e: 'search', value: string): void;
 }>();
 
 const open = ref(false);
 const mounted = ref(false);
 const activeKey = ref<string | null>(null);
 const hoveredKey = ref<string | null>(null);
+/** 整个组件的悬停态：清除按钮仅在悬停（含聚焦触发的悬停）时显示 */
+const hovered = ref(false);
+/** null = 没有在搜索（输入框回显选中项 label），string = 用户正在搜索（空串就是要显示空查询） */
+const searchValue = ref<string | null>(null);
 const wrapperRef = ref<HTMLDivElement | null>(null);
 const triggerRef = ref<HTMLDivElement | null>(null);
+const searchRef = ref<HTMLInputElement | null>(null);
 const dropdownStyle = ref<CSSProperties>({});
 
 // 唯一 id 前缀（类似 React 的 useId）
@@ -37,6 +41,32 @@ const listboxId = `${idBase}-listbox`;
 const optionId = (k: string) => `${idBase}-option-${k}`;
 
 const currentLabel = computed(() => props.options.find((o) => o.key === props.modelValue)?.label || props.placeholder);
+// 输入框在非搜索状态下的回显：有选中值显示 label，否则留空让 placeholder 生效
+const labelForInput = computed(() => (props.modelValue ? currentLabel.value : ''));
+
+// 关键字过滤；未搜索或搜索词为空时展示全部选项
+const filteredOptions = computed<SelectOption[]>(() => {
+    if (!props.showSearch || !props.filterOption || !searchValue.value) return props.options;
+    const matcher =
+        typeof props.filterOption === 'function'
+            ? props.filterOption
+            : (inputValue: string, option: SelectOption) =>
+                  option[props.optionFilterProp].toLowerCase().includes(inputValue.toLowerCase());
+    return props.options.filter((option) => matcher(searchValue.value as string, option));
+});
+
+/** 收起下拉并把被重置掉的查询告知消费者 */
+function closeDropdown() {
+    open.value = false;
+    mounted.value = false;
+    if (searchValue.value) emit('search', '');
+    searchValue.value = null;
+}
+
+function focusTrigger() {
+    if (props.showSearch) searchRef.value?.focus();
+    else triggerRef.value?.focus();
+}
 
 function handleToggle() {
     if (props.disabled) return;
@@ -46,25 +76,52 @@ function handleToggle() {
 function handleSelect(key: string) {
     emit('update:modelValue', key);
     emit('change', key);
-    open.value = false;
-    mounted.value = false;
-    triggerRef.value?.focus();
+    closeDropdown();
+    focusTrigger();
+}
+
+function handleClear(e: MouseEvent) {
+    e.stopPropagation();
+    emit('update:modelValue', '');
+    emit('change', '');
+    emit('clear');
+    // 值清空后按钮自身会卸载，把焦点交给 trigger 免得键盘用户掉焦点
+    focusTrigger();
+}
+
+function handleSearchInput(e: Event) {
+    const next = (e.target as HTMLInputElement).value;
+    // 输入框此刻显示的是选中的 label（尚无搜索词）时，输入应作为新的查询词，
+    // 去掉 label 前缀而非在 label 后面追加
+    const editingLabel =
+        searchValue.value === null &&
+        Boolean(props.modelValue) &&
+        labelForInput.value !== '' &&
+        next.startsWith(labelForInput.value);
+    const query = editingLabel ? next.slice(labelForInput.value.length) : next;
+    searchValue.value = query;
+    emit('search', query);
+    // 闭合时直接输入的第一个字符即开始搜索
+    if (!open.value) open.value = true;
 }
 
 function moveActive(delta: 1 | -1) {
-    if (!props.options.length) return;
-    const idx = props.options.findIndex((o) => o.key === activeKey.value);
+    if (!filteredOptions.value.length) return;
+    const idx = filteredOptions.value.findIndex((o) => o.key === activeKey.value);
     const nextIdx =
         idx < 0
             ? delta === 1
                 ? 0
-                : props.options.length - 1
-            : (idx + delta + props.options.length) % props.options.length;
-    activeKey.value = props.options[nextIdx].key;
+                : filteredOptions.value.length - 1
+            : (idx + delta + filteredOptions.value.length) % filteredOptions.value.length;
+    activeKey.value = filteredOptions.value[nextIdx].key;
 }
 
 function handleKeyDown(e: KeyboardEvent) {
     if (props.disabled) return;
+    // 只接管 trigger 与搜索框的按键；清除按钮等子元素保留自身 Enter/Space 行为
+    const fromControl = e.target === triggerRef.value || e.target === searchRef.value;
+    if (!fromControl) return;
     const { key } = e;
     if (!open.value) {
         if (key === 'Enter' || key === ' ' || key === 'ArrowDown' || key === 'ArrowUp') {
@@ -75,9 +132,14 @@ function handleKeyDown(e: KeyboardEvent) {
     }
     if (key === 'Escape') {
         e.preventDefault();
-        open.value = false;
-        mounted.value = false;
-        triggerRef.value?.focus();
+        // 有搜索词时先清空搜索词，再按一次才关闭
+        if (props.showSearch && searchValue.value) {
+            searchValue.value = null;
+            emit('search', '');
+            return;
+        }
+        closeDropdown();
+        focusTrigger();
     } else if (key === 'ArrowDown') {
         e.preventDefault();
         moveActive(1);
@@ -86,28 +148,41 @@ function handleKeyDown(e: KeyboardEvent) {
         moveActive(-1);
     } else if (key === 'Home') {
         e.preventDefault();
-        if (props.options[0]) activeKey.value = props.options[0].key;
+        if (filteredOptions.value[0]) activeKey.value = filteredOptions.value[0].key;
     } else if (key === 'End') {
         e.preventDefault();
-        if (props.options.length) activeKey.value = props.options[props.options.length - 1].key;
-    } else if (key === 'Enter' || key === ' ') {
+        if (filteredOptions.value.length) activeKey.value = filteredOptions.value[filteredOptions.value.length - 1].key;
+    } else if (key === 'Enter' || (key === ' ' && !props.showSearch)) {
+        // 空格在搜索模式下属于正常输入，只有非搜索模式才当作确认
         e.preventDefault();
-        if (activeKey.value) handleSelect(activeKey.value);
+        if (activeKey.value && filteredOptions.value.some((o) => o.key === activeKey.value)) {
+            handleSelect(activeKey.value);
+        }
     }
 }
 
 function handleClickOutside(e: MouseEvent) {
     if (wrapperRef.value && !wrapperRef.value.contains(e.target as Node)) {
-        open.value = false;
-        mounted.value = false;
+        closeDropdown();
     }
 }
 
+// 展开或过滤结果变化时，把高亮落到当前选中项或第一个可见项
+// 注意：Vue 的 ref 不支持 React setState 那种「传函数当 updater」的写法，
+// 必须先把旧值读进局部变量再判断，否则会把函数本身赋给 activeKey。
+watch([open, () => props.modelValue, filteredOptions], ([isOpen]) => {
+    if (!isOpen) {
+        activeKey.value = null;
+        return;
+    }
+    const prev = activeKey.value;
+    if (prev && filteredOptions.value.some((o) => o.key === prev)) return;
+    activeKey.value =
+        filteredOptions.value.find((o) => o.key === props.modelValue)?.key ?? filteredOptions.value[0]?.key ?? null;
+});
+
 watch(open, (isOpen) => {
     if (isOpen && wrapperRef.value) {
-        // 打开时把 activeKey 落到当前选中项或第一项
-        activeKey.value = props.modelValue || props.options[0]?.key || null;
-
         document.addEventListener('mousedown', handleClickOutside);
 
         const rect = wrapperRef.value.getBoundingClientRect();
@@ -153,13 +228,21 @@ watch(open, (isOpen) => {
     } else {
         document.removeEventListener('mousedown', handleClickOutside);
         mounted.value = false;
-        activeKey.value = null;
     }
+});
+
+// 展开时聚焦搜索框；输入框回显 label 时只聚焦不做全选，让回显文字保持未选中状态
+watch([open, () => props.showSearch, searchValue, () => props.modelValue], ([isOpen]) => {
+    if (!props.showSearch || !isOpen) return;
+    searchRef.value?.focus();
 });
 
 onBeforeUnmount(() => {
     document.removeEventListener('mousedown', handleClickOutside);
 });
+
+/** 清除按钮只在 allowClear 且有值、未禁用、悬停时出现 */
+const showClear = computed(() => props.allowClear && Boolean(props.modelValue) && !props.disabled && hovered.value);
 </script>
 
 <template>
@@ -169,25 +252,71 @@ onBeforeUnmount(() => {
         :class="{ 'animal-select--disabled': disabled }"
         v-bind="attrs"
         @keydown="handleKeyDown"
+        @mouseenter="hovered = true"
+        @mouseleave="hovered = false"
     >
         <div
             ref="triggerRef"
             class="animal-select__trigger"
             :class="{ 'animal-select__trigger--disabled': disabled, 'animal-select__trigger--open': open }"
-            role="combobox"
-            aria-haspopup="listbox"
-            :aria-expanded="open"
-            :aria-controls="open ? listboxId : undefined"
-            :aria-activedescendant="open && activeKey ? optionId(activeKey) : undefined"
-            :aria-disabled="disabled || undefined"
+            :role="showSearch ? undefined : 'combobox'"
+            :tabindex="showSearch || disabled ? undefined : 0"
+            :aria-disabled="showSearch ? undefined : disabled || undefined"
+            :aria-haspopup="showSearch ? undefined : 'listbox'"
+            :aria-expanded="showSearch ? undefined : open"
+            :aria-controls="showSearch || !open ? undefined : listboxId"
+            :aria-activedescendant="showSearch || !open || !activeKey ? undefined : optionId(activeKey)"
             :aria-label="ariaLabel"
             :aria-labelledby="ariaLabelledBy"
-            :tabindex="disabled ? -1 : 0"
-            @click="handleToggle"
+            @click="
+                (e) => {
+                    if (disabled) return;
+                    // 点搜索框内部只是为了移动光标，不应该把已展开的下拉收起来
+                    if (showSearch && e.target === searchRef && open) return;
+                    handleToggle();
+                }
+            "
         >
-            <span class="animal-select__value" :class="{ 'animal-select__value--placeholder': !modelValue }">
+            <input
+                v-if="showSearch"
+                ref="searchRef"
+                class="animal-select__search-input"
+                role="combobox"
+                aria-autocomplete="list"
+                aria-haspopup="listbox"
+                :aria-expanded="open"
+                :aria-controls="open ? listboxId : undefined"
+                :aria-activedescendant="open && activeKey ? optionId(activeKey) : undefined"
+                :aria-label="ariaLabel"
+                :aria-labelledby="ariaLabelledBy"
+                :value="open ? (searchValue ?? labelForInput) : labelForInput"
+                :placeholder="placeholder"
+                :disabled="disabled"
+                autocomplete="off"
+                @input="handleSearchInput"
+            />
+            <span v-else class="animal-select__value" :class="{ 'animal-select__value--placeholder': !modelValue }">
                 {{ currentLabel }}
             </span>
+            <button
+                v-if="showClear"
+                type="button"
+                class="animal-select__clear"
+                :aria-label="clearAriaLabel"
+                tabindex="-1"
+                @click="handleClear"
+                @mousedown.prevent
+            >
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                    <path
+                        d="M3 3L9 9M9 3L3 9"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
+                </svg>
+            </button>
             <span class="animal-select__arrow" :class="{ 'animal-select__arrow--open': open }" aria-hidden="true">
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                     <path
@@ -209,8 +338,18 @@ onBeforeUnmount(() => {
             :aria-label="ariaLabel"
             :aria-labelledby="ariaLabelledBy"
         >
+            <!-- listbox 必须包含 option（aria-required-children），所以空态渲染成禁用的 option -->
             <div
-                v-for="option in options"
+                v-if="filteredOptions.length === 0"
+                class="animal-select__not-found"
+                role="option"
+                aria-disabled="true"
+                aria-selected="false"
+            >
+                <slot name="not-found">{{ notFoundContent }}</slot>
+            </div>
+            <div
+                v-for="option in filteredOptions"
                 :id="optionId(option.key)"
                 :key="option.key"
                 class="animal-select__option"
@@ -289,6 +428,65 @@ onBeforeUnmount(() => {
             color: #a09080;
             font-weight: 400;
         }
+    }
+
+    // 搜索模式下由 input 取代只读文本，两者共享 trigger 的排版
+    &__search-input {
+        flex: 1;
+        min-width: 0;
+        padding: 0;
+        font-family: inherit;
+        font-size: 14px;
+        font-weight: 600;
+        color: #725d42;
+        background: transparent;
+        border: none;
+        outline: none;
+
+        &::placeholder {
+            color: #a09080;
+            font-weight: 400;
+        }
+
+        &:disabled {
+            cursor: not-allowed;
+        }
+    }
+
+    // 清除按钮仅在悬停时出现（见 showClear）
+    &__clear {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        margin-right: 6px;
+        padding: 0;
+        color: @text-color-disabled;
+        cursor: pointer;
+        background: transparent;
+        border: none;
+        border-radius: 50%;
+        transition: all @motion-duration-fast @motion-ease;
+
+        &:hover {
+            color: #725d42;
+            background: rgba(114, 93, 66, 0.1);
+        }
+
+        &:focus-visible {
+            outline: 2px solid @primary-color;
+            outline-offset: 1px;
+        }
+    }
+
+    &__not-found {
+        padding: 10px 14px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #a09080;
+        text-align: center;
+        white-space: nowrap;
     }
 
     &__arrow {

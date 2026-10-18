@@ -317,4 +317,301 @@ describe('Select', () => {
             wrapper.unmount();
         });
     });
+
+    describe('allowClear', () => {
+        const getTrigger = (): HTMLElement => document.querySelector('.animal-select__trigger') as HTMLElement;
+        const getClear = (): HTMLElement | null => document.querySelector('.animal-select__clear');
+
+        it('默认不渲染清除按钮', () => {
+            const wrapper = mount(Select, {
+                props: { options, modelValue: 'a', allowClear: true },
+                attachTo: document.body,
+            });
+            // 未悬停 → 不出现
+            expect(getClear()).toBeNull();
+            wrapper.unmount();
+        });
+
+        it('悬停且有值时出现清除按钮', async () => {
+            const wrapper = mount(Select, {
+                props: { options, modelValue: 'a', allowClear: true },
+                attachTo: document.body,
+            });
+            await wrapper.find('.animal-select').trigger('mouseenter');
+            expect(getClear()).not.toBeNull();
+            wrapper.unmount();
+        });
+
+        it('allowClear=false 时即使悬停也不出现', async () => {
+            const wrapper = mount(Select, { props: { options, modelValue: 'a' }, attachTo: document.body });
+            await wrapper.find('.animal-select').trigger('mouseenter');
+            expect(getClear()).toBeNull();
+            wrapper.unmount();
+        });
+
+        it('无选中值时悬停也不出现', async () => {
+            const wrapper = mount(Select, {
+                props: { options, modelValue: '', allowClear: true },
+                attachTo: document.body,
+            });
+            await wrapper.find('.animal-select').trigger('mouseenter');
+            expect(getClear()).toBeNull();
+            wrapper.unmount();
+        });
+
+        it('disabled 时悬停也不出现', async () => {
+            const wrapper = mount(Select, {
+                props: { options, modelValue: 'a', allowClear: true, disabled: true },
+                attachTo: document.body,
+            });
+            await wrapper.find('.animal-select').trigger('mouseenter');
+            expect(getClear()).toBeNull();
+            wrapper.unmount();
+        });
+
+        it('点击清除按钮清空值并触发 update:modelValue / change / clear', async () => {
+            const wrapper = mount(Select, {
+                props: { options, modelValue: 'a', allowClear: true },
+                attachTo: document.body,
+            });
+            await wrapper.find('.animal-select').trigger('mouseenter');
+            getClear()!.click();
+            await nextTick();
+            expect(wrapper.emitted('update:modelValue')![0][0]).toBe('');
+            expect(wrapper.emitted('change')![0][0]).toBe('');
+            expect(wrapper.emitted('clear')).toHaveLength(1);
+            wrapper.unmount();
+        });
+
+        it('清除按钮带 clearAriaLabel', async () => {
+            const wrapper = mount(Select, {
+                props: { options, modelValue: 'a', allowClear: true, clearAriaLabel: '清空选择' },
+                attachTo: document.body,
+            });
+            await wrapper.find('.animal-select').trigger('mouseenter');
+            expect(getClear()!.getAttribute('aria-label')).toBe('清空选择');
+            wrapper.unmount();
+        });
+
+        it('默认 clearAriaLabel 为「清除」', async () => {
+            const wrapper = mount(Select, {
+                props: { options, modelValue: 'a', allowClear: true },
+                attachTo: document.body,
+            });
+            await wrapper.find('.animal-select').trigger('mouseenter');
+            expect(getClear()!.getAttribute('aria-label')).toBe('清除');
+            expect(getTrigger().getAttribute('role')).toBe('combobox');
+            wrapper.unmount();
+        });
+    });
+
+    describe('showSearch', () => {
+        const getInput = (): HTMLInputElement =>
+            document.querySelector('.animal-select__search-input') as HTMLInputElement;
+        const getTrigger = (): HTMLElement => document.querySelector('.animal-select__trigger') as HTMLElement;
+        const labels = (): string[] =>
+            Array.from(document.querySelectorAll('.animal-select__option')).map((n) => n.textContent?.trim() ?? '');
+
+        const type = async (input: HTMLInputElement, value: string) => {
+            input.value = value;
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+            await nextTick();
+        };
+
+        it('showSearch 渲染输入框，并接管 combobox 语义', () => {
+            const wrapper = mount(Select, {
+                props: { options, modelValue: '', showSearch: true },
+                attachTo: document.body,
+            });
+            const input = getInput();
+            expect(input).not.toBeNull();
+            expect(input.getAttribute('role')).toBe('combobox');
+            expect(input.getAttribute('aria-autocomplete')).toBe('list');
+            // trigger 不再承担 combobox 角色（避免两个 combobox）
+            expect(getTrigger().getAttribute('role')).toBeNull();
+            expect(getTrigger().getAttribute('tabindex')).toBeNull();
+            wrapper.unmount();
+        });
+
+        it('有选中值时输入框回显 label', () => {
+            const wrapper = mount(Select, {
+                props: { options, modelValue: 'b', showSearch: true },
+                attachTo: document.body,
+            });
+            expect(getInput().value).toBe('Banana');
+            wrapper.unmount();
+        });
+
+        it('输入关键字过滤选项，并触发 search', async () => {
+            const wrapper = mount(Select, {
+                props: { options, modelValue: '', showSearch: true },
+                attachTo: document.body,
+            });
+            getTrigger().click();
+            await flushRaf();
+
+            await type(getInput(), 'an');
+            expect(labels()).toEqual(['Banana']);
+            expect(wrapper.emitted('search')![0][0]).toBe('an');
+            wrapper.unmount();
+        });
+
+        it('optionFilterProp=key 改用 key 匹配', async () => {
+            const wrapper = mount(Select, {
+                props: { options, modelValue: '', showSearch: true, optionFilterProp: 'key' },
+                attachTo: document.body,
+            });
+            getTrigger().click();
+            await flushRaf();
+
+            await type(getInput(), 'a');
+            expect(labels()).toEqual(['Apple']);
+            wrapper.unmount();
+        });
+
+        it('filterOption=false 不过滤', async () => {
+            const wrapper = mount(Select, {
+                props: { options, modelValue: '', showSearch: true, filterOption: false },
+                attachTo: document.body,
+            });
+            getTrigger().click();
+            await flushRaf();
+
+            await type(getInput(), 'zzz');
+            expect(labels()).toHaveLength(3);
+            wrapper.unmount();
+        });
+
+        it('filterOption 传函数时自行判定', async () => {
+            const filter = vi.fn((inputValue: string, option: SelectOption) => option.label.startsWith(inputValue));
+            const wrapper = mount(Select, {
+                props: { options, modelValue: '', showSearch: true, filterOption: filter },
+                attachTo: document.body,
+            });
+            getTrigger().click();
+            await flushRaf();
+
+            await type(getInput(), 'C');
+            expect(labels()).toEqual(['Cherry']);
+            expect(filter).toHaveBeenCalled();
+            wrapper.unmount();
+        });
+
+        it('输入时去掉 label 前缀而不是追加', async () => {
+            const wrapper = mount(Select, {
+                props: { options, modelValue: 'a', showSearch: true },
+                attachTo: document.body,
+            });
+            getTrigger().click();
+            await flushRaf();
+
+            // 输入框此刻显示 Apple，用户接着输入 'ppleB' → 应解析为 'B' 而非 'AppleppleB'
+            await type(getInput(), 'AppleB');
+            expect(wrapper.emitted('search')![0][0]).toBe('B');
+            wrapper.unmount();
+        });
+
+        it('无匹配时渲染空态 option', async () => {
+            const wrapper = mount(Select, {
+                props: { options, modelValue: '', showSearch: true },
+                attachTo: document.body,
+            });
+            getTrigger().click();
+            await flushRaf();
+
+            await type(getInput(), 'zzz');
+            const notFound = document.querySelector('.animal-select__not-found') as HTMLElement;
+            expect(notFound).not.toBeNull();
+            expect(notFound.getAttribute('role')).toBe('option');
+            expect(notFound.getAttribute('aria-disabled')).toBe('true');
+            expect(notFound.textContent?.trim()).toBe('暂无数据');
+            wrapper.unmount();
+        });
+
+        it('notFoundContent 覆盖默认文案', async () => {
+            const wrapper = mount(Select, {
+                props: { options, modelValue: '', showSearch: true, notFoundContent: '没有匹配项' },
+                attachTo: document.body,
+            });
+            getTrigger().click();
+            await flushRaf();
+
+            await type(getInput(), 'zzz');
+            expect(document.querySelector('.animal-select__not-found')!.textContent?.trim()).toBe('没有匹配项');
+            wrapper.unmount();
+        });
+
+        it('#not-found 插槽优先于 notFoundContent', async () => {
+            const wrapper = mount(Select, {
+                props: { options, modelValue: '', showSearch: true, notFoundContent: '来自 prop' },
+                slots: { 'not-found': '来自插槽' },
+                attachTo: document.body,
+            });
+            getTrigger().click();
+            await flushRaf();
+
+            await type(getInput(), 'zzz');
+            const text = document.querySelector('.animal-select__not-found')!.textContent;
+            expect(text).toContain('来自插槽');
+            expect(text).not.toContain('来自 prop');
+            wrapper.unmount();
+        });
+
+        it('Escape 先清空搜索词，再按一次才关闭', async () => {
+            const wrapper = mount(Select, {
+                props: { options, modelValue: '', showSearch: true },
+                attachTo: document.body,
+            });
+            const trigger = getTrigger();
+            trigger.click();
+            await flushRaf();
+            await type(getInput(), 'an');
+            expect(labels()).toEqual(['Banana']);
+
+            // 第一次 Escape：清空搜索词，选项恢复全量，下拉仍展开
+            await trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+            await nextTick();
+            expect(labels()).toHaveLength(3);
+            // showSearch 模式下 combobox 语义在 input 上，trigger 不再带 aria-expanded
+            expect(getInput().getAttribute('aria-expanded')).toBe('true');
+            expect(wrapper.emitted('search')![1][0]).toBe('');
+
+            // 第二次 Escape：关闭
+            await trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+            await nextTick();
+            expect(getInput().getAttribute('aria-expanded')).toBe('false');
+            wrapper.unmount();
+        });
+
+        it('空格在搜索模式下属于正常输入，不会选中高亮项', async () => {
+            const wrapper = mount(Select, {
+                props: { options, modelValue: '', showSearch: true },
+                attachTo: document.body,
+            });
+            const trigger = getTrigger();
+            trigger.click();
+            await flushRaf();
+
+            await trigger.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true }));
+            await nextTick();
+            expect(wrapper.emitted('change')).toBeUndefined();
+            wrapper.unmount();
+        });
+
+        it('点输入框内部不收起已展开的下拉', async () => {
+            const wrapper = mount(Select, {
+                props: { options, modelValue: '', showSearch: true },
+                attachTo: document.body,
+            });
+            const trigger = getTrigger();
+            trigger.click();
+            await flushRaf();
+            expect(getInput().getAttribute('aria-expanded')).toBe('true');
+
+            getInput().click();
+            await nextTick();
+            expect(getInput().getAttribute('aria-expanded')).toBe('true');
+            wrapper.unmount();
+        });
+    });
 });

@@ -696,6 +696,17 @@ const lang = ref('zh');
         ]"
         placeholder="Choose language"
     />
+
+    <!-- 可搜索 + 可清空的组合框 -->
+    <Select v-model="lang" show-search allow-clear :options="langOptions" clear-aria-label="清空语言" />
+
+    <!-- 自定义过滤规则：不按 label 开头匹配 -->
+    <Select v-model="lang" show-search :filter-option="(input, opt) => opt.key.startsWith(input)" :options="langOptions" />
+
+    <!-- 自定义空态 -->
+    <Select v-model="lang" show-search :options="[]">
+        <template #not-found>没有匹配的语言</template>
+    </Select>
 </template>
 ```
 
@@ -707,9 +718,17 @@ Notes:
 
 - Click-outside to close is built-in.
 
-- Does NOT accept `class` / `:style` / custom render slot for options; style via CSS targeting descendant `.wrapper`.
+- **`showSearch`** turns the trigger into a real `<input role="combobox">` (the trigger div then no longer carries the combobox role, so the page never has two). In search mode Space is typed text rather than "confirm"; `Escape` clears the current query first and only closes on a second press. While the input echoes a selected label, typing **replaces** the label instead of appending to it, so the first keystroke starts the query rather than concatenating onto the old label.
 
-- **Not supported:** no `multiple`, no `mode="tags"`, no `showSearch`, no `loading`, no `allowClear`, no `optionLabelProp`, no `notFoundContent` (just hides).
+- **`filterOption`** accepts `false` to disable filtering or a predicate `(inputValue, option) => boolean`. With `true`, matching is case-insensitive over `optionFilterProp` (`'label'` by default, `'key'` available).
+
+- **`allowClear`** renders a clear button only while the wrapper is hovered, has a value, and is not disabled. Clicking it emits `update:modelValue` + `change` with `''` plus `clear`, and moves focus to the trigger so keyboard users don't drop focus when the button unmounts.
+
+- The clear button carries `tabindex="-1"` and `mousedown.prevent` so it never steals the roving focus from the combobox.
+
+- Style via CSS targeting descendant `.animal-select`; no custom render slot for options.
+
+- **Not supported:** no `multiple`, no `mode="tags"`, no `loading`, no `optionLabelProp`.
 
 ***
 

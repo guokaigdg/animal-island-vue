@@ -3028,6 +3028,14 @@ CountUp Props：`start`（number，默认 0）、`end`（number，必填）、`d
 2. React 的 `children({ value, reset })` render prop → Vue 的 `#default` 作用域插槽。
 3. React 的 `prefix` / `suffix` / `celebrate.text` 是 ReactNode → Vue 改为插槽（`celebrate.text` 保留字符串简写）。
 
+### Select 的搜索与清空能力（补齐 React 端能力）
+
+Select 在 `showSearch` 关闭时是纯下拉；开启后触发区把只读文字换成真正的 `<input role="combobox" aria-autocomplete="list">`，同时 trigger 上的 `role` / `tabindex` / `aria-*` 全部移除，**保证页面里不会出现两个 combobox**。
+
+新增 Props：`allowClear`（boolean，默认 false）、`clearAriaLabel`（string，默认「清除」）、`showSearch`（boolean，默认 false）、`filterOption`（boolean | `(inputValue, option) => boolean`，默认 true）、`optionFilterProp`（'key' | 'label'，默认 'label'）、`notFoundContent`（string，默认「暂无数据」，富文本用 `#not-found` 插槽）。新增 Emits：`clear`（清除按钮触发）、`search`（搜索词变化，**收起时会以空串再通知一次**，避免外部维护的结果集留在旧值）。
+
+交互细节：搜索模式下空格是正常输入而非「确认」，只有非搜索模式才当作选中；`Escape` 先清空搜索词、再按一次才关闭；输入框回显选中 label 时，用户的输入**替换**而非追加 label，所以第一个字符就构成查询；清空按钮带 `tabindex="-1"` + `mousedown.prevent`，不抢 combobox 的焦点，点击后把焦点交回 trigger（按钮会卸载，否则键盘用户掉焦点）。空结果必须渲染成禁用的 `role="option"` 节点（listbox 需要 option 子元素，aria-required-children）。
+
 ### Calendar
 
 ```vue
