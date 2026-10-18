@@ -155,6 +155,10 @@ export const PAGE_INFO: Record<string, { title: string; desc: string }> = {
         title: 'CountUp 数字滚动',
         desc: '数字滚动组件 — 从起始值缓动计数到目标值，支持五种内置缓动与自定义缓动函数、小数位 / 千分位格式化、formatter 完全接管、isCounting 暂停续播、repeat 自动重播、前后缀插槽，结束可触发弹跳 + 光环 + 星芒的庆祝动效',
     },
+    icon: {
+        title: 'Icon 图标',
+        desc: '内置图标集 — 164 个手绘 SVG 动物 / 天气 / 食物 / 物件 / 交通工具贴纸风图标，支持 name 按名渲染、单组件直接导入、size / color / strokeWidth / bounce，与调色板 NAIVE_PALETTE 配合使用',
+    },
     calendar: {
         title: 'Calendar 日历',
         desc: '月视图日历组件 — 受控选日期与受控翻月、跨天事项渲染成跨周连续条并支持 +N 折叠、5 种事项配色、起始时间开关、拖拽跨日期创建事项、行高与事项密度随宽度自适应，键盘方向键跨月翻页、Enter / 空格选中',

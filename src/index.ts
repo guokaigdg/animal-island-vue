@@ -17,11 +17,11 @@ import '@fontsource/noto-sans-sc/chinese-simplified-700.css';
 // ============================================
 // 组件导出（随迁移进度逐步追加）
 // ============================================
-// Phase 0 — 图标（同步自 React Icon，101 个内置可爱图标）
-export { Icon, ICON_LIST } from './components/Icon';
+// Phase 0 — 图标（同步自 guokaigdg/naive-icons，164 个内置手绘图标）
+export { Icon, ICON_LIST, ICON_NAMES, ICONS_BY_CATEGORY } from './components/Icon';
 export type { IconProps, IconName, IconComponent, PaletteColor, IconCategory } from './components/Icon';
 export { NAIVE_PALETTE, ICON_CATEGORIES } from './components/Icon';
-// 内置可爱图标（101 个）：import { HeartIcon } from 'animal-island-vue' 或 <Icon name="Heart" />
+// 内置手绘图标（164 个）：import { HeartIcon } from 'animal-island-vue' 或 <Icon name="Heart" />
 export * from './components/Icon/src';
 
 // Phase 1 — 基础原子组件

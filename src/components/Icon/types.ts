@@ -1,107 +1,13 @@
 import { HTMLAttributes, type Component } from 'vue';
+import { ICON_NAMES } from './src/_svg-data';
 
-export type IconName =
-    | 'Airplane'
-    | 'Anchor'
-    | 'Apple'
-    | 'Balloon'
-    | 'Bear'
-    | 'Bee'
-    | 'Bell'
-    | 'Bicycle'
-    | 'Bird'
-    | 'Book'
-    | 'Bookmark'
-    | 'Bulb'
-    | 'Butterfly'
-    | 'Cactus'
-    | 'Cake'
-    | 'Calendar'
-    | 'Camera'
-    | 'Candle'
-    | 'Car'
-    | 'Cart'
-    | 'Cat'
-    | 'Chat'
-    | 'Check'
-    | 'Cherry'
-    | 'Clock'
-    | 'Close'
-    | 'Cloud'
-    | 'Code'
-    | 'Coffee'
-    | 'Compass'
-    | 'CreditCard'
-    | 'Dog'
-    | 'Donut'
-    | 'Download'
-    | 'Edit'
-    | 'Eye'
-    | 'File'
-    | 'Fish'
-    | 'Flag'
-    | 'Flame'
-    | 'Flower'
-    | 'Folder'
-    | 'Fox'
-    | 'Frog'
-    | 'Gift'
-    | 'Globe'
-    | 'Headphones'
-    | 'Heart'
-    | 'Home'
-    | 'Icecream'
-    | 'Image'
-    | 'Key'
-    | 'Ladybug'
-    | 'Lamp'
-    | 'Leaf'
-    | 'Lemon'
-    | 'Location'
-    | 'Lock'
-    | 'Magnet'
-    | 'Mail'
-    | 'Map'
-    | 'Mic'
-    | 'Moon'
-    | 'Mushroom'
-    | 'Music'
-    | 'Owl'
-    | 'Paintbrush'
-    | 'Pencil'
-    | 'Penguin'
-    | 'Phone'
-    | 'Play'
-    | 'Plus'
-    | 'Rabbit'
-    | 'Rainbow'
-    | 'Refresh'
-    | 'Rocket'
-    | 'Sailboat'
-    | 'Save'
-    | 'Search'
-    | 'Settings'
-    | 'Share'
-    | 'ShoppingBag'
-    | 'Smile'
-    | 'Snail'
-    | 'Snowflake'
-    | 'Star'
-    | 'Strawberry'
-    | 'Sun'
-    | 'Tag'
-    | 'Thermometer'
-    | 'ThumbsUp'
-    | 'Train'
-    | 'Trash'
-    | 'Tree'
-    | 'Trophy'
-    | 'Umbrella'
-    | 'Upload'
-    | 'User'
-    | 'Video'
-    | 'Watermelon'
-    | 'Wifi';
+/**
+ * 图标名联合类型：从 ICON_NAMES 派生，避免与 _svg-data.ts 各写一份而漂移。
+ *
+ * React 侧的 IconName 带 Icon 后缀（'AirplaneIcon'），Vue 侧刻意用裸名（'Airplane'）——
+ * 消费方写的是 `<Icon name="Airplane">`。改名会破坏所有既有消费方。
+ */
+export type IconName = (typeof ICON_NAMES)[number];
 
 /** Vue 图标组件类型（任意可作为 `<component :is>` 的组件） */
 export type IconComponent = Component;
@@ -132,6 +38,8 @@ export interface IconProps extends /* @vue-ignore */ Omit<HTMLAttributes, 'color
     size?: number | string;
     color?: string;
     strokeWidth?: number | string;
+    /** 填充色，默认 none。只作用于根 <svg>，内层图形的 fill 是设计值不受影响（与 React 一致） */
+    fill?: string;
     bounce?: boolean;
 }
 
@@ -145,22 +53,12 @@ export const NAIVE_PALETTE = {
     teal: '#2A9D8F',
     brown: '#8B5E3C',
     cream: '#FAEDCD',
+    white: '#FFFFFF',
 } as const;
 
 export type PaletteColor = keyof typeof NAIVE_PALETTE;
 
-export const ICON_CATEGORIES = [
-    'interface',
-    'action',
-    'media',
-    'navigation',
-    'communication',
-    'nature',
-    'animals',
-    'food',
-    'objects',
-    'transport',
-    'emoji',
-] as const;
-
-export type IconCategory = (typeof ICON_CATEGORIES)[number];
+// 分类定义下沉到 _svg-data.ts：图标数据里带 category 字段，类型定义跟着数据走。
+// 公共 API 不变——这两个名字仍然从 ./types 导出。
+export { ICON_CATEGORIES } from './src/_svg-data';
+export type { IconCategory } from './src/_svg-data';

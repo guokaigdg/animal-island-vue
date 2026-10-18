@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { computed, useAttrs } from 'vue';
 import { ICON_SVG } from './src/_svg-data';
+import { parseSvgAttrs, resolveStrokeWidth, scaleInnerStrokes } from './src/_icon-runtime';
 import type { IconProps } from './types';
 
 const props = withDefaults(defineProps<IconProps>(), {
     size: 24,
+    color: '#2A2A2A',
+    strokeWidth: 3.5,
     bounce: false,
 });
 
@@ -20,29 +23,22 @@ const svgData = computed(() => {
 
 const isCustomIcon = computed(() => !!props.icon);
 
-// Parse React svg attrs string into object
-function parseSvgAttrs(attrStr: string): Record<string, string> {
-    const result: Record<string, string> = {};
-    const re = /([a-zA-Z-]+)=(?:"([^"]*)"|'([^']*)')/g;
-    let m: RegExpExecArray | null;
-    while ((m = re.exec(attrStr)) !== null) {
-        result[m[1]] = m[2] !== undefined ? m[2] : m[3];
-    }
-    return result;
-}
-
 const svgAttrs = computed<Record<string, string>>(() => {
     if (!svgData.value) return {};
     return parseSvgAttrs(svgData.value.attrs);
 });
 
-const svgInner = computed(() => svgData.value?.inner || '');
+// 内层描边也要跟着 strokeWidth 等比缩放，否则粗细层次会丢失（对齐上游 scaledStroke）
+const svgInner = computed(() => (svgData.value ? scaleInnerStrokes(svgData.value.inner, props.strokeWidth) : ''));
 
-// Build SVG element props (override with color/strokeWidth if provided)
+// Build SVG element props (override with color/strokeWidth/fill if provided)
 const svgElementProps = computed<Record<string, unknown>>(() => {
     const base: Record<string, string> = { ...svgAttrs.value };
     if (props.color !== undefined) base.stroke = props.color;
-    if (props.strokeWidth !== undefined) base.strokeWidth = String(props.strokeWidth);
+    // 必须写 kebab：Vue 对 SVG 元素走 setAttribute，而 SVG 属性名区分大小写，
+    // setAttribute('strokeWidth') 会造出一个 SVG 不认识的大写属性，strokeWidth prop 直接失效。
+    if (props.strokeWidth !== undefined) base['stroke-width'] = String(resolveStrokeWidth(props.strokeWidth));
+    if (props.fill !== undefined) base.fill = props.fill;
     return base;
 });
 
@@ -88,9 +84,11 @@ const iconPassthrough = computed<Record<string, unknown>>(() => ({
 const labeled = computed(() => !!attrs['aria-label']);
 
 // Compute class
+// 规范前缀是 animal-icon（全库 animal-* 约定）。旧的 animal-island-icon 一并保留，
+// 改名对消费方是破坏性的，不能只换新的就把写死了旧类名的样式打断。
 const classes = computed(() => {
-    const list = ['animal-island-icon'];
-    if (props.bounce) list.push('animal-island-icon--bounce');
+    const list = ['animal-icon', 'animal-island-icon'];
+    if (props.bounce) list.push('animal-icon--bounce', 'animal-island-icon--bounce');
     if (attrs.class) list.push(String(attrs.class));
     return list.filter(Boolean).join(' ');
 });
@@ -134,19 +132,23 @@ defineOptions({ inheritAttrs: false });
 </template>
 
 <style lang="less">
+// 选择器同时挂新旧两个类名：组件渲染时会同时输出 animal-icon 与 animal-island-icon，
+// 老样式写死 .animal-island-icon 的消费方不必改就能继续生效。
+.animal-icon,
 .animal-island-icon {
     display: inline-block;
     flex-shrink: 0;
     vertical-align: middle;
 }
 
+.animal-icon--bounce,
 .animal-island-icon--bounce {
     &:hover {
-        animation: animal-island-icon-bounce 0.3s ease-in-out forwards;
+        animation: animal-icon-bounce 0.3s ease-in-out forwards;
     }
 }
 
-@keyframes animal-island-icon-bounce {
+@keyframes animal-icon-bounce {
     0% {
         transform: scale(1) rotate(0deg);
     }

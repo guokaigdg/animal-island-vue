@@ -503,12 +503,12 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 - A11y: `nav[aria-label="分页"]`; active page `aria-current="page"`; prev/next `aria-label="上一页/下一页"`; size trigger `aria-haspopup="listbox"` + `aria-expanded`; options `role="option"` + `aria-selected`; jumper input `aria-label="跳转到指定页"`; ellipses `aria-hidden`.
 - Vue API: `<Pagination v-model:current="page" v-model:page-size="pageSize" :total="500" show-total show-quick-jumper />`; Table integration: `<Table :pagination="{ defaultPageSize: 5, showTotal: true, showSizeChanger: true }" />` (total computed from dataSource).
 
-### Icon (101 built-in sticker icons)
+### Icon (164 built-in sticker icons)
 
 - Props: `name` (IconName, e.g. 'Heart'), `icon` (Component — wins over `name`), `src` (string → background-image), `size` (number | string, default 24), `color` (svg modes only, overrides `stroke`), `strokeWidth` (svg modes only, default 3.5), `bounce` (default false, 0.3s hover bounce).
 - Mode priority: `icon` > `name` > `src`. The `name` mode renders an inline `<svg>` with `stroke: currentColor` and `stroke-width: 3.5`.
 - `id` / `class` / `style` / `data-*` / `aria-*` fall through to the rendered element.
-- All 101 `*Icon` components (HeartIcon, FlowerIcon, …) plus `ICON_LIST` / `NAIVE_PALETTE` / `ICON_CATEGORIES` are exported from the package root.
+- All 164 `*Icon` components (HeartIcon, FlowerIcon, …) plus `ICON_LIST` / `NAIVE_PALETTE` / `ICON_CATEGORIES` are exported from the package root.
 
 ### Time (HUD clock)
 

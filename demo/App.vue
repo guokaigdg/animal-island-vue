@@ -34,6 +34,7 @@ const MENU_ITEMS: MenuItem[] = [
         key: 'cat-basic',
         label: '── 基础 ──',
         children: [
+            { key: 'icon', label: 'Icon 图标' },
             { key: 'title', label: 'Title 标题' },
             { key: 'button', label: 'Button 按钮' },
             { key: 'divider-comp', label: 'Divider 分割线' },

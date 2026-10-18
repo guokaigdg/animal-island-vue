@@ -1684,7 +1684,7 @@ const active = ref(false);
 import type { Component } from 'vue';
 
 interface IconProps {
-    /** Built-in icon name (101 total, e.g. Heart / Flower). One of name / icon / src. */
+    /** Built-in icon name (164 total, e.g. Heart / Flower). One of name / icon / src. */
     name?: IconName;
     /** Any icon component (import { HeartIcon } from 'animal-island-vue'); wins over name. */
     icon?: Component;
@@ -1698,9 +1698,11 @@ interface IconProps {
     strokeWidth?: number | string;
     /** Bounce on hover. Default false. */
     bounce?: boolean; // default false
+    fill?: string; // default 'none'; applies to the root <svg> only (inner fills are design values)
+    title?: string; // accessible title — sets role="img"
 }
 // Attrs (id / class / style / data-* / aria-*) fall through to the rendered element.
-// Also exported: ICON_LIST, NAIVE_PALETTE, ICON_CATEGORIES and 101 named *Icon components.
+// Also exported: ICON_LIST, NAIVE_PALETTE, ICON_CATEGORIES and 164 named *Icon components.
 ```
 
 Three render modes, priority `icon` > `name` > `src`:
@@ -1722,7 +1724,7 @@ import { Icon, HeartIcon } from 'animal-island-vue';
 </template>
 ```
 
-> Hand-drawn sticker-style icon set — 101 built-ins, zero image assets. `name` renders an inline `<svg>` whose source attributes are passed through, with `stroke` inheriting `currentColor` and `stroke-width: 3.5` (`vector-effect: non-scaling-stroke`). `size` accepts a number (→ px) or any CSS length string. `color` / `strokeWidth` only affect the two svg modes. `bounce` adds a 0.3s hover bounce. **Not supported:** no `spin` / `rotate` prop, no per-path multi-color API, no font-icon mode.
+> Hand-drawn sticker-style icon set — 164 built-ins, zero image assets. `name` renders an inline `<svg>` whose source attributes are passed through, with `stroke` inheriting `currentColor` and `stroke-width: 3.5` (`vector-effect: non-scaling-stroke`). `size` accepts a number (→ px) or any CSS length string. `color` / `strokeWidth` only affect the two svg modes. `bounce` adds a 0.3s hover bounce. **Not supported:** no `spin` / `rotate` prop, no per-path multi-color API, no font-icon mode.
 
 ***
 

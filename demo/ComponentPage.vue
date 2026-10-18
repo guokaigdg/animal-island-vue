@@ -42,6 +42,7 @@ import AvatarDemo from './pages/AvatarDemo.vue';
 import RateDemo from './pages/RateDemo.vue';
 import BadgeDemo from './pages/BadgeDemo.vue';
 import CountUpDemo from './pages/CountUpDemo.vue';
+import IconDemo from './pages/IconDemo.vue';
 import CalendarDemo from './pages/CalendarDemo.vue';
 
 const props = defineProps<{ activeKey: string }>();
@@ -86,6 +87,7 @@ const PAGES: Record<string, unknown> = {
     rate: RateDemo,
     badge: BadgeDemo,
     countup: CountUpDemo,
+    icon: IconDemo,
     calendar: CalendarDemo,
 };
 
