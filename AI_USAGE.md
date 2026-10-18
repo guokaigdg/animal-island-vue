@@ -1154,6 +1154,11 @@ interface NotificationStatic {
 declare const NOTIFICATION_DEFAULT_DURATION: number; // 4.5
 ```
 
+Also exported from the package root (the imperative API is public, not internal):
+`notificationOpen(config)`, `notificationDestroy(key?)`, `NOTIFICATION_DEFAULT_DURATION`.
+Prefer the static-method style — `Notification.success(...)` / `Notification.destroy()` — unless you
+need the same key to update in place.
+
 ```vue
 <script setup lang="ts">
 import { Notification, NotificationContainer } from 'animal-island-vue';

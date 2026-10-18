@@ -124,7 +124,13 @@ export type { ProgressProps, ProgressSize, ProgressInfoPosition } from './compon
 export { Drawer } from './components/Drawer';
 export type { DrawerProps, DrawerPlacement } from './components/Drawer';
 
-export { Notification, NotificationContainer } from './components/Notification';
+export {
+    Notification,
+    NotificationContainer,
+    notificationOpen,
+    notificationDestroy,
+    NOTIFICATION_DEFAULT_DURATION,
+} from './components/Notification';
 export type {
     NotificationConfig,
     NotificationItem,
