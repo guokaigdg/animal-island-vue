@@ -1966,6 +1966,178 @@ import { Badge, Tag, HeartIcon } from 'animal-island-vue';
 
 ***
 
+### 1.44 CountUp
+
+```ts
+import type {
+    CountUpProps,
+    CountUpSize,
+    CountUpVariant,
+    CountUpEasing,
+    CountUpEasingName,
+    CountUpEasingFunction,
+    CountUpRenderState,
+    CountUpCelebrateOptions,
+} from 'animal-island-vue';
+
+type CountUpEasingName = 'linear' | 'easeInCubic' | 'easeOutCubic' | 'easeInOutCubic' | 'easeOutExpo';
+type CountUpEasing = CountUpEasingName | ((progress: number) => number);
+
+interface CountUpProps {
+    end: number; // REQUIRED 目标值
+    start?: number; // default 0
+    duration?: number; // default 2；传 0 直接显示目标值
+    /** 是否正在计数；置 false 暂停并保留当前值，再置 true 从暂停处继续 */
+    isCounting?: boolean; // default false
+    /** 小数位数，默认取 start / end 中较大的小数位数 */
+    decimalPlaces?: number;
+    decimalSeparator?: string; // default '.'
+    thousandsSeparator?: string; // default ''
+    easing?: CountUpEasing; // default 'easeOutCubic'
+    /** 优先级高于上面三个格式化项；需要完全接管渲染请用默认插槽 */
+    formatter?: (value: number) => string | number;
+    /** 展示值刷新间隔（秒），0 表示每帧刷新 */
+    updateInterval?: number; // default 0
+    size?: CountUpSize; // default 'middle'（'small' | 'middle' | 'large'）
+    variant?: CountUpVariant; // default 'default'（'default' | 'island'）
+    bordered?: boolean;
+    /**
+     * Vue 端独有：数码管式逐位滚动。每个数字位是一根独立滚轮，值变化时该位滚到新数字，
+     * 非数字字符（千分位、小数点、前后缀文字）保持静止。默认 false，
+     * 此时行为与 React 的 CountUp 完全一致（React 只有数值缓动插值，没有逐位滚动）。
+     */
+    digitRoll?: boolean; // default false
+    celebrate?: boolean | CountUpCelebrateOptions; // default false
+    /** 结束后自动重播（Vue emit 无法返回值，故改为声明式 prop） */
+    repeat?: boolean; // default false
+    repeatDelay?: number; // default 0
+    repeatStartAt?: number;
+}
+// 插槽：
+//   #prefix / #suffix — 数字前缀 / 后缀
+//   #celebrate       — 庆祝贴纸文案，优先于 celebrate.text
+//   #default         — 作用域插槽 { value, reset }，完全接管数字渲染
+// Emits:
+//   update (value: number) — 每帧触发，与 updateInterval 无关
+//   complete (elapsedTime: number) — 单位秒
+// 通过组件 ref 暴露 reset(newStartAt?)，可主动重播
+```
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import { CountUp } from 'animal-island-vue';
+
+const playing = ref(false);
+const scoreRef = ref<InstanceType<typeof CountUp> | null>(null);
+</script>
+
+<template>
+    <CountUp :end="8888" :is-counting="playing" @complete="onComplete" />
+
+    <!-- 千分位 + 小数位 + 前后缀插槽 -->
+    <CountUp :end="1320.5" :decimal-places="1" thousands-separator="," :duration="0">
+        <template #prefix>¥</template>
+        <template #suffix>分</template>
+    </CountUp>
+
+    <!-- 结束庆祝动效 + 贴纸 -->
+    <CountUp :end="100" :is-counting="playing" celebrate>
+        <template #celebrate>达成！</template>
+    </CountUp>
+
+    <!-- 自动循环重播 -->
+    <CountUp :end="2026" :is-counting="playing" :repeat="playing" :repeat-delay="0.6" />
+
+    <!-- 作用域插槽接管渲染，reset 可重播 -->
+    <CountUp ref="scoreRef" :end="10">
+        <template #default="{ value, reset }">
+            <span @click="reset()">v{{ Math.round(value) }}</span>
+        </template>
+    </CountUp>
+</template>
+```
+
+> Numeric count-up driven by `requestAnimationFrame` with five built-in easings (`linear` / `easeInCubic` / `easeOutCubic` / `easeInOutCubic` / `easeOutExpo`) plus any custom `(progress) => progress` function; an unknown easing name silently falls back to `easeOutCubic`. Values are clamped to `[0, count]`-style rounding via `decimalPlaces` (defaults to the larger of `start` / `end` precision), then grouped by `thousandsSeparator` and joined with `decimalSeparator`. Flipping `isCounting` to `false` pauses and keeps the current value; flipping it back resumes from the pause point (the elapsed clock is not reset). Changing `start` / `end` / `duration` restarts the run automatically; `reset()` and the `repeat` prop restart it manually. **Vue difference:** React drives replay by *returning* `{ shouldRepeat }` from `onComplete` — a Vue emit cannot return a value, so replay is declared with `repeat` / `repeatDelay` / `repeatStartAt` instead. Opt-in `digitRoll` renders each digit position as its own 10-cell wheel that slides to the new digit on change, leaving separators and affixes static — a Vue-only extra (React has no per-digit roll); with it off the behaviour is identical to React. The number block is `aria-hidden` so screen readers are not spammed every frame; a visually hidden span announces the final value once the run settles. `celebrate` plays a two-beat bounce plus two expanding rings and four four-point sparkles, with an optional sticker from `celebrate.text` or the `#celebrate` slot; the celebration class is removed after 900 ms so the next run can replay it. **Not supported:** no half-value stepping and no React-style render-prop `children` (use the `#default` scoped slot instead); the `count-up` class namespace is BEM (`animal-count-up*`).
+
+***
+
+### 1.45 Calendar
+
+```ts
+import type { CalendarProps, CalendarEvent, CalendarColor, CalendarEventTitle } from 'animal-island-vue';
+
+type CalendarColor = 'teal' | 'amber' | 'coral' | 'green' | 'purple';
+
+interface CalendarEvent {
+    /** 事项内容：纯文本或数字；结构化内容请用 #event 插槽 */
+    title?: string | number;
+    /** 开始日期：YYYY-MM-DD 或 YYYY-MM-DD HH:mm */
+    start: string;
+    /** 结束日期，省略等同于 start；传入时渲染成跨天的连续事项条 */
+    end?: string;
+    color?: CalendarColor; // default 'teal'
+    /** 是否在事项条首段展示起始时间 HH:mm（跨周续接段不重复展示） */
+    showTime?: boolean;
+}
+
+interface CalendarProps {
+    modelValue?: string; // 当前选中日期 YYYY-MM-DD（受控）
+    value?: string; // 同上，React 别名，优先级高于 modelValue
+    defaultValue?: string; // 非受控；不传时默认今天
+    panelValue?: string; // 面板月份（受控）YYYY-MM
+    defaultPanelValue?: string;
+    events?: CalendarEvent[];
+    showEventTime?: boolean; // default true
+    draggableEvents?: boolean; // default false
+    width?: number | string; // 数字按 px 处理
+    ariaLabel?: string;
+    ariaLabelledBy?: string;
+}
+// Emits:
+//   update:modelValue / change (date: string) — 选中日期
+//   update:panelValue / panelChange (month: string) — 翻月
+//   eventCreate (start: string, end: string) — 拖拽创建完成
+// 插槽：#event { event, segment, time } — 自定义事项条内容
+```
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import { Calendar } from 'animal-island-vue';
+
+const selected = ref('2026-03-04');
+const panel = ref('2026-03');
+const events = [
+    { title: '晨会', start: '2026-03-02 09:00', color: 'teal' },
+    // 跨天事项：start / end 不同，渲染成跨周的连续条
+    { title: '设计评审', start: '2026-03-04', end: '2026-03-06', color: 'amber' },
+];
+</script>
+
+<template>
+    <!-- 受控：v-model 选日期；v-model:panel-value 传了必须回写，否则面板无法翻月 -->
+    <Calendar v-model="selected" v-model:panel-value="panel" :events="events" />
+
+    <!-- 非受控 -->
+    <Calendar default-value="2026-03-04" :events="events" />
+
+    <!-- 拖拽创建事项 -->
+    <Calendar v-model="selected" draggable-events @event-create="onCreate" />
+
+    <!-- 自定义事项条内容 -->
+    <Calendar v-model="selected" :events="events">
+        <template #event="{ event, segment }">
+            <span>{{ segment.date }} · {{ event.title }}</span>
+        </template>
+    </Calendar>
+</template>
+```
+
+> Month-view calendar: a 6-week grid, with row height / font size / event density derived from the actual `width` (it fills the parent by default). Selecting a day emits `update:modelValue` + `change`; paging emits `update:panelValue` + `panelChange` — `panelValue` is controlled, so **you must write it back** or paging stops working. An event whose `end` differs from `start` is rendered as one continuous bar spanning weeks, with `data-start` / `data-end` / `data-span` markers and a `+N` overflow badge when a week cannot fit it; the `HH:mm` time is shown only on the bar's first segment. `showEventTime` toggles times globally, `showTime` per event. `draggableEvents` enables drag-across-days, previewing the target range and emitting `eventCreate(start, end)` on release. Layout is cached by the `events` array identity, so mutate-in-place will not re-layout — pass a new array. Keyboard: roving tabindex over the grid, arrow keys page across months, Enter / Space select. **Vue differences:** `aria-label` is always the plain text of `title` (React could walk a `ReactNode`; the `#event` slot does not feed the accessible name), `title` is narrowed to `string | number`, and date parsing rejects impossible dates such as Feb 31 (matching dayjs `isValid()`) instead of silently rolling over with native `Date`. **Not supported:** no recurrence rules, no multi-day view, no event editing/reordering.
+
+***
+
 ## 2. Common Recipes
 
 ### 2.1 Form row

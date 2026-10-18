@@ -39,43 +39,43 @@ animal-island-vue 是一套自然可爱小岛风格的 Vue 3 + TypeScript UI 组
 
 从 `src/index.ts` 导出：
 
-| 组件           | 职责                                                                                                                                                                                                      | 交互   | 装饰 / 纯展示 |
-| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------------- |
-| `BackTop`      | 返回顶部按钮，钱袋图标浮窗，支持自定义滚动容器、动画时长和可见高度                                                                                                                                        | ✓      | <br />        |
-| `Button`       | 按钮，5 种类型 × 3 种尺寸                                                                                                                                                                                 | ✓      | <br />        |
-| `Input`        | 输入框，3 种尺寸 + clear/prefix/suffix                                                                                                                                                                    | ✓      | <br />        |
-| `Switch`       | 开关，默认/小号                                                                                                                                                                                           | ✓      | <br />        |
-| `Modal`        | SVG blob 裁切弹窗                                                                                                                                                                                         | ✓      | <br />        |
-| `Card`         | 容器，`default`/`dashed`，13 种调色板实色 + 13 种 `pattern` 波点墙纸（CSS radial-gradient，非图片）                                                                                                       | <br /> | ✓             |
-| `Title`        | 章节标题，三种视觉变体（layer 双层纸 / ribbon 飘带 / tab 折角便签），13 种配色（替代旧 `Card type="title"`）                                                                                              | <br /> | ✓             |
-| `Collapse`     | 手风琴（动画用 CSS Grid 0fr↔1fr 实现，无 JS 动画）                                                                                                                                                        | ✓      | <br />        |
-| `Select`       | 下拉选择器（受控）                                                                                                                                                                                        | ✓      | <br />        |
-| `Skeleton`     | 加载占位骨架屏（SkeletonButton、SkeletonInput、SkeletonAvatar）                                                                                                                                           | <br /> | ✓             |
-| `Checkbox`     | 多选框组，水平/垂直，3 种尺寸                                                                                                                                                                             | ✓      | <br />        |
-| `Radio`        | 单选框组，3 种尺寸，键盘 roving tabindex                                                                                                                                                                  | ✓      | <br />        |
-| `Tooltip`      | 12 种 placement，`hover`/`focus`/`click` 触发，`default`/`island` 形态                                                                                                                                    | ✓      | <br />        |
-| `Time`         | HUD 实时时钟                                                                                                                                                                                              | <br /> | ✓             |
-| `Footer`       | 版权栏（© 年份 文案，年份缺省取当前年份）                                                                                                                                                                | <br /> | ✓             |
-| `Divider`      | 装饰分割线，5 种风格                                                                                                                                                                                      | <br /> | ✓             |
-| `Cursor`       | 自定义光标包裹器，`default` 手指箭头 / `raindrop` 蓝色雨滴（内联 SVG，零图片资源）                                                                                                                        | <br /> | ✓             |
-| `Background`   | 装饰背景壁纸，18 种类型：`default` 波点 / `grid` 网格 / `dots-dark-green` 深绿波点 / `sprinkles` 彩色针糖 / `sweet-corner` · `coffee-break` 场景背景图 / 12 色 `dots-*`（底色对应 Card `pattern-*` 系列） | <br /> | ✓             |
-| `Typewriter`   | 打字机效果，保留 VNode 结构                                                                                                                                                                               | <br /> | ✓             |
-| `Tabs`         | 标签页切换，叶子摆动动画可选                                                                                                                                                                              | ✓      | <br />        |
-| `CodeBlock`    | JSX/TS 语法高亮代码块                                                                                                                                                                                     | <br /> | ✓             |
-| `Loading`      | 全屏落雪加载屏，50 片雪花旋转飘落 + 暗角夜空（tip / delay / fadeDuration / zIndex）                                                                                                                       | <br /> | ✓             |
-| `Table`        | 数据表格，固定列、空状态、loading                                                                                                                                                                         | ✓      | <br />        |
-| `Pagination`   | 分页器，条数切换 / 快速跳转 / 总数展示，可内置于 Table                                                                                                                                                    | ✓      | <br />        |
-| `Carousel`     | 轮播图，自动播放 / 箭头 / 圆点 / 键盘导航                                                                                                                                                                 | ✓      | <br />        |
-| `Countdown`    | 倒计时，里程表式单向滚动数字                                                                                                                                                                              | <br /> | ✓             |
-| `Form`         | 表单系统（Form、FormItem、FormProvider、useForm）                                                                                                                                                         | ✓      | <br />        |
-| `Image`        | 相框图片，14 种底色、懒加载、点击预览                                                                                                                                                                     | ✓      | <br />        |
-| `Avatar` / `AvatarGroup` | 圆形/方形头像，图片/图标/文字三种形态，文字超宽自动缩放；头像组叠加展示 + 超出折叠为 +N                                                             | ✓      | ✓             |
-| `DatePicker`   | 日期选择器，日历网格 / 范围选择                                                                                                                                                                           | ✓      | <br />        |
-| `TimePicker`   | 时间选择器，时/分/秒滚动列                                                                                                                                                                                | ✓      | <br />        |
-| `Notification` | 命令式通知（含 NotificationContainer）                                                                                                                                                                    | ✓      | <br />        |
-| `Tag`          | 标签，3 变体 × 13 色                                                                                                                                                                                      | <br /> | ✓             |
-| `Progress`     | 进度条，斜纹动画填充                                                                                                                                                                                      | <br /> | ✓             |
-| `Drawer`       | 抽屉，四方向弹出 + 焦点陷阱                                                                                                                                                                               | ✓      | <br />        |
+| 组件                     | 职责                                                                                                                                                                                                      | 交互   | 装饰 / 纯展示 |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------------- |
+| `BackTop`                | 返回顶部按钮，钱袋图标浮窗，支持自定义滚动容器、动画时长和可见高度                                                                                                                                        | ✓      | <br />        |
+| `Button`                 | 按钮，5 种类型 × 3 种尺寸                                                                                                                                                                                 | ✓      | <br />        |
+| `Input`                  | 输入框，3 种尺寸 + clear/prefix/suffix                                                                                                                                                                    | ✓      | <br />        |
+| `Switch`                 | 开关，默认/小号                                                                                                                                                                                           | ✓      | <br />        |
+| `Modal`                  | SVG blob 裁切弹窗                                                                                                                                                                                         | ✓      | <br />        |
+| `Card`                   | 容器，`default`/`dashed`，13 种调色板实色 + 13 种 `pattern` 波点墙纸（CSS radial-gradient，非图片）                                                                                                       | <br /> | ✓             |
+| `Title`                  | 章节标题，三种视觉变体（layer 双层纸 / ribbon 飘带 / tab 折角便签），13 种配色（替代旧 `Card type="title"`）                                                                                              | <br /> | ✓             |
+| `Collapse`               | 手风琴（动画用 CSS Grid 0fr↔1fr 实现，无 JS 动画）                                                                                                                                                        | ✓      | <br />        |
+| `Select`                 | 下拉选择器（受控）                                                                                                                                                                                        | ✓      | <br />        |
+| `Skeleton`               | 加载占位骨架屏（SkeletonButton、SkeletonInput、SkeletonAvatar）                                                                                                                                           | <br /> | ✓             |
+| `Checkbox`               | 多选框组，水平/垂直，3 种尺寸                                                                                                                                                                             | ✓      | <br />        |
+| `Radio`                  | 单选框组，3 种尺寸，键盘 roving tabindex                                                                                                                                                                  | ✓      | <br />        |
+| `Tooltip`                | 12 种 placement，`hover`/`focus`/`click` 触发，`default`/`island` 形态                                                                                                                                    | ✓      | <br />        |
+| `Time`                   | HUD 实时时钟                                                                                                                                                                                              | <br /> | ✓             |
+| `Footer`                 | 版权栏（© 年份 文案，年份缺省取当前年份）                                                                                                                                                                 | <br /> | ✓             |
+| `Divider`                | 装饰分割线，5 种风格                                                                                                                                                                                      | <br /> | ✓             |
+| `Cursor`                 | 自定义光标包裹器，`default` 手指箭头 / `raindrop` 蓝色雨滴（内联 SVG，零图片资源）                                                                                                                        | <br /> | ✓             |
+| `Background`             | 装饰背景壁纸，18 种类型：`default` 波点 / `grid` 网格 / `dots-dark-green` 深绿波点 / `sprinkles` 彩色针糖 / `sweet-corner` · `coffee-break` 场景背景图 / 12 色 `dots-*`（底色对应 Card `pattern-*` 系列） | <br /> | ✓             |
+| `Typewriter`             | 打字机效果，保留 VNode 结构                                                                                                                                                                               | <br /> | ✓             |
+| `Tabs`                   | 标签页切换，叶子摆动动画可选                                                                                                                                                                              | ✓      | <br />        |
+| `CodeBlock`              | JSX/TS 语法高亮代码块                                                                                                                                                                                     | <br /> | ✓             |
+| `Loading`                | 全屏落雪加载屏，50 片雪花旋转飘落 + 暗角夜空（tip / delay / fadeDuration / zIndex）                                                                                                                       | <br /> | ✓             |
+| `Table`                  | 数据表格，固定列、空状态、loading                                                                                                                                                                         | ✓      | <br />        |
+| `Pagination`             | 分页器，条数切换 / 快速跳转 / 总数展示，可内置于 Table                                                                                                                                                    | ✓      | <br />        |
+| `Carousel`               | 轮播图，自动播放 / 箭头 / 圆点 / 键盘导航                                                                                                                                                                 | ✓      | <br />        |
+| `Countdown`              | 倒计时，里程表式单向滚动数字                                                                                                                                                                              | <br /> | ✓             |
+| `Form`                   | 表单系统（Form、FormItem、FormProvider、useForm）                                                                                                                                                         | ✓      | <br />        |
+| `Image`                  | 相框图片，14 种底色、懒加载、点击预览                                                                                                                                                                     | ✓      | <br />        |
+| `Avatar` / `AvatarGroup` | 圆形/方形头像，图片/图标/文字三种形态，文字超宽自动缩放；头像组叠加展示 + 超出折叠为 +N                                                                                                                   | ✓      | ✓             |
+| `DatePicker`             | 日期选择器，日历网格 / 范围选择                                                                                                                                                                           | ✓      | <br />        |
+| `TimePicker`             | 时间选择器，时/分/秒滚动列                                                                                                                                                                                | ✓      | <br />        |
+| `Notification`           | 命令式通知（含 NotificationContainer）                                                                                                                                                                    | ✓      | <br />        |
+| `Tag`                    | 标签，3 变体 × 13 色                                                                                                                                                                                      | <br /> | ✓             |
+| `Progress`               | 进度条，斜纹动画填充                                                                                                                                                                                      | <br /> | ✓             |
+| `Drawer`                 | 抽屉，四方向弹出 + 焦点陷阱                                                                                                                                                                               | ✓      | <br />        |
 
 类型导出：`BackTopProps`、`ButtonProps/ButtonType/ButtonSize/ButtonHTMLType`、`InputProps/InputSize`、`SwitchProps/SwitchSize`、`ModalProps`、`CardProps/CardType/CardColor`、`TitleProps/TitleSize/TitleColor`、`CollapseProps`、`CursorProps/CursorType`、`BackgroundProps/BackgroundType`、`TimeProps`、`LoadingProps`、`DividerProps/DividerType`、`TypewriterProps`、`SelectProps/SelectOption`、`SkeletonProps/SkeletonVariant`、`TabsProps/TabItem`、`CheckboxProps/CheckboxOption/CheckboxSize/CheckboxValue`、`RadioProps/RadioOption/RadioSize/RadioValue`、`TooltipProps/TooltipPlacement/TooltipTrigger/TooltipVariant`、`CodeBlockProps`、`TableProps/TableColumn/TableRecord`、`PaginationProps/PaginationVariant`、`CarouselProps`、`CountdownProps/CountdownSize/CountdownVariant`、`FormProps` 系列、`ImageProps/ImageColor`、`DatePickerProps/DatePickerSize/DatePickerStatus/DatePickerValue`、`TimePickerProps/TimePickerSize/TimePickerStatus/TimePart`、`NotificationConfig` 系列、`TagProps/TagSize/TagVariant/TagColor`、`ProgressProps/ProgressSize/ProgressInfoPosition`、`DrawerProps/DrawerPlacement`。
 
@@ -2997,6 +2997,63 @@ Badge Props：`count`（string | number，展示内容）、`overflowCount`（nu
 独立使用：不传默认插槽时根节点加 `animal-badge--standalone`，角标取消绝对定位与奶油描边阴影、落回正常文档流（`--badge-shift-*` 归零，出场动画因此仍复用同一组 keyframes）。
 
 **Vue 移植注意**：`inheritAttrs: false` + 从 `rootAttrs` 里剔除 `title`，让 title 只落在 `<sup>` 上，与 React 版解构 `title` 的行为一致，避免根元素与角标同时出现两个 tooltip。
+
+### CountUp
+
+```vue
+<CountUp :end="8888" :is-counting="playing" />
+<CountUp :end="1320.5" :decimal-places="1" thousands-separator="," :duration="0">
+    <template #prefix>¥</template>
+    <template #suffix>分</template>
+</CountUp>
+<CountUp :end="100" :is-counting="playing" celebrate>
+    <template #celebrate>达成！</template>
+</CountUp>
+<CountUp :end="2026" :is-counting="playing" :repeat="playing" :repeat-delay="0.6" />
+```
+
+数字滚动组件：rAF 驱动的缓动计数，根节点 `role="status"`。外壳两套皮肤（与 Countdown 同款）—— `default` 用 padding 12px 18px + `@bg-color` + `@shadow-sm`；`island` 用 padding 13px 20px + rgb(247,243,223) + 2px dashed #d4c4a8。数字块 `.animal-count-up__plate` 是 `linear-gradient(180deg,#fff,#f8f8f0)` + radius 12px + padding 3px 8px，`bordered` 才加 1.5px 描边；数字 `font-weight 900` + `font-variant-numeric: tabular-nums`，前后缀降到 `0.62em` 弱化成单位。
+
+CountUp Props：`start`（number，默认 0）、`end`（number，必填）、`duration`（number，秒，默认 2，传 0 直接到位）、`isCounting`（boolean，默认 false）、`decimalPlaces`（number，默认取 start / end 中较大的小数位数）、`decimalSeparator`（string，默认 '.'）、`thousandsSeparator`（string，默认 ''）、`easing`（'linear' / 'easeInCubic' / 'easeOutCubic' / 'easeInOutCubic' / 'easeOutExpo' 或自定义 `(progress: number) => number`，未知名字静默回退 easeOutCubic）、`formatter`（`(value: number) => string | number`，优先级高于上面三个格式化项）、`updateInterval`（number，秒，0 = 每帧）、`size`（'small' 20px / 'middle' 26px / 'large' 34px）、`variant`（'default' / 'island'）、`bordered`、`celebrate`（boolean 或 `{ text }`）、`repeat` / `repeatDelay` / `repeatStartAt`。插槽：`#prefix` / `#suffix` / `#celebrate` / `#default` 作用域插槽 `{ value, reset }`。Emits：`update` (number，每帧) + `complete` (elapsedSeconds)。组件 ref 暴露 `reset(newStartAt?)`。
+
+播放控制：`isCounting` 置 false 暂停并**保留当前显示值**，再置 true 从暂停处继续（elapsed 不清零）；`start` / `end` / `duration` 变化自动重播；`updateInterval > 0` 会把时间轴量化到该节奏。
+
+庆祝动效（`celebrate`，完成时触发）：数字块两拍弹跳摇摆（`animal-countup-pop`）、两圈光环扩散淡出（`animal-countup-ring`，第二圈延迟 0.12s）、四角星芒用纯 CSS `clip-path` 四角星向外飞散（延迟 0 / 0.06 / 0.12 / 0.18s）；900ms 后自动摘掉动画类以便下次重播。`prefers-reduced-motion` 下去掉弹跳 / 光环 / 星芒，贴纸只做淡入。
+
+**无障碍**：整个数字块 `aria-hidden="true"`（逐帧跳动的数字会轰炸读屏），另有一个视觉隐藏的 `.animal-count-up__sr-only` span，静止后播报**默认格式**的最终数值（不经过 `formatter`），计数中保持空串。
+
+**Vue 移植注意（3 处刻意差异）**：
+
+1. React 版靠 `onComplete` **返回值** `{ shouldRepeat, delay, newStartAt }` 触发重播；Vue 的 emit 无法返回值，因此重播改由 `repeat` / `repeatDelay` / `repeatStartAt` 三个声明式 prop 驱动。
+2. React 的 `children({ value, reset })` render prop → Vue 的 `#default` 作用域插槽。
+3. React 的 `prefix` / `suffix` / `celebrate.text` 是 ReactNode → Vue 改为插槽（`celebrate.text` 保留字符串简写）。
+
+### Calendar
+
+```vue
+<Calendar v-model="selected" v-model:panel-value="panel" :events="events" />
+<Calendar default-value="2026-03-04" :events="events" />
+<Calendar v-model="selected" draggable-events @event-create="onCreate" />
+<Calendar v-model="selected" :events="events">
+    <template #event="{ event, segment }">
+        <span>{{ segment.date }} · {{ event.title }}</span>
+    </template>
+</Calendar>
+```
+
+月视图日历：6 周网格（含上下月补位），根节点 class `animal-calendar`。行高、字号、事项密度全部由解析后的实际宽度推导（`width` 为数字时 SFC 内补 `px`，Vue 不会像 React 那样自动加单位），**不要**写死行高。
+
+`CalendarEvent`：`title`（string | number）、`start`（`YYYY-MM-DD` 或 `YYYY-MM-DD HH:mm`）、`end`（省略等同 start）、`color`（'teal' | 'amber' | 'coral' | 'green' | 'purple'）、`showTime`。`end` 与 `start` 不同即渲染成**跨周连续事项条**，带 `data-start` / `data-end` / `data-span` 标记，一周放不下时折叠成 `+N` 徽标；`HH:mm` 只在首段展示，跨周续接段不重复。
+
+Calendar Props：`modelValue`（受控选中日）/ `value`（React 别名，优先级更高）/ `defaultValue`（非受控，默认今天）/ `panelValue`（受控面板月，**传了必须回写，否则无法翻月**）/ `defaultPanelValue` / `events` / `showEventTime`（默认 true）/ `draggableEvents`（默认 false）/ `width`（number | string）/ `ariaLabel` / `ariaLabelledBy`。Emits：`update:modelValue` + `change`（选中日）、`update:panelValue` + `panelChange`（翻月）、`eventCreate(start, end)`。插槽：`#event` 作用域插槽 `{ event, segment, time }`。
+
+**布局缓存按 `events` 数组引用**：就地改 `start` / `end` 不会重新排布，变更必须传新数组。`draggableEvents` 开启拖拽，拖动时实时预览目标区间（`data-preview`），松手触发 `eventCreate`；右键不得触发拖拽。键盘：网格内 roving tabindex，方向键跨月翻页，Enter / 空格选中。
+
+**Vue 移植注意（3 处刻意差异）**：
+
+1. React 能从 `ReactNode` 递归抽 children 生成 aria-label；Vue 无对应，`aria-label` 始终取 `title` 的纯文本，`#event` 插槽的自定义内容不参与可访问名。
+2. `title` 类型收窄为 `string | number`，结构化内容走 `#event` 插槽。
+3. 日期解析增加回环校验（`2 月 31 日` 判为非法），对齐 dayjs `isValid()` 语义，避免原生 `Date` 静默顺延到 3/3。
 
 ---
 

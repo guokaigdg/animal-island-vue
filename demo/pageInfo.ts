@@ -151,4 +151,12 @@ export const PAGE_INFO: Record<string, { title: string; desc: string }> = {
         title: 'Badge 徽标数',
         desc: '徽标数组件 — 包裹元素显示右上角数字角标，支持 overflowCount 封顶、showZero 零值展示、dot 小红点、small / medium 两档尺寸、12 色调色板、#count 插槽自定义内容，不传被包裹元素即独立使用',
     },
+    countup: {
+        title: 'CountUp 数字滚动',
+        desc: '数字滚动组件 — 从起始值缓动计数到目标值，支持五种内置缓动与自定义缓动函数、小数位 / 千分位格式化、formatter 完全接管、isCounting 暂停续播、repeat 自动重播、前后缀插槽，结束可触发弹跳 + 光环 + 星芒的庆祝动效',
+    },
+    calendar: {
+        title: 'Calendar 日历',
+        desc: '月视图日历组件 — 受控选日期与受控翻月、跨天事项渲染成跨周连续条并支持 +N 折叠、5 种事项配色、起始时间开关、拖拽跨日期创建事项、行高与事项密度随宽度自适应，键盘方向键跨月翻页、Enter / 空格选中',
+    },
 };

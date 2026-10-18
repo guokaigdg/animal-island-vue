@@ -41,6 +41,8 @@ import UploadDemo from './pages/UploadDemo.vue';
 import AvatarDemo from './pages/AvatarDemo.vue';
 import RateDemo from './pages/RateDemo.vue';
 import BadgeDemo from './pages/BadgeDemo.vue';
+import CountUpDemo from './pages/CountUpDemo.vue';
+import CalendarDemo from './pages/CalendarDemo.vue';
 
 const props = defineProps<{ activeKey: string }>();
 
@@ -83,6 +85,8 @@ const PAGES: Record<string, unknown> = {
     avatar: AvatarDemo,
     rate: RateDemo,
     badge: BadgeDemo,
+    countup: CountUpDemo,
+    calendar: CalendarDemo,
 };
 
 // 与 React 版同款：根据 activeKey 哈希固定映射颜色，同页面不抖动

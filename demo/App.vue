@@ -56,6 +56,7 @@ const MENU_ITEMS: MenuItem[] = [
             { key: 'checkbox', label: 'Checkbox 多选框' },
             { key: 'radio', label: 'Radio 单选框' },
             { key: 'rate', label: 'Rate 评分', isNew: true },
+            { key: 'calendar', label: 'Calendar 日历', isNew: true },
             { key: 'form', label: 'Form 表单' },
             { key: 'datepicker', label: 'DatePicker 日期选择' },
             { key: 'timepicker', label: 'TimePicker 时间选择' },
@@ -90,6 +91,7 @@ const MENU_ITEMS: MenuItem[] = [
             { key: 'carousel', label: 'Carousel 轮播图' },
             { key: 'time', label: 'Time 时间' },
             { key: 'countdown', label: 'Countdown 倒计时' },
+            { key: 'countup', label: 'CountUp 数字滚动', isNew: true },
         ],
     },
 ];

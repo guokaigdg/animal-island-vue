@@ -188,4 +188,21 @@ export type { RateProps, RateSize } from './components/Rate';
 export { Badge } from './components/Badge';
 export type { BadgeProps, BadgeSize, BadgeColor } from './components/Badge';
 
+// Phase 13 — 数字滚动
+export { CountUp } from './components/CountUp';
+export type {
+    CountUpProps,
+    CountUpSize,
+    CountUpVariant,
+    CountUpEasing,
+    CountUpEasingName,
+    CountUpEasingFunction,
+    CountUpRenderState,
+    CountUpCelebrateOptions,
+} from './components/CountUp';
+
+// Phase 14 — 日历
+export { Calendar } from './components/Calendar';
+export type { CalendarProps, CalendarEvent, CalendarColor, CalendarEventTitle } from './components/Calendar';
+
 // ...（后续阶段陆续启用）
