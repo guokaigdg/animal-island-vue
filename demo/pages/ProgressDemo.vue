@@ -18,13 +18,20 @@ const PROGRESS_API: ApiRow[] = [
     { prop: 'size', desc: '尺寸', type: `'small' | 'middle' | 'large'`, defaultVal: "'middle'" },
     { prop: 'showInfo', desc: '是否显示百分比文字', type: 'boolean', defaultVal: 'true' },
     {
+        prop: 'variant',
+        desc: 'fill 背景场景图（当前进度区域显示该场景，从左揭开；不传为纯色渐变 fill）',
+        type: `'sweet-corner' | 'forest-grove' | 'starry-camp' | 'coffee-break'`,
+        defaultVal: '-（不传纯色 fill）',
+    },
+    {
         prop: 'infoPosition',
         desc: '文字位置',
         type: `'inside' | 'right' | 'top'`,
-        defaultVal: "'inside'",
+        defaultVal: "'right'",
     },
     { prop: 'infoFormat', desc: '自定义文字格式化', type: '(percent: number) => string', defaultVal: '-' },
     { prop: 'duration', desc: 'fill 宽度动画时长（秒），0 = 不动画', type: 'number', defaultVal: '0.6' },
+    { prop: 'ariaLabel', desc: 'progressbar 无障碍标签（模板写 aria-label 亦可）', type: 'string', defaultVal: '-' },
 ];
 
 const percent = ref(60);
@@ -35,6 +42,7 @@ const hintStyle = { fontSize: '13px', color: '#8a7b66' };
 function increase() {
     percent.value = Math.min(100, percent.value + 10);
 }
+
 function decrease() {
     percent.value = Math.max(0, percent.value - 10);
 }
@@ -52,6 +60,10 @@ const percent = ref(60);
     <Progress :percent="60" info-position="right" />
     <Progress :percent="60" info-position="top" />
     <Progress :percent="percent" />
+
+    <!-- fill 背景场景图（传 variant 时生效；不传为纯色） -->
+    <Progress :percent="70" variant="forest-grove" />
+
     <Progress :percent="60" :info-format="(p) => p + ' / 100'" />
     <Progress :percent="60" :duration="0" />
 </template>`;
@@ -59,7 +71,11 @@ const percent = ref(60);
 
 <template>
     <div :style="sectionStyle">
-        <div :style="sectionTitleStyle">Progress <span :style="tagStyle">进度条</span></div>
+        <div :style="sectionTitleStyle">
+            Progress
+            <span :style="tagStyle">进度条</span>
+            <span :style="tagStyle">场景图</span>
+        </div>
 
         <div :style="demoBodyStyle">
             <div :style="labelStyle">基础用法 — 60%</div>
@@ -73,6 +89,16 @@ const percent = ref(60);
                     <Progress :percent="60" size="small" />
                     <Progress :percent="60" size="middle" />
                     <Progress :percent="60" size="large" />
+                </div>
+            </div>
+
+            <div :style="labelStyle">variant — fill 背景场景图（当前进度区域显示场景，从左揭开）</div>
+            <div :style="demoBoxStyle">
+                <div :style="stackStyle">
+                    <Progress :percent="70" variant="sweet-corner" />
+                    <Progress :percent="70" variant="forest-grove" />
+                    <Progress :percent="70" variant="starry-camp" />
+                    <Progress :percent="70" variant="coffee-break" />
                 </div>
             </div>
 
@@ -108,6 +134,11 @@ const percent = ref(60);
             <div :style="labelStyle">duration=0 无动画</div>
             <div :style="demoBoxStyle">
                 <Progress :percent="60" :duration="0" />
+            </div>
+
+            <div :style="labelStyle">showInfo=false 只渲染条</div>
+            <div :style="demoBoxStyle">
+                <Progress :percent="66" :show-info="false" />
             </div>
         </div>
 

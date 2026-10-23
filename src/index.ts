@@ -119,7 +119,7 @@ export { Tag } from './components/Tag';
 export type { TagProps, TagSize, TagVariant, TagColor } from './components/Tag';
 
 export { Progress } from './components/Progress';
-export type { ProgressProps, ProgressSize, ProgressInfoPosition } from './components/Progress';
+export type { ProgressProps, ProgressSize, ProgressVariant, ProgressInfoPosition } from './components/Progress';
 
 export { Drawer } from './components/Drawer';
 export type { DrawerProps, DrawerPlacement } from './components/Drawer';

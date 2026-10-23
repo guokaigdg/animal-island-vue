@@ -1087,15 +1087,18 @@ interface TagProps {
 ```ts
 type ProgressSize = 'small' | 'middle' | 'large';
 type ProgressInfoPosition = 'inside' | 'right' | 'top';
+type ProgressVariant = 'sweet-corner' | 'forest-grove' | 'starry-camp' | 'coffee-break';
 
 interface ProgressProps {
     percent: number; // REQUIRED, 0–100
     size?: ProgressSize; // default 'middle'
     showInfo?: boolean; // default true
-    infoPosition?: ProgressInfoPosition; // default 'inside'
+    infoPosition?: ProgressInfoPosition; // default 'right'
     infoFormat?: (percent: number) => string; // custom text formatter
     duration?: number; // default 0.6 — fill width animation seconds; 0 = no animation
-    variant?: ProgressVariant;
+    variant?: ProgressVariant; // fill 背景场景图；不传为纯色渐变 fill
+    ariaLabel?: string; // progressbar 无障碍标签（模板写 aria-label 亦可）
+    ariaLabelledby?: string; // 关联外部可见标题的 id（模板写 aria-labelledby 亦可）
 }
 ```
 
@@ -1104,9 +1107,10 @@ interface ProgressProps {
 <Progress :percent="80" size="large" info-position="right" />
 <Progress :percent="30" :show-info="false" />
 <Progress :percent="42" :info-format="(p) => `${p} / 100`" />
+<Progress :percent="70" variant="forest-grove" />
 ```
 
-> Linear progress bar with mint-teal diagonal-stripe fill animation. Info text can be inside the fill (white text), to the right, or on top. The fill animates width via `transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1)`. Set `duration: 0` to disable animation. Respects `prefers-reduced-motion: reduce`. Not supported: no `status` (success/exception), no `trailColor`, no `strokeLinecap`, no `steps` / `format` (use `infoFormat`).
+> Linear progress bar with a mint-teal vertical-gradient fill on a cream dotted track. `variant` swaps the fill for a scene wallpaper (the same SVGs used by Background `sweet-corner` / `coffee-break`): the image is sized to the full track width and clipped to the filled portion, so the scene is revealed from the left as `percent` grows — the component measures the track with `ResizeObserver` and re-aligns on resize. Without `variant` the fill is the plain mint gradient (`#19c8b9` base). At `percent: 100` the fill switches to a brighter "arrived" gradient. Info text can be inside the fill (white text), to the right (default), or on top; the `inside` variant falls back to track-end text in brown when the fill is under 18% wide so the label stays readable. The fill animates width via `transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1)`. Set `duration: 0` to disable animation. Respects `prefers-reduced-motion: reduce`. Not supported: no `status` (success/exception), no `trailColor`, no `strokeLinecap`, no `steps` / `format` (use `infoFormat`).
 
 ***
 

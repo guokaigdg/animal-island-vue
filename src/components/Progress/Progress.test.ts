@@ -40,6 +40,23 @@ describe('Progress', () => {
             expect(wrapper.classes()).toContain('custom-class');
             expect(wrapper.element.style.width).toBe('320px');
         });
+
+        it('forwards aria-label and aria-labelledby to progressbar role (a11y)', () => {
+            const wrapper = mount(Progress, {
+                props: { percent: 50, 'aria-label': '任务进度' },
+            });
+            const bar = wrapper.find('[role="progressbar"]');
+            expect(bar.attributes('aria-label')).toBe('任务进度');
+            expect(bar.attributes('aria-valuemin')).toBe('0');
+            expect(bar.attributes('aria-valuemax')).toBe('100');
+        });
+
+        it('aria-labelledby 透传到 progressbar', () => {
+            const wrapper = mount(Progress, {
+                props: { percent: 50, 'aria-labelledby': 'external-title-id' },
+            });
+            expect(wrapper.find('[role="progressbar"]').attributes('aria-labelledby')).toBe('external-title-id');
+        });
     });
 
     describe('info text', () => {
@@ -71,6 +88,24 @@ describe('Progress', () => {
             expect(wrapper.text()).toContain('50%');
             // The row container exists
             expect(wrapper.find('.animal-progress__row').exists()).toBe(true);
+        });
+
+        it('infoPosition=top stacks the text above the track', () => {
+            const wrapper = mount(Progress, {
+                props: { percent: 50, infoPosition: 'top' },
+            });
+            const row = wrapper.find('.animal-progress__row');
+            expect(row.exists()).toBe(true);
+            expect(row.classes()).toContain('animal-progress__row--top');
+            expect(wrapper.find('.animal-progress__info--top').exists()).toBe(true);
+            // 'top' 模式下轨道仍是唯一渲染的那一个（ref 绑定在此）
+            expect(wrapper.findAll('.animal-progress__track')).toHaveLength(1);
+        });
+
+        it('默认 infoPosition 为 right（与 React 一致，文字在进度条右侧）', () => {
+            const wrapper = mount(Progress, { props: { percent: 50 } });
+            expect(wrapper.find('.animal-progress__row--right').exists()).toBe(true);
+            expect(wrapper.find('.animal-progress__info--right').exists()).toBe(true);
         });
     });
 
@@ -104,14 +139,72 @@ describe('Progress', () => {
             expect((fill.element as HTMLElement).style.transitionDuration).toBe('1.2s');
         });
 
-        it('default fill carries the stripe animation class (CSS-defined)', () => {
+        it('default fill carries the fill class (CSS-defined)', () => {
             const wrapper = mount(Progress, { props: { percent: 50 } });
             const fill = wrapper.find('.animal-progress__fill');
             expect(fill.exists()).toBe(true);
-            // The fill class declares `animation: animal-progress-stripe 1s linear infinite`
-            // in the scoped style; jsdom doesn't resolve keyframes via getComputedStyle,
-            // so we assert the class is applied (the rule lives there).
+            // The fill class declares the mint gradient + 100% done-state rule
+            // in the scoped style; jsdom doesn't resolve keyframes/gradients via
+            // getComputedStyle, so we assert the class is applied (the rule lives there).
             expect(fill.classes()).toContain('animal-progress__fill');
+        });
+    });
+
+    describe('variant 场景图 fill', () => {
+        it('variant=sweet-corner 注入场景图背景并左对齐铺开', () => {
+            const wrapper = mount(Progress, { props: { percent: 70, variant: 'sweet-corner' } });
+            const style = (wrapper.find('.animal-progress__fill').element as HTMLElement).style;
+            expect(style.backgroundImage).toMatch(/url\(.*sweet-corner/);
+            expect(style.backgroundPosition).toBe('left top');
+            expect(style.backgroundRepeat).toBe('no-repeat');
+            expect(style.backgroundSize).toMatch(/auto$/);
+        });
+
+        it('variant=forest-grove 注入森林场景图', () => {
+            const wrapper = mount(Progress, { props: { percent: 70, variant: 'forest-grove' } });
+            const style = (wrapper.find('.animal-progress__fill').element as HTMLElement).style;
+            expect(style.backgroundImage).toMatch(/url\(.*forest-grove/);
+        });
+
+        it('variant=starry-camp 注入星空场景图', () => {
+            const wrapper = mount(Progress, { props: { percent: 70, variant: 'starry-camp' } });
+            const style = (wrapper.find('.animal-progress__fill').element as HTMLElement).style;
+            expect(style.backgroundImage).toMatch(/url\(.*starry-camp/);
+        });
+
+        it('variant=coffee-break 注入咖啡场景图', () => {
+            const wrapper = mount(Progress, { props: { percent: 70, variant: 'coffee-break' } });
+            const style = (wrapper.find('.animal-progress__fill').element as HTMLElement).style;
+            expect(style.backgroundImage).toMatch(/url\(.*coffee-break/);
+        });
+
+        it('不传 variant 时 fill 为纯色（无背景图）', () => {
+            const wrapper = mount(Progress, { props: { percent: 50 } });
+            const style = (wrapper.find('.animal-progress__fill').element as HTMLElement).style;
+            expect(style.backgroundImage).toBe('');
+            expect(style.backgroundColor).toBe('rgb(25, 200, 185)');
+        });
+
+        it('variant 传入时根节点带对应修饰类名', () => {
+            const wrapper = mount(Progress, { props: { percent: 70, variant: 'forest-grove' } });
+            expect(wrapper.classes()).toContain('animal-progress--forest-grove');
+        });
+
+        it('不传 variant 时根节点不带修饰类名', () => {
+            const wrapper = mount(Progress, { props: { percent: 70 } });
+            expect(wrapper.classes().some((c) => c.startsWith('animal-progress--'))).toBe(false);
+        });
+    });
+
+    describe('完成态', () => {
+        it('percent=100 时根节点 aria-valuenow=100（命中完成态渐变规则）', () => {
+            const wrapper = mount(Progress, { props: { percent: 100 } });
+            expect(wrapper.attributes('aria-valuenow')).toBe('100');
+        });
+
+        it('percent=99 时根节点 aria-valuenow=99（未命中完成态）', () => {
+            const wrapper = mount(Progress, { props: { percent: 99 } });
+            expect(wrapper.attributes('aria-valuenow')).toBe('99');
         });
     });
 
