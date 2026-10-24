@@ -90,6 +90,9 @@ const showEventTime = ref<'on' | 'off'>('on');
 const draggable = ref<'on' | 'off'>('off');
 const pickedEvents = ref<CalendarEvent[]>([]);
 
+/** 演示最大宽度：与组件设计基准宽度一致，避免宽屏下拉得过宽 */
+const DEMO_MAX_WIDTH = '750px';
+
 const COLORS_API: ApiRow[] = COLORS.map((c) => ({ prop: c, desc: '事项条配色', type: 'CalendarColor', defaultVal: c }));
 
 const rowStyle = { display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' as const };
@@ -131,16 +134,16 @@ const events = ref([
         <div :style="sectionTitleStyle">Calendar <span :style="tagStyle">日历</span></div>
 
         <div :style="labelStyle">基础用法 — 点日期查看选中项（受控）</div>
-        <Calendar v-model="selected" :events="EVENTS" />
+        <Calendar v-model="selected" :events="EVENTS" :style="{ maxWidth: DEMO_MAX_WIDTH }" />
         <div :style="{ fontSize: '13px', color: '#a0936e', marginTop: '10px' }">
             当前选中：<Tag>{{ selected }}</Tag>
         </div>
 
         <div :style="labelStyle">非受控 — defaultValue 指定初始日期</div>
-        <Calendar default-value="2026-03-11" :events="EVENTS" />
+        <Calendar default-value="2026-03-11" :events="EVENTS" :style="{ maxWidth: DEMO_MAX_WIDTH }" />
 
         <div :style="labelStyle">受控翻月 — v-model:panel-value 必须回写</div>
-        <Calendar v-model="selected" v-model:panel-value="panel" :events="EVENTS" />
+        <Calendar v-model="selected" v-model:panel-value="panel" :events="EVENTS" :style="{ maxWidth: DEMO_MAX_WIDTH }" />
         <div :style="{ fontSize: '13px', color: '#a0936e', marginTop: '10px' }">
             当前面板：<Tag>{{ panel }}</Tag>
         </div>
@@ -155,7 +158,12 @@ const events = ref([
                 ]"
             />
         </div>
-        <Calendar v-model="selected" :events="EVENTS" :show-event-time="showEventTime === 'on'" />
+        <Calendar
+            v-model="selected"
+            :events="EVENTS"
+            :show-event-time="showEventTime === 'on'"
+            :style="{ maxWidth: DEMO_MAX_WIDTH }"
+        />
 
         <div :style="labelStyle">颜色 — 5 种事项配色</div>
         <div :style="rowStyle">
@@ -164,6 +172,7 @@ const events = ref([
         <Calendar
             v-model="selected"
             :events="COLORS.map((c, i) => ({ title: c, start: `2026-03-0${i + 2}`, color: c }))"
+            :style="{ maxWidth: DEMO_MAX_WIDTH }"
         />
 
         <div :style="labelStyle">拖拽创建事项 — draggableEvents + eventCreate</div>
@@ -180,6 +189,7 @@ const events = ref([
             v-model="selected"
             :events="EVENTS"
             :draggable-events="draggable === 'on'"
+            :style="{ maxWidth: DEMO_MAX_WIDTH }"
             @event-create="
                 (start, end) => {
                     pickedEvents.push({ title: '新事项', start, end });
@@ -194,7 +204,7 @@ const events = ref([
         <div :style="labelStyle">宽度 — 行高与事项密度随宽度自适应</div>
         <Calendar v-model="selected" :events="EVENTS" :width="420" />
         <div :style="{ height: '16px' }" />
-        <Calendar v-model="selected" :events="EVENTS" />
+        <Calendar v-model="selected" :events="EVENTS" :style="{ maxWidth: DEMO_MAX_WIDTH }" />
 
         <CodeBlock :code="code" />
         <ApiTable :rows="CALENDAR_API" />
