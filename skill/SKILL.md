@@ -900,13 +900,16 @@ scoped Less + BEM；类名根 `.animal-tabs`，内部使用 `__list` / `__item` 
 ```css
 /* 遮罩 */
 background: rgba(0, 0, 0, 0.35);
-animation: animal-fade-in 0.25s ease;
+animation: animal-modal-fade-in 0.25s ease;
 z-index: 1000;
+/* 外壳整体不可选中：弹窗容器是 tabindex="-1" 的焦点容器（焦点陷阱需要），
+   元素获得焦点时浏览器（WebKit/Safari）会自动选中其内容 */
+user-select: none;
 
 /* 弹窗容器 */
 max-width: calc(100vw - 32px);
 max-height: calc(100vh - 64px);
-animation: animal-zoom-in 0.3s ease;
+animation: animal-modal-zoom-in 0.3s ease;
 
 /* 裁切内容区 */
 clip-path: url(#animal-modal-clip);
@@ -920,23 +923,14 @@ font-weight: 700;
 color: rgba(114, 93, 66, 1);
 padding-bottom: 15px;
 
-/* 关闭按钮 */
-width: 32px;
-height: 32px;
-font-size: 22px;
-color: rgba(114, 93, 66, 0.6);
-border-radius: 50%;
-transition: all 0.2s;
-/* hover */
-background: rgba(114, 93, 66, 0.1);
-color: rgba(114, 93, 66, 1);
-
 /* body */
 font-size: 20px;
 font-weight: 600;
 line-height: 1.6;
 color: #8a7b66;
 padding-bottom: 20px;
+/* 内容区恢复可选中：外壳禁选是为了压掉聚焦时的误选中，正文仍需支持拖选复制 */
+user-select: text;
 
 /* footer */
 gap: 12px;
@@ -2025,56 +2019,86 @@ API：`Notification.open(config)`、`.success()`、`.info()`、`.warning()`、`.
 
 ### Drawer
 
-源码：`src/components/Drawer/Drawer.vue`（scoped Less + BEM）。侧边/顶部/底部滑出面板，带焦点陷阱、背景景深效果。
+源码：`src/components/Drawer/Drawer.vue`（**非** scoped Less + BEM，全局样式，与 React 版一致——通过 Teleport 渲染到 body）。侧边/顶部/底部滑出面板，带焦点陷阱、背景景深效果。
+
+**结构：** `<Teleport to="body">` → `div[data-animal-drawer-portal]` → `<Cursor>` → `.animal-drawer__mask` → `.animal-drawer__panel`。
+
+- 弹层内容必须包一层 `Cursor`：Teleport 到 body 后会脱离站点根级 Cursor 包裹层，弹层内光标将与全站不一致（React 版同款处理）。
+- `data-animal-drawer-portal` 包裹器自身不参与背景下沉；`data-animal-drawer-ignore` 可让指定元素同样排除。
+- 面板是 `tabindex="-1"` 的焦点容器（焦点陷阱 + 无可聚焦元素时的兜底聚焦需要它），因此面板内文字**不可被浏览器自动选中**（见下方 `user-select`）。
 
 ```css
 /* 遮罩 */
 .animal-drawer__mask {
     position: fixed;
     inset: 0;
-    z-index: 999;
-    background: rgba(0, 0, 0, 0.35);
-    animation: animal-fade-in 0.25s ease;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.18);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.36s ease;
+    /* 外壳整体不可选中：面板是 tabindex="-1" 的焦点容器，
+       元素获得焦点时浏览器（WebKit/Safari）会自动选中其内容 */
+    user-select: none;
+
+    &--open {
+        opacity: 1;
+        pointer-events: all;
+    }
 }
+
 /* 面板 */
 .animal-drawer__panel {
     position: fixed;
-    z-index: 1000;
-    background: rgb(247, 243, 223);
+    z-index: 1001;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 8px 32px rgba(61, 52, 40, 0.18);
-    transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1);
-}
-.animal-drawer__panel--right {
-    top: 0;
-    right: 0;
-    bottom: 0;
-    transform: translateX(0);
-}
-.animal-drawer__panel--left {
-    top: 0;
-    left: 0;
-    bottom: 0;
-    transform: translateX(0);
-}
-.animal-drawer__panel--top {
-    top: 0;
-    left: 0;
-    right: 0;
-    transform: translateY(0);
-}
-.animal-drawer__panel--bottom {
-    bottom: 0;
-    left: 0;
-    right: 0;
-    transform: translateY(0);
-}
-.animal-drawer__panel--enter {
-    transform: translateX(0) translateY(0);
-}
-.animal-drawer__panel--leave {
-    transform: translateX(100%);
+    background: rgb(247, 243, 223);
+    color: rgb(128, 115, 89);
+    font-family: Nunito, 'Noto Sans SC', sans-serif;
+    overflow: hidden;
+    transition: transform 0.36s cubic-bezier(0.2, 0, 0.2, 1);
+
+    &--right {
+        top: 0;
+        right: 0;
+        height: 100vh;
+        max-width: calc(100vw - 32px);
+        border-radius: 20px 0 0 20px;
+        box-shadow: -12px 0 32px rgba(61, 52, 40, 0.18);
+        transform: translateX(100%);
+    }
+    &--left {
+        top: 0;
+        left: 0;
+        height: 100vh;
+        max-width: calc(100vw - 32px);
+        border-radius: 0 20px 20px 0;
+        box-shadow: 12px 0 32px rgba(61, 52, 40, 0.18);
+        transform: translateX(-100%);
+    }
+    &--top {
+        top: 0;
+        left: 0;
+        right: 0;
+        max-height: calc(100vh - 32px);
+        border-radius: 0 0 20px 20px;
+        box-shadow: 0 12px 32px rgba(61, 52, 40, 0.18);
+        transform: translateY(-100%);
+    }
+    &--bottom {
+        bottom: 0;
+        left: 0;
+        right: 0;
+        max-height: calc(100vh - 32px);
+        border-radius: 20px 20px 0 0;
+        box-shadow: 0 -12px 32px rgba(61, 52, 40, 0.18);
+        transform: translateY(100%);
+    }
+    /* 打开态：复合选择器，特异性 > 单类 placement */
+    &.animal-drawer__panel--open {
+        transform: none;
+    }
 }
 
 /* 头部 */
@@ -2082,44 +2106,67 @@ API：`Notification.open(config)`、`.success()`、`.info()`、`.warning()`、`.
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 24px 0;
+    padding: 24px 24px 15px 24px;
     flex-shrink: 0;
 }
 .animal-drawer__title {
-    font-size: 20px;
+    font-size: 28px;
     font-weight: 700;
-    color: #794f27;
+    color: rgba(114, 93, 66, 1);
 }
 .animal-drawer__close {
-    width: 28px;
-    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
     border: none;
     background: transparent;
-    font-size: 20px;
-    color: #c4b89e;
-    cursor: pointer;
+    font-size: 22px;
+    line-height: 1;
+    color: rgba(114, 93, 66, 0.6);
     border-radius: 50%;
-    transition: all 0.15s ease;
-}
-.animal-drawer__close:hover {
-    background: rgba(114, 93, 66, 0.1);
-    color: #725d42;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+        background: rgba(114, 93, 66, 0.1);
+        color: rgba(114, 93, 66, 1);
+    }
 }
 
 /* 内容区 */
 .animal-drawer__body {
     flex: 1;
     overflow-y: auto;
-    padding: 20px 24px;
+    padding: 0 24px 24px 24px;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.6;
+    color: #8a7b66;
+    /* 内容区恢复可选中：外壳禁选是为了压掉聚焦时的误选中，正文仍需支持拖选复制 */
+    user-select: text;
 }
+
+/* 底部 */
 .animal-drawer__footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 0 24px 24px 24px;
     flex-shrink: 0;
-    padding: 16px 24px;
-    border-top: 1px solid #e8e2d6;
 }
 ```
 
-Props: `open`（必填）、`title`、`placement`（`'left' | 'right' | 'top' | 'bottom'`，默认 `'right'`）、`width`（默认 378）、`height`（默认 300）、`maskClosable`（默认 true）、`pushBackground`（默认 true）、`footer`、`maskStyle`。Emits: `close`。焦点陷阱：Tab 循环、ESC 关闭、关闭后恢复焦点。打开时锁定 body 滚动。`pushBackground` 对背景元素施加 `scale(0.94) + blur(1px) + borderRadius(14px)`。
+**背景景深（`pushBackground`）：** 对 `document.body` 下非 fixed 的直接子元素施加 `transform: scale(0.94)` + `borderRadius: 14px` + `overflow: hidden`，过渡为 `transform 0.36s cubic-bezier(0.2, 0, 0.2, 1), border-radius 0.36s ease`。
+
+- **不加 `filter: blur(1px)`**：filter 是非合成器属性，会给每个背景元素新建合成层并对整屏面积做逐像素高斯模糊，首次打开时这些层还不存在、整棵子树必须重新光栅化，表现就是「第一次打开卡，之后顺」。景深读数由 scale + 圆角 + 遮罩压暗共同承担，去掉 1px 模糊几乎看不出差别。
+- 动画开始前先设 `will-change: transform` 完成分层，避开首帧的合成往返；恢复时先还 transform / 圆角 / overflow，**下一帧**再还 transition / will-change，避免与上面的样式写入被合批导致过渡失效。
+- 系统开启「减少动态效果」（`prefers-reduced-motion: reduce`）时整体跳过景深下沉。
+- 关闭抽屉、或把 `pushBackground` 切为 false 时都必须把背景还原（对应 React `useEffect` 的 cleanup 语义：依赖变化时先清理上一次效果，否则背景会卡在 `scale(0.94)`）。
+
+Props: `open`（必填）、`title`、`placement`（`'left' | 'right' | 'top' | 'bottom'`，默认 `'right'`）、`width`（默认 378）、`height`（默认 300）、`maskClosable`（默认 true）、`pushBackground`（默认 true）、`footer`、`maskStyle`。Emits: `close`。焦点陷阱：Tab 循环、ESC 关闭、关闭后恢复焦点。打开时锁定 body 滚动。`pushBackground` 对背景元素施加 `scale(0.94) + borderRadius(14px)`。
 
 ---
 

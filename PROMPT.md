@@ -415,7 +415,7 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 - Emits: `close` (when mask clicked or ESC pressed).
 - Slots: `default` (body), `footer` (rich footer override).
 - Focus trap: ESC to close, Tab cycle within the drawer, focus restoration on close.
-- Body scroll lock when open. Push-background effect: siblings get scale+blur+rounded corners.
+- Body scroll lock when open. Push-background effect: siblings get scale + rounded corners (no blur).
 - Vue API: `<Drawer v-model:open="open" title="Settings" placement="right">...</Drawer>`.
 
 ### Notification (imperative toast API)

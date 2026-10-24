@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, watch, onUnmounted, nextTick, computed, useSlots } from 'vue';
+import Cursor from '../Cursor/Cursor.vue';
 import type { DrawerProps } from './types';
 
 const props = withDefaults(defineProps<DrawerProps>(), {
@@ -128,20 +129,29 @@ const pendingCleanup = ref<(() => void) | null>(null);
 watch(
     () => [props.open, props.pushBackground] as const,
     ([open, push]) => {
-        if (!open || !push) return;
+        if (!push) {
+            pendingCleanup.value?.();
+            pendingCleanup.value = null;
+            return;
+        }
+        if (!open) return;
 
         if (restoreTransitionRaf.value !== null) {
             cancelAnimationFrame(restoreTransitionRaf.value);
             restoreTransitionRaf.value = null;
         }
 
+        if (typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            return;
+        }
+
         const pushed: Array<{
             el: HTMLElement;
             transform: string;
-            filter: string;
             borderRadius: string;
             overflow: string;
             transition: string;
+            willChange: string;
         }> = [];
 
         const candidates = Array.from(document.body.children).filter((el): el is HTMLElement => {
@@ -157,19 +167,18 @@ watch(
             pushed.push({
                 el,
                 transform: el.style.transform,
-                filter: el.style.filter,
                 borderRadius: el.style.borderRadius,
                 overflow: el.style.overflow,
                 transition: el.style.transition,
+                willChange: el.style.willChange,
             });
-            el.style.transition =
-                'transform 0.36s cubic-bezier(0.2, 0, 0.2, 1), filter 0.36s ease, border-radius 0.36s ease';
+            el.style.transition = 'transform 0.36s cubic-bezier(0.2, 0, 0.2, 1), border-radius 0.36s ease';
+            el.style.willChange = 'transform';
         });
 
         const rafId = requestAnimationFrame(() => {
             pushed.forEach(({ el }) => {
                 el.style.transform = 'scale(0.94)';
-                el.style.filter = 'blur(1px)';
                 el.style.borderRadius = '14px';
                 el.style.overflow = 'hidden';
             });
@@ -181,15 +190,15 @@ watch(
                 cancelAnimationFrame(restoreTransitionRaf.value);
                 restoreTransitionRaf.value = null;
             }
-            pushed.forEach(({ el, transform, filter, borderRadius, overflow }) => {
+            pushed.forEach(({ el, transform, borderRadius, overflow }) => {
                 el.style.transform = transform;
-                el.style.filter = filter;
                 el.style.borderRadius = borderRadius;
                 el.style.overflow = overflow;
             });
             restoreTransitionRaf.value = requestAnimationFrame(() => {
-                pushed.forEach(({ el, transition }) => {
+                pushed.forEach(({ el, transition, willChange }) => {
                     el.style.transition = transition;
+                    el.style.willChange = willChange;
                 });
                 restoreTransitionRaf.value = null;
             });
@@ -252,45 +261,47 @@ const titleId = `${idBase}-title`;
 <template>
     <Teleport to="body">
         <div data-animal-drawer-portal>
-            <div
-                class="animal-drawer__mask"
-                :class="{ 'animal-drawer__mask--open': open }"
-                :style="maskStyle"
-                :aria-hidden="!open"
-                @click="handleMaskClick"
-            >
+            <Cursor>
                 <div
-                    ref="dialogRef"
-                    :class="panelClass"
-                    :style="panelStyle"
-                    role="dialog"
-                    aria-modal="true"
-                    :aria-labelledby="title ? titleId : undefined"
+                    class="animal-drawer__mask"
+                    :class="{ 'animal-drawer__mask--open': open }"
+                    :style="maskStyle"
                     :aria-hidden="!open"
-                    :inert="!open"
-                    tabindex="-1"
-                    @click="handleContentClick"
+                    @click="handleMaskClick"
                 >
-                    <div v-if="title || $slots.title" class="animal-drawer__header">
-                        <div :id="titleId" class="animal-drawer__title">
-                            <slot name="title">
-                                {{ title }}
+                    <div
+                        ref="dialogRef"
+                        :class="panelClass"
+                        :style="panelStyle"
+                        role="dialog"
+                        aria-modal="true"
+                        :aria-labelledby="title ? titleId : undefined"
+                        :aria-hidden="!open"
+                        :inert="!open"
+                        tabindex="-1"
+                        @click="handleContentClick"
+                    >
+                        <div v-if="title || $slots.title" class="animal-drawer__header">
+                            <div :id="titleId" class="animal-drawer__title">
+                                <slot name="title">
+                                    {{ title }}
+                                </slot>
+                            </div>
+                            <button type="button" class="animal-drawer__close" aria-label="关闭" @click="emit('close')">
+                                ×
+                            </button>
+                        </div>
+                        <div class="animal-drawer__body">
+                            <slot />
+                        </div>
+                        <div v-if="footer || slots.footer" class="animal-drawer__footer">
+                            <slot name="footer">
+                                {{ footer }}
                             </slot>
                         </div>
-                        <button type="button" class="animal-drawer__close" aria-label="关闭" @click="emit('close')">
-                            ×
-                        </button>
-                    </div>
-                    <div class="animal-drawer__body">
-                        <slot />
-                    </div>
-                    <div v-if="footer || slots.footer" class="animal-drawer__footer">
-                        <slot name="footer">
-                            {{ footer }}
-                        </slot>
                     </div>
                 </div>
-            </div>
+            </Cursor>
         </div>
     </Teleport>
 </template>
@@ -305,6 +316,13 @@ const titleId = `${idBase}-title`;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.36s ease;
+
+    // 弹层外壳整体不可选中。
+    // 面板是 tabindex="-1" 的焦点容器（焦点陷阱与无焦点元素时的兜底聚焦都需要它），
+    // 点击面板内任意非交互文字时，焦点会落到面板上；WebKit/Safari 在元素获得焦点时
+    // 会自动选中其内容，于是「打开抽屉 → 双击标题」会把标题刷成选中态。
+    // 外壳统一 user-select: none，内容区再用 user-select: text 放行。
+    user-select: none;
 
     &--open {
         opacity: 1;
@@ -412,6 +430,8 @@ const titleId = `${idBase}-title`;
     font-weight: 600;
     line-height: 1.6;
     color: #8a7b66;
+    // 内容区恢复可选中：外壳禁选是为了压掉聚焦时的误选中，正文仍需支持拖选复制
+    user-select: text;
 }
 
 .animal-drawer__footer {

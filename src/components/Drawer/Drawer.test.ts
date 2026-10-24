@@ -133,13 +133,31 @@ describe('Drawer', () => {
         });
         await waitForRaf();
         expect(content.style.transform).toBe('scale(0.94)');
-        expect(content.style.filter).toBe('blur(1px)');
         expect(content.style.borderRadius).toBe('14px');
         expect(content.style.overflow).toBe('hidden');
+        expect(content.style.filter).toBe('');
+        expect(content.style.willChange).toBe('transform');
         // portal 包裹器自身不能被下沉
         const portalWrapper = document.querySelector('[data-animal-drawer-portal]') as HTMLElement;
         expect(portalWrapper).toBeTruthy();
         expect(portalWrapper.style.transform).toBe('');
+    });
+
+    it('打开状态下关闭 pushBackground 会恢复背景（不能卡在下沉态）', async () => {
+        const content = document.createElement('div');
+        content.textContent = 'page content';
+        document.body.appendChild(content);
+        const wrapper = mount(Drawer, {
+            props: { open: true },
+            slots: { default: () => h('p', null, 'drawer') },
+        });
+        await waitForRaf();
+        expect(content.style.transform).toBe('scale(0.94)');
+        await wrapper.setProps({ pushBackground: false });
+        await waitForRaf();
+        expect(content.style.transform).toBe('');
+        expect(content.style.borderRadius).toBe('');
+        expect(content.style.overflow).toBe('');
     });
 
     it('pushBackground=false 不下沉背景', () => {

@@ -1152,7 +1152,7 @@ const open = ref(false);
 </template>
 ```
 
-> Slide-in panel with focus trap (Tab cycle, ESC to close, focus restoration on close). Body scroll locked when open. `pushBackground` applies `scale(0.94) + blur(1px) + borderRadius(14px)` to background elements. Not supported: no `closable` toggle (always shows close button), no `zIndex` prop, no `getContainer`, no `afterOpenChange` / `afterClose` callbacks.
+> Slide-in panel with focus trap (Tab cycle, ESC to close, focus restoration on close). Body scroll locked when open. `pushBackground` applies `scale(0.94) + borderRadius(14px)` to background elements (no blur — a `filter` would force a full-subtree re-rasterization on first open). Not supported: no `closable` toggle (always shows close button), no `zIndex` prop, no `getContainer`, no `afterOpenChange` / `afterClose` callbacks.
 
 ***
 

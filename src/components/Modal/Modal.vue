@@ -234,6 +234,13 @@ onBeforeUnmount(() => {
         justify-content: center;
         background: rgba(0, 0, 0, 0.35);
         animation: animal-modal-fade-in 0.25s ease;
+
+        // 弹层外壳整体不可选中。
+        // .animal-modal 是 tabindex="-1" 的焦点容器（焦点陷阱需要），点击弹窗内任意非交互
+        // 文字时焦点会落到它身上；WebKit/Safari 在元素获得焦点时会自动选中其内容，
+        // 于是「打开弹窗 → 双击标题」会把标题刷成选中态。
+        // 外壳统一 user-select: none，内容区再用 user-select: text 放行。
+        user-select: none;
     }
 
     &__svg-defs {
@@ -287,6 +294,8 @@ onBeforeUnmount(() => {
         font-weight: 600;
         line-height: 1.6;
         color: #8a7b66;
+        // 内容区恢复可选中：外壳禁选是为了压掉聚焦时的误选中，正文仍需支持拖选复制
+        user-select: text;
     }
 
     &__footer {
