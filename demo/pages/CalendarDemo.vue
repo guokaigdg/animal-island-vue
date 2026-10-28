@@ -143,7 +143,12 @@ const events = ref([
         <Calendar default-value="2026-03-11" :events="EVENTS" :style="{ maxWidth: DEMO_MAX_WIDTH }" />
 
         <div :style="labelStyle">受控翻月 — v-model:panel-value 必须回写</div>
-        <Calendar v-model="selected" v-model:panel-value="panel" :events="EVENTS" :style="{ maxWidth: DEMO_MAX_WIDTH }" />
+        <Calendar
+            v-model="selected"
+            v-model:panel-value="panel"
+            :events="EVENTS"
+            :style="{ maxWidth: DEMO_MAX_WIDTH }"
+        />
         <div :style="{ fontSize: '13px', color: '#a0936e', marginTop: '10px' }">
             当前面板：<Tag>{{ panel }}</Tag>
         </div>

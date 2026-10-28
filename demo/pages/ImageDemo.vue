@@ -3,23 +3,13 @@ import { Image, type ImageColor } from '@';
 import { sectionStyle, sectionTitleStyle, tagStyle, labelStyle, demoBodyStyle, ApiTable, CodeBlock } from '../tools';
 import type { ApiRow } from '../tools';
 
-/** 自然风格随机图片池（与 React 版一致） */
-const heroImages = [
-    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=island%20landscape%20vibrant%20green%20grass%20blue%20sky%20cherry%20blossoms%20style&image_size=landscape_16_9',
-    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=museum%20interior%20warm%20lighting%20fossils%20art%20gallery&image_size=landscape_16_9',
-    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=beach%20sunset%20palm%20trees%20coconut%20cute&image_size=landscape_16_9',
-    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=winter%20snow%20christmas%20lights%20cozy%20village&image_size=landscape_16_9',
-    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=fishing%20river%20peaceful%20nature&image_size=landscape_16_9',
-    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=villagers%20singing%20together%20happy%20cute&image_size=landscape_16_9',
-    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=campfire%20night%20starry%20sky%20cozy%20tent%20style&image_size=landscape_16_9',
-    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=flower%20garden%20tulips%20roses%20colorful%20hybrid%20flowers&image_size=landscape_16_9',
-    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=wooden%20bridge%20over%20river%20waterfall%20lush%20forest&image_size=landscape_16_9',
-    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=fruit%20orchard%20apple%20orange%20peach%20trees%20sunny&image_size=landscape_16_9',
-    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=lighthouse%20ocean%20cliff%20seagulls%20blue%20sky%20cute&image_size=landscape_16_9',
-    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=festival%20fireworks%20night%20sky%20lanterns%20celebration&image_size=landscape_16_9',
-    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=cafe%20interior%20cozy%20coffee%20wooden%20furniture%20warm&image_size=landscape_16_9',
-    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=hot%20air%20balloon%20sky%20adventure%20clouds%20colorful&image_size=landscape_16_9',
-];
+/**
+ * 演示照片池：动态引入 demo/assets/images 下全部照片，每次刷新随机洗牌后展示
+ * （与 React 版同一套本地照片，不依赖任何外部图床服务）
+ */
+const pictures = Object.values(import.meta.glob('../assets/images/*.{jpg,jpeg,png}', { eager: true })).map(
+    (m) => (m as { default: string }).default
+);
 
 /** Fisher-Yates 洗牌，返回打乱后的新数组 */
 function shuffle<T>(arr: T[]): T[] {
@@ -31,8 +21,8 @@ function shuffle<T>(arr: T[]): T[] {
     return a;
 }
 
-/** 14 张图打乱后与 14 个颜色一一对应，不重复 */
-const shuffledImages = shuffle(heroImages);
+const photos = shuffle(pictures);
+const pick = (i: number) => photos[i % Math.max(photos.length, 1)];
 
 const IMAGE_COLORS: { color: ImageColor; label: string }[] = [
     { color: 'white', label: 'White 白色' },
@@ -87,11 +77,6 @@ const IMAGE_API: ApiRow[] = [
     { prop: 'style', desc: '自定义样式（合并到相框）', type: 'CSSProperties', defaultVal: '-' },
 ];
 
-const previewSrc = heroImages[0];
-const basicSrc1 = heroImages[1];
-const basicSrc2 = heroImages[2];
-const lazySrc = heroImages[3];
-
 const code = `import { Image } from 'animal-island-vue';
 
 // 基础用法
@@ -125,21 +110,21 @@ const code = `import { Image } from 'animal-island-vue';
             <!-- 点击预览 -->
             <div :style="labelStyle">点击预览（preview 默认开启，点击图片弹出大图，ESC / 遮罩 / 关闭按钮均可关闭）</div>
             <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap">
-                <Image :src="previewSrc" alt="点击预览大图" :width="330" :height="200" preview />
+                <Image :src="pick(0)" alt="点击预览大图" :width="330" :height="200" preview lazy />
             </div>
 
             <!-- 相框类型 -->
             <div :style="labelStyle">
                 相框类型（variant）— <code style="color: #a09080">default</code> 卡片大阴影+大圆角（默认），
-                <code style="color: #a09080">bordered</code> 柔和阴影+小圆角
+                <code style="color: #a09080">bordered</code> 柔和阴影+小圆角（原样式）
             </div>
             <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap">
                 <div style="text-align: center">
-                    <Image :src="basicSrc1" alt="默认类型" :width="330" :height="200" variant="default" />
+                    <Image :src="pick(1)" alt="默认类型" :width="330" :height="200" variant="default" lazy />
                     <div style="font-size: 12px; color: #a0936e; margin-top: 6px">default（默认）</div>
                 </div>
                 <div style="text-align: center">
-                    <Image :src="basicSrc2" alt="边框类型" :width="330" :height="200" variant="bordered" />
+                    <Image :src="pick(2)" alt="边框类型" :width="330" :height="200" variant="bordered" lazy />
                     <div style="font-size: 12px; color: #a0936e; margin-top: 6px">bordered（边框）</div>
                 </div>
             </div>
@@ -152,17 +137,18 @@ const code = `import { Image } from 'animal-island-vue';
             <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap">
                 <div style="text-align: center">
                     <Image
-                        :src="basicSrc1"
+                        :src="pick(1)"
                         alt="邮票（带年份）"
                         :width="210"
                         :height="154"
                         variant="stamp"
                         stamp-year="2026"
+                        lazy
                     />
                     <div style="font-size: 12px; color: #a0936e; margin-top: 6px">带年份</div>
                 </div>
                 <div style="text-align: center">
-                    <Image :src="basicSrc2" alt="纯邮票边框" :width="210" :height="154" variant="stamp" />
+                    <Image :src="pick(2)" alt="纯邮票边框" :width="210" :height="154" variant="stamp" lazy />
                     <div style="font-size: 12px; color: #a0936e; margin-top: 6px">仅齿孔边框（无文字）</div>
                 </div>
             </div>
@@ -170,23 +156,22 @@ const code = `import { Image } from 'animal-island-vue';
             <!-- 基础用法 -->
             <div :style="labelStyle">基础用法（自定义宽高）</div>
             <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap">
-                <Image :src="basicSrc1" alt="示例图片 1" :width="330" :height="200" />
-                <Image :src="basicSrc2" alt="示例图片 2" :width="480" :height="300" />
+                <Image :src="pick(3)" alt="林间溪流" :width="330" :height="200" lazy />
+                <Image :src="pick(4)" alt="阳光田野" :width="480" :height="300" lazy />
             </div>
 
             <!-- 背景颜色 -->
-            <div :style="labelStyle">
-                背景颜色（color，Card pattern 同款底色，无花纹；仅 variant='bordered' 时生效）
-            </div>
+            <div :style="labelStyle">背景颜色（color，Card pattern 同款底色，无花纹）</div>
             <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap">
                 <div v-for="(c, i) in IMAGE_COLORS" :key="c.color" style="text-align: center">
                     <Image
-                        :src="shuffledImages[i]"
+                        :src="pick(i + 5)"
                         :alt="c.label"
-                        :width="330"
+                        :width="300"
                         :height="200"
                         :color="c.color"
                         variant="bordered"
+                        lazy
                     />
                     <div style="font-size: 12px; color: #a0936e; margin-top: 6px">{{ c.label }}</div>
                 </div>
@@ -194,7 +179,7 @@ const code = `import { Image } from 'animal-island-vue';
 
             <!-- 懒加载 -->
             <div :style="labelStyle">懒加载（lazy，滚动到视口附近才加载）</div>
-            <Image :src="lazySrc" alt="懒加载图片" :width="360" :height="230" lazy />
+            <Image :src="pick(4)" alt="晨光湖面" :width="360" :height="230" lazy />
 
             <!-- 错误占位 -->
             <div :style="labelStyle">错误占位（加载失败时显示占位）</div>
