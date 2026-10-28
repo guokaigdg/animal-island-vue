@@ -26,17 +26,30 @@ import {
 import { sectionStyle, sectionTitleStyle, tagStyle, labelStyle, ApiTable, CodeBlock } from '../tools';
 import type { ApiRow } from '../tools';
 
-/** 演示照片池：复用 text_to_image 生成的头像风格图（square），裁切展示 */
+/**
+ * 演示照片池：本地头像风格图（square），裁切展示
+ * 显式 import 而非 import.meta.glob —— pick(i) 依赖数组顺序，glob 的键序不保证稳定
+ */
+import villagerPortrait from '../assets/avatars/island-villager-portrait.jpg';
+import catPortrait from '../assets/avatars/cat-portrait.jpg';
+import rabbitPortrait from '../assets/avatars/rabbit-portrait.jpg';
+import birdPortrait from '../assets/avatars/bird-portrait.jpg';
+import sunnyBeach from '../assets/avatars/sunny-beach-landscape.jpg';
+import flowerMeadow from '../assets/avatars/flower-meadow-landscape.jpg';
+import nightMoon from '../assets/avatars/night-moon-landscape.jpg';
+import lakeMorning from '../assets/avatars/lake-morning-landscape.jpg';
+import mountainVillage from '../assets/avatars/mountain-village-landscape.jpg';
+
 const pictures = [
-    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=island%20villager%20cartoon%20cute%20smile%20portrait&image_size=square',
-    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=cat%20cartoon%20portrait%20cute%20island&image_size=square',
-    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=rabbit%20cartoon%20portrait%20cute%20island&image_size=square',
-    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=bird%20cartoon%20portrait%20cute%20island&image_size=square',
-    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=island%20sunny%20beach%20cute%20landscape&image_size=square',
-    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=flower%20meadow%20sunny%20cute%20landscape&image_size=square',
-    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=night%20starry%20sky%20moon%20cute%20landscape&image_size=square',
-    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=lake%20morning%20dawn%20cute%20landscape&image_size=square',
-    'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=mountain%20village%20sunny%20cute%20landscape&image_size=square',
+    villagerPortrait,
+    catPortrait,
+    rabbitPortrait,
+    birdPortrait,
+    sunnyBeach,
+    flowerMeadow,
+    nightMoon,
+    lakeMorning,
+    mountainVillage,
 ];
 const pick = (i: number) => pictures[i % pictures.length];
 
