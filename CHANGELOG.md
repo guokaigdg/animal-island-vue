@@ -5,6 +5,48 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 2026-10-29
+
+### Added
+
+- New `CountUp` component (animated number counter — five built-in easing
+  curves plus custom easing functions, decimal places and separators,
+  `formatter` override, opt-in per-digit `digitRoll` rolling, celebration
+  animation, auto repeat, scoped `{ value, reset }` slot) plus tests.
+- New `Calendar` component (month grid — controlled / uncontrolled
+  selection and panel month, event bars with cross-day spans, drag to
+  create events, five color themes) plus tests.
+- New `CountUpDemo` and `CalendarDemo` pages; both components are
+  exported from `src/index.ts`.
+- `Select` gained a searchable mode (`showSearch`, `filterOption`,
+  `optionFilterProp`, `notFoundContent` and the `#not-found` slot) plus a
+  one-click clear button (`allowClear`).
+- `Notification` now exports its imperative API (`notificationOpen`,
+  `notificationDestroy`) from the package entry.
+- Icon set synced with naive-icons 1.6.0 — 101 → 164 icons (+63); no
+  existing icon was removed.
+
+### Fixed
+
+- `Drawer` and `Modal` no longer select their own text when the panel is
+  clicked — the mask disables selection while the body keeps it.
+- `Drawer` depth effect now matches the React implementation: the
+  `filter: blur()` (which re-rasterized the whole subtree) is replaced by
+  `will-change: transform`, and the effect is skipped under
+  `prefers-reduced-motion: reduce`.
+- `Drawer` restores the page background when `pushBackground` is switched
+  back to `false`.
+- `Progress` scene-image fill (`variant`) and styling now match the React
+  version; `ariaLabel` / `ariaLabelledby` added for
+  `aria-progressbar-name`.
+- Corrected prop names in the component docs and added missing prop docs.
+
+### Changed
+
+- Demo images are now bundled locally, removing the dependency on an
+  external image host; photo assets are capped at 1200px wide
+  (2.97 MB → 0.88 MB).
+
 ## [1.4.0] - 2026-10-08
 
 ### Added
