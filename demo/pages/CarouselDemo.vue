@@ -4,6 +4,12 @@ import type { CSSProperties } from 'vue';
 import { sectionStyle, sectionTitleStyle, tagStyle, labelStyle, demoBodyStyle, ApiTable, CodeBlock } from '../tools';
 import type { ApiRow } from '../tools';
 
+// 与 React demo 同款本地照片（同一套图片，仅 Vue 侧做了压缩）
+// 显式 import 而非 import.meta.glob：slides 顺序固定，不依赖 glob 键序
+import hillsideTown from '../assets/images/hillside-town.jpg';
+import sunnyField from '../assets/images/sunny-field.jpg';
+import lakeMorning from '../assets/images/lake-morning.jpg';
+
 const CAROUSEL_API: ApiRow[] = [
     { prop: 'default slot', desc: '轮播内容，每个直接子元素为一张', type: 'VNode', defaultVal: '-', required: true },
     { prop: 'modelValue', desc: '当前索引（v-model，受控）', type: 'number', defaultVal: '-' },
@@ -17,90 +23,11 @@ const CAROUSEL_API: ApiRow[] = [
     { prop: 'pauseOnHover', desc: '悬停或聚焦时暂停', type: 'boolean', defaultVal: 'true' },
 ];
 
-/** 本地岛屿风景素材（构建时静态引入，不依赖任何外部图床服务） */
-const carouselImages = import.meta.glob('../assets/carousel/*.jpg', { eager: true }) as Record<
-    string,
-    { default: string }
->;
-
-/** 按文件名取本地图片 URL */
-const carouselAsset = (slug: string): string => carouselImages[`../assets/carousel/${slug}.jpg`].default;
-
-// 岛屿风景图池，demo 加载时随机抽取 3 张
-const IMAGE_POOL: { src: string; title: string; desc: string }[] = [
-    {
-        src: carouselAsset('island-panorama'),
-        title: '岛屿全景',
-        desc: '樱花盛开的清晨，草地与蓝天连成一片。',
-    },
-    {
-        src: carouselAsset('museum-interior'),
-        title: '博物馆',
-        desc: '暖光下的化石展厅与艺术画廊。',
-    },
-    {
-        src: carouselAsset('beach-sunset'),
-        title: '日落海滩',
-        desc: '棕榈树影里的椰子与晚霞。',
-    },
-    {
-        src: carouselAsset('winter-snow-village'),
-        title: '冬日雪镇',
-        desc: '彩灯点缀的雪夜小村庄。',
-    },
-    {
-        src: carouselAsset('riverside-fishing'),
-        title: '河畔垂钓',
-        desc: '流水潺潺，静候鱼儿上钩。',
-    },
-    {
-        src: carouselAsset('village-choir'),
-        title: '广场合唱',
-        desc: '村民们围在一起快乐地歌唱。',
-    },
-    {
-        src: carouselAsset('campfire-night'),
-        title: '星空营火',
-        desc: '繁星下的营火与帐篷。',
-    },
-    {
-        src: carouselAsset('flower-garden'),
-        title: '花圃培育',
-        desc: '郁金香与玫瑰交织的缤纷花园。',
-    },
-    {
-        src: carouselAsset('forest-wooden-bridge'),
-        title: '森林木桥',
-        desc: '瀑布溪流上的小木桥。',
-    },
-    {
-        src: carouselAsset('fruit-orchard'),
-        title: '果树园',
-        desc: '苹果、橙子与桃树挂满枝头。',
-    },
-    {
-        src: carouselAsset('seaside-lighthouse'),
-        title: '海边灯塔',
-        desc: '悬崖上的灯塔与盘旋的海鸥。',
-    },
-    {
-        src: carouselAsset('festival-fireworks'),
-        title: '烟火大会',
-        desc: '夜空中的烟花与升起的灯笼。',
-    },
-    {
-        src: carouselAsset('cozy-cafe'),
-        title: '岛咖暖屋',
-        desc: '木家具与咖啡香的小馆。',
-    },
-    {
-        src: carouselAsset('hot-air-balloon'),
-        title: '热气球之旅',
-        desc: '乘着彩色的热气球穿过云海。',
-    },
+const slides = [
+    { src: hillsideTown, title: '山坡小筑', desc: '沿坡而建的小镇，屋顶连成一片暖色。' },
+    { src: sunnyField, title: '阳光田野', desc: '风掠过田野，草浪一层层推向天边。' },
+    { src: lakeMorning, title: '晨光湖面', desc: '湖面倒映天光，晨雾如薄纱浮在水上。' },
 ];
-
-const slides = [...IMAGE_POOL].sort(() => Math.random() - 0.5).slice(0, 3);
 
 const slideStyle = (src: string): CSSProperties => ({
     minHeight: '360px',

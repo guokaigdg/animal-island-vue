@@ -2,9 +2,8 @@
 import { ref } from 'vue';
 import { Avatar, AvatarGroup, Radio, type AvatarShape } from '@';
 import {
-    UserIcon,
-    FishIcon,
-    CoffeeIcon,
+    ImageIcon,
+    CoffeeCupIcon,
     RabbitIcon,
     OwlIcon,
     CameraIcon,
@@ -17,41 +16,24 @@ import {
     StrawberryIcon,
     DonutIcon,
     IcecreamIcon,
+    CoffeeIcon,
     BalloonIcon,
     RocketIcon,
     SailboatIcon,
     MusicIcon,
     HeartIcon,
+    MapIcon,
 } from '@';
 import { sectionStyle, sectionTitleStyle, tagStyle, labelStyle, ApiTable, CodeBlock } from '../tools';
 import type { ApiRow } from '../tools';
 
 /**
- * 演示照片池：本地头像风格图（square），裁切展示
- * 显式 import 而非 import.meta.glob —— pick(i) 依赖数组顺序，glob 的键序不保证稳定
+ * 演示照片池：复用 demo/assets/images 照片，头像裁切展示（与 React 版同一套照片）
  */
-import villagerPortrait from '../assets/avatars/island-villager-portrait.jpg';
-import catPortrait from '../assets/avatars/cat-portrait.jpg';
-import rabbitPortrait from '../assets/avatars/rabbit-portrait.jpg';
-import birdPortrait from '../assets/avatars/bird-portrait.jpg';
-import sunnyBeach from '../assets/avatars/sunny-beach-landscape.jpg';
-import flowerMeadow from '../assets/avatars/flower-meadow-landscape.jpg';
-import nightMoon from '../assets/avatars/night-moon-landscape.jpg';
-import lakeMorning from '../assets/avatars/lake-morning-landscape.jpg';
-import mountainVillage from '../assets/avatars/mountain-village-landscape.jpg';
-
-const pictures = [
-    villagerPortrait,
-    catPortrait,
-    rabbitPortrait,
-    birdPortrait,
-    sunnyBeach,
-    flowerMeadow,
-    nightMoon,
-    lakeMorning,
-    mountainVillage,
-];
-const pick = (i: number) => pictures[i % pictures.length];
+const pictures = Object.values(import.meta.glob('../assets/images/*.{jpg,jpeg,png}', { eager: true })).map(
+    (m) => (m as { default: string }).default
+);
+const pick = (i: number) => pictures[i % Math.max(pictures.length, 1)];
 
 const AVATAR_API: ApiRow[] = [
     {
@@ -104,9 +86,8 @@ const GROUP_API: ApiRow[] = [
 
 /** 图标头像展示：20 个内置图标作为 children 创建图标头像（动物 / 天气 / 食物 / 物件随机混合） */
 const ICON_AVATARS = [
-    UserIcon,
-    FishIcon,
-    CoffeeIcon,
+    ImageIcon,
+    CoffeeCupIcon,
     RabbitIcon,
     OwlIcon,
     CameraIcon,
@@ -119,6 +100,7 @@ const ICON_AVATARS = [
     StrawberryIcon,
     DonutIcon,
     IcecreamIcon,
+    CoffeeIcon,
     BalloonIcon,
     RocketIcon,
     SailboatIcon,
@@ -131,17 +113,16 @@ const shape = ref<AvatarShape>('circle');
 const rowStyle = { display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap' as const };
 
 const code = `<Avatar>岛</Avatar>
-<Avatar icon={<UserIcon />} />
 <Avatar src="/photo.png" alt="岛屿风景" />
-<Avatar size={64}>64</Avatar>
+<Avatar :size="64">64</Avatar>
 
-<!-- 图标头像：图标组件直接作为 children -->
+<!-- 图标头像：图标组件直接作为默认 slot -->
 <Avatar>
-    <FishIcon />
+    <CoffeeCupIcon />
 </Avatar>
 
 <!-- 头像组：默认叠加，超出折叠为 +N -->
-<AvatarGroup maxCount={3}>
+<AvatarGroup :max-count="3">
     <Avatar src="/a.png" alt="A" />
     <Avatar src="/b.png" alt="B" />
     <Avatar>C</Avatar>
@@ -157,9 +138,9 @@ const code = `<Avatar>岛</Avatar>
         <div :style="rowStyle">
             <Avatar>岛</Avatar>
             <Avatar>
-                <FishIcon :size="22" />
+                <ImageIcon :size="22" />
             </Avatar>
-            <Avatar :src="pick(0)" alt="岛屿岛民" />
+            <Avatar :src="pick(0)" alt="岛屿风景" />
         </div>
 
         <div :style="labelStyle">形状 — 圆形 / 方形</div>
@@ -175,7 +156,7 @@ const code = `<Avatar>岛</Avatar>
         <div :style="rowStyle">
             <Avatar :shape="shape">岛</Avatar>
             <Avatar :shape="shape">
-                <UserIcon :size="22" />
+                <MapIcon :size="22" />
             </Avatar>
             <Avatar :shape="shape" :src="pick(4)" alt="阳光田野" />
             <Avatar :shape="shape" size="large" :src="pick(5)" alt="湖畔清晨" />
@@ -208,13 +189,13 @@ const code = `<Avatar>岛</Avatar>
             <Avatar size="middle">M</Avatar>
             <Avatar size="large">L</Avatar>
             <Avatar :size="64">64</Avatar>
-            <Avatar :size="96" :src="pick(3)" alt="山间小镇" />
+            <Avatar :size="96" :src="pick(14)" alt="岛屿远眺" />
         </div>
 
         <div :style="labelStyle">加载失败 — 自动回退到图标 / 文字</div>
         <div :style="rowStyle">
             <Avatar src="/broken-avatar.png">
-                <UserIcon :size="22" />
+                <MapIcon :size="22" />
             </Avatar>
             <Avatar src="/broken-avatar.png">岛</Avatar>
         </div>
