@@ -4,7 +4,7 @@ import type { CSSProperties } from 'vue';
 import { sectionStyle, sectionTitleStyle, tagStyle, labelStyle, demoBodyStyle, ApiTable, CodeBlock } from '../tools';
 import type { ApiRow } from '../tools';
 
-// 与 React demo 同款本地照片（同一套图片，仅 Vue 侧做了压缩）
+// 本地照片：复用 demo/assets/images 下的同一套图片
 // 显式 import 而非 import.meta.glob：slides 顺序固定，不依赖 glob 键序
 import hillsideTown from '../assets/images/hillside-town.jpg';
 import sunnyField from '../assets/images/sunny-field.jpg';

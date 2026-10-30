@@ -28,7 +28,7 @@ import { sectionStyle, sectionTitleStyle, tagStyle, labelStyle, ApiTable, CodeBl
 import type { ApiRow } from '../tools';
 
 /**
- * 演示照片池：复用 demo/assets/images 照片，头像裁切展示（与 React 版同一套照片）
+ * 演示照片池：复用 demo/assets/images 照片，头像裁切展示
  */
 const pictures = Object.values(import.meta.glob('../assets/images/*.{jpg,jpeg,png}', { eager: true })).map(
     (m) => (m as { default: string }).default

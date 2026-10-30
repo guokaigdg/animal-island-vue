@@ -5,7 +5,7 @@ import type { ApiRow } from '../tools';
 
 /**
  * 演示照片池：动态引入 demo/assets/images 下全部照片，每次刷新随机洗牌后展示
- * （与 React 版同一套本地照片，不依赖任何外部图床服务）
+ * （本地打包，不依赖任何外部图床服务）
  */
 const pictures = Object.values(import.meta.glob('../assets/images/*.{jpg,jpeg,png}', { eager: true })).map(
     (m) => (m as { default: string }).default
