@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.0] - 2026-11-12
+
+### Added
+
+- 37 new icons — the built-in set grows from 164 to 201. No existing icon
+  was removed, so every named export stays source-compatible.
+- New `ICON_MAP` export (icon name → icon component) for looking up an
+  icon programmatically.
+- `CodeBlock` now highlights shell command blocks: the command name, its
+  subcommand, flags and comments each get their own color, and comments
+  are rendered in italic.
+
+### Changed
+
+- The built-in icon set is now sourced from the `naive-icons-vue` package
+  instead of in-repo SVG copies, so the icon set is upgraded by bumping a
+  dependency rather than editing this repository. `Icon` renders the
+  upstream icon component; the rendered output is unchanged.
+- The ES bundle keeps `naive-icons-vue` external so consumers can
+  tree-shake it; the CJS bundle inlines it because the upstream CJS entry
+  cannot be `require`d.
+
+### Fixed
+
+- Corrected the documented default icon stroke: it is `#2A2A2A`, not
+  `currentColor`.
+
 ## [1.5.0] - 2026-10-29
 
 ### Added
