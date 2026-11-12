@@ -92,6 +92,28 @@ describe('CodeBlock', () => {
         expect(pre.text()).toContain('MyComp');
     });
 
+    it('shell 安装命令按命令名 / 子命令着色', () => {
+        const wrapper = mount(CodeBlock, { props: { code: 'npm install naive-icons-vue' } });
+        const spans = wrapper.findAll('pre span');
+        const colorOf = (needle: string) => {
+            const hit = spans.find((s) => (s.text() || '').trim() === needle);
+            return hit?.attributes('style') || '';
+        };
+        expect(wrapper.find('pre').text()).toContain('npm install naive-icons-vue');
+        // 命令名、子命令、包名三者颜色互不相同
+        expect(colorOf('npm')).toContain('color');
+        expect(colorOf('install')).toContain('color');
+        expect(colorOf('npm')).not.toBe(colorOf('install'));
+        expect(colorOf('install')).not.toBe(colorOf('naive-icons-vue'));
+    });
+
+    it('shell 注释渲染为斜体淡色', () => {
+        const wrapper = mount(CodeBlock, { props: { code: '// 使用 npm 安装\nnpm install naive-icons-vue' } });
+        const spans = wrapper.findAll('pre span');
+        const comment = spans.find((s) => (s.text() || '').includes('使用 npm 安装'));
+        expect(comment?.attributes('style')).toContain('italic');
+    });
+
     it('空 code 不挂掉', () => {
         const wrapper = mount(CodeBlock, { props: { code: '' } });
         expect(wrapper.find('pre').exists()).toBe(true);

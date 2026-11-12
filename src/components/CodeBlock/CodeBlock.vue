@@ -39,6 +39,7 @@ interface Token {
     start: number;
     end: number;
     color: string;
+    italic?: boolean;
 }
 
 function tokenize(code: string): Token[] {
@@ -83,17 +84,47 @@ function tokenize(code: string): Token[] {
 interface Segment {
     text: string;
     color: string;
+    italic?: boolean;
 }
+
+/**
+ * Shell 命令分词：行首命令名（橙）、子命令（绿）、flag（棕）、注释（斜体淡色），
+ * 包名 / 参数保持默认色。与 React 端同一套规则。
+ */
+function tokenizeShell(code: string): Token[] {
+    const tokens: Token[] = [];
+    const add = (regex: RegExp, color: string, italic = false) => {
+        const re = new RegExp(regex.source, regex.flags.includes('g') ? regex.flags : regex.flags + 'g');
+        let m: RegExpExecArray | null;
+        while ((m = re.exec(code)) !== null) {
+            tokens.push({ start: m.index, end: m.index + m[0].length, color, italic });
+        }
+    };
+
+    add(/\/\/.*$/gm, COLORS.comment, true);
+    add(/^\s*(npm|yarn|pnpm|npx|node|git|cd|ls|mkdir|rm|cp|mv)\b/gm, COLORS.jsx);
+    add(
+        /(?<=\s)(install|add|remove|uninstall|run|start|dev|build|test|lint|publish|init|create|exec|global|link|upgrade|update|clone|commit|push|pull|checkout|branch|merge|rebase|status|log|diff)\b/g,
+        COLORS.string
+    );
+    add(/(?<=\s)(-{1,2}[\w-]+)/g, COLORS.operator);
+
+    tokens.sort((a, b) => a.start - b.start);
+    return tokens;
+}
+
+/** 整段代码看起来是 shell 命令（安装 / git 之类）时走 shell 分词 */
+const looksLikeShell = (code: string): boolean => /^\s*(npm|yarn|pnpm|npx|node|git|cd|ls|mkdir|rm|cp|mv)\b/m.test(code);
 
 const segments = computed<Segment[]>(() => {
     const code = props.code;
-    const tokens = tokenize(code);
+    const tokens = looksLikeShell(code) ? tokenizeShell(code) : tokenize(code);
     const out: Segment[] = [];
     let pos = 0;
     for (const t of tokens) {
         if (t.start < pos) continue;
         if (t.start > pos) out.push({ text: code.slice(pos, t.start), color: COLORS.default });
-        out.push({ text: code.slice(t.start, t.end), color: t.color });
+        out.push({ text: code.slice(t.start, t.end), color: t.color, italic: t.italic });
         pos = t.end;
     }
     if (pos < code.length) out.push({ text: code.slice(pos), color: COLORS.default });
@@ -212,7 +243,11 @@ const restAttrs = computed(() => {
         <pre class="animal-code-block__code" :class="attrs.class" :style="preStyle" v-bind="restAttrs"><span
         v-for="(seg, i) in segments"
         :key="i"
-        :style="{ color: seg.color }"
+        :style="{
+            color: seg.color,
+            fontStyle: seg.italic ? 'italic' : undefined,
+            fontWeight: seg.italic ? 400 : undefined,
+        }"
       >{{ seg.text }}</span></pre>
         <button
             v-if="showCopyButton"

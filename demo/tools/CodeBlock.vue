@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { CodeBlock as CodeBlockBase } from '@';
-defineProps<{ code: string }>();
+withDefaults(defineProps<{ code: string; label?: string }>(), { label: '使用示例' });
 </script>
 
 <template>
     <div class="codeblock-wrap">
-        <div class="code-label">使用示例</div>
+        <div class="code-label">{{ label }}</div>
         <CodeBlockBase :code="code" :style="{ marginTop: '0px', borderRadius: '0 20px 20px 20px' }" />
     </div>
 </template>
