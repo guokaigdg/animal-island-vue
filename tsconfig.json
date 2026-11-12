@@ -24,6 +24,7 @@
     "include": [
         "src/**/*",
         "src/**/*.vue",
+        "typings/**/*.d.ts",
         "demo/**/*",
         "demo/**/*.vue",
         "docs/**/*",

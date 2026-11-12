@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { computed, useAttrs } from 'vue';
-import { ICON_SVG } from './src/_svg-data';
-import { parseSvgAttrs, resolveStrokeWidth, scaleInnerStrokes } from './src/_icon-runtime';
+import { computed, toRaw, useAttrs } from 'vue';
+import { ICON_MAP } from './_icons';
 import type { IconProps } from './types';
 
 const props = withDefaults(defineProps<IconProps>(), {
@@ -13,36 +12,16 @@ const props = withDefaults(defineProps<IconProps>(), {
 
 const attrs = useAttrs();
 
-// Find SVG data for the icon name
-const svgData = computed(() => {
-    if (props.name && ICON_SVG[props.name]) {
-        return ICON_SVG[props.name];
-    }
-    return null;
-});
-
 const isCustomIcon = computed(() => !!props.icon);
 
-const svgAttrs = computed<Record<string, string>>(() => {
-    if (!svgData.value) return {};
-    return parseSvgAttrs(svgData.value.attrs);
-});
+/**
+ * toRaw：组件放进 ref 里再传进来时会被包成 reactive 代理，
+ * 直接用会让 Vue 抱怨「Component that was made a reactive object」。
+ */
+const customIcon = computed(() => (props.icon ? toRaw(props.icon) : undefined));
 
-// 内层描边也要跟着 strokeWidth 等比缩放，否则粗细层次会丢失（对齐上游 scaledStroke）
-const svgInner = computed(() => (svgData.value ? scaleInnerStrokes(svgData.value.inner, props.strokeWidth) : ''));
-
-// Build SVG element props (override with color/strokeWidth/fill if provided)
-const svgElementProps = computed<Record<string, unknown>>(() => {
-    const base: Record<string, string> = { ...svgAttrs.value };
-    if (props.color !== undefined) base.stroke = props.color;
-    // 必须写 kebab：Vue 对 SVG 元素走 setAttribute，而 SVG 属性名区分大小写，
-    // setAttribute('strokeWidth') 会造出一个 SVG 不认识的大写属性，strokeWidth prop 直接失效。
-    if (props.strokeWidth !== undefined) base['stroke-width'] = String(resolveStrokeWidth(props.strokeWidth));
-    if (props.fill !== undefined) base.fill = props.fill;
-    return base;
-});
-
-const sizeStr = computed(() => (typeof props.size === 'number' ? `${props.size}px` : props.size));
+/** 按名渲染：图标名 → naive-icons-vue 的图标组件 */
+const namedIcon = computed(() => (props.name ? ICON_MAP[props.name] : undefined));
 
 /** 用户透传的 style（React：{...style} 覆盖 size 默认宽高），与 svgStyle 合并 */
 const userStyle = computed<Record<string, unknown>>(() => {
@@ -50,6 +29,8 @@ const userStyle = computed<Record<string, unknown>>(() => {
     if (raw === undefined || raw === null) return {};
     return typeof raw === 'object' ? (raw as Record<string, unknown>) : {};
 });
+
+const sizeStr = computed(() => (typeof props.size === 'number' ? `${props.size}px` : props.size));
 
 const svgStyle = computed(() => ({
     width: sizeStr.value,
@@ -72,16 +53,22 @@ const restAttrs = computed<Record<string, unknown>>(() => {
 });
 
 /**
- * Mode 1（icon 自定义组件）透传属性。
- * 对齐 React：`passthrough = {...rest}`，并在显式传入时用 color→stroke、strokeWidth 覆盖内置默认值。
+ * 交给图标组件的 props。
+ *
+ * naive-icons-vue 的图标约定是 size / color / strokeWidth / fill，按这套契约传，
+ * 组件内部再换算成 svg 的 width / height / stroke / stroke-width，
+ * 内层描边也会跟着 strokeWidth 等比缩放，粗细层次保持不变。
  */
-const iconPassthrough = computed<Record<string, unknown>>(() => ({
+const iconProps = computed<Record<string, unknown>>(() => ({
     ...restAttrs.value,
-    ...(props.color !== undefined ? { stroke: props.color } : null),
-    ...(props.strokeWidth !== undefined ? { strokeWidth: String(props.strokeWidth) } : null),
+    size: props.size,
+    color: props.color,
+    strokeWidth: props.strokeWidth,
+    fill: props.fill,
+    // 上游只在 title 时给 role="img"；这里给「只带 aria-label」的情况补一个，
+    // 让有 aria-label 的图标保持可访问性语义。
+    ...(attrs['aria-label'] && !attrs.role ? { role: 'img' } : null),
 }));
-
-const labeled = computed(() => !!attrs['aria-label']);
 
 // Compute class
 // 规范前缀是 animal-icon（全库 animal-* 约定）。旧的 animal-island-icon 一并保留，
@@ -106,26 +93,10 @@ defineOptions({ inheritAttrs: false });
 
 <template>
     <!-- Mode 1: custom icon component (passed via icon prop) -->
-    <component
-        :is="props.icon"
-        v-if="isCustomIcon"
-        :class="classes"
-        :style="svgStyle"
-        :aria-hidden="labeled ? undefined : true"
-        :role="labeled ? 'img' : undefined"
-        v-bind="iconPassthrough"
-    />
+    <component :is="customIcon" v-if="isCustomIcon" :class="classes" :style="svgStyle" v-bind="iconProps" />
 
     <!-- Mode 2: name-based icon -->
-    <svg
-        v-else-if="svgData"
-        v-bind="{ ...svgElementProps, ...restAttrs }"
-        :class="classes"
-        :style="svgStyle"
-        :aria-hidden="labeled ? undefined : true"
-        :role="labeled ? 'img' : undefined"
-        v-html="svgInner"
-    />
+    <component :is="namedIcon" v-else-if="namedIcon" :class="classes" :style="svgStyle" v-bind="iconProps" />
 
     <!-- Mode 3: src (image url) -->
     <span v-else :class="classes" :style="spanStyle" v-bind="restAttrs" />

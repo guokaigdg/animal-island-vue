@@ -3,6 +3,6 @@
     "compilerOptions": {
         "noEmit": true
     },
-    "include": ["src/**/*", "src/**/*.vue"],
+    "include": ["src/**/*", "src/**/*.vue", "typings/**/*.d.ts"],
     "exclude": ["src/**/*.test.ts", "src/**/*.spec.ts", "docs", "node_modules", "dist"]
 }

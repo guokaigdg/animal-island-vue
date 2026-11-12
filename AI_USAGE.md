@@ -29,7 +29,7 @@ vue >= 3.4.0
 
 ***
 
-## 1. Full API (215 named exports：51 基础导出 + 164 内置图标组件)
+## 1. Full API (259 named exports：58 基础导出 + 201 内置图标组件)
 
 All named exports from `animal-island-vue`:
 
@@ -1734,7 +1734,7 @@ const active = ref(false);
 import type { Component } from 'vue';
 
 interface IconProps {
-    /** Built-in icon name (164 total, e.g. Heart / Flower). One of name / icon / src. */
+    /** Built-in icon name (201 total, e.g. Heart / Flower). One of name / icon / src. */
     name?: IconName;
     /** Any icon component (import { HeartIcon } from 'animal-island-vue'); wins over name. */
     icon?: Component;
@@ -1752,7 +1752,7 @@ interface IconProps {
     title?: string; // accessible title — sets role="img"
 }
 // Attrs (id / class / style / data-* / aria-*) fall through to the rendered element.
-// Also exported: ICON_LIST, NAIVE_PALETTE, ICON_CATEGORIES and 164 named *Icon components.
+// Also exported: ICON_LIST, ICON_NAMES, ICON_MAP, NAIVE_PALETTE, ICON_CATEGORIES and 201 named *Icon components.
 ```
 
 Three render modes, priority `icon` > `name` > `src`:
@@ -1774,7 +1774,7 @@ import { Icon, HeartIcon } from 'animal-island-vue';
 </template>
 ```
 
-> Hand-drawn sticker-style icon set — 164 built-ins, zero image assets. `name` renders an inline `<svg>` whose source attributes are passed through, with `stroke` inheriting `currentColor` and `stroke-width: 3.5` (`vector-effect: non-scaling-stroke`). `size` accepts a number (→ px) or any CSS length string. `color` / `strokeWidth` only affect the two svg modes. `bounce` adds a 0.3s hover bounce. **Not supported:** no `spin` / `rotate` prop, no per-path multi-color API, no font-icon mode.
+> Hand-drawn sticker-style icon set — 201 built-ins, zero image assets, provided by the `naive-icons-vue` package (bumping that dependency is what upgrades the icon set). `name` renders the matching icon component as an inline `<svg>` with `stroke: #2A2A2A` and `stroke-width: 3.5`. `size` accepts a number (→ px) or any CSS length string. `color` / `strokeWidth` affect both svg modes; `strokeWidth` scales the inner strokes proportionally so the hand-drawn stroke layering is preserved. `bounce` adds a 0.3s hover bounce. **Not supported:** no `spin` / `rotate` prop, no per-path multi-color API, no font-icon mode.
 
 ***
 

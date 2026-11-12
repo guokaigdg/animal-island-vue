@@ -122,7 +122,7 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 - Cards have NO box-shadow. They float on hover with `transform: translateY(-2px);` only. Pattern variants add a 1.5px solid border in the palette hue.
 - Switch handle stays vertically centered via `transform: translateY(-50%);` and has a 2.5px border but NO `box-shadow` of its own. Track has only inset shadow (see SHADOW SYSTEM above).
 
-## COMPONENT SPECS (41 components + 164 built-in icons)
+## COMPONENT SPECS (41 components + 201 built-in icons)
 
 ### BackTop (返回顶部)
 
@@ -503,12 +503,12 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 - A11y: `nav[aria-label="分页"]`; active page `aria-current="page"`; prev/next `aria-label="上一页/下一页"`; size trigger `aria-haspopup="listbox"` + `aria-expanded`; options `role="option"` + `aria-selected`; jumper input `aria-label="跳转到指定页"`; ellipses `aria-hidden`.
 - Vue API: `<Pagination v-model:current="page" v-model:page-size="pageSize" :total="500" show-total show-quick-jumper />`; Table integration: `<Table :pagination="{ defaultPageSize: 5, showTotal: true, showSizeChanger: true }" />` (total computed from dataSource).
 
-### Icon (164 built-in sticker icons)
+### Icon (201 built-in sticker icons)
 
 - Props: `name` (IconName, e.g. 'Heart'), `icon` (Component — wins over `name`), `src` (string → background-image), `size` (number | string, default 24), `color` (svg modes only, overrides `stroke`), `strokeWidth` (svg modes only, default 3.5), `bounce` (default false, 0.3s hover bounce).
-- Mode priority: `icon` > `name` > `src`. The `name` mode renders an inline `<svg>` with `stroke: currentColor` and `stroke-width: 3.5`.
+- Mode priority: `icon` > `name` > `src`. The `name` mode renders the matching `naive-icons-vue` component as an inline `<svg>` with `stroke: #2A2A2A` and `stroke-width: 3.5`.
 - `id` / `class` / `style` / `data-*` / `aria-*` fall through to the rendered element.
-- All 164 `*Icon` components (HeartIcon, FlowerIcon, …) plus `ICON_LIST` / `NAIVE_PALETTE` / `ICON_CATEGORIES` are exported from the package root.
+- All 201 `*Icon` components (HeartIcon, FlowerIcon, …) plus `ICON_LIST` / `ICON_NAMES` / `ICON_MAP` / `NAIVE_PALETTE` / `ICON_CATEGORIES` are exported from the package root. The set itself comes from the `naive-icons-vue` package — bumping that dependency is what adds icons.
 
 ### Time (HUD clock)
 

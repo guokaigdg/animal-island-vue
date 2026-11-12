@@ -17,12 +17,12 @@ import '@fontsource/noto-sans-sc/chinese-simplified-700.css';
 // ============================================
 // 组件导出（随迁移进度逐步追加）
 // ============================================
-// Phase 0 — 图标（同步自 guokaigdg/naive-icons，164 个内置手绘图标）
+// Phase 0 — 图标（来自 npm 包 naive-icons-vue，201 个内置手绘图标）
 export { Icon, ICON_LIST, ICON_NAMES, ICONS_BY_CATEGORY } from './components/Icon';
 export type { IconProps, IconName, IconComponent, PaletteColor, IconCategory } from './components/Icon';
-export { NAIVE_PALETTE, ICON_CATEGORIES } from './components/Icon';
-// 内置手绘图标（164 个）：import { HeartIcon } from 'animal-island-vue' 或 <Icon name="Heart" />
-export * from './components/Icon/src';
+export { NAIVE_PALETTE, ICON_CATEGORIES, ICON_MAP } from './components/Icon';
+// 内置手绘图标（201 个）：import { HeartIcon } from 'animal-island-vue' 或 <Icon name="Heart" />
+export * from './components/Icon/icons';
 
 // Phase 1 — 基础原子组件
 export { Button } from './components/Button';

@@ -2955,7 +2955,7 @@ Props：`active`（boolean，默认 true）、`tip`（string | VNode，中央提
 
 内置手绘贴纸风图标（101 个）+ 自定义图标三合一，零图片资源。三种模式优先级 `icon`（组件）> `name`（内置 svg）> `src`（背景图）。
 
-`name` 命中内置注册表 → 渲染 `<svg>`（源 SVG 属性原样透传，`stroke` 默认 `currentColor`，`stroke-width: 3.5`，`vector-effect: non-scaling-stroke`）；`icon` 接收任意图标组件（101 个内置 `*Icon` 均已从包根导出）；`src` 渲染带 `background-image` 的 `span`。
+`name` 命中内置注册表 → 渲染 `naive-icons-vue` 里对应的图标组件（`<svg>`，`stroke` 默认 `#2A2A2A`，`stroke-width: 3.5`）；`icon` 接收任意图标组件（201 个内置 `*Icon` 均已从包根导出）；`src` 渲染带 `background-image` 的 `span`。
 
 Props：`name`（IconName）、`icon`（Component）、`src`（string）、`size`（number | string，默认 24，number 视为 px）、`color`（string，仅 svg 模式，覆写 `stroke`）、`strokeWidth`（number | string，仅 svg 模式）、`bounce`（boolean，默认 false，hover 弹跳 0.3s）。`id` / `class` / `style` / `data-*` / `aria-*` 透传渲染元素。另导出 `ICON_LIST`、`NAIVE_PALETTE`、`ICON_CATEGORIES`。
 
