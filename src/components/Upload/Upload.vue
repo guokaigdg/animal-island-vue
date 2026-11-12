@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, getCurrentInstance, nextTick, onBeforeUnmount, ref, useSlots, watch } from 'vue';
-import Icon from '../Icon/Icon.vue';
+import { UploadIcon, FileIcon, CheckIcon, CloseIcon, EyeIcon } from 'naive-icons-vue';
 import type { UploadChangeParam, UploadFile, UploadProps } from './types';
 
 const props = withDefaults(defineProps<UploadProps>(), {
@@ -605,14 +605,14 @@ const rootClass = computed(() => [
                             @click="showPreviewIcon && canPreview(file) ? openPreview(file) : undefined"
                         />
                         <span v-else class="animal-upload__card-file-icon">
-                            <Icon name="File" :size="15" />
+                            <FileIcon :size="15" />
                         </span>
                         <span v-if="statusOf(file) === 'uploading'" class="animal-upload__card-mask">
                             <span class="animal-upload__spinner" aria-hidden="true" />
                             <span class="animal-upload__percent">{{ clampPercent(file.percent ?? 0) }}%</span>
                         </span>
                         <span v-else-if="statusOf(file) === 'error'" class="animal-upload__card-mask">
-                            <Icon name="Close" :size="22" color="#e05a5a" />
+                            <CloseIcon :size="22" color="#e05a5a" />
                         </span>
                         <button
                             v-if="showPreviewIcon && canPreview(file)"
@@ -622,7 +622,7 @@ const rootClass = computed(() => [
                             :disabled="disabled"
                             @click="openPreview(file)"
                         >
-                            <Icon name="Eye" :size="12" />
+                            <EyeIcon :size="12" />
                         </button>
                         <button
                             v-if="showRemoveIcon"
@@ -632,7 +632,7 @@ const rootClass = computed(() => [
                             :disabled="disabled"
                             @click="handleRemove(file)"
                         >
-                            <Icon name="Close" :size="12" />
+                            <CloseIcon :size="12" />
                         </button>
                     </li>
                 </template>
@@ -645,7 +645,7 @@ const rootClass = computed(() => [
                         :disabled="disabled"
                         @click="openFilePicker"
                     >
-                        <slot><Icon name="Upload" :size="28" /></slot>
+                        <slot><UploadIcon :size="28" /></slot>
                     </button>
                 </li>
             </ul>
@@ -670,7 +670,7 @@ const rootClass = computed(() => [
             >
                 <slot>
                     <span class="animal-upload__drag-icon">
-                        <Icon name="Upload" :size="16" />
+                        <UploadIcon :size="16" />
                     </span>
                     <span class="animal-upload__drag-text">点击或拖拽文件到这里</span>
                 </slot>
@@ -684,7 +684,7 @@ const rootClass = computed(() => [
                 @click="openFilePicker"
             >
                 <slot>
-                    <Icon name="Upload" :size="18" />
+                    <UploadIcon :size="18" />
                     <span>点击上传</span>
                 </slot>
             </button>
@@ -703,10 +703,10 @@ const rootClass = computed(() => [
                             :src="previewSrc(file)"
                             :alt="file.name"
                         />
-                        <Icon v-else name="File" :size="18" />
+                        <FileIcon v-else :size="18" />
                     </span>
                     <span v-else class="animal-upload__file-icon">
-                        <Icon name="File" :size="15" />
+                        <FileIcon :size="15" />
                     </span>
                     <span class="animal-upload__file-name" :title="file.name">{{ file.name }}</span>
                     <span v-if="file.size !== undefined && file.size !== null" class="animal-upload__file-size">
@@ -714,10 +714,10 @@ const rootClass = computed(() => [
                     </span>
                     <span :class="statusClass(file)" :aria-label="statusAria(file)">
                         <template v-if="statusOf(file) === 'done'">
-                            <Icon name="Check" :size="12" />
+                            <CheckIcon :size="12" />
                         </template>
                         <template v-else-if="statusOf(file) === 'error'">
-                            <Icon name="Close" :size="12" />
+                            <CloseIcon :size="12" />
                         </template>
                         <template v-else-if="statusOf(file) !== 'removed'">
                             <span class="animal-upload__spinner" aria-hidden="true" />
@@ -732,7 +732,7 @@ const rootClass = computed(() => [
                         :disabled="disabled"
                         @click="openPreview(file)"
                     >
-                        <Icon name="Eye" :size="12" />
+                        <EyeIcon :size="12" />
                     </button>
                     <button
                         v-if="showRemoveIcon"
@@ -742,7 +742,7 @@ const rootClass = computed(() => [
                         :disabled="disabled"
                         @click="handleRemove(file)"
                     >
-                        <Icon name="Close" :size="12" />
+                        <CloseIcon :size="12" />
                     </button>
                 </li>
             </ul>
@@ -771,7 +771,7 @@ const rootClass = computed(() => [
                 aria-label="关闭预览"
                 @click="previewTarget = null"
             >
-                <Icon name="Close" :size="20" />
+                <CloseIcon :size="20" />
             </button>
         </div>
     </div>

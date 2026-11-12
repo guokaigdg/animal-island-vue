@@ -122,7 +122,7 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 - Cards have NO box-shadow. They float on hover with `transform: translateY(-2px);` only. Pattern variants add a 1.5px solid border in the palette hue.
 - Switch handle stays vertically centered via `transform: translateY(-50%);` and has a 2.5px border but NO `box-shadow` of its own. Track has only inset shadow (see SHADOW SYSTEM above).
 
-## COMPONENT SPECS (41 components + 201 built-in icons)
+## COMPONENT SPECS (41 components + 731 built-in icons)
 
 ### BackTop (返回顶部)
 
@@ -503,12 +503,12 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 - A11y: `nav[aria-label="分页"]`; active page `aria-current="page"`; prev/next `aria-label="上一页/下一页"`; size trigger `aria-haspopup="listbox"` + `aria-expanded`; options `role="option"` + `aria-selected`; jumper input `aria-label="跳转到指定页"`; ellipses `aria-hidden`.
 - Vue API: `<Pagination v-model:current="page" v-model:page-size="pageSize" :total="500" show-total show-quick-jumper />`; Table integration: `<Table :pagination="{ defaultPageSize: 5, showTotal: true, showSizeChanger: true }" />` (total computed from dataSource).
 
-### Icon (201 built-in sticker icons)
+### Icon（图标来自 naive-icons-vue）
 
-- Props: `name` (IconName, e.g. 'Heart'), `icon` (Component — wins over `name`), `src` (string → background-image), `size` (number | string, default 24), `color` (svg modes only, overrides `stroke`), `strokeWidth` (svg modes only, default 3.5), `bounce` (default false, 0.3s hover bounce).
-- Mode priority: `icon` > `name` > `src`. The `name` mode renders the matching `naive-icons-vue` component as an inline `<svg>` with `stroke: #2A2A2A` and `stroke-width: 3.5`.
-- `id` / `class` / `style` / `data-*` / `aria-*` fall through to the rendered element.
-- All 201 `*Icon` components (HeartIcon, FlowerIcon, …) plus `ICON_LIST` / `ICON_NAMES` / `ICON_MAP` / `NAIVE_PALETTE` / `ICON_CATEGORIES` are exported from the package root. The set itself comes from the `naive-icons-vue` package — bumping that dependency is what adds icons.
+- 图标**不是本组件库的组件**，由独立 npm 包 `naive-icons-vue` 提供：731 枚手绘贴纸风图标，与 React 版 `naive-icons` 是同一套设计。本库没有通用 `<Icon name="...">` 组件。
+- 用法：`import { HeartIcon } from 'naive-icons-vue'`，模板里 `<HeartIcon :size="32" color="#e76f51" />`。每枚图标都是独立组件，按名字具名导入。
+- 图标组件 props：`size`（number | string，默认 24）、`color`（描边色，默认 `#2A2A2A`）、`strokeWidth`（默认 3.5，内层描边等比缩放，层次不变）、`fill`（默认 `none`，只作用于根 `<svg>`，内层填充是设计值）、`title`（无障碍标题，设置 `role="img"`）。`id` / `class` / `style` / `data-*` / `aria-*` 透传渲染元素。
+- 同包还导出 `NAIVE_PALETTE`（10 色板）、`iconNames`（运行时图标 id 数组）、`createIcon`（自建图标工厂）。升级图标 = 升级 `naive-icons-vue` 依赖。
 
 ### Time (HUD clock)
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import Icon from '../Icon/Icon.vue';
+import { FishIcon } from 'naive-icons-vue';
 
 interface Props {
     question?: string;
@@ -71,7 +71,7 @@ function toggle() {
                 <slot name="question">{{ question }}</slot>
             </span>
             <span class="animal-collapse__fish" aria-hidden>
-                <Icon name="Fish" :size="20" />
+                <FishIcon :size="20" />
             </span>
         </button>
         <div

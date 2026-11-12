@@ -76,9 +76,7 @@ export default defineConfig(({ mode }) => {
                       dts({
                           entryRoot: 'src',
                           outDir: 'dist/types',
-                          // typings/ 里是 naive-icons-vue 的类型旁路声明：
-                          // 参与编译（解决上游 exports 指向缺失文件的问题），但不产出 d.ts。
-                          include: ['src/**/*.ts', 'src/**/*.vue', 'typings/**/*.d.ts'],
+                          include: ['src/**/*.ts', 'src/**/*.vue'],
                           exclude: ['src/**/*.test.ts', 'src/**/*.spec.ts'],
                           tsconfigPath: 'tsconfig.build.json',
                           staticImport: true,
@@ -105,10 +103,10 @@ export default defineConfig(({ mode }) => {
                 fileName: () => (isCjs ? 'cjs/index.cjs' : 'es/index.js'),
             },
             rollupOptions: {
-                // ES 产物把 naive-icons-vue 留成外部依赖：图标集升级只需升 npm 依赖，
-                // 消费方还能按需 tree-shake。CJS 产物改为内联，因为上游 1.9.0 的
-                // CJS 入口（dist/*.js 在 type:module 包里）require 会失败。
-                external: isCjs ? ['vue'] : ['vue', 'naive-icons-vue'],
+                // naive-icons-vue 始终留成外部依赖：图标集升级只需升 npm 依赖，
+                // 消费方还能按需 tree-shake。上游 1.16.1 起 CJS 入口可正常 require，
+                // 所以 ES / CJS 两种产物都不再内联图标集。
+                external: ['vue', 'naive-icons-vue'],
                 onwarn(warning, defaultHandler) {
                     if (warning.message?.includes('overwrites a previously emitted file')) {
                         return;

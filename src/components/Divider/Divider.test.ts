@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
+import { FishIcon } from 'naive-icons-vue';
 import Divider from './Divider.vue';
 
 describe('Divider', () => {
@@ -20,5 +21,12 @@ describe('Divider', () => {
         });
         expect(wrapper.classes()).toContain('x');
         expect(wrapper.element.style.width).toBe('100px');
+    });
+
+    it('icon 模式下渲染图标组件相连分割线', () => {
+        const wrapper = mount(Divider, { props: { icon: FishIcon } });
+        expect(wrapper.classes()).toContain('animal-divider--icon');
+        expect(wrapper.find('svg').exists()).toBe(true);
+        expect(wrapper.find('.animal-divider__icon-cycle').exists()).toBe(true);
     });
 });

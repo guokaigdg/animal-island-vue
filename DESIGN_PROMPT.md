@@ -374,9 +374,10 @@ Interactive:           BackTop, Button, Input, Switch, Modal, Collapse, Select, 
 Container / Heading:   Card (13 colors + 13 dot patterns), Title (ribbon banner — 13 schemes), Table, Tag, Pagination (ghost circular cells, orange/teal variants, built into Table via pagination prop)
 Feedback:              Tooltip, Loading, Notification (imperative API, with NotificationContainer), Progress, Skeleton (SkeletonButton, SkeletonInput, SkeletonAvatar)
 Form:                  Form, FormItem, FormProvider, useForm, DatePicker, TimePicker, Upload (file upload — cream capsule trigger, dashed drag zone, text list, picture inline thumbnails, picture-card), Rate (star rating on native radios — pop-in burst + six-point splash), Badge (numeric / dot indicator on a <sup>, 12-color palette, standalone mode), CountUp (rAF count-up — two-beat bounce + expanding rings + four-point sparkles, sr-only final value), Calendar (6-week month grid, continuous multi-day bars with +N overflow, drag-to-create, controlled paging)
-Decorative:            Time, Footer, Divider, Cursor (arrow/raindrop), Background (dots/sprinkles wallpaper), Typewriter, Countdown (odometer countdown), Icon (201 built-in hand-drawn sticker icons + NAIVE_PALETTE)
+Decorative:            Time, Footer, Divider, Cursor (arrow/raindrop), Background (dots/sprinkles wallpaper), Typewriter, Countdown (odometer countdown)
 Content display:       CodeBlock, Image
 Non-component exports: Notification (command-style toast API), useForm (form hook)
+Icons:                 the icon set is not a component of this library — it comes from the standalone `naive-icons-vue` package (731 hand-drawn sticker icons, same set as the React `naive-icons`). Import each icon by name (`import { HeartIcon } from 'naive-icons-vue'`); there is no generic `<Icon name>` wrapper here.
 
 === CODE BLOCK (dark theme, Vue SFC / TS only) ===
 Container: padding 20px 24px; background #2b2118; border 1px solid #3d3028;
@@ -493,7 +494,7 @@ Interface details:
 | 过渡                   | `0.25s cubic-bezier(0.4,0,0.2,1)`                                                                                        | 通用动画                                            |
 | Loading stripe         | `28.28px` step, `-45deg`, `#0ec4b6/#01b0a7`                                                                              | 按钮 inline loading                                 |
 | Footer                 | 版权栏：© 年份 文案，年份缺省取当前年份（color #807d75 / 12px / 居中）                                                    | 版权栏（`text` / `year`）                          |
-| Icon                   | 201 个手绘贴纸风内置图标，`stroke-width: 3.5` / `stroke: #2A2A2A`                                                   | 图标三合一（`name` / `icon` / `src`）               |
+| Icon                   | 731 个手绘贴纸风图标（外部包 `naive-icons-vue`），`stroke-width: 3.5` / `stroke: #2A2A2A`                                 | 独立图标组件，按名字具名导入，无通用包装层          |
 | Loading                | 夜空底 `#0b101a` 全屏 + 50 片白色雪花（1–6px）6–12s 负延迟旋转飘落 + 暗角                                      | 全屏落雪加载屏                                      |
 | Time                   | 星期薄荷青 + 月日/HH:MM 大地棕 48px/900，冒号每秒闪烁                                                                     | HUD 实时时钟                                        |
 | Divider                | `height: 12px`，5 种背景图                                                                                               | 装饰分割线                                          |

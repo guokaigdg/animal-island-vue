@@ -23,7 +23,7 @@ import {
     MusicIcon,
     HeartIcon,
     MapIcon,
-} from '@';
+} from 'naive-icons-vue';
 import { sectionStyle, sectionTitleStyle, tagStyle, labelStyle, ApiTable, CodeBlock } from '../tools';
 import type { ApiRow } from '../tools';
 

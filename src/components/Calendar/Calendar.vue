@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, useAttrs, watch } from 'vue';
-import { CalendarIcon } from '../Icon';
+import { CalendarIcon } from 'naive-icons-vue';
 import type { CalendarEvent, CalendarEventTitle, CalendarProps } from './types';
 
 defineOptions({ inheritAttrs: false });

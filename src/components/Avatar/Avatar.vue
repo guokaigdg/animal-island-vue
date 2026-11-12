@@ -13,7 +13,7 @@ import {
     type PropType,
     type VNode,
 } from 'vue';
-import { UserIcon } from '../Icon';
+import { UserIcon } from 'naive-icons-vue';
 import type { AvatarShape, AvatarSize } from './types';
 import { avatarGroupKey } from './types';
 

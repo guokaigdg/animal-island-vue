@@ -1,19 +1,14 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
-import { Icon } from '../Icon';
-import type { DividerIconName, DividerType } from './types';
+import { computed, onBeforeUnmount, onMounted, ref, watch, type Component, type PropType } from 'vue';
+import type { DividerType } from './types';
 
-interface Props {
-    type?: DividerType;
-    icon?: DividerIconName;
-    iconSize?: number;
-    iconGap?: number;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-    type: 'dashed-brown',
-    iconSize: 24,
-    iconGap: 8,
+// icon 收的是图标组件本身（对齐 React 的 icon={<FishIcon size={24} />}），
+// 图标尺寸由图标组件自己的 size 决定，这里只按 iconSize 算「图标 + 连接线」的循环节奏。
+const props = defineProps({
+    type: { type: String as PropType<DividerType>, default: 'dashed-brown' },
+    icon: { type: [Object, Function] as PropType<Component>, default: undefined },
+    iconSize: { type: Number, default: 24 },
+    iconGap: { type: Number, default: 8 },
 });
 
 const el = ref<HTMLElement | null>(null);
@@ -66,7 +61,7 @@ const rootClass = computed(() => [
     <div ref="el" :class="rootClass" :aria-hidden="iconMode ? 'true' : undefined">
         <template v-if="iconMode">
             <div v-for="c in cycles" :key="c" class="animal-divider__icon-cycle">
-                <Icon :name="icon" :size="iconSize" />
+                <component :is="icon" />
                 <span v-if="c < cycles" class="animal-divider__icon-gap" :style="{ width: iconGap + 'px' }">
                     <span class="animal-divider__icon-line" />
                 </span>

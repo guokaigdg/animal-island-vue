@@ -2947,19 +2947,22 @@ Props：`active`（boolean，默认 true）、`tip`（string | VNode，中央提
 
 ### Icon
 
+图标不是本组件库的组件，由独立 npm 包 `naive-icons-vue` 提供（731 枚手绘贴纸风图标，与 React 版 `naive-icons` 同一套设计）。本库**没有**通用 `<Icon name="...">` 组件，每枚图标都是独立组件、按名字具名导入。
+
 ```vue
-<Icon name="Heart" :size="32" color="#e76f51" />
-<Icon :icon="HeartIcon" />
-<Icon src="/stickers/cat.png" :size="48" />
+<script setup lang="ts">
+import { HeartIcon, FishIcon } from 'naive-icons-vue';
+</script>
+
+<template>
+    <HeartIcon :size="32" color="#e76f51" />
+    <FishIcon :size="32" />
+</template>
 ```
 
-内置手绘贴纸风图标（101 个）+ 自定义图标三合一，零图片资源。三种模式优先级 `icon`（组件）> `name`（内置 svg）> `src`（背景图）。
+图标组件 props：`size`（number | string，默认 24，number 视为 px）、`color`（描边色，默认 `#2A2A2A`）、`strokeWidth`（number | string，默认 3.5，内层描边等比缩放）、`fill`（默认 `none`，只作用于根 `<svg>`）、`title`（无障碍标题，设置 `role="img"`）。`id` / `class` / `style` / `data-*` / `aria-*` 透传渲染元素。同包另导出 `NAIVE_PALETTE`、`iconNames`、`createIcon`。
 
-`name` 命中内置注册表 → 渲染 `naive-icons-vue` 里对应的图标组件（`<svg>`，`stroke` 默认 `#2A2A2A`，`stroke-width: 3.5`）；`icon` 接收任意图标组件（201 个内置 `*Icon` 均已从包根导出）；`src` 渲染带 `background-image` 的 `span`。
-
-Props：`name`（IconName）、`icon`（Component）、`src`（string）、`size`（number | string，默认 24，number 视为 px）、`color`（string，仅 svg 模式，覆写 `stroke`）、`strokeWidth`（number | string，仅 svg 模式）、`bounce`（boolean，默认 false，hover 弹跳 0.3s）。`id` / `class` / `style` / `data-*` / `aria-*` 透传渲染元素。另导出 `ICON_LIST`、`NAIVE_PALETTE`、`ICON_CATEGORIES`。
-
-**不支持**：`spin` / `rotate` 旋转、单图标多路径多色、font-icon 模式。
+**不支持**：通用 `<Icon name>` 包装层、`spin` / `rotate` 旋转、单图标多路径多色、font-icon 模式。
 
 ---
 

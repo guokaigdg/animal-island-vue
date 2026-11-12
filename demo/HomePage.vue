@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { Card, Button, Typewriter, Icon } from '@';
-import type { IconName } from '@';
+import { ref, type Component } from 'vue';
+import { Card, Button, Typewriter } from '@';
+import * as Icons from 'naive-icons-vue';
 import { useIsMobile } from './router';
 import FeatureCard from './FeatureCard.vue';
 
@@ -25,10 +25,16 @@ function openGithub() {
     window.open('https://github.com/guokaigdg/animal-island-vue', '_blank');
 }
 
+/** 按图标名解析 naive-icons-vue 图标组件（如 'Heart' → HeartIcon） */
+function resolveIcon(name: string): Component | null {
+    const Cmp = (Icons as Record<string, unknown>)[`${name}Icon`];
+    return Cmp !== null && Cmp !== undefined ? (Cmp as Component) : null;
+}
+
 // ============================================
 // 背景壁纸：低透明度 Icon 随机漂浮（对齐 React demo 的 BG_ICONS / giants）
 // ============================================
-const BG_ICONS: IconName[] = [
+const BG_ICONS = [
     'Heart',
     'Star',
     'Sun',
@@ -84,7 +90,10 @@ const BG_ICONS: IconName[] = [
     'Bicycle',
     'Car',
     'Train',
-];
+] as const;
+
+/** 图标名（不含 Icon 后缀），从 BG_ICONS 派生 */
+type IconName = (typeof BG_ICONS)[number];
 
 // 超大 Icon：每次进入随机挑 5–8 个、超级大，作为背景装饰（对齐 React 的拒绝采样避免重叠）
 const giants = (() => {
@@ -96,6 +105,7 @@ const giants = (() => {
         top: number;
         size: number;
         name: IconName;
+        cmp: Component | null;
         rotate: number;
         cx: number;
         cy: number;
@@ -118,7 +128,7 @@ const giants = (() => {
                 nameGuard++;
             }
             used.add(name);
-            placed.push({ name, left, top, rotate: -14 + Math.random() * 28, size, cx, cy });
+            placed.push({ name, cmp: resolveIcon(name), left, top, rotate: -14 + Math.random() * 28, size, cx, cy });
         }
     }
     return placed;
@@ -230,8 +240,9 @@ function highlight(code: string): Seg[][] {
                     transform: `translate(-50%, -50%) rotate(${g.rotate}deg)`,
                 }"
             >
-                <Icon
-                    :name="g.name"
+                <component
+                    :is="g.cmp"
+                    v-if="g.cmp"
                     :size="g.size"
                     color="#ffffff"
                     :style="{

@@ -29,7 +29,7 @@ vue >= 3.4.0
 
 ***
 
-## 1. Full API (259 named exports：58 基础导出 + 201 内置图标组件)
+## 1. Full API (189 named exports：51 组件 / 常量导出 + 138 类型导出；图标另见 § 1.39)
 
 All named exports from `animal-island-vue`:
 
@@ -575,15 +575,23 @@ type DividerType =
 
 interface DividerProps {
     type?: DividerType; // default 'line-brown'
-    icon?: DividerIconName; // optional icon rendered between the two lines
-    iconSize?: number; // icon size in px
+    icon?: Component; // optional icon component (e.g. FishIcon from naive-icons-vue)
+    iconSize?: number; // icon slot width in px, used to compute the cycle rhythm
     iconGap?: number; // gap around the icon in px
 }
 ```
 
 ```vue
-<Divider />
-<Divider type="wave-yellow" />
+<script setup lang="ts">
+import { FishIcon } from 'naive-icons-vue';
+</script>
+
+<template>
+    <Divider />
+    <Divider type="wave-yellow" />
+    <!-- icon divider: the icon component itself decides its own size -->
+    <Divider :icon="FishIcon" />
+</template>
 ```
 
 > Height fixed 12px. Purely decorative background-image band. No `orientation` / `dashed` / `plain` / children — for a vertical separator, use a CSS `border-left` on adjacent elements.
@@ -1728,53 +1736,40 @@ const active = ref(false);
 
 ***
 
-### 1.39 Icon
+### 1.39 Icon 图标
+
+图标**不属于本组件库**，由独立 npm 包 `naive-icons-vue` 提供（与 React 版 `naive-icons` 是同一套设计）。本库**没有**通用的 `<Icon name="...">` 组件 —— 每枚图标都是独立组件，按名字具名导入。
 
 ```ts
-import type { Component } from 'vue';
-
+// naive-icons-vue 的图标组件 props
 interface IconProps {
-    /** Built-in icon name (201 total, e.g. Heart / Flower). One of name / icon / src. */
-    name?: IconName;
-    /** Any icon component (import { HeartIcon } from 'animal-island-vue'); wins over name. */
-    icon?: Component;
-    /** Custom icon asset URL (color bitmaps etc.). */
-    src?: string;
     /** Size — number → px. Default 24. */
     size?: number | string; // default 24
-    /** Stroke color (svg modes). Defaults to currentColor. */
+    /** Stroke color. Defaults to #2A2A2A. */
     color?: string;
-    /** Stroke width (svg modes). Default 3.5. */
+    /** Stroke width. Default 3.5; inner strokes scale proportionally. */
     strokeWidth?: number | string;
-    /** Bounce on hover. Default false. */
-    bounce?: boolean; // default false
-    fill?: string; // default 'none'; applies to the root <svg> only (inner fills are design values)
-    title?: string; // accessible title — sets role="img"
+    /** Fill color, default 'none'; applies to the root <svg> only (inner fills are design values). */
+    fill?: string;
+    /** Accessible title — sets role="img". */
+    title?: string;
 }
 // Attrs (id / class / style / data-* / aria-*) fall through to the rendered element.
-// Also exported: ICON_LIST, ICON_NAMES, ICON_MAP, NAIVE_PALETTE, ICON_CATEGORIES and 201 named *Icon components.
+// The package also exports NAIVE_PALETTE (10-colour palette), iconNames (runtime id list) and createIcon (build-your-own factory).
 ```
-
-Three render modes, priority `icon` > `name` > `src`:
 
 ```vue
 <script setup lang="ts">
-import { Icon, HeartIcon } from 'animal-island-vue';
+import { HeartIcon, FishIcon } from 'naive-icons-vue';
 </script>
 
 <template>
-    <!-- Built-in icon by name -->
-    <Icon name="Heart" :size="32" color="#e76f51" />
-
-    <!-- Imported icon component -->
-    <Icon :icon="HeartIcon" />
-
-    <!-- Custom bitmap (background-image) -->
-    <Icon src="/stickers/cat.png" :size="48" />
+    <HeartIcon :size="32" color="#e76f51" />
+    <FishIcon :size="32" />
 </template>
 ```
 
-> Hand-drawn sticker-style icon set — 201 built-ins, zero image assets, provided by the `naive-icons-vue` package (bumping that dependency is what upgrades the icon set). `name` renders the matching icon component as an inline `<svg>` with `stroke: #2A2A2A` and `stroke-width: 3.5`. `size` accepts a number (→ px) or any CSS length string. `color` / `strokeWidth` affect both svg modes; `strokeWidth` scales the inner strokes proportionally so the hand-drawn stroke layering is preserved. `bounce` adds a 0.3s hover bounce. **Not supported:** no `spin` / `rotate` prop, no per-path multi-color API, no font-icon mode.
+> Hand-drawn sticker-style icon set — 731 built-ins, zero image assets. Upgrading the icon set means bumping the `naive-icons-vue` dependency. `size` accepts a number (→ px) or any CSS length string; `strokeWidth` scales the inner strokes proportionally so the hand-drawn stroke layering is preserved. **Not supported:** no generic `<Icon name>` wrapper in this package, no `spin` / `rotate` prop, no per-path multi-color API, no font-icon mode. For a runtime lookup by name use `iconNames` plus a dynamic import.
 
 ***
 
@@ -1891,7 +1886,8 @@ interface AvatarProps {
 
 ```vue
 <script setup lang="ts">
-import { Avatar, AvatarGroup, UserIcon } from 'animal-island-vue';
+import { Avatar, AvatarGroup } from 'animal-island-vue';
+import { UserIcon, FishIcon } from 'naive-icons-vue';
 </script>
 
 <template>
@@ -2000,7 +1996,8 @@ interface BadgeProps {
 
 ```vue
 <script setup lang="ts">
-import { Badge, Tag, HeartIcon } from 'animal-island-vue';
+import { Badge, Tag } from 'animal-island-vue';
+import { HeartIcon } from 'naive-icons-vue';
 </script>
 
 <template>

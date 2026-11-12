@@ -3,7 +3,7 @@ import { defineComponent, h, nextTick } from 'vue';
 import { mount } from '@vue/test-utils';
 import Avatar from './Avatar.vue';
 import AvatarGroup from './AvatarGroup.vue';
-import { UserIcon } from '../Icon';
+import { UserIcon } from 'naive-icons-vue';
 
 /** 模拟 naive 图标风格的组件作为 children（SFC 组件 type 为 object） */
 const AFish = defineComponent({

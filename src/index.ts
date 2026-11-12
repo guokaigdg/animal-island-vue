@@ -17,12 +17,10 @@ import '@fontsource/noto-sans-sc/chinese-simplified-700.css';
 // ============================================
 // 组件导出（随迁移进度逐步追加）
 // ============================================
-// Phase 0 — 图标（来自 npm 包 naive-icons-vue，201 个内置手绘图标）
-export { Icon, ICON_LIST, ICON_NAMES, ICONS_BY_CATEGORY } from './components/Icon';
-export type { IconProps, IconName, IconComponent, PaletteColor, IconCategory } from './components/Icon';
-export { NAIVE_PALETTE, ICON_CATEGORIES, ICON_MAP } from './components/Icon';
-// 内置手绘图标（201 个）：import { HeartIcon } from 'animal-island-vue' 或 <Icon name="Heart" />
-export * from './components/Icon/icons';
+// 图标不在本包导出 —— 与 React 版 animal-island-ui 一致。
+// 731 枚手绘图标由 npm 包 naive-icons-vue 提供（它是本包的依赖），按名字具名导入：
+//   import { HeartIcon } from 'naive-icons-vue';
+// 本包没有通用 <Icon name="..."> 组件，每枚图标都是独立组件。
 
 // Phase 1 — 基础原子组件
 export { Button } from './components/Button';

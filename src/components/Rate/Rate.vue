@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, ref, useAttrs } from 'vue';
-import { StarIcon } from '../Icon';
+import { StarIcon } from 'naive-icons-vue';
 import type { RateProps } from './types';
 
 const attrs = useAttrs();

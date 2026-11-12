@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { Badge, Radio, Tag, type BadgeColor } from '@';
-import { UserIcon, BellIcon, MailIcon, HeartIcon } from '@';
+import { UserIcon, BellIcon, MailIcon, HeartIcon } from 'naive-icons-vue';
 import { sectionStyle, sectionTitleStyle, tagStyle, labelStyle, ApiTable, CodeBlock } from '../tools';
 import type { ApiRow } from '../tools';
 

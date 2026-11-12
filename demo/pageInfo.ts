@@ -157,7 +157,7 @@ export const PAGE_INFO: Record<string, { title: string; desc: string }> = {
     },
     icon: {
         title: 'Icon 图标',
-        desc: '内置图标集 — 201 个手绘 SVG 动物 / 天气 / 食物 / 物件 / 交通工具贴纸风图标，来自 npm 包 naive-icons-vue，支持 name 按名渲染、单组件直接导入、size / color / strokeWidth / bounce，与调色板 NAIVE_PALETTE 配合使用',
+        desc: '图标集 — 731 个手绘 SVG 贴纸风图标，18 个分类，来自独立 npm 包 naive-icons-vue；每枚图标是独立组件，按名字具名导入，支持 size / color / strokeWidth / fill，与调色板 NAIVE_PALETTE 配合使用',
     },
     calendar: {
         title: 'Calendar 日历',
