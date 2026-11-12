@@ -5,6 +5,60 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2026-11-13
+
+### Removed
+
+- **The generic `<Icon name="...">` component is gone.** Icons are no
+  longer part of this package — they come from the standalone
+  `naive-icons-vue` package, exactly like the React build gets them
+  from `naive-icons`. Every icon is its own component, imported by name:
+
+    ```vue
+    <script setup lang="ts">
+    import { HeartIcon } from 'naive-icons-vue';
+    </script>
+
+    <template>
+        <HeartIcon :size="32" color="#e76f51" />
+    </template>
+    ```
+
+    Removed exports: `Icon` (the component), `IconProps`, `IconName`,
+    `IconComponent`, `IconCategory`, `PaletteColor`, `NAIVE_PALETTE`,
+    `ICON_LIST`, `ICON_NAMES`, `ICON_MAP`, `ICON_CATEGORIES`,
+    `ICONS_BY_CATEGORY`, and the 731 `*Icon` component re-exports.
+    `NAIVE_PALETTE` and the icon types are still available — import them
+    from `naive-icons-vue` instead.
+
+- `Divider`'s `icon` prop now takes an icon **component** instead of a
+  name string: `<Divider :icon="FishIcon" />` (the icon's own `size`
+  decides how big it renders; `iconSize` only drives the cycle rhythm).
+  The `DividerIconName` type is removed.
+
+### Added
+
+- 530 new icons — the built-in set grows from 201 to 731.
+- The demo's icon page now lists every icon grouped into its 18
+  upstream categories, with Chinese names and a search filter.
+
+### Changed
+
+- `Collapse`, `Upload`, `Rate`, `Calendar` and `Avatar` import their
+  icons straight from `naive-icons-vue` instead of going through an
+  in-repo wrapper.
+- The CJS bundle no longer inlines the icon set — `naive-icons-vue`
+  stays external in both builds, so it is tree-shakeable and the
+  bundle stops carrying a second copy of 731 icons.
+- Requires `naive-icons-vue >= 1.16.1`.
+
+### Fixed
+
+- Removed the `typings/naive-icons-vue.d.ts` ambient-module shim.
+  It existed only because the upstream package pointed its `exports`
+  at declaration files it never shipped, which made every icon import
+  resolve to `any`. Icons are now fully typed.
+
 ## [1.6.0] - 2026-11-12
 
 ### Added
