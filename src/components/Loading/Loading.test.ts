@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { nextTick } from 'vue';
+import { createSSRApp, h, nextTick } from 'vue';
+import { renderToString } from 'vue/server-renderer';
 import { mount } from '@vue/test-utils';
 import Loading from './Loading.vue';
 
@@ -70,6 +71,150 @@ describe('Loading', () => {
             expect(root.classes()).toContain('animal-loading');
             expect(root.attributes('data-scope')).toBe('snow');
             expect((root.element as HTMLElement).style.color).toBe('red');
+        });
+
+        it('style 与组件内建样式合并（zIndex 不会被传入的 style 覆盖掉）', () => {
+            const wrapper = mount(Loading, { attrs: { style: 'background-color: red' } });
+            const root = loadingOf(wrapper).element as HTMLElement;
+            expect(root.style.zIndex).toBe('3000');
+            expect(root.style.backgroundColor).toBe('red');
+        });
+
+        it('首帧即渲染遮罩，不等挂载后的 watch（避免底层内容闪一下）', async () => {
+            // 用服务端渲染取「首次渲染」的输出：immediate 的 watch 在 setup 期间同步执行，
+            // 若遮罩靠挂载后才置位，这段 HTML 里就没有它
+            const app = createSSRApp({ render: () => h(Loading, { tip: '正在加载' }) });
+            const html = await renderToString(app);
+            expect(html).toContain('role="status"');
+            expect(html).toContain('正在加载');
+        });
+
+        it('active=false 时服务端渲染同样为空', async () => {
+            const app = createSSRApp({ render: () => h(Loading, { active: false }) });
+            const html = await renderToString(app);
+            expect(html).not.toContain('role="status"');
+        });
+
+        it('circle 形态没有进入淡入动画（首帧即完全不透明）', () => {
+            const wrapper = mount(Loading, { props: { type: 'circle' } });
+            // 淡入的那 0.2s 遮罩是透明的，底下已经铺好的内容会透出来。
+            // `animation: none` 写在 scoped style 的 .animal-loading--circle 规则里，
+            // jsdom 的 getComputedStyle 读不到，因此断言挂载的类名（规则所在处）。
+            expect(loadingOf(wrapper).classes()).toContain('animal-loading--circle');
+        });
+    });
+
+    describe('圆形展开形态', () => {
+        it('type=circle 渲染帆船场景，不渲染雪花层', () => {
+            const wrapper = mount(Loading, { props: { type: 'circle' } });
+            expect(wrapper.find('.animal-loading__snow').exists()).toBe(false);
+            expect(wrapper.find('.animal-loading__sailboat-scene').exists()).toBe(true);
+            expect(wrapper.find('svg').exists()).toBe(true);
+        });
+
+        it('默认形态仍是落雪', () => {
+            const wrapper = mount(Loading);
+            expect(wrapper.find('.animal-loading__snow').exists()).toBe(true);
+            expect(wrapper.find('.animal-loading__sailboat-scene').exists()).toBe(false);
+            expect(loadingOf(wrapper).classes()).toContain('animal-loading');
+        });
+
+        it('帆船场景为装饰性内容，aria-hidden', () => {
+            const wrapper = mount(Loading, { props: { type: 'circle' } });
+            const scene = wrapper.find('.animal-loading__sailboat-scene');
+            expect(scene.attributes('aria-hidden')).toBe('true');
+        });
+
+        it('circle 形态下 tip 仍然渲染在根元素内', () => {
+            const wrapper = mount(Loading, { props: { type: 'circle', tip: '正在驶向岛屿…' } });
+            expect(wrapper.find('.animal-loading__tip').text()).toBe('正在驶向岛屿…');
+            expect(wrapper.text()).not.toContain('加载中');
+        });
+
+        it('circle 形态的波浪层铺满画布宽度所需的份数（4 段平铺）', () => {
+            const wrapper = mount(Loading, { props: { type: 'circle' } });
+            expect(wrapper.findAll('use')).toHaveLength(4);
+        });
+
+        it('帆船停在右下角（离右 20px、离下 30px）', () => {
+            const wrapper = mount(Loading, { props: { type: 'circle' } });
+            const scene = wrapper.find('.animal-loading__sailboat-scene');
+            expect(scene.exists()).toBe(true);
+            // right / bottom 写在 scoped style 的 .animal-loading__sailboat-scene 规则里，
+            // jsdom 的 getComputedStyle 读不到，所以这里断言挂载的类名（规则所在处）。
+            expect(scene.classes()).toContain('animal-loading__sailboat-scene');
+        });
+
+        it('showBoat=false 时不渲染帆船，但保留遮罩与提示文字', () => {
+            const wrapper = mount(Loading, { props: { type: 'circle', showBoat: false, tip: '加载中' } });
+            expect(wrapper.find('.animal-loading__sailboat-scene').exists()).toBe(false);
+            expect(wrapper.find('svg').exists()).toBe(false);
+            expect(wrapper.find('.animal-loading__tip').text()).toBe('加载中');
+        });
+
+        it('showBoat=false 不影响圆形展开：active→false 仍加 masking 类', async () => {
+            vi.useFakeTimers();
+            const wrapper = mount(Loading, { props: { type: 'circle', showBoat: false } });
+            await wrapper.setProps({ active: false });
+            const root = loadingOf(wrapper);
+            expect(root.classes()).toContain('animal-loading--masking');
+            expect(root.classes()).not.toContain('animal-loading--exiting');
+        });
+
+        it('多个实例的 <use> 引用目标互不相同（不会串扰）', () => {
+            const wrapper = mount({
+                render: () => h('div', [h(Loading, { type: 'circle' }), h(Loading, { type: 'circle' })]),
+            });
+            const uses = wrapper.findAll('use');
+            expect(uses).toHaveLength(8);
+            // 同一实例的 4 段平铺共用一个引用目标，两个实例各一个 —— 目标不同才不会互相覆盖
+            const ids = uses.map((u) => u.attributes('href'));
+            expect(new Set(ids).size).toBe(2);
+        });
+    });
+
+    describe('圆形扩散展开', () => {
+        it('active→false 后加 masking 类而非 exiting 类', async () => {
+            vi.useFakeTimers();
+            const wrapper = mount(Loading, { props: { type: 'circle' } });
+            await wrapper.setProps({ active: false });
+            const root = loadingOf(wrapper);
+            expect(root.classes()).toContain('animal-loading--masking');
+            expect(root.classes()).not.toContain('animal-loading--exiting');
+        });
+
+        it('遮罩半径写成内联 CSS 变量，过渡时长取自 fadeDuration', async () => {
+            vi.useFakeTimers();
+            const wrapper = mount(Loading, { props: { type: 'circle', fadeDuration: 1.2 } });
+            await wrapper.setProps({ active: false });
+            const root = loadingOf(wrapper).element as HTMLElement;
+            expect(root.style.getPropertyValue('--animal-loading-mask-duration')).toBe('1.2s');
+            expect(parseFloat(root.style.getPropertyValue('--animal-loading-mask-r'))).toBeGreaterThan(0);
+        });
+
+        it('展开走完后卸载', async () => {
+            vi.useFakeTimers();
+            const wrapper = mount(Loading, { props: { type: 'circle', fadeDuration: 0.6 } });
+            await wrapper.setProps({ active: false });
+            expect(loadingOf(wrapper).exists()).toBe(true);
+            vi.advanceTimersByTime(600);
+            await nextTick();
+            expect(loadingOf(wrapper).exists()).toBe(false);
+        });
+
+        it('展开途中恢复 active：遮罩半径归零，下次关闭仍能重新展开', async () => {
+            vi.useFakeTimers();
+            const wrapper = mount(Loading, { props: { type: 'circle', fadeDuration: 0.6 } });
+            await wrapper.setProps({ active: false });
+            vi.advanceTimersByTime(300);
+            await wrapper.setProps({ active: true });
+            const root = loadingOf(wrapper).element as HTMLElement;
+            expect(root.classList.contains('animal-loading--masking')).toBe(false);
+            expect(root.style.getPropertyValue('--animal-loading-mask-r')).toBe('0px');
+
+            // 再次关闭时半径要重新写成目标值，而不是停留在 0
+            await wrapper.setProps({ active: false });
+            expect(parseFloat(root.style.getPropertyValue('--animal-loading-mask-r'))).toBeGreaterThan(0);
         });
     });
 

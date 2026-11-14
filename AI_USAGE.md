@@ -29,7 +29,7 @@ vue >= 3.4.0
 
 ***
 
-## 1. Full API (189 named exports：51 组件 / 常量导出 + 138 类型导出；图标另见 § 1.39)
+## 1. Full API (190 named exports：51 组件 / 常量导出 + 139 类型导出；图标另见 § 1.39)
 
 All named exports from `animal-island-vue`:
 
@@ -1704,14 +1704,21 @@ import { Time } from 'animal-island-vue';
 ```ts
 import type { VNode } from 'vue';
 
+/** Loading screen shape: 'snow' fullscreen snowfall, 'circle' circular mask reveal. */
+export type LoadingType = 'snow' | 'circle';
+
 interface LoadingProps {
+    /** Loading screen shape, default 'snow' (fullscreen snowfall); 'circle' is the circular-reveal overlay. */
+    type?: LoadingType;
+    /** Whether to show the sailboat in 'circle' mode; false leaves only the mask backdrop. */
+    showBoat?: boolean; // default true
     /** Snowfall on / off. false → fade out, then unmount. */
     active?: boolean; // default true
     /** Centred caption over the snowfall (string | VNode). Falls back to a visually-hidden 加载中. */
     tip?: string | VNode;
     /** Delay before the screen appears (ms) — prevents flicker on fast loads. Re-arms on every active→true. */
     delay?: number; // default 0
-    /** Fade-out duration in seconds. */
+    /** Fade-out duration in seconds; in 'circle' mode it drives the circular reveal. */
     fadeDuration?: number; // default 0.6
     /** Fullscreen stacking level. */
     zIndex?: number; // default 3000
@@ -1729,10 +1736,14 @@ const active = ref(false);
 <template>
     <Button @click="active = true">Load</Button>
     <Loading :active="active" tip="正在连接岛屿…" :delay="300" :fade-duration="0.6" :z-index="3000" />
+    <!-- 圆形扩散展开，右下角带一艘帆船 -->
+    <Loading :active="active" type="circle" tip="正在驶向岛屿…" />
 </template>
 ```
 
-> Fullscreen night-sky snowfall: 50 white round flakes (1–6px, random size and position) drift down while rotating, each with its own 6–12s linear duration and a negative delay so the first frame is already full of snow. Root is `position: fixed; inset: 0`, painted `#0b101a`, with an `aria-hidden` snowfall layer plus a centred vignette. `active` → false keeps the screen mounted with the `exiting` class (opacity → 0, `pointer-events: none`) for `fadeDuration` seconds and only then unmounts; flipping `active` back mid-fade cancels the timer and returns to opaque immediately. Root carries `role="status"`; without `tip` a visually-hidden `加载中` span supplies the accessible text. `prefers-reduced-motion` stops the fall and the entrance animation. **Not supported:** no container/inline mode (always fullscreen), no children / spinner slot, no 12-hour or i18n text.
+> **Two shapes.** `type="snow"` (default) — fullscreen night-sky snowfall: 50 white round flakes (1–6px, random size and position) drift down while rotating, each with its own 6–12s linear duration and a negative delay so the first frame is already full of snow. Root is `position: fixed; inset: 0`, painted `#0b101a`, with an `aria-hidden` snowfall layer plus a centred vignette. `type="circle"` — no snowfall layer; closing it opens an ever-growing transparent circular hole from the centre (`mask-image: radial-gradient(...)`) that reveals the content underneath, with a sailboat bobbing on the waves in the bottom-right corner (`showBoat={false}` keeps only the mask). The circle shape has no entrance fade — the mask is fully opaque from the first frame, otherwise the already-laid-out content underneath would show through during that 0.2s.
+>
+> `active` → false keeps the screen mounted: the snowfall shape gets the `exiting` class (opacity → 0, `pointer-events: none`) and fades out over `fadeDuration` seconds; the circle shape gets the `masking` class instead, and the reveal radius is driven by the `--animal-loading-mask-r` custom property — registered through `@property` as a `<length>` so `transition` can interpolate it — measured from the container diagonal. Either way the screen unmounts only after the transition ends; flipping `active` back mid-transition cancels the timer and returns to the original state immediately. Root carries `role="status"`; without `tip` a visually-hidden `加载中` span supplies the accessible text. `prefers-reduced-motion` pauses the fall (rather than removing the animation, which would leave a blank screen) and stops the entrance animation. **Not supported:** no container/inline mode (always fullscreen), no children / spinner slot, no 12-hour or i18n text.
 
 ***
 
@@ -2354,7 +2365,7 @@ Follow these strictly; violations are bugs:
 
 Shipped inside the npm package (available under `node_modules/animal-island-vue/`):
 
-- \`AI\_USAGE.md — this file (AI-optimized API reference for all 40 named exports)
+- \`AI\_USAGE.md — this file (AI-optimized API reference for all 190 named exports)
 
 - `README.md` — project overview & screenshots
 

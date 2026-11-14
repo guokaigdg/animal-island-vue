@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, isVNode, onBeforeUnmount, ref, useAttrs, watch } from 'vue';
+import Sailboat from './Sailboat.vue';
 import type { LoadingProps } from './types';
 
 defineOptions({ inheritAttrs: false });
@@ -8,6 +9,8 @@ defineOptions({ inheritAttrs: false });
 const FLAKE_COUNT = 50;
 
 const props = withDefaults(defineProps<LoadingProps>(), {
+    type: 'snow',
+    showBoat: true,
     active: true,
     delay: 0,
     fadeDuration: 0.6,
@@ -16,9 +19,15 @@ const props = withDefaults(defineProps<LoadingProps>(), {
 
 const attrs = useAttrs();
 
-// shown：雪花屏已显示（含淡出阶段）；exiting：正在渐变消失
+// shown：加载屏已显示（含淡出阶段）；exiting：正在渐变消失
 const shown = ref(false);
 const exiting = ref(false);
+
+const rootEl = ref<HTMLElement | null>(null);
+/** 圆形扩散展开的遮罩半径（px），展开中由 0 过渡到覆盖整个视口 */
+const maskRadius = ref(0);
+
+const isCircle = computed(() => props.type === 'circle');
 
 let showTimer: ReturnType<typeof setTimeout> | undefined;
 let hideTimer: ReturnType<typeof setTimeout> | undefined;
@@ -68,31 +77,74 @@ watch(
     { immediate: true }
 );
 
+/**
+ * 圆形扩散展开的半径：需完全覆盖容器对角线，否则四角会残留一圈。
+ *
+ * 单独一个监听而不是并入上面的退出分支 —— 半径必须在 .animal-loading--masking
+ * 类挂上之后才测量，这样自定义属性一定是从 0 变化到目标值，transition 才会真正插值。
+ * flush: 'post' 保证在 DOM 更新之后执行，等价于 React 侧的 useEffect。
+ */
+watch(
+    [exiting, isCircle],
+    () => {
+        if (!exiting.value || !isCircle.value) {
+            maskRadius.value = 0;
+            return;
+        }
+        const rect = rootEl.value?.getBoundingClientRect();
+        const width = rect?.width || window.innerWidth;
+        const height = rect?.height || window.innerHeight;
+        maskRadius.value = Math.ceil(Math.hypot(width, height) / 2) + 50;
+    },
+    { flush: 'post' }
+);
+
 onBeforeUnmount(() => {
     clearTimeout(showTimer);
     clearTimeout(hideTimer);
 });
 
-// exiting 时根元素以 fadeDuration 作为 transition-duration（覆写 CSS 里的 0.25s 进入时长）
+// exiting 时根元素以 fadeDuration 作为 transition-duration（覆写 CSS 里的 0.25s 进入时长）；
+// 圆形形态不用它 —— 展开的时长由 --animal-loading-mask-duration 决定
 const rootStyle = computed(() => ({
     zIndex: props.zIndex,
-    ...(exiting.value ? { transitionDuration: `${props.fadeDuration}s` } : null),
+    ...(isCircle.value
+        ? {
+              '--animal-loading-mask-duration': `${props.fadeDuration}s`,
+              '--animal-loading-mask-r': `${maskRadius.value}px`,
+          }
+        : null),
+    ...(exiting.value && !isCircle.value ? { transitionDuration: `${props.fadeDuration}s` } : null),
 }));
 </script>
 
 <template>
     <div
         v-if="shown"
+        ref="rootEl"
         class="animal-loading"
-        :class="{ 'animal-loading--exiting': exiting }"
+        :class="{
+            'animal-loading--circle': isCircle,
+            'animal-loading--exiting': exiting && !isCircle,
+            'animal-loading--masking': exiting && isCircle,
+        }"
         :style="rootStyle"
         role="status"
         v-bind="attrs"
     >
-        <div class="animal-loading__snow" aria-hidden="true">
-            <span v-for="(flake, i) in flakes" :key="i" class="animal-loading__flake" :style="flake" />
+        <!-- 圆形形态：右下角一艘帆船（showBoat=false 时整块不渲染，只留遮罩背景） -->
+        <div v-if="isCircle && showBoat" class="animal-loading__sailboat-scene" aria-hidden="true">
+            <Sailboat />
         </div>
-        <span class="animal-loading__vignette" aria-hidden="true" />
+
+        <!-- 落雪形态：50 片雪花 + 暗角 -->
+        <template v-else>
+            <div class="animal-loading__snow" aria-hidden="true">
+                <span v-for="(flake, i) in flakes" :key="i" class="animal-loading__flake" :style="flake" />
+            </div>
+            <span class="animal-loading__vignette" aria-hidden="true" />
+        </template>
+
         <div v-if="tip" class="animal-loading__tip">
             <component :is="tip" v-if="isVNode(tip)" />
             <template v-else>{{ tip }}</template>
@@ -102,6 +154,14 @@ const rootStyle = computed(() => ({
 </template>
 
 <style lang="less" scoped>
+// 圆形扩散展开的半径。未注册的 CSS 自定义属性无法被 transition 插值，
+// 只能离散跳变 —— 这里必须注册为 <length> 才能做出扩散动画
+@property --animal-loading-mask-r {
+    syntax: '<length>';
+    inherits: false;
+    initial-value: 0px;
+}
+
 // ---------- Tokens（与 React loading.module.less 内联 token 保持一致） ----------
 @night-sky: #0b101a; // 夜空深蓝屏底
 @flake-color: #fff; // 雪花白
@@ -120,6 +180,29 @@ const rootStyle = computed(() => ({
     // 渐变消失：整体淡出并放行点击
     &--exiting {
         opacity: 0;
+        pointer-events: none;
+    }
+
+    // 圆形形态不加淡入：全屏遮罩从透明淡入的那 0.2s 会把底下的内容透出来，
+    // 而圆形形态恰恰是「内容已在下面铺好、靠圆形扩散揭开」用的 —— 必须一上来就完全不透明
+    &--circle {
+        animation: none;
+    }
+
+    // 圆形扩散展开：从中心开出透明圆孔，露出底层内容。
+    // 遮罩本身不做过渡，过渡的是 --animal-loading-mask-r 这个半径变量
+    &--masking {
+        -webkit-mask-image: radial-gradient(
+            circle at center,
+            transparent var(--animal-loading-mask-r),
+            black calc(var(--animal-loading-mask-r) + 1px)
+        );
+        mask-image: radial-gradient(
+            circle at center,
+            transparent var(--animal-loading-mask-r),
+            black calc(var(--animal-loading-mask-r) + 1px)
+        );
+        transition: --animal-loading-mask-r var(--animal-loading-mask-duration, 0.6s) linear;
         pointer-events: none;
     }
 
@@ -144,6 +227,16 @@ const rootStyle = computed(() => ({
         position: absolute;
         inset: 0;
         background: radial-gradient(ellipse at center, transparent 55%, rgba(5, 10, 20, 0.6) 100%);
+    }
+
+    // ---------- 帆船场景（圆形形态） ----------
+    // 帆船停在右下角（离右 20px、离下 30px）
+    &__sailboat-scene {
+        position: absolute;
+        right: 20px;
+        bottom: 30px;
+        width: 120px;
+        max-width: 40vw;
     }
 
     // ---------- 中央提示文字 ----------
@@ -194,9 +287,16 @@ const rootStyle = computed(() => ({
 
 // ---------- Reduced motion ----------
 // 停止飘落（雪花静止在视口上方不可见）；opacity 过渡不属于位移运动，予以保留
+//
+// 这里必须用 animation-play-state: paused 而不是 animation: none ——
+// 雪花唯一的可见性来源就是这段动画，静态位置在视口上方 top: -30px；
+// 一旦 animation: none，50 片雪花会整体冻在视口外，只剩一块夜空底黑屏
+//（纯落雪无 tip 时没有任何可见元素，看起来就是黑屏 bug）。
+// 每片雪花都注入了负延迟（从周期中段起步），因此 paused 会把每片
+// 冻结在下落途中的随机高度，得到一张铺满视口的静态雪景。
 @media (prefers-reduced-motion: reduce) {
     .animal-loading__flake {
-        animation: none;
+        animation-play-state: paused;
     }
 
     .animal-loading {

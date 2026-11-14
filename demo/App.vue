@@ -4,7 +4,7 @@ import HomePage from './HomePage.vue';
 import ComponentPage from './ComponentPage.vue';
 import { PAGE_INFO } from './pageInfo';
 import { useHash, useIsMobile } from './router';
-import { Cursor, Background } from '@';
+import { Cursor, Background, Loading } from '@';
 import type { BackgroundType } from '@';
 
 import menuBgUrl from './img/menu_bg.svg';
@@ -120,7 +120,41 @@ function handleNavigate(path: string) {
     navigate(path);
     drawerOpen.value = false;
 }
-function handleHomeNavigate(path: string) {
+
+// ============================================
+// 首页「开始使用」的圆形揭幕
+//
+// 与 React 版同一套观感：点下去先盖一层圆形展开 Loading，
+// 新页在遮罩下面铺好，之后圆孔从中心扩散开，把整页揭开。
+// ============================================
+/** 遮罩是否在位（false 时组件整体卸载） */
+const revealVisible = ref(false);
+/** 遮罩是否处于「盖住」状态；翻成 false 即触发圆孔扩散揭幕 */
+const revealActive = ref(false);
+
+let revealTimer: number | undefined;
+let revealEndTimer: number | undefined;
+
+/** 遮罩盖住的时长：够新页渲染完，再让圆孔扩散开 */
+const REVEAL_HOLD = 1400;
+/** 圆孔扩散时长（毫秒），与 Loading 的 fadeDuration 对齐 */
+const REVEAL_EXPAND = 600;
+
+function startReveal() {
+    window.clearTimeout(revealTimer);
+    window.clearTimeout(revealEndTimer);
+    revealVisible.value = true;
+    revealActive.value = true;
+    revealTimer = window.setTimeout(() => {
+        revealActive.value = false;
+    }, REVEAL_HOLD);
+    revealEndTimer = window.setTimeout(() => {
+        revealVisible.value = false;
+    }, REVEAL_HOLD + REVEAL_EXPAND);
+}
+
+function handleHomeNavigate(path: string, reveal?: boolean) {
+    if (reveal) startReveal();
     navigate(path);
 }
 
@@ -153,6 +187,8 @@ onMounted(() => window.addEventListener('demo-bg-easter-egg', onEgg));
 onUnmounted(() => {
     window.removeEventListener('demo-bg-easter-egg', onEgg);
     window.clearTimeout(eggTimer);
+    window.clearTimeout(revealTimer);
+    window.clearTimeout(revealEndTimer);
 });
 
 // 包装为完整 url() 值，避免 url(v-bind(...)) 被 css minifier 解析失败
@@ -162,6 +198,15 @@ const menuBgImage = `url("${menuBgUrl}")`;
 <template>
     <!-- 与 React 版一致：整个 demo 站点包裹 Cursor（光标全站生效） -->
     <Cursor>
+        <!-- 首页「开始使用」的圆形揭幕遮罩：position: fixed，铺满视口 -->
+        <Loading
+            v-if="revealVisible"
+            type="circle"
+            :active="revealActive"
+            :fade-duration="REVEAL_EXPAND / 1000"
+            tip="正在驶向岛屿…"
+        />
+
         <!-- Home page — full screen, no sidebar -->
         <div v-if="isHomePage" class="layout home-bg" :style="{ justifyContent: 'center' }">
             <HomePage @navigate="handleHomeNavigate" />

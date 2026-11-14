@@ -2934,15 +2934,19 @@ Props：无。attrs 透传根元素。**不支持**：12 小时制、本地化�
 
 ```vue
 <Loading :active="active" tip="正在连接岛屿…" :delay="300" :fade-duration="0.6" :z-index="3000" />
+<Loading :active="active" type="circle" tip="正在驶向岛屿…" />
+<Loading :active="active" type="circle" :show-boat="false" />
 ```
 
-全屏夜晚落雪：`position: fixed; inset: 0` 的夜空底 `#0b101a` 覆盖整屏，50 片白色圆点雪花（1–6px 随机尺寸、随机水平位置）从视口上方旋转飘落——每片独立 6–12s 线性时长 + **负延迟**（取周期中段起步），首屏即刻铺满。落雪包裹层与中央暗角（`radial-gradient`，55% 处透明 → 边缘 `rgba(5,10,20,.6)`）均 `aria-hidden`。
+全屏加载屏有两种形态。`type="snow"`（默认）——`position: fixed; inset: 0` 的夜空底 `#0b101a` 覆盖整屏，50 片白色圆点雪花（1–6px 随机尺寸、随机水平位置）从视口上方旋转飘落——每片独立 6–12s 线性时长 + **负延迟**（取周期中段起步），首屏即刻铺满。落雪包裹层与中央暗角（`radial-gradient`，55% 处透明 → 边缘 `rgba(5,10,20,.6)`）均 `aria-hidden`。
 
-`active` 变为 false 时落雪**保持挂载**并加 `exiting` 类（`opacity: 0` + `pointer-events: none`），以 inline `transition-duration: <fadeDuration>s` 淡出，计时结束后卸载；淡出途中恢复 `active` 会取消计时器、立即回到不透明。`delay` 在每次 `active` 切为 true 时重新计时，避免快速结束时闪屏。
+`type="circle"` —— 不落雪，关闭时从中心开出不断扩大的透明圆孔（`mask-image: radial-gradient`）揭开遮罩、露出底层内容，右下角停着一艘随波逐流的帆船；`showBoat=false` 只留遮罩背景。圆形形态没有进入淡入，遮罩首帧即完全不透明——否则那 0.2s 会把底下已经铺好的内容透出来。
 
-Props：`active`（boolean，默认 true）、`tip`（string | VNode，中央提示文字；缺省时渲染视觉隐藏的「加载中」span 供读屏）、`delay`（number，毫秒，默认 0）、`fadeDuration`（number，秒，默认 0.6）、`zIndex`（number，默认 3000，高于 Notification 的 2000）。attrs 透传根元素。
+`active` 变为 false 时加载屏**保持挂载**：落雪形态加 `exiting` 类（`opacity: 0` + `pointer-events: none`），以 inline `transition-duration: <fadeDuration>s` 淡出；圆形形态改加 `masking` 类，展开时长由 `--animal-loading-mask-r` 决定（该自定义属性用 `@property` 注册成 `<length>`，`transition` 才能插值；半径按容器对角线算）。两种形态都是计时结束后才卸载，淡出/展开途中恢复 `active` 会取消计时器、立即回到原状。`delay` 在每次 `active` 切为 true 时重新计时，避免快速结束时闪屏。
 
-`prefers-reduced-motion: reduce` 时停止飘落与进入动画（opacity 渐隐保留）。**不支持**：容器内/内联模式（恒为全屏）、children、自定义 spinner 插槽。
+Props：`type`（'snow' | 'circle'，默认 'snow'）、`showBoat`（boolean，默认 true，仅圆形形态生效）、`active`（boolean，默认 true）、`tip`（string | VNode，中央提示文字；缺省时渲染视觉隐藏的「加载中」span 供读屏）、`delay`（number，毫秒，默认 0）、`fadeDuration`（number，秒，默认 0.6；圆形形态下为展开时长）、`zIndex`（number，默认 3000，高于 Notification 的 2000）。attrs 透传根元素。
+
+`prefers-reduced-motion: reduce` 时暂停飘落与进入动画——用 `animation-play-state: paused` 而不是 `animation: none`：雪花的静态位置在视口上方 `top: -30px`，移除动画会让 50 片雪花整体冻在视口外，纯落雪无 tip 时整屏只剩一块黑屏。**不支持**：容器内/内联模式（恒为全屏）、children、自定义 spinner 插槽。
 ---
 
 ### Icon

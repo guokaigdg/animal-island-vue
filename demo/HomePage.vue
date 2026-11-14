@@ -11,7 +11,7 @@ import starUrl from './img/star.svg';
 import paintbrushUrl from './img/paintbrush.svg';
 import giftUrl from './img/gift.svg';
 
-const emit = defineEmits<{ navigate: [path: string] }>();
+const emit = defineEmits<{ navigate: [path: string, reveal?: boolean] }>();
 const isMobile = useIsMobile();
 const showScrollHint = ref(true);
 const pageRef = ref<HTMLDivElement | null>(null);
@@ -276,7 +276,9 @@ function highlight(code: string): Seg[][] {
                         </p>
                     </Typewriter>
                     <div class="hero-actions" :style="{ justifyContent: isMobile ? 'center' : 'flex-start' }">
-                        <Button type="primary" size="large" @click="emit('navigate', '/button')"> 开始使用 → </Button>
+                        <Button type="primary" size="large" @click="emit('navigate', '/button', true)">
+                            开始使用 →
+                        </Button>
                     </div>
                 </div>
             </div>

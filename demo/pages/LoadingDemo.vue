@@ -1,22 +1,33 @@
 <script setup lang="ts">
 import { onBeforeUnmount, ref } from 'vue';
 import { Loading, Button } from '@';
+import type { LoadingType } from '@';
 import { sectionStyle, sectionTitleStyle, tagStyle, labelStyle, demoBodyStyle, ApiTable, CodeBlock } from '../tools';
 import type { ApiRow } from '../tools';
 
 const active = ref(false);
+const type = ref<LoadingType>('snow');
+const showBoat = ref(true);
 const tip = ref<string | undefined>();
 const delay = ref(0);
 const fadeDuration = ref(0.6);
 
 let timer: ReturnType<typeof setTimeout> | undefined;
 
-// 播放一次：2.4s 后自动关闭，随后落雪渐变消失
-const play = (opts?: { tip?: string; delay?: number; fadeDuration?: number }) => {
+// 播放一次：2.4s 后自动关闭，随后落雪渐变消失 / 圆形扩散展开
+const play = (opts?: {
+    tip?: string;
+    delay?: number;
+    fadeDuration?: number;
+    type?: LoadingType;
+    showBoat?: boolean;
+}) => {
     clearTimeout(timer);
     tip.value = opts?.tip;
     delay.value = opts?.delay ?? 0;
     fadeDuration.value = opts?.fadeDuration ?? 0.6;
+    type.value = opts?.type ?? 'snow';
+    showBoat.value = opts?.showBoat ?? true;
     active.value = true;
     timer = setTimeout(() => {
         active.value = false;
@@ -29,6 +40,7 @@ const playQuick = (d: number) => {
     tip.value = d ? 'delay 300ms' : '无 delay';
     delay.value = d;
     fadeDuration.value = 0.6;
+    type.value = 'snow';
     active.value = true;
     timer = setTimeout(() => {
         active.value = false;
@@ -38,10 +50,27 @@ const playQuick = (d: number) => {
 onBeforeUnmount(() => clearTimeout(timer));
 
 const LOADING_API: ApiRow[] = [
+    {
+        prop: 'type',
+        desc: '加载屏形态：snow 全屏落雪 / circle 圆形扩散展开',
+        type: "'snow' | 'circle'",
+        defaultVal: "'snow'",
+    },
+    {
+        prop: 'showBoat',
+        desc: 'circle 形态下是否显示帆船；false 时只留遮罩背景',
+        type: 'boolean',
+        defaultVal: 'true',
+    },
     { prop: 'active', desc: 'true / false 控制开启关闭；false 时落雪渐变消失', type: 'boolean', defaultVal: 'true' },
     { prop: 'tip', desc: '落雪中央提示文字', type: 'string | VNode', defaultVal: '-' },
     { prop: 'delay', desc: '延迟显示时间（毫秒），避免加载快速结束时闪烁', type: 'number', defaultVal: '0' },
-    { prop: 'fadeDuration', desc: '渐变消失时长（秒）', type: 'number', defaultVal: '0.6' },
+    {
+        prop: 'fadeDuration',
+        desc: '渐变消失时长（秒）；circle 下为圆形扩散展开的时长',
+        type: 'number',
+        defaultVal: '0.6',
+    },
     { prop: 'zIndex', desc: '全屏层级（默认 3000，高于 Notification 的 2000）', type: 'number', defaultVal: '3000' },
     {
         prop: '(attrs)',
@@ -53,8 +82,14 @@ const LOADING_API: ApiRow[] = [
 
 const code = `import { Loading } from 'animal-island-vue';
 
-<!-- active 受控：true 开启落雪，false 渐变消失 -->
+<!-- 全屏落雪（默认形态） -->
 <Loading :active="active" />
+
+<!-- 圆形扩散展开，右下角带一艘帆船 -->
+<Loading :active="active" type="circle" tip="正在驶向岛屿…" />
+
+<!-- 只要圆形展开，不要帆船 -->
+<Loading :active="active" type="circle" :show-boat="false" />
 
 <!-- 中央提示文字 -->
 <Loading :active="active" tip="正在连接岛屿…" />
@@ -69,9 +104,22 @@ const code = `import { Loading } from 'animal-island-vue';
 <template>
     <div :style="sectionStyle">
         <div :style="sectionTitleStyle">
-            Loading <span :style="tagStyle">全屏落雪</span> <span :style="tagStyle">渐变消失</span>
+            Loading
+            <span :style="tagStyle">全屏落雪</span>
+            <span :style="tagStyle">圆形扩散展开</span>
+            <span :style="tagStyle">渐变消失</span>
         </div>
         <div :style="demoBodyStyle">
+            <div :style="labelStyle">
+                形态切换 — type='snow' 是全屏落雪，type='circle' 关闭时从中心圆形扩散展开，右下角有一艘随波逐流的帆船
+            </div>
+            <div :style="{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '20px' }">
+                <Button @click="play({ type: 'snow' })">落雪型</Button>
+                <Button @click="play({ type: 'circle' })">圆形展开型</Button>
+                <Button @click="play({ type: 'circle', tip: '正在驶向岛屿…' })">圆形展开型 · 带提示文字</Button>
+                <Button @click="play({ type: 'circle', showBoat: false })">圆形展开型 · 不显示帆船</Button>
+            </div>
+
             <div :style="labelStyle">基础播放 — 点击后全屏落雪覆盖 2.4s，结束时渐变消失</div>
             <div :style="{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '20px' }">
                 <Button @click="play()">纯落雪</Button>
@@ -91,7 +139,15 @@ const code = `import { Loading } from 'animal-island-vue';
             <CodeBlock :code="code" />
             <ApiTable :rows="LOADING_API" />
 
-            <Loading :active="active" :tip="tip" :delay="delay" :fade-duration="fadeDuration" :z-index="3000" />
+            <Loading
+                :active="active"
+                :type="type"
+                :show-boat="showBoat"
+                :tip="tip"
+                :delay="delay"
+                :fade-duration="fadeDuration"
+                :z-index="3000"
+            />
         </div>
     </div>
 </template>

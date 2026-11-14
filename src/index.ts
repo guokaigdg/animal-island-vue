@@ -168,7 +168,7 @@ export { Time } from './components/Time';
 export type { TimeProps } from './components/Time';
 
 export { Loading } from './components/Loading';
-export type { LoadingProps } from './components/Loading';
+export type { LoadingProps, LoadingType } from './components/Loading';
 
 export { Carousel } from './components/Carousel';
 export type { CarouselProps } from './components/Carousel';

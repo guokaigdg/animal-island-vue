@@ -121,7 +121,7 @@ export const PAGE_INFO: Record<string, { title: string; desc: string }> = {
     },
     loading: {
         title: 'Loading 加载',
-        desc: '全屏落雪加载指示器 — 50 片随机雪花旋转飘落 + 暗角夜空，中央提示文字、delay 防闪烁，结束时渐变消失',
+        desc: '全屏加载指示器 — 两种形态：snow 全屏落雪（50 片随机雪花旋转飘落 + 暗角夜空）、circle 圆形扩散展开（右下角一艘随波逐流的帆船）；中央提示文字、delay 防闪烁，结束时渐变消失',
     },
     pagination: {
         title: 'Pagination 分页',
