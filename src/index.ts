@@ -218,4 +218,8 @@ export type {
 export { Calendar } from './components/Calendar';
 export type { CalendarProps, CalendarEvent, CalendarColor, CalendarEventTitle } from './components/Calendar';
 
+// Phase 15 — 空状态
+export { NoData } from './components/NoData';
+export type { NoDataProps, NoDataSize, NoDataVariant } from './components/NoData';
+
 // ...（后续阶段陆续启用）

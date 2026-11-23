@@ -3119,6 +3119,27 @@ Calendar Props：`modelValue`（受控选中日）/ `value`（React 别名，优
 2. `title` 类型收窄为 `string | number`，结构化内容走 `#event` 插槽。
 3. 日期解析增加回环校验（`2 月 31 日` 判为非法），对齐 dayjs `isValid()` 语义，避免原生 `Date` 静默顺延到 3/3。
 
+### NoData
+
+```vue
+<NoData description="这里还没有记录，新的故事可以从现在开始。" />
+<NoData variant="search" title="没有找到相关结果" />
+<NoData variant="simple" size="small" :icon="null" description="写下今天的第一件小事。">
+    <Button size="small">新建手账</Button>
+</NoData>
+<NoData>
+    <template #icon>
+        <FolderIcon />
+    </template>
+</NoData>
+```
+
+海岛风空态：装饰插画与可读文案分离，自定义图标与操作区都能保留。根节点 class `animal-no-data`，纵向 flex + `text-align: center`。插画区是正方形（`--no-data-art-width`，默认 96px，small 64px / large 120px），`margin-bottom: 22px`；`variant="search"` 换成放大镜插画，`variant="simple"` 收窄到 `--no-data-icon-size`（默认 52px）。标题 @font-size-lg / 700，说明 13px / @text-color-secondary，操作区 gap 12px。`bordered` 补 1.5px 虚线 @border-color-light + @bg-color 背景 + 20px 圆角。
+
+NoData Props：`variant`（'default' | 'search' | 'simple'，默认 'default'）、`size`（'small' | 'medium' | 'large'，默认 'medium'）、`title`（string | VNode | null | false，null / false 隐藏；缺省按 variant 取「暂无数据 / 没有找到相关结果」）、`description`（string | VNode | null | false，null / false 隐藏）、`icon`（VNode | null | false，null / false 隐藏内置插画）、`extra`（VNode | string | null | false，操作区，优先于默认插槽）、`bordered`（boolean，默认 false）。插槽：`#icon` 自定义装饰图标（优先于 icon 属性）、默认插槽 = 操作区。组件自身不做任何请求或加载逻辑，按钮由业务放进来。
+
+**Vue 移植注意**：`icon` / `title` / `description` / `extra` 都必须显式声明 `undefined` 默认值——类型里带 `false` 时 Vue 会把缺省不传的 prop 强制转成 `false`，内置插画就永远出不来了。React 端 `icon={false}`、`title={false}` 的隐藏语义在 Vue 端照样成立。
+
 ---
 
 ## 3. Demo 布局精确规范

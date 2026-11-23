@@ -163,4 +163,8 @@ export const PAGE_INFO: Record<string, { title: string; desc: string }> = {
         title: 'Calendar 日历',
         desc: '月视图日历组件 — 受控选日期与受控翻月、跨天事项渲染成跨周连续条并支持 +N 折叠、5 种事项配色、起始时间开关、拖拽跨日期创建事项、行高与事项密度随宽度自适应，键盘方向键跨月翻页、Enter / 空格选中',
     },
+    'no-data': {
+        title: 'NoData 空状态',
+        desc: '空状态组件 — 内置空纸箱与放大镜插画，default / search / simple 三种风格，small / medium / large 三档尺寸，虚线奶油边框，标题与说明支持字符串或 VNode，可自定义装饰图标与操作区',
+    },
 };

@@ -369,10 +369,10 @@ Or template form:
     <span class="note">Welcome to <strong>animal-island-vue</strong>!</span>
   </Typewriter>
 
-=== COMPONENT INVENTORY (46 named exports from src/index.ts) ===
+=== COMPONENT INVENTORY (47 named exports from src/index.ts) ===
 Interactive:           BackTop, Button, Input, Switch, Modal, Collapse, Select, Tabs, Checkbox, Radio, Drawer, Carousel
 Container / Heading:   Card (13 colors + 13 dot patterns), Title (ribbon banner — 13 schemes), Table, Tag, Pagination (ghost circular cells, orange/teal variants, built into Table via pagination prop)
-Feedback:              Tooltip, Loading, Notification (imperative API, with NotificationContainer), Progress, Skeleton (SkeletonButton, SkeletonInput, SkeletonAvatar)
+Feedback:              Tooltip, Loading, Notification (imperative API, with NotificationContainer), Progress, Skeleton (SkeletonButton, SkeletonInput, SkeletonAvatar), NoData (island-style empty state — artwork + title + description + action area)
 Form:                  Form, FormItem, FormProvider, useForm, DatePicker, TimePicker, Upload (file upload — cream capsule trigger, dashed drag zone, text list, picture inline thumbnails, picture-card), Rate (star rating on native radios — pop-in burst + six-point splash), Badge (numeric / dot indicator on a <sup>, 12-color palette, standalone mode), CountUp (rAF count-up — two-beat bounce + expanding rings + four-point sparkles, sr-only final value), Calendar (6-week month grid, continuous multi-day bars with +N overflow, drag-to-create, controlled paging)
 Decorative:            Time, Footer, Divider, Cursor (arrow/raindrop), Background (dots/sprinkles wallpaper), Typewriter, Countdown (odometer countdown)
 Content display:       CodeBlock, Image

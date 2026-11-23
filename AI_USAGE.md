@@ -29,7 +29,7 @@ vue >= 3.4.0
 
 ***
 
-## 1. Full API (190 named exports：51 组件 / 常量导出 + 139 类型导出；图标另见 § 1.39)
+## 1. Full API (194 named exports：52 组件 / 常量导出 + 142 类型导出；图标另见 § 1.39)
 
 All named exports from `animal-island-vue`:
 
@@ -76,6 +76,7 @@ import {
     Countdown,
     Pagination,
     useForm,
+    NoData,
 } from 'animal-island-vue';
 
 import type {
@@ -183,6 +184,9 @@ import type {
     CountdownVariant,
     PaginationProps,
     PaginationVariant,
+    NoDataProps,
+    NoDataSize,
+    NoDataVariant,
 } from 'animal-island-vue';
 ```
 
@@ -2215,6 +2219,64 @@ const events = [
 > Month-view calendar: a 6-week grid, with row height / font size / event density derived from the actual `width` (it fills the parent by default). Selecting a day emits `update:modelValue` + `change`; paging emits `update:panelValue` + `panelChange` — `panelValue` is controlled, so **you must write it back** or paging stops working. An event whose `end` differs from `start` is rendered as one continuous bar spanning weeks, with `data-start` / `data-end` / `data-span` markers and a `+N` overflow badge when a week cannot fit it; the `HH:mm` time is shown only on the bar's first segment. `showEventTime` toggles times globally, `showTime` per event. `draggableEvents` enables drag-across-days, previewing the target range and emitting `eventCreate(start, end)` on release. Layout is cached by the `events` array identity, so mutate-in-place will not re-layout — pass a new array. Keyboard: roving tabindex over the grid, arrow keys page across months, Enter / Space select. **Vue differences:** `aria-label` is always the plain text of `title` (React could walk a `ReactNode`; the `#event` slot does not feed the accessible name), `title` is narrowed to `string | number`, and date parsing rejects impossible dates such as Feb 31 (matching dayjs `isValid()`) instead of silently rolling over with native `Date`. **Not supported:** no recurrence rules, no multi-day view, no event editing/reordering.
 
 ***
+
+### 1.46 NoData
+
+```ts
+import type { NoDataProps, NoDataSize, NoDataVariant } from 'animal-island-vue';
+
+type NoDataSize = 'small' | 'medium' | 'large';
+type NoDataVariant = 'default' | 'search' | 'simple';
+
+interface NoDataProps {
+    /** 展示风格，默认 default */
+    variant?: NoDataVariant;
+    /** 尺寸，默认 medium */
+    size?: NoDataSize;
+    /** 标题；null / false 隐藏。缺省按 variant 取「暂无数据 / 没有找到相关结果」 */
+    title?: string | VNode | null | false;
+    /** 说明内容；null / false 隐藏 */
+    description?: string | VNode | null | false;
+    /** 自定义装饰图标；null / false 隐藏内置插画。也可用 #icon 插槽 */
+    icon?: VNode | null | false;
+    /** 操作区，推荐放 Button；优先于默认插槽 */
+    extra?: VNode | string | null | false;
+    /** 显示奶油色背景与沙色虚线边框，默认 false */
+    bordered?: boolean;
+}
+// 插槽：#default — 操作区（extra 优先）；#icon — 自定义装饰图标（优先于 icon 属性）
+```
+
+```vue
+<script setup lang="ts">
+import { NoData, Button } from 'animal-island-vue';
+</script>
+
+<template>
+    <!-- 缺省：内置插画 + 「暂无数据」 -->
+    <NoData description="这里还没有记录，新的故事可以从现在开始。" />
+
+    <!-- 搜索无结果：换放大镜插画与对应默认文案 -->
+    <NoData variant="search" title="没有找到相关结果" />
+
+    <!-- 表格里的简洁空态：隐藏插画，只留说明 + 按钮 -->
+    <NoData variant="simple" size="small" :icon="null" description="写下今天的第一件小事。">
+        <Button size="small">新建手账</Button>
+    </NoData>
+
+    <!-- 自定义装饰图标 -->
+    <NoData>
+        <template #icon>
+            <FolderIcon />
+        </template>
+    </NoData>
+</template>
+```
+
+> Island-style empty state: the decorative artwork and the readable text are separate, so a custom icon and an action area are both preserved. `variant="search"` swaps the artwork for a magnifier and the default title for 「没有找到相关结果」; `variant="simple"` shrinks the artwork. `size` scales artwork, title, description and action spacing together. `title` / `description` accept a plain string or a `VNode`; `null` / `false` hides them. `icon` accepts a `VNode` (or the `#icon` slot) and `null` / `false` hides the artwork entirely. `extra` takes priority over the default slot, mirroring the React `extra` > `children` order. The component renders no request or loading logic of its own — put the action button in yourself. **Vue differences:** the props take `VNode` instead of `ReactNode`, so a custom icon is `:icon="h(FolderIcon)"` or the `#icon` slot; `icon` / `title` / `description` / `extra` must all be declared with an explicit `undefined` default, otherwise Vue casts the absent prop to `false` and the built-in artwork never renders.
+
+***
+
 
 ## 2. Common Recipes
 

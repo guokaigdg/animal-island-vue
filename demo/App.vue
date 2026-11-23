@@ -74,6 +74,7 @@ const MENU_ITEMS: MenuItem[] = [
             { key: 'tooltip', label: 'Tooltip 气泡提示' },
             { key: 'progress', label: 'Progress 进度条' },
             { key: 'loading', label: 'Loading 加载' },
+            { key: 'no-data', label: 'NoData 空状态', isNew: true },
         ],
     },
     {

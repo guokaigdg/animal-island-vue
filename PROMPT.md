@@ -574,6 +574,15 @@ You are a senior Vue 3 engineer. Generate a **single self-contained `index.html`
 - Keyboard: roving tabindex over the grid, arrow keys page across months, Enter / Space select the focused day; every date cell carries an accessible name (duplicates de-duplicated).
 - **Vue-only notes**: `aria-label` always uses the plain-text `title` (React could recurse into a `ReactNode`; the `#event` slot does not feed the accessible name) and `title` is narrowed to `string | number`. Date parsing rejects impossible dates (Feb 31 → invalid) to match dayjs `isValid()`, where native `Date` would silently roll over to Mar 3. `width` as a bare number is suffixed with `px` (React does that implicitly).
 
+### NoData (island-style empty state)
+
+- API: `<NoData description="这里还没有记录，新的故事可以从现在开始。" />`. Props: `variant` ('default' | 'search' | 'simple', default 'default'), `size` ('small' | 'medium' | 'large', default 'medium'), `title` (string | VNode | null | false — null / false hides; default is 暂无数据 / 没有找到相关结果 by variant), `description` (string | VNode | null | false, not shown by default), `icon` (VNode | null | false — null / false hides the artwork), `extra` (VNode | string | null | false — action area, wins over the default slot), `bordered` (boolean, default false). `#icon` slot = custom artwork (wins over the `icon` prop); default slot = action area.
+- Artwork and readable text are separate: the artwork block is a square (`--no-data-art-width`, 96px / 64px small / 120px large) with `margin-bottom: 22px`; `variant="search"` swaps it for a magnifier, `variant="simple"` shrinks it to `--no-data-icon-size` (52px). Title 16px / 700, description 13px, action gap 12px.
+- `bordered` adds a 1.5px dashed @border-color-light border, @bg-color background and 20px radius.
+- The component renders no request or loading logic — put the action button in yourself.
+- **Vue-only notes**: the props take `VNode` instead of `ReactNode`, so a custom icon is `:icon="h(FolderIcon)"` or the `#icon` slot. `icon` / `title` / `description` / `extra` must all be declared with an explicit `undefined` default, otherwise Vue casts the absent prop to `false` and the built-in artwork never renders.
+
+
 ## HARD RULES (must obey — disqualifies the output if violated)
 
 1. Never use pure black (#000) or near-black (#111) text. Use #794f27 / #725d42 / #8a7b66.
