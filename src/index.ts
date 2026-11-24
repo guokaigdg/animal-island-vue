@@ -222,4 +222,21 @@ export type { CalendarProps, CalendarEvent, CalendarColor, CalendarEventTitle } 
 export { NoData } from './components/NoData';
 export type { NoDataProps, NoDataSize, NoDataVariant } from './components/NoData';
 
+// Phase 16 — 统计图表（对齐 React Chart）
+export { Chart } from './components/Chart';
+export type {
+    ChartProps,
+    ChartType,
+    ChartSeries,
+    ChartDatum,
+    ChartPoint,
+    ChartCandle,
+    ChartMapRegion,
+    ChartDataEvent,
+    ChartTooltipOptions,
+    ChartTooltipContext,
+    ChartTooltipItem,
+    ChartTooltipRender,
+} from './components/Chart';
+
 // ...（后续阶段陆续启用）

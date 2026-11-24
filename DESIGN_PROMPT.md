@@ -375,7 +375,7 @@ Container / Heading:   Card (13 colors + 13 dot patterns), Title (ribbon banner 
 Feedback:              Tooltip, Loading, Notification (imperative API, with NotificationContainer), Progress, Skeleton (SkeletonButton, SkeletonInput, SkeletonAvatar), NoData (island-style empty state — artwork + title + description + action area)
 Form:                  Form, FormItem, FormProvider, useForm, DatePicker, TimePicker, Upload (file upload — cream capsule trigger, dashed drag zone, text list, picture inline thumbnails, picture-card), Rate (star rating on native radios — pop-in burst + six-point splash), Badge (numeric / dot indicator on a <sup>, 12-color palette, standalone mode), CountUp (rAF count-up — two-beat bounce + expanding rings + four-point sparkles, sr-only final value), Calendar (6-week month grid, continuous multi-day bars with +N overflow, drag-to-create, controlled paging)
 Decorative:            Time, Footer, Divider, Cursor (arrow/raindrop), Background (dots/sprinkles wallpaper), Typewriter, Countdown (odometer countdown)
-Content display:       CodeBlock, Image
+Content display:       CodeBlock, Image, Chart (19-type hand-drawn SVG chart — column/bar/line/area/mount/mix/scatter/bubble/pie/ring/rose/radar/arcbar/gauge/funnel/word/candle/map/time; shared legend, tooltip, keyboard lock, data table, empty/loading states; island palette) 
 Non-component exports: Notification (command-style toast API), useForm (form hook)
 Icons:                 the icon set is not a component of this library — it comes from the standalone `naive-icons-vue` package (731 hand-drawn sticker icons, same set as the React `naive-icons`). Import each icon by name (`import { HeartIcon } from 'naive-icons-vue'`); there is no generic `<Icon name>` wrapper here.
 

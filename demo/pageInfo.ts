@@ -167,4 +167,8 @@ export const PAGE_INFO: Record<string, { title: string; desc: string }> = {
         title: 'NoData 空状态',
         desc: '空状态组件 — 内置空纸箱与放大镜插画，default / search / simple 三种风格，small / medium / large 三档尺寸，虚线奶油边框，标题与说明支持字符串或 VNode，可自定义装饰图标与操作区',
     },
+    chart: {
+        title: 'Chart 统计图表',
+        desc: '统计图表组件 — 19 种图形（柱状/折线/面积/饼/环/玫瑰/雷达/散点/气泡/圆弧/仪表盘/漏斗/词云/K线/时序/地图等），共用岛屿配色、图例筛选、悬浮与点击锁定提示、键盘浏览、数据明细与空态/加载态',
+    },
 };

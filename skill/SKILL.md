@@ -3142,6 +3142,26 @@ NoData Props：`variant`（'default' | 'search' | 'simple'，默认 'default'）
 
 ---
 
+### Chart
+
+```vue
+<Chart type="column" title="一周到访趋势" :categories="['周一','周二','周三']" :series="[{ name: '本周', data: [12, 25, 18] }]" @data-click="onClick" />
+<Chart type="ring" :series="[{ name: '占比', data: [{ name: '果园', value: 38 }, { name: '海岸', value: 27 }] }]" />
+<Chart type="map" :series="series" :regions="regions" showLabels />
+<Chart :series="series" loading />
+<Chart :series="[]" emptyText="尚无访客" />
+```
+
+19 种统计图形共用一套外壳：柱状/条状/折线/面积/山峰/混合/散点/气泡/K线/时序采用笛卡尔坐标，饼/环/玫瑰采用扇区模型，雷达为多维度共同量纲，圆弧/仪表盘为进度环，漏斗/词云/地图为专项图形，全部由 SVG 手绘，无第三方图表依赖。根节点 class `animal-chart`（`animated` 时加 `animal-chart--animated`），奶油卡片（20px 圆角、1.5px 边框、`--animal-bg-color`）；绘图区 `overflow: auto`，极窄容器保留最小宽度并局部横向滚动。
+
+Chart Props：`type`（19 种 ChartType，默认 'column'）、`series`（ChartSeries[]，必填）、`categories`、`title` / `description`（string | VNode）、`height`（默认 300，最小 180）、`colors`（岛屿配色组）、`legend`（默认 true）、`tooltip`（boolean | ChartTooltipOptions，默认 true）、`highlight` / `selectable`（默认 true）、`stacked` / `smooth`（默认 false）、`showAxes`（默认 true）、`showLabels`（默认 false）、`min` / `max`、`valueFormatter` / `xFormatter`、`regions`（map 平面轮廓）、`loading`（默认 false）、`emptyText`（默认「暂无数据」）、`animated`（默认 true）。事件：`@data-click` 携带 `{ type, seriesIndex, dataIndex, seriesName, name, value, datum }`，对齐 React端 `onDataClick`。
+
+数据口径：null / 非有限数按缺测处理且保留原始下标（折线在缺测处断开、零值仍可访问）；K 线 `{ open, close, low, high }` 需区间自洽，散点/气泡/时序需 `{ x, y }`，气泡 `size` 非正不绘制；饼/环/玫瑰/漏斗/词云/雷达过滤负值。自动刻度采用 1/2/2.5/5 十进制步长，`min` / `max` 显式范围保持调用方指定值。交互：图例点击隐藏/恢复系列并联动高亮，同分类聚合提示（时序按真实 x、雷达按角度命中），点击或 Enter/Space 锁定读数，再次激活或 Esc 解除，方向键 / Home / End 浏览数据点；底部 `<details>`「查看数据」保留完整明细与 aria 无障碍标签。
+
+**Vue 移植注意：** 回调用 `@data-click` 事件而非 prop 函数（emit 会自动解析为 `onDataClick`）；`ReactNode` 改为 `string | VNode`，`tooltip.render` 返回 `VNode | string | null`；场景图形用 `h()` 渲染函数绘制，SVG 表现属性必须用 kebab-case（`stroke-width` / `fill-opacity` / `text-anchor` 等，Vue 不会像 React JSX 那样自动转换 camelCase）；Vue 侧不引入 dayjs，时序默认 HH:mm / 完整时间格式用原生 `Date` 实现。
+
+---
+
 ## 3. Demo 布局精确规范
 
 这是 Demo 站（`demo/App.vue`）的实际布局数值，用于还原完整页面效果：

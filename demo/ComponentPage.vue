@@ -45,6 +45,7 @@ import CountUpDemo from './pages/CountUpDemo.vue';
 import IconDemo from './pages/IconDemo.vue';
 import CalendarDemo from './pages/CalendarDemo.vue';
 import NoDataDemo from './pages/NoDataDemo.vue';
+import ChartDemo from './pages/ChartDemo.vue';
 
 const props = defineProps<{ activeKey: string }>();
 
@@ -91,6 +92,7 @@ const PAGES: Record<string, unknown> = {
     icon: IconDemo,
     calendar: CalendarDemo,
     'no-data': NoDataDemo,
+    chart: ChartDemo,
 };
 
 // 与 React 版同款：根据 activeKey 哈希固定映射颜色，同页面不抖动

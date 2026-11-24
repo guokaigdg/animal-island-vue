@@ -2278,6 +2278,109 @@ import { NoData, Button } from 'animal-island-vue';
 ***
 
 
+### 1.47 Chart
+
+```ts
+import { Chart } from 'animal-island-vue';
+import type {
+    ChartProps,
+    ChartType,
+    ChartSeries,
+    ChartDatum,
+    ChartPoint,
+    ChartCandle,
+    ChartMapRegion,
+    ChartDataEvent,
+    ChartTooltipOptions,
+    ChartTooltipContext,
+    ChartTooltipItem,
+} from 'animal-island-vue';
+
+type ChartType =
+    | 'column' | 'bar' | 'line' | 'area' | 'mount' | 'mix' | 'scatter' | 'bubble'
+    | 'pie' | 'ring' | 'rose' | 'radar' | 'arcbar' | 'gauge' | 'funnel'
+    | 'word' | 'candle' | 'map' | 'time';
+
+interface ChartProps {
+    type?: ChartType;                                   // 默认 column
+    series: readonly ChartSeries[];                     // 必填；饼/环/玫瑰/漏斗/词云/地图读首个系列
+    categories?: readonly string[];                     // 分类轴或雷达维度标签
+    title?: string | VNode;
+    description?: string | VNode;
+    height?: number;                                    // 绘图区高度，默认 300，最小 180
+    colors?: readonly string[];                         // 系列色与单点色优先
+    legend?: boolean;                                   // 默认 true
+    tooltip?: boolean | ChartTooltipOptions;            // 默认 true
+    highlight?: boolean;                                // 默认 true
+    selectable?: boolean;                               // 默认 true
+    stacked?: boolean;                                  // 柱状/条状正负分开堆叠，默认 false
+    smooth?: boolean;                                   // 平滑折线/圆润峰顶，默认 false
+    showAxes?: boolean;                                 // 默认 true
+    showLabels?: boolean;                               // 默认 false
+    min?: number;
+    max?: number;
+    valueFormatter?: (value: number) => string;
+    xFormatter?: (value: number) => string;             // 数值横轴，时序默认本地 HH:mm
+    regions?: readonly ChartMapRegion[];                // map 的平面轮廓，按 name 关联
+    loading?: boolean;                                  // 默认 false
+    emptyText?: string | VNode;                         // 默认「暂无数据」
+    animated?: boolean;                                 // 默认 true
+}
+interface ChartTooltipOptions {
+    trigger?: 'axis' | 'item';
+    crosshair?: boolean;
+    showPercentage?: boolean;
+    render?: (context: ChartTooltipContext) => VNode | VNode[] | string | number | null;
+}
+interface ChartDataEvent {
+    type: ChartType; seriesIndex: number; dataIndex: number;
+    seriesName: string; name: string; value: number; datum: ChartDatum;
+}
+// 事件：@data-click="(event: ChartDataEvent) => void" —— 对齐 React onDataClick
+```
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import { Chart } from 'animal-island-vue';
+import type { ChartDataEvent } from 'animal-island-vue';
+
+const series = [
+    { name: '本周', data: [32, 46, 38, 62, 55, 79, 68] },
+    { name: '上周', data: [24, 31, 42, 48, 39, 61, 54] },
+];
+const message = ref('');
+function onClick(e: ChartDataEvent) {
+    message.value = `${e.seriesName} / ${e.name}：${e.value}`;
+}
+</script>
+
+<template>
+    <!-- 柱状图：图例筛选 + 悬浮聚合提示 + 点击锁定 + 键盘浏览 -->
+    <Chart
+        type="column"
+        title="一周到访趋势"
+        description="点击图例可单独查看一组数据"
+        :categories="['周一', '周二', '周三', '周四', '周五', '周六', '周日']"
+        :series="series"
+        :height="300"
+        @data-click="onClick"
+    />
+
+    <!-- 环形图：占比提示 + 中心合计；tooltip.render 自定义内容 -->
+    <Chart type="ring" :series="[{ name: '占比', data: [{ name: '果园', value: 38 }, { name: '海岸', value: 27 }] }]" />
+
+    <!-- 加载态 / 空态 -->
+    <Chart :series="series" loading />
+    <Chart :series="[]" emptyText="尚无访客" />
+</template>
+```
+
+> 19 种图形共用一套图例、数据提示、键盘访问、空态与数据明细，全部由 SVG 手绘，无第三方图表依赖。`type` 切换图形；饼/环/玫瑰/漏斗/词云/地图只取首个系列并按数据项生成图例，K 线需 `{ open, close, low, high }`，散点/气泡/时序需 `{ x, y }`。`tooltip.trigger="axis"` 对支持分类的图形聚合同分类系列，`item` 回退单点；`tooltip.render` 收到 `{ type, name, items, locked }`，返回 `null` 隐藏。点击或 Enter/Space 锁定读数，再次激活或 Esc 解除，方向键 / Home / End 在数据点间浏览。数据含 `<details>`「查看数据」明细与 aria 无障碍标签；`animated` 入场淡入遵循 `prefers-reduced-motion`。**Vue 差异：** 回调改为 `@data-click` 事件（对齐 React `onDataClick`）；`ReactNode` 改为 `string | VNode`（`tooltip.render` / `emptyText` / `title` / `description` 同理）；Vue 侧不引入 dayjs，时序默认时间格式用原生 `Date` 实现，输出与 React 一致（HH:mm / YYYY-MM-DD HH:mm:ss）。
+
+***
+
+
 ## 2. Common Recipes
 
 ### 2.1 Form row

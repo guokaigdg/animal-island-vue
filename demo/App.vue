@@ -94,6 +94,7 @@ const MENU_ITEMS: MenuItem[] = [
             { key: 'time', label: 'Time 时间' },
             { key: 'countdown', label: 'Countdown 倒计时' },
             { key: 'countup', label: 'CountUp 数字滚动', isNew: true },
+            { key: 'chart', label: 'Chart 统计图表', isNew: true },
         ],
     },
 ];
